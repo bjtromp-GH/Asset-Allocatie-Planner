@@ -973,6 +973,20 @@
                 dateInput.addEventListener('change', () => {
                     saveState();
                 });
+
+                // Open date picker when clicking the icon or label
+                const dateLabel = dateInput.parentElement;
+                if (dateLabel) {
+                    dateLabel.addEventListener('click', (e) => {
+                        if (e.target !== dateInput) {
+                            try {
+                                dateInput.showPicker();
+                            } catch (err) {
+                                dateInput.focus();
+                            }
+                        }
+                    });
+                }
             }
 
             const saveHistoryBtn = document.getElementById('save-history-btn');
