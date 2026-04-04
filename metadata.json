@@ -1,0 +1,5 @@
+{
+  "name": "Asset Allocatie Planner",
+  "description": "Een app om je asset allocatie te beheren met huidige waarden, doelpercentages en visualisaties.",
+  "requestFramePermissions": []
+}
