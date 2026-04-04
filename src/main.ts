@@ -187,11 +187,10 @@ function updateUI() {
   const targetWarning = document.getElementById('target-warning');
   if (targetWarning) {
     if (totalTarget !== 100) {
-      targetWarning.classList.remove('hidden');
       targetWarning.textContent = `Doel: ${totalTarget}% (moet 100% zijn)`;
-      targetWarning.className = `text-xs font-medium px-2 py-1 rounded-full ${totalTarget > 100 ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'}`;
+      targetWarning.className = `hidden sm:inline-block text-xs font-medium px-2 py-1 rounded-full ${totalTarget > 100 ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'}`;
     } else {
-      targetWarning.classList.add('hidden');
+      targetWarning.className = 'hidden';
     }
   }
 
