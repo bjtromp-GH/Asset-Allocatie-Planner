@@ -37,6 +37,9 @@
                         <h1 class="text-lg sm:text-xl font-bold tracking-tight dark:text-white">Asset Allocatie Planner</h1>
                     </div>
                     <div class="flex items-center gap-2 lg:hidden">
+                        <button id="planner-toggle-mobile" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400" title="Wissel Planner/Allocatie modus">
+                            <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                        </button>
                         <button id="theme-toggle-mobile" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400">
                             <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
                             <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
@@ -60,6 +63,9 @@
                         <span id="total-value" class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">€ 0,00</span>
                     </div>
                     <div class="hidden lg:flex items-center gap-2">
+                        <button id="planner-toggle" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400" title="Wissel Planner/Allocatie modus">
+                            <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                        </button>
                         <button id="theme-toggle" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400" title="Wissel thema">
                             <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
                             <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
@@ -84,7 +90,7 @@
                 <!-- Left Column: Input & Table -->
                 <div class="lg:col-span-7 space-y-8">
                     <!-- Investment Simulator -->
-                    <section class="hidden md:block bg-blue-600 rounded-2xl shadow-lg shadow-blue-200 p-6 text-white overflow-hidden relative dark:bg-slate-900 dark:border dark:border-slate-800 dark:shadow-none">
+                    <section id="simulator-section" class="hidden md:block bg-blue-600 rounded-2xl shadow-lg shadow-blue-200 p-6 text-white overflow-hidden relative dark:bg-slate-900 dark:border dark:border-slate-800 dark:shadow-none">
                         <div class="relative z-10">
                             <div class="flex items-center justify-between mb-4 cursor-pointer group" id="toggle-simulator">
                                 <h2 class="text-lg font-bold flex items-center gap-2">
@@ -150,7 +156,7 @@
                                             <span class="sm:hidden">Waarde</span>
                                             <span class="hidden sm:inline">Huidige Waarde & %</span>
                                         </th>
-                                        <th class="px-6 py-3 text-right hidden sm:table-cell">Doel (%)</th>
+                                        <th id="target-column-header" class="px-6 py-3 text-right hidden sm:table-cell">Doel (%)</th>
                                         <th class="px-3 sm:px-6 py-3 text-right sm:hidden">Acties</th>
                                     </tr>
                                 </thead>
@@ -162,7 +168,7 @@
                     </section>
 
                     <!-- Rebalancing Strategy -->
-                    <section class="hidden md:block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
+                    <section id="rebalance-section" class="hidden md:block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
                         <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800">
                             <h2 class="font-semibold flex items-center gap-2 dark:text-white">
                                 <i data-lucide="refresh-cw" class="w-4 h-4 text-blue-600"></i>
@@ -212,7 +218,7 @@
                     </section>
 
                     <!-- Bar Chart: Current vs Target -->
-                    <section class="hidden md:block bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+                    <section id="comparison-section" class="hidden md:block bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
                         <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
                             <i data-lucide="bar-chart-3" class="w-4 h-4 text-blue-600"></i>
                             Huidig vs Doel
@@ -300,6 +306,7 @@
         ];
 
         let investmentAmount = 1000;
+        let isPlannerMode = true;
         let isDarkMode = false;
         let history = [];
         let pieChart = null;
@@ -358,7 +365,8 @@
                 investmentAmount,
                 date: dateInput.value,
                 history,
-                isDarkMode
+                isDarkMode,
+                isPlannerMode
             };
             localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         }
@@ -375,6 +383,9 @@
                         isDarkMode = state.isDarkMode;
                         document.documentElement.classList.toggle('dark', isDarkMode);
                         document.body.classList.toggle('dark', isDarkMode);
+                    }
+                    if (state.isPlannerMode !== undefined) {
+                        isPlannerMode = state.isPlannerMode;
                     }
                     if (state.date) {
                         const dateInput = document.getElementById('current-date');
@@ -453,13 +464,23 @@
 
             const targetWarning = document.getElementById('target-warning');
             if (targetWarning) {
-                if (totalTarget !== 100) {
+                if (isPlannerMode && totalTarget !== 100) {
                     targetWarning.textContent = `Doel: ${totalTarget}% (moet 100% zijn)`;
                     targetWarning.className = `hidden sm:inline-block text-xs font-medium px-2 py-1 rounded-full ${totalTarget > 100 ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'}`;
                 } else {
                     targetWarning.className = 'hidden';
                 }
             }
+
+            const simulatorSection = document.getElementById('simulator-section');
+            const rebalanceSection = document.getElementById('rebalance-section');
+            const targetColumnHeader = document.getElementById('target-column-header');
+            const comparisonSection = document.getElementById('comparison-section');
+
+            if (simulatorSection) simulatorSection.style.display = isPlannerMode ? '' : 'none';
+            if (rebalanceSection) rebalanceSection.style.display = isPlannerMode ? '' : 'none';
+            if (targetColumnHeader) targetColumnHeader.style.display = isPlannerMode ? '' : 'none';
+            if (comparisonSection) comparisonSection.style.display = isPlannerMode ? '' : 'none';
 
             const categories = { Groei: 0, Defensief: 0, Speculatief: 0 };
             assets.forEach(a => categories[a.category] += a.value);
@@ -539,7 +560,7 @@
                                         <option value="Defensief" ${asset.category === 'Defensief' ? 'selected' : ''}>Defensief</option>
                                         <option value="Speculatief" ${asset.category === 'Speculatief' ? 'selected' : ''}>Speculatief</option>
                                     </select>
-                                    <div class="hidden sm:flex items-center gap-1">
+                                    <div class="${isPlannerMode ? 'hidden sm:flex' : 'hidden'} items-center gap-1">
                                         <input
                                             type="number"
                                             value="${asset.target}"
@@ -980,6 +1001,18 @@
 
             if (themeToggle) themeToggle.addEventListener('click', handleThemeToggle);
             if (themeToggleMobile) themeToggleMobile.addEventListener('click', handleThemeToggle);
+
+            const plannerToggle = document.getElementById('planner-toggle');
+            const plannerToggleMobile = document.getElementById('planner-toggle-mobile');
+
+            const handlePlannerToggle = () => {
+                isPlannerMode = !isPlannerMode;
+                saveState();
+                updateUI();
+            };
+
+            if (plannerToggle) plannerToggle.addEventListener('click', handlePlannerToggle);
+            if (plannerToggleMobile) plannerToggleMobile.addEventListener('click', handlePlannerToggle);
 
             const historyTableBody = document.getElementById('history-table-body');
             if (historyTableBody) {

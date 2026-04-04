@@ -31,6 +31,7 @@ let assets: Asset[] = [
 
 let history: HistoryEntry[] = [];
 let investmentAmount = 1000;
+let isPlannerMode = true;
 let isDarkMode = false;
 let pieChart: Chart | null = null;
 let barChartCurrent: Chart | null = null;
@@ -88,7 +89,8 @@ function saveState() {
     investmentAmount,
     date: dateInput.value,
     history,
-    isDarkMode
+    isDarkMode,
+    isPlannerMode
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
@@ -105,6 +107,9 @@ function loadState() {
         isDarkMode = state.isDarkMode;
         document.documentElement.classList.toggle('dark', isDarkMode);
         document.body.classList.toggle('dark', isDarkMode);
+      }
+      if (state.isPlannerMode !== undefined) {
+        isPlannerMode = state.isPlannerMode;
       }
       if (state.date) {
         const dateInput = document.getElementById('current-date') as HTMLInputElement;
@@ -186,13 +191,23 @@ function updateUI() {
 
   const targetWarning = document.getElementById('target-warning');
   if (targetWarning) {
-    if (totalTarget !== 100) {
+    if (isPlannerMode && totalTarget !== 100) {
       targetWarning.textContent = `Doel: ${totalTarget}% (moet 100% zijn)`;
       targetWarning.className = `hidden sm:inline-block text-xs font-medium px-2 py-1 rounded-full ${totalTarget > 100 ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'}`;
     } else {
       targetWarning.className = 'hidden';
     }
   }
+
+  const simulatorSection = document.getElementById('simulator-section');
+  const rebalanceSection = document.getElementById('rebalance-section');
+  const targetColumnHeader = document.getElementById('target-column-header');
+  const comparisonSection = document.getElementById('comparison-section');
+
+  if (simulatorSection) simulatorSection.style.display = isPlannerMode ? '' : 'none';
+  if (rebalanceSection) rebalanceSection.style.display = isPlannerMode ? '' : 'none';
+  if (targetColumnHeader) targetColumnHeader.style.display = isPlannerMode ? '' : 'none';
+  if (comparisonSection) comparisonSection.style.display = isPlannerMode ? '' : 'none';
 
   const categories = { Groei: 0, Defensief: 0, Speculatief: 0 };
   assets.forEach(a => categories[a.category] += a.value);
@@ -272,7 +287,7 @@ function updateUI() {
                 <option value="Defensief" ${asset.category === 'Defensief' ? 'selected' : ''}>Defensief</option>
                 <option value="Speculatief" ${asset.category === 'Speculatief' ? 'selected' : ''}>Speculatief</option>
               </select>
-              <div class="hidden sm:flex items-center gap-1">
+              <div class="${isPlannerMode ? 'hidden sm:flex' : 'hidden'} items-center gap-1">
                 <input
                   type="number"
                   value="${asset.target}"
@@ -730,6 +745,18 @@ function initEventListeners() {
 
   if (themeToggle) themeToggle.addEventListener('click', handleThemeToggle);
   if (themeToggleMobile) themeToggleMobile.addEventListener('click', handleThemeToggle);
+
+  const plannerToggle = document.getElementById('planner-toggle');
+  const plannerToggleMobile = document.getElementById('planner-toggle-mobile');
+
+  const handlePlannerToggle = () => {
+    isPlannerMode = !isPlannerMode;
+    saveState();
+    updateUI();
+  };
+
+  if (plannerToggle) plannerToggle.addEventListener('click', handlePlannerToggle);
+  if (plannerToggleMobile) plannerToggleMobile.addEventListener('click', handlePlannerToggle);
 
   const toggleSimulator = document.getElementById('toggle-simulator');
   const simulatorContent = document.getElementById('simulator-content');
