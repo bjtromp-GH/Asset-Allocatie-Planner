@@ -1,6 +1,7 @@
 import { Chart, registerables } from 'chart.js';
 import { createIcons, icons } from 'lucide';
 import * as d3 from 'd3';
+import CryptoJS from 'crypto-js';
 
 Chart.register(...registerables);
 
@@ -36,6 +37,8 @@ let history: HistoryEntry[] = [];
 let investmentAmount = 1000;
 let isPlannerMode = true;
 let isDarkMode = false;
+let masterPassword = '';
+let isEncrypted = false;
 let pieChart: Chart | null = null;
 let barChartCurrent: Chart | null = null;
 let barChartComparison: Chart | null = null;
@@ -85,6 +88,19 @@ const formatDate = (dateStr: string) => {
 
 const STORAGE_KEY = 'asset_planner_state';
 
+function encrypt(data: string, key: string): string {
+  return CryptoJS.AES.encrypt(data, key).toString();
+}
+
+function decrypt(data: string, key: string): string {
+  try {
+    const bytes = CryptoJS.AES.decrypt(data, key);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  } catch (e) {
+    return '';
+  }
+}
+
 function saveState() {
   const dateInput = document.getElementById('current-date') as HTMLInputElement;
   const state = {
@@ -93,34 +109,69 @@ function saveState() {
     date: dateInput.value,
     history,
     isDarkMode,
-    isPlannerMode
+    isPlannerMode,
+    isEncrypted: !!masterPassword
   };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  
+  let dataToSave = JSON.stringify(state);
+  if (masterPassword) {
+    dataToSave = encrypt(dataToSave, masterPassword);
+  }
+  
+  localStorage.setItem(STORAGE_KEY, dataToSave);
 }
 
 function loadState() {
   const saved = localStorage.getItem(STORAGE_KEY);
   if (saved) {
+    // Check if it's encrypted (doesn't start with {)
+    if (!saved.trim().startsWith('{')) {
+      isEncrypted = true;
+      showLockScreen();
+      return;
+    }
+
     try {
       const state = JSON.parse(saved);
-      if (state.assets) assets = state.assets;
-      if (state.investmentAmount !== undefined) investmentAmount = state.investmentAmount;
-      if (state.history) history = state.history;
-      if (state.isDarkMode !== undefined) {
-        isDarkMode = state.isDarkMode;
-        document.documentElement.classList.toggle('dark', isDarkMode);
-        document.body.classList.toggle('dark', isDarkMode);
-      }
-      if (state.isPlannerMode !== undefined) {
-        isPlannerMode = state.isPlannerMode;
-      }
-      if (state.date) {
-        const dateInput = document.getElementById('current-date') as HTMLInputElement;
-        if (dateInput) dateInput.value = state.date;
-      }
+      applyState(state);
     } catch (e) {
       console.error('Failed to load state', e);
     }
+  }
+}
+
+function applyState(state: any) {
+  if (state.assets) assets = state.assets;
+  if (state.investmentAmount !== undefined) investmentAmount = state.investmentAmount;
+  if (state.history) history = state.history;
+  if (state.isDarkMode !== undefined) {
+    isDarkMode = state.isDarkMode;
+    document.documentElement.classList.toggle('dark', isDarkMode);
+    document.body.classList.toggle('dark', isDarkMode);
+  }
+  if (state.isPlannerMode !== undefined) {
+    isPlannerMode = state.isPlannerMode;
+  }
+  if (state.date) {
+    const dateInput = document.getElementById('current-date') as HTMLInputElement;
+    if (dateInput) dateInput.value = state.date;
+  }
+  updateUI();
+}
+
+function showLockScreen() {
+  const lockScreen = document.getElementById('lock-screen');
+  if (lockScreen) {
+    lockScreen.classList.remove('hidden');
+    const input = document.getElementById('unlock-password-input') as HTMLInputElement;
+    if (input) input.focus();
+  }
+}
+
+function hideLockScreen() {
+  const lockScreen = document.getElementById('lock-screen');
+  if (lockScreen) {
+    lockScreen.classList.add('hidden');
   }
 }
 
@@ -913,6 +964,172 @@ function initEventListeners() {
     });
     resizeObserver.observe(treemapContainer);
   }
+
+  // Security UI
+  const securityBtn = document.getElementById('security-btn');
+  const securityModal = document.getElementById('security-modal');
+  const closeSecurityModal = document.getElementById('close-security-modal');
+  const savePasswordBtn = document.getElementById('save-password-btn');
+  const removePasswordBtn = document.getElementById('remove-password-btn');
+  const masterPasswordInput = document.getElementById('master-password-input') as HTMLInputElement;
+  const confirmPasswordInput = document.getElementById('confirm-password-input') as HTMLInputElement;
+  const confirmPasswordContainer = document.getElementById('confirm-password-container');
+  const securityStatusText = document.getElementById('security-status-text');
+  const securityStatusIcon = document.getElementById('security-status-icon');
+  
+  const lockNowBtn = document.getElementById('lock-now-btn');
+  
+  const updateSecurityUI = () => {
+    if (masterPassword) {
+      if (securityStatusText) securityStatusText.textContent = 'Portfolio is versleuteld';
+      if (securityStatusIcon) {
+        securityStatusIcon.className = 'p-2 rounded-lg bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400';
+        securityStatusIcon.innerHTML = '<i data-lucide="lock" class="w-5 h-5"></i>';
+      }
+      if (savePasswordBtn) savePasswordBtn.textContent = 'Wachtwoord Wijzigen';
+      if (removePasswordBtn) removePasswordBtn.classList.remove('hidden');
+      if (lockNowBtn) lockNowBtn.classList.remove('hidden');
+      if (confirmPasswordContainer) confirmPasswordContainer.classList.remove('hidden');
+    } else {
+      if (securityStatusText) securityStatusText.textContent = 'Geen wachtwoord ingesteld';
+      if (securityStatusIcon) {
+        securityStatusIcon.className = 'p-2 rounded-lg bg-slate-200 text-slate-500 dark:bg-slate-800 dark:text-slate-400';
+        securityStatusIcon.innerHTML = '<i data-lucide="unlock" class="w-5 h-5"></i>';
+      }
+      if (savePasswordBtn) savePasswordBtn.textContent = 'Wachtwoord Instellen';
+      if (removePasswordBtn) removePasswordBtn.classList.add('hidden');
+      if (lockNowBtn) lockNowBtn.classList.add('hidden');
+      if (confirmPasswordContainer) confirmPasswordContainer.classList.add('hidden');
+    }
+    createIcons({ icons });
+  };
+
+  if (lockNowBtn) {
+    lockNowBtn.addEventListener('click', () => {
+      masterPassword = '';
+      securityModal?.classList.add('hidden');
+      showLockScreen();
+    });
+  }
+
+  if (securityBtn && securityModal) {
+    securityBtn.addEventListener('click', () => {
+      if (masterPassword) {
+        // If already encrypted and we have the password, maybe we want to lock?
+        // Let's show a small menu or just toggle lock if they click the lock icon?
+        // For now, let's just open the modal.
+        securityModal.classList.remove('hidden');
+        updateSecurityUI();
+      } else {
+        securityModal.classList.remove('hidden');
+        updateSecurityUI();
+      }
+    });
+  }
+
+  // Add a dedicated lock button or use the security button to lock?
+  // Let's add a "Lock Now" button in the security modal.
+
+  if (closeSecurityModal && securityModal) {
+    closeSecurityModal.addEventListener('click', () => {
+      securityModal.classList.add('hidden');
+      masterPasswordInput.value = '';
+      confirmPasswordInput.value = '';
+    });
+  }
+
+  if (savePasswordBtn) {
+    savePasswordBtn.addEventListener('click', () => {
+      const newPass = masterPasswordInput.value;
+      const confirmPass = confirmPasswordInput.value;
+      
+      if (!newPass) {
+        alert('Voer een wachtwoord in.');
+        return;
+      }
+      
+      if (masterPassword && newPass !== confirmPass) {
+        alert('Wachtwoorden komen niet overeen.');
+        return;
+      }
+      
+      if (!masterPassword && confirmPasswordContainer?.classList.contains('hidden')) {
+        confirmPasswordContainer.classList.remove('hidden');
+        savePasswordBtn.textContent = 'Bevestig Wachtwoord';
+        return;
+      }
+
+      if (!masterPassword && newPass !== confirmPass) {
+        alert('Wachtwoorden komen niet overeen.');
+        return;
+      }
+
+      masterPassword = newPass;
+      saveState();
+      securityModal?.classList.add('hidden');
+      masterPasswordInput.value = '';
+      confirmPasswordInput.value = '';
+      alert('Portfolio is nu versleuteld met je wachtwoord.');
+    });
+  }
+
+  if (removePasswordBtn) {
+    removePasswordBtn.addEventListener('click', () => {
+      if (confirm('Weet je zeker dat je de versleuteling wilt verwijderen? Je gegevens worden weer onbeveiligd opgeslagen.')) {
+        masterPassword = '';
+        saveState();
+        updateSecurityUI();
+        alert('Versleuteling verwijderd.');
+      }
+    });
+  }
+
+  // Unlock logic
+  const unlockBtn = document.getElementById('unlock-btn');
+  const unlockInput = document.getElementById('unlock-password-input') as HTMLInputElement;
+  const forgotPasswordBtn = document.getElementById('forgot-password-btn');
+
+  const attemptUnlock = () => {
+    const pass = unlockInput.value;
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved && pass) {
+      const decrypted = decrypt(saved, pass);
+      if (decrypted) {
+        try {
+          const state = JSON.parse(decrypted);
+          masterPassword = pass;
+          applyState(state);
+          hideLockScreen();
+          unlockInput.value = '';
+        } catch (e) {
+          alert('Ongeldig wachtwoord.');
+        }
+      } else {
+        alert('Ongeldig wachtwoord.');
+      }
+    }
+  };
+
+  if (unlockBtn) {
+    unlockBtn.addEventListener('click', attemptUnlock);
+  }
+
+  if (unlockInput) {
+    unlockInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') attemptUnlock();
+    });
+  }
+
+  if (forgotPasswordBtn) {
+    forgotPasswordBtn.addEventListener('click', () => {
+      if (confirm('LET OP: Als je je wachtwoord vergeet, kunnen we je gegevens niet herstellen. Wil je alle gegevens wissen en opnieuw beginnen?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+      }
+    });
+  }
+
+  createIcons({ icons });
 }
 
 // Initial Load
