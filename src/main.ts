@@ -1,5 +1,6 @@
 import { Chart, registerables } from 'chart.js';
 import { createIcons, icons } from 'lucide';
+import * as d3 from 'd3';
 
 Chart.register(...registerables);
 
@@ -654,6 +655,79 @@ function updateCharts() {
       }
     }
   });
+
+  updateTreemap();
+}
+
+function updateTreemap() {
+  const container = document.getElementById('treemap-container');
+  if (!container) return;
+
+  // Clear previous content
+  container.innerHTML = '';
+
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+
+  if (width === 0 || height === 0) return;
+
+  const data = {
+    name: "Assets",
+    children: assets.filter(a => a.value > 0)
+  };
+
+  const root = d3.hierarchy(data)
+    .sum(d => (d as any).value)
+    .sort((a, b) => (b.value || 0) - (a.value || 0));
+
+  d3.treemap()
+    .size([width, height])
+    .padding(2)
+    .round(true)
+    (root);
+
+  const svg = d3.select(container)
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", [0, 0, width, height])
+    .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
+
+  const leaf = svg.selectAll("g")
+    .data(root.leaves())
+    .join("g")
+    .attr("transform", (d: any) => `translate(${d.x0},${d.y0})`);
+
+  leaf.append("rect")
+    .attr("id", (d: any) => (d.data as any).id)
+    .attr("fill", (d: any) => (d.data as any).color)
+    .attr("fill-opacity", 0.8)
+    .attr("width", (d: any) => d.x1 - d.x0)
+    .attr("height", (d: any) => d.y1 - d.y0)
+    .attr("rx", 4)
+    .attr("ry", 4)
+    .style("cursor", "pointer")
+    .on("click", (event, d) => {
+      highlightAssetRow((d.data as any).id);
+    });
+
+  leaf.append("text")
+    .attr("clip-path", (d: any) => `url(#clip-${(d.data as any).id})`)
+    .selectAll("tspan")
+    .data((d: any) => {
+      const name = (d.data as any).name;
+      const value = formatCurrency((d.data as any).value);
+      return [name, value];
+    })
+    .join("tspan")
+    .attr("x", 5)
+    .attr("y", (d: any, i: number, nodes: any) => {
+      const offset = (i === nodes.length - 1) ? 0.3 : 0;
+      return `${offset + 1.1 + i * 0.9}em`;
+    })
+    .attr("fill", "#fff")
+    .attr("font-weight", (d: any, i: number) => i === 0 ? "bold" : "normal")
+    .text((d: any) => d);
 }
 
 function highlightAssetRow(id: string) {
@@ -815,6 +889,14 @@ function initEventListeners() {
         simulatorChevron.classList.add('-rotate-90');
       }
     });
+  }
+
+  const treemapContainer = document.getElementById('treemap-container');
+  if (treemapContainer) {
+    const resizeObserver = new ResizeObserver(() => {
+      updateTreemap();
+    });
+    resizeObserver.observe(treemapContainer);
   }
 }
 
