@@ -184,9 +184,40 @@ function updateUI() {
   const totalValue = assets.reduce((sum, asset) => sum + asset.value, 0);
   const totalTarget = assets.reduce((sum, asset) => sum + asset.target, 0);
 
+  const categories = { Groei: 0, Defensief: 0, Speculatief: 0 };
+  assets.forEach(a => categories[a.category] += a.value);
+
   // Animate total values
   animateValue('total-value', prevTotalValue, totalValue, 500, formatCurrency);
   animateValue('pie-total-value', prevTotalValue, totalValue, 500, formatCurrency);
+  
+  const pieCenterValue = document.getElementById('pie-center-value');
+  const pieCenterStatus = document.getElementById('pie-center-status');
+  if (pieCenterValue && pieCenterStatus) {
+    animateValue('pie-center-value', prevTotalValue, totalValue, 500, formatCurrency);
+    
+    const specPercent = totalValue > 0 ? (categories.Speculatief / totalValue) * 100 : 0;
+    const growthPercent = totalValue > 0 ? (categories.Groei / totalValue) * 100 : 0;
+    const defPercent = totalValue > 0 ? (categories.Defensief / totalValue) * 100 : 0;
+    
+    let status = "Gebalanceerd";
+    let statusClass = "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400";
+    
+    if (specPercent > 15) {
+      status = "Speculatief";
+      statusClass = "bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400";
+    } else if (growthPercent > 60) {
+      status = "Groeigericht";
+      statusClass = "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400";
+    } else if (defPercent > 60) {
+      status = "Defensief";
+      statusClass = "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400";
+    }
+    
+    pieCenterStatus.textContent = status;
+    pieCenterStatus.className = `text-[9px] font-bold px-2 py-0.5 rounded-full mt-1 uppercase tracking-tighter ${statusClass}`;
+  }
+
   prevTotalValue = totalValue;
 
   const targetWarning = document.getElementById('target-warning');
@@ -208,9 +239,6 @@ function updateUI() {
   if (rebalanceSection) rebalanceSection.style.display = isPlannerMode ? '' : 'none';
   if (targetColumnHeader) targetColumnHeader.style.display = isPlannerMode ? '' : 'none';
   if (comparisonSection) comparisonSection.style.display = isPlannerMode ? '' : 'none';
-
-  const categories = { Groei: 0, Defensief: 0, Speculatief: 0 };
-  assets.forEach(a => categories[a.category] += a.value);
   
   const categoryCards = document.getElementById('category-cards');
   if (categoryCards) {

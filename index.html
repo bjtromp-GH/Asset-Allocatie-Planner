@@ -73,6 +73,12 @@
             </h2>
             <div class="h-[320px] w-full relative">
               <canvas id="pie-chart"></canvas>
+              <!-- Center Content -->
+              <div id="pie-center-content" class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">Totaal</span>
+                <span id="pie-center-value" class="text-xl font-extrabold text-slate-900 dark:text-white">€ 0</span>
+                <span id="pie-center-status" class="text-[9px] font-bold px-2 py-0.5 rounded-full mt-1 uppercase tracking-tighter"></span>
+              </div>
             </div>
             
             <div class="mt-8 flex justify-between items-end border-b border-slate-50 pb-2 dark:border-slate-800">
