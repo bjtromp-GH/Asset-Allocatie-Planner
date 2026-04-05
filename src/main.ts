@@ -21,8 +21,8 @@ interface HistoryEntry {
 
 let assets: Asset[] = [
   { id: '1', name: 'Aandelen', value: 5000, target: 40, color: '#3b82f6', category: 'Groei' },
-  { id: '2', name: 'Pensioenbeleggen', value: 2000, target: 20, color: '#10b981', category: 'Groei' },
-  { id: '3', name: 'Obligaties', value: 1500, target: 15, color: '#6366f1', category: 'Defensief' },
+  { id: '2', name: 'Obligaties', value: 1500, target: 15, color: '#10b981', category: 'Defensief' },
+  { id: '3', name: 'Vastgoed', value: 1000, target: 10, color: '#6366f1', category: 'Groei' },
   { id: '4', name: 'Cash', value: 1000, target: 5, color: '#22c55e', category: 'Defensief' },
   { id: '5', name: 'Goud', value: 500, target: 5, color: '#eab308', category: 'Defensief' },
   { id: '6', name: 'Zilver', value: 200, target: 2, color: '#94a3b8', category: 'Defensief' },
