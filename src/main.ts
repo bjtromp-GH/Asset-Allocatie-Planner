@@ -19,16 +19,18 @@ interface HistoryEntry {
   assets: Asset[];
 }
 
-let assets: Asset[] = [
-  { id: '1', name: 'Aandelen', value: 5000, target: 40, color: '#3b82f6', category: 'Groei' },
+const DEFAULT_ASSETS: Asset[] = [
+  { id: '1', name: 'Aandelen', value: 5000, target: 45, color: '#3b82f6', category: 'Groei' },
   { id: '2', name: 'Obligaties', value: 1500, target: 15, color: '#10b981', category: 'Defensief' },
   { id: '3', name: 'Vastgoed', value: 1000, target: 10, color: '#6366f1', category: 'Groei' },
-  { id: '4', name: 'Cash', value: 1000, target: 5, color: '#22c55e', category: 'Defensief' },
+  { id: '4', name: 'Spaargeld', value: 1000, target: 5, color: '#22c55e', category: 'Defensief' },
   { id: '5', name: 'Goud', value: 500, target: 5, color: '#eab308', category: 'Defensief' },
   { id: '6', name: 'Zilver', value: 200, target: 2, color: '#94a3b8', category: 'Defensief' },
-  { id: '7', name: 'Bitcoin', value: 800, target: 8, color: '#f97316', category: 'Speculatief' },
-  { id: '8', name: 'Bezittingen', value: 1000, target: 5, color: '#ec4899', category: 'Defensief' },
+  { id: '7', name: 'Bitcoin', value: 800, target: 10, color: '#f97316', category: 'Speculatief' },
+  { id: '8', name: 'Auto', value: 1000, target: 8, color: '#ec4899', category: 'Defensief' },
 ];
+
+let assets: Asset[] = [...DEFAULT_ASSETS];
 
 let history: HistoryEntry[] = [];
 let investmentAmount = 1000;
@@ -180,12 +182,11 @@ function addAsset() {
   updateUI();
 }
 
-function resetColors() {
-  const colors = ['#3b82f6', '#10b981', '#6366f1', '#22c55e', '#eab308', '#94a3b8', '#f97316', '#ec4899'];
-  assets.forEach((asset, index) => {
-    asset.color = colors[index % colors.length];
-  });
-  updateUI();
+function resetToDefaults() {
+  if (confirm('Weet je zeker dat je alle assets wilt herstellen naar de standaardwaarden? Je huidige invoer gaat verloren.')) {
+    assets = JSON.parse(JSON.stringify(DEFAULT_ASSETS));
+    updateUI();
+  }
 }
 
 function updateUI() {
@@ -800,7 +801,7 @@ function initEventListeners() {
   const resetColorsBtn = document.getElementById('reset-colors-btn');
   if (resetColorsBtn) {
     resetColorsBtn.addEventListener('click', () => {
-      resetColors();
+      resetToDefaults();
     });
   }
 

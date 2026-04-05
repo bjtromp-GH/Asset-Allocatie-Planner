@@ -72,9 +72,9 @@
               Huidige Allocatie (Cirkel)
             </h2>
             <div class="h-[320px] w-full relative">
-              <canvas id="pie-chart"></canvas>
+              <canvas id="pie-chart" class="relative z-10"></canvas>
               <!-- Center Content -->
-              <div id="pie-center-content" class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+              <div id="pie-center-content" class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
                 <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">Totaal</span>
                 <span id="pie-center-value" class="text-xl font-extrabold text-slate-900 dark:text-white">€ 0</span>
                 <span id="pie-center-status" class="text-[9px] font-bold px-2 py-0.5 rounded-full mt-1 uppercase tracking-tighter"></span>
@@ -101,7 +101,7 @@
               </h2>
               <div class="flex items-center gap-2">
                 <span id="target-warning" class="hidden text-xs font-medium px-2 py-1 rounded-full"></span>
-                <button id="reset-colors-btn" class="text-slate-400 hover:text-blue-600 transition-all p-1.5 rounded-lg" title="Kleuren herstellen">
+                <button id="reset-colors-btn" class="text-slate-400 hover:text-blue-600 transition-all p-1.5 rounded-lg" title="Standaard herstellen">
                   <i data-lucide="refresh-cw" class="w-4 h-4"></i>
                 </button>
                 <button id="add-asset-btn" class="bg-blue-600 hover:bg-blue-700 text-white p-1.5 rounded-lg transition-all shadow-sm active:scale-95" title="Asset toevoegen">

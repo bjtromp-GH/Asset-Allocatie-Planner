@@ -92,9 +92,9 @@
                         Huidige Allocatie (Cirkel)
                     </h2>
                     <div class="h-[320px] w-full relative">
-                        <canvas id="pie-chart"></canvas>
+                        <canvas id="pie-chart" class="relative z-10"></canvas>
                         <!-- Center Content -->
-                        <div id="pie-center-content" class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                        <div id="pie-center-content" class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
                             <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">Totaal</span>
                             <span id="pie-center-value" class="text-xl font-extrabold text-slate-900 dark:text-white">€ 0</span>
                             <span id="pie-center-status" class="text-[9px] font-bold px-2 py-0.5 rounded-full mt-1 uppercase tracking-tighter"></span>
@@ -121,7 +121,7 @@
                         </h2>
                         <div class="flex items-center gap-2">
                             <span id="target-warning" class="hidden text-xs font-medium px-2 py-1 rounded-full"></span>
-                            <button id="reset-colors-btn" class="text-slate-400 hover:text-blue-600 transition-all p-1.5 rounded-lg" title="Kleuren herstellen">
+                            <button id="reset-colors-btn" class="text-slate-400 hover:text-blue-600 transition-all p-1.5 rounded-lg" title="Standaard herstellen">
                                 <i data-lucide="refresh-cw" class="w-4 h-4"></i>
                             </button>
                             <button id="add-asset-btn" class="bg-blue-600 hover:bg-blue-700 text-white p-1.5 rounded-lg transition-all shadow-sm active:scale-95" title="Asset toevoegen">
@@ -306,16 +306,18 @@
 
     <script>
         // Initial Assets Data
-        let assets = [
-            { id: '1', name: 'Aandelen', value: 5000, target: 40, color: '#3b82f6', category: 'Groei' },
+        const DEFAULT_ASSETS = [
+            { id: '1', name: 'Aandelen', value: 5000, target: 45, color: '#3b82f6', category: 'Groei' },
             { id: '2', name: 'Obligaties', value: 1500, target: 15, color: '#10b981', category: 'Defensief' },
             { id: '3', name: 'Vastgoed', value: 1000, target: 10, color: '#6366f1', category: 'Groei' },
-            { id: '4', name: 'Cash', value: 1000, target: 5, color: '#22c55e', category: 'Defensief' },
+            { id: '4', name: 'Spaargeld', value: 1000, target: 5, color: '#22c55e', category: 'Defensief' },
             { id: '5', name: 'Goud', value: 500, target: 5, color: '#eab308', category: 'Defensief' },
             { id: '6', name: 'Zilver', value: 200, target: 2, color: '#94a3b8', category: 'Defensief' },
-            { id: '7', name: 'Bitcoin', value: 800, target: 8, color: '#f97316', category: 'Speculatief' },
-            { id: '8', name: 'Bezittingen', value: 1000, target: 5, color: '#ec4899', category: 'Defensief' },
+            { id: '7', name: 'Bitcoin', value: 800, target: 10, color: '#f97316', category: 'Speculatief' },
+            { id: '8', name: 'Auto', value: 1000, target: 8, color: '#ec4899', category: 'Defensief' },
         ];
+
+        let assets = JSON.parse(JSON.stringify(DEFAULT_ASSETS));
 
         let investmentAmount = 1000;
         let isPlannerMode = true;
@@ -454,6 +456,13 @@
             };
             assets.push(newAsset);
             updateUI();
+        }
+
+        function resetToDefaults() {
+            if (confirm('Weet je zeker dat je alle assets wilt herstellen naar de standaardwaarden? Je huidige invoer gaat verloren.')) {
+                assets = JSON.parse(JSON.stringify(DEFAULT_ASSETS));
+                updateUI();
+            }
         }
 
         function loadFromHistory(index) {
@@ -1069,6 +1078,13 @@
             if (addAssetBtn) {
                 addAssetBtn.addEventListener('click', () => {
                     addAsset();
+                });
+            }
+
+            const resetColorsBtn = document.getElementById('reset-colors-btn');
+            if (resetColorsBtn) {
+                resetColorsBtn.addEventListener('click', () => {
+                    resetToDefaults();
                 });
             }
 
