@@ -167,7 +167,7 @@ function deleteAsset(id: string) {
 
 function addAsset() {
   const id = Math.random().toString(36).substring(2, 9);
-  const colors = ['#3b82f6', '#10b981', '#6366f1', '#f59e0b', '#eab308', '#94a3b8', '#f97316', '#ec4899'];
+  const colors = ['#3b82f6', '#10b981', '#6366f1', '#22c55e', '#eab308', '#94a3b8', '#f97316', '#ec4899'];
   const newAsset: Asset = {
     id,
     name: 'Nieuwe Asset',
@@ -177,6 +177,14 @@ function addAsset() {
     category: 'Groei'
   };
   assets.push(newAsset);
+  updateUI();
+}
+
+function resetColors() {
+  const colors = ['#3b82f6', '#10b981', '#6366f1', '#22c55e', '#eab308', '#94a3b8', '#f97316', '#ec4899'];
+  assets.forEach((asset, index) => {
+    asset.color = colors[index % colors.length];
+  });
   updateUI();
 }
 
@@ -282,7 +290,6 @@ function updateUI() {
         <tr class="hover:bg-slate-50/50 transition-colors group dark:hover:bg-slate-800/50">
           <td class="px-3 sm:px-6 py-4 min-w-[120px] sm:min-w-[150px]">
             <div class="flex items-center gap-2 sm:gap-3">
-              <div class="w-2 h-2 sm:w-3 sm:h-3 rounded-full shrink-0" style="background-color: ${asset.color}"></div>
               <input
                 type="text"
                 value="${asset.name}"
@@ -787,6 +794,13 @@ function initEventListeners() {
   if (addAssetBtn) {
     addAssetBtn.addEventListener('click', () => {
       addAsset();
+    });
+  }
+
+  const resetColorsBtn = document.getElementById('reset-colors-btn');
+  if (resetColorsBtn) {
+    resetColorsBtn.addEventListener('click', () => {
+      resetColors();
     });
   }
 
