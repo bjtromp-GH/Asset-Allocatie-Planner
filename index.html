@@ -96,7 +96,7 @@
           </section>
 
           <!-- Asset Management Table (Order 2 on Mobile, Order 1 on Desktop) -->
-          <section class="lg:col-span-7 order-2 lg:order-1 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
+          <section id="assets-section" class="lg:col-span-7 order-2 lg:order-1 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
             <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between dark:border-slate-800">
               <h2 class="font-semibold flex items-center gap-2 dark:text-white">
                 <i data-lucide="wallet" class="w-4 h-4 text-blue-600"></i>
@@ -226,7 +226,7 @@
         </div>
 
         <!-- History Section -->
-        <div class="mt-12 space-y-8">
+        <div id="history-section" class="mt-12 space-y-8 pb-24 lg:pb-0">
           <div class="flex items-center justify-between">
             <h2 class="text-2xl font-bold flex items-center gap-3 dark:text-white">
               <i data-lucide="history" class="w-6 h-6 text-blue-600"></i>
@@ -285,6 +285,31 @@
           </div>
         </div>
       </footer>
+
+      <!-- Mobile Bottom Navigation -->
+      <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-slate-200 px-4 py-3 flex items-center justify-between z-[60] lg:hidden dark:bg-slate-900/90 dark:border-slate-800 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+        <a href="#app" class="flex flex-col items-center gap-1 text-blue-600 dark:text-blue-400 flex-1">
+          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+          <span class="text-[9px] font-bold uppercase tracking-widest">Overzicht</span>
+        </a>
+        <a href="#assets-section" class="flex flex-col items-center gap-1 text-slate-400 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors flex-1">
+          <i data-lucide="wallet" class="w-5 h-5"></i>
+          <span class="text-[9px] font-bold uppercase tracking-widest">Beheer</span>
+        </a>
+        <a href="#simulator-section" class="flex flex-col items-center gap-1 text-slate-400 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors flex-1">
+          <i data-lucide="zap" class="w-5 h-5"></i>
+          <span class="text-[9px] font-bold uppercase tracking-widest">Simulator</span>
+        </a>
+        <a href="#history-section" class="flex flex-col items-center gap-1 text-slate-400 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors flex-1">
+          <i data-lucide="history" class="w-5 h-5"></i>
+          <span class="text-[9px] font-bold uppercase tracking-widest">Historie</span>
+        </a>
+        <button id="security-btn-mobile" class="flex flex-col items-center gap-1 text-slate-400 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors flex-1">
+          <i data-lucide="lock" class="w-5 h-5"></i>
+          <span class="text-[9px] font-bold uppercase tracking-widest">Slot</span>
+        </button>
+      </nav>
+
     </div>
 
     <!-- Security Modal -->

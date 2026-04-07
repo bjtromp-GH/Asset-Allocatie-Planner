@@ -352,16 +352,27 @@ function updateUI() {
             </div>
           </td>
           <td class="px-3 sm:px-6 py-4 min-w-[100px] sm:min-w-[180px]">
-            <div class="flex items-center gap-1 sm:gap-2">
-              <span class="text-slate-400 font-mono text-sm sm:text-base">€</span>
-              <input
-                type="text"
-                value="${formatNumber(asset.value)}"
-                data-id="${asset.id}"
-                data-type="value"
-                class="asset-input w-20 sm:w-24 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-slate-700"
-              />
-              <span class="font-mono text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 whitespace-nowrap">${formatPercent(currentPercent)}</span>
+            <div class="flex flex-col gap-1.5">
+              <div class="flex items-center justify-between gap-1 sm:gap-2">
+                <div class="flex items-center gap-1">
+                  <span class="text-slate-400 font-mono text-sm sm:text-base">€</span>
+                  <input
+                    type="text"
+                    value="${formatNumber(asset.value)}"
+                    data-id="${asset.id}"
+                    data-type="value"
+                    class="asset-input w-20 sm:w-24 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-slate-700"
+                  />
+                </div>
+                <span class="font-mono text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 whitespace-nowrap">${formatPercent(currentPercent)}</span>
+              </div>
+              <!-- Progress Bar -->
+              <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                <div 
+                  class="h-full rounded-full transition-all duration-500" 
+                  style="width: ${Math.min(100, currentPercent)}%; background-color: ${asset.color}"
+                ></div>
+              </div>
             </div>
           </td>
           <td class="px-3 sm:px-6 py-4 text-right min-w-[60px] sm:min-w-[180px]">
@@ -806,6 +817,27 @@ function highlightAssetRow(id: string) {
 function initEventListeners() {
   const tableBody = document.getElementById('asset-table-body');
   if (tableBody) {
+    tableBody.addEventListener('input', (e) => {
+      const target = e.target as HTMLInputElement;
+      if (target.classList.contains('asset-input')) {
+        const type = target.dataset.type;
+        if (type === 'value' || type === 'target') {
+          let rawValue = target.value;
+          if (type === 'value') {
+            rawValue = rawValue.replace(/\./g, '').replace(',', '.');
+          }
+          const val = parseFloat(rawValue);
+          const isValid = !isNaN(val) && val >= 0 && (type !== 'target' || val <= 100);
+          
+          if (!isValid && rawValue !== '') {
+            target.classList.add('ring-2', 'ring-red-500', 'border-red-500');
+          } else {
+            target.classList.remove('ring-2', 'ring-red-500', 'border-red-500');
+          }
+        }
+      }
+    });
+
     tableBody.addEventListener('change', (e) => {
       const target = e.target as HTMLInputElement;
       if (target.classList.contains('asset-input')) {
@@ -818,7 +850,16 @@ function initEventListeners() {
           rawValue = rawValue.replace(/\./g, '').replace(',', '.');
         }
         
-        const val = parseFloat(rawValue) || 0;
+        let val = parseFloat(rawValue);
+        
+        // Validation logic
+        if (type === 'value' || type === 'target') {
+          if (isNaN(val) || val < 0) {
+            val = 0;
+          } else if (type === 'target' && val > 100) {
+            val = 100;
+          }
+        }
         
         assets = assets.map(a => {
           if (a.id === id) {
@@ -860,7 +901,17 @@ function initEventListeners() {
   let investmentTimeout: any = null;
   if (investmentInput) {
     investmentInput.addEventListener('input', (e) => {
-      investmentAmount = parseFloat((e.target as HTMLInputElement).value) || 0;
+      const target = e.target as HTMLInputElement;
+      const val = parseFloat(target.value);
+      const isValid = !isNaN(val) && val >= 0;
+      
+      if (!isValid && target.value !== '') {
+        target.classList.add('ring-2', 'ring-red-500', 'border-red-500');
+      } else {
+        target.classList.remove('ring-2', 'ring-red-500', 'border-red-500');
+      }
+
+      investmentAmount = isValid ? val : 0;
       if (investmentTimeout) clearTimeout(investmentTimeout);
       investmentTimeout = setTimeout(() => updateUI(), 100);
     });
@@ -967,6 +1018,7 @@ function initEventListeners() {
 
   // Security UI
   const securityBtn = document.getElementById('security-btn');
+  const securityBtnMobile = document.getElementById('security-btn-mobile');
   const securityModal = document.getElementById('security-modal');
   const closeSecurityModal = document.getElementById('close-security-modal');
   const savePasswordBtn = document.getElementById('save-password-btn');
@@ -1014,16 +1066,15 @@ function initEventListeners() {
 
   if (securityBtn && securityModal) {
     securityBtn.addEventListener('click', () => {
-      if (masterPassword) {
-        // If already encrypted and we have the password, maybe we want to lock?
-        // Let's show a small menu or just toggle lock if they click the lock icon?
-        // For now, let's just open the modal.
-        securityModal.classList.remove('hidden');
-        updateSecurityUI();
-      } else {
-        securityModal.classList.remove('hidden');
-        updateSecurityUI();
-      }
+      securityModal.classList.remove('hidden');
+      updateSecurityUI();
+    });
+  }
+
+  if (securityBtnMobile && securityModal) {
+    securityBtnMobile.addEventListener('click', () => {
+      securityModal.classList.remove('hidden');
+      updateSecurityUI();
     });
   }
 
