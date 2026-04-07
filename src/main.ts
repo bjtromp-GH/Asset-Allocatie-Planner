@@ -1183,7 +1183,53 @@ function initEventListeners() {
   createIcons({ icons });
 }
 
+function initTypewriter() {
+  const textElement = document.getElementById('typing-text');
+  if (!textElement) return;
+
+  const phrases = [
+    "Financiële Toekomst",
+    "Vermogensgroei",
+    "Asset Allocatie",
+    "Portfolio Strategie",
+    "Beleggingsdoelen"
+  ];
+
+  let phraseIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+  let typeSpeed = 100;
+
+  function type() {
+    const currentPhrase = phrases[phraseIndex];
+    
+    if (isDeleting) {
+      charIndex--;
+      typeSpeed = 50;
+    } else {
+      charIndex++;
+      typeSpeed = 150;
+    }
+
+    textElement!.textContent = currentPhrase.substring(0, charIndex);
+
+    if (!isDeleting && charIndex === currentPhrase.length) {
+      isDeleting = true;
+      typeSpeed = 2000; // Pause at end
+    } else if (isDeleting && charIndex === 0) {
+      isDeleting = false;
+      phraseIndex = (phraseIndex + 1) % phrases.length;
+      typeSpeed = 500; // Pause before next
+    }
+
+    setTimeout(type, typeSpeed);
+  }
+
+  type();
+}
+
 // Initial Load
 loadState();
 updateUI();
 initEventListeners();
+initTypewriter();

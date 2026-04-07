@@ -84,6 +84,18 @@
         </header>
 
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Typewriter Effect -->
+            <div class="mb-12 flex flex-col items-center justify-center text-center">
+                <h2 class="text-2xl sm:text-4xl font-black tracking-tight text-slate-900 dark:text-white flex flex-wrap justify-center items-center gap-x-3 gap-y-1">
+                    <span class="opacity-40">Plan je</span>
+                    <span id="typing-text" class="text-blue-600 dark:text-blue-400"></span>
+                    <span class="w-[3px] h-8 sm:h-10 bg-blue-600 dark:bg-blue-400 animate-pulse"></span>
+                </h2>
+                <p class="mt-4 text-slate-500 dark:text-slate-400 font-medium max-w-lg">
+                    Optimaliseer je vermogensgroei met onze geavanceerde asset allocatie tools.
+                </p>
+            </div>
+
             <!-- Risk Profile Summary Cards -->
             <div id="category-cards" class="hidden md:grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 <!-- Dynamically populated -->
@@ -1554,11 +1566,57 @@
             }
         }
 
+        function initTypewriter() {
+            const textElement = document.getElementById('typing-text');
+            if (!textElement) return;
+
+            const phrases = [
+                "Financiële Toekomst",
+                "Vermogensgroei",
+                "Asset Allocatie",
+                "Portfolio Strategie",
+                "Beleggingsdoelen"
+            ];
+
+            let phraseIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+            let typeSpeed = 100;
+
+            function type() {
+                const currentPhrase = phrases[phraseIndex];
+                
+                if (isDeleting) {
+                    charIndex--;
+                    typeSpeed = 50;
+                } else {
+                    charIndex++;
+                    typeSpeed = 150;
+                }
+
+                textElement.textContent = currentPhrase.substring(0, charIndex);
+
+                if (!isDeleting && charIndex === currentPhrase.length) {
+                    isDeleting = true;
+                    typeSpeed = 2000; // Pause at end
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    phraseIndex = (phraseIndex + 1) % phrases.length;
+                    typeSpeed = 500; // Pause before next
+                }
+
+                setTimeout(type, typeSpeed);
+            }
+
+            type();
+        }
+
         // Initial Load
         window.onload = () => {
             loadState();
             updateUI();
             initEventListeners();
+            initTypewriter();
         };
     </script>
 </body>
