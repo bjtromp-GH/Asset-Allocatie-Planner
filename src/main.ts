@@ -225,7 +225,13 @@ function showLockScreen() {
   if (lockScreen) {
     lockScreen.classList.remove('hidden');
     const input = document.getElementById('unlock-password-input') as HTMLInputElement;
-    if (input) input.focus();
+    if (input) {
+      try {
+        input.focus();
+      } catch (e) {
+        // Ignore focus errors in cross-origin iframes
+      }
+    }
   }
 }
 
