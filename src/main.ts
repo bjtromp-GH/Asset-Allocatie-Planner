@@ -1093,8 +1093,12 @@ function initEventListeners() {
   const lockNowBtn = document.getElementById('lock-now-btn');
   
   const updateSecurityUI = () => {
+    const statusDesc = securityStatusText?.nextElementSibling as HTMLElement;
     if (masterPassword) {
       if (securityStatusText) securityStatusText.textContent = 'Portfolio is versleuteld';
+      if (statusDesc) {
+        statusDesc.innerHTML = '<span class="text-green-600 dark:text-green-400 font-semibold">Huidige status: AES-256 Encryptie.</span><br>Je data is cryptografisch beveiligd met je persoonlijke wachtwoord.';
+      }
       if (securityStatusIcon) {
         securityStatusIcon.className = 'p-2 rounded-lg bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400';
         securityStatusIcon.innerHTML = '<i data-lucide="lock" class="w-5 h-5"></i>';
@@ -1105,6 +1109,9 @@ function initEventListeners() {
       if (confirmPasswordContainer) confirmPasswordContainer.classList.remove('hidden');
     } else {
       if (securityStatusText) securityStatusText.textContent = 'Geen wachtwoord ingesteld';
+      if (statusDesc) {
+        statusDesc.innerHTML = '<span class="text-amber-600 dark:text-amber-400 font-semibold">Huidige status: Basis obfuscatie.</span><br>Zonder wachtwoord is je data verborgen in de browser, maar niet cryptografisch beveiligd tegen hackers. Stel een wachtwoord in voor volledige AES-256 encryptie.';
+      }
       if (securityStatusIcon) {
         securityStatusIcon.className = 'p-2 rounded-lg bg-slate-200 text-slate-500 dark:bg-slate-800 dark:text-slate-400';
         securityStatusIcon.innerHTML = '<i data-lucide="unlock" class="w-5 h-5"></i>';

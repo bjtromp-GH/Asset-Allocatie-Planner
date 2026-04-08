@@ -361,7 +361,10 @@
                     </div>
                     <div>
                         <p id="security-status-text" class="font-bold dark:text-white text-sm">Geen wachtwoord ingesteld</p>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Wachtwoord wordt gebruikt voor AES-256 encryptie.</p>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400 leading-tight mt-1">
+                            <span class="text-amber-600 dark:text-amber-400 font-semibold">Huidige status: Basis obfuscatie.</span><br>
+                            Zonder wachtwoord is je data verborgen in de browser, maar niet cryptografisch beveiligd tegen hackers. Stel een wachtwoord in voor volledige AES-256 encryptie.
+                        </p>
                     </div>
                 </div>
 
@@ -437,8 +440,11 @@
     </div>
 
     <script>
-        // Initial Assets Data
-        const DEFAULT_ASSETS = [
+        (function() {
+            // All logic now inside this closure, inaccessible from window/console
+            
+            // Initial Assets Data
+            const DEFAULT_ASSETS = [
             { id: '1', name: 'Aandelen', value: 5000, target: 45, color: '#3b82f6', category: 'Groei' },
             { id: '2', name: 'Obligaties', value: 1500, target: 15, color: '#10b981', category: 'Defensief' },
             { id: '3', name: 'Vastgoed', value: 1000, target: 10, color: '#6366f1', category: 'Groei' },
@@ -1500,8 +1506,12 @@
             const lockNowBtn = document.getElementById('lock-now-btn');
 
             const updateSecurityUI = () => {
+                const statusDesc = securityStatusText?.nextElementSibling;
                 if (masterPassword) {
                     if (securityStatusText) securityStatusText.textContent = 'Portfolio is versleuteld';
+                    if (statusDesc) {
+                        statusDesc.innerHTML = '<span class="text-green-600 dark:text-green-400 font-semibold">Huidige status: AES-256 Encryptie.</span><br>Je data is cryptografisch beveiligd met je persoonlijke wachtwoord.';
+                    }
                     if (securityStatusIcon) {
                         securityStatusIcon.className = 'p-2 rounded-lg bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400';
                         securityStatusIcon.innerHTML = '<i data-lucide="lock" class="w-5 h-5"></i>';
@@ -1512,6 +1522,9 @@
                     if (confirmPasswordContainer) confirmPasswordContainer.classList.remove('hidden');
                 } else {
                     if (securityStatusText) securityStatusText.textContent = 'Geen wachtwoord ingesteld';
+                    if (statusDesc) {
+                        statusDesc.innerHTML = '<span class="text-amber-600 dark:text-amber-400 font-semibold">Huidige status: Basis obfuscatie.</span><br>Zonder wachtwoord is je data verborgen in de browser, maar niet cryptografisch beveiligd tegen hackers. Stel een wachtwoord in voor volledige AES-256 encryptie.';
+                    }
                     if (securityStatusIcon) {
                         securityStatusIcon.className = 'p-2 rounded-lg bg-slate-200 text-slate-500 dark:bg-slate-800 dark:text-slate-400';
                         securityStatusIcon.innerHTML = '<i data-lucide="unlock" class="w-5 h-5"></i>';
@@ -1708,6 +1721,7 @@
             initEventListeners();
             initTypewriter();
         };
-    </script>
+    })();
+</script>
 </body>
 </html>
