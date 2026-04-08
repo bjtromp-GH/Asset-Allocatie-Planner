@@ -1094,6 +1094,9 @@ function initEventListeners() {
   
   const updateSecurityUI = () => {
     const statusDesc = securityStatusText?.nextElementSibling as HTMLElement;
+    const securityBadge = document.getElementById('security-badge');
+    const securityBadgeMobile = document.getElementById('security-badge-mobile');
+
     if (masterPassword) {
       if (securityStatusText) securityStatusText.textContent = 'Portfolio is versleuteld';
       if (statusDesc) {
@@ -1106,7 +1109,9 @@ function initEventListeners() {
       if (savePasswordBtn) savePasswordBtn.textContent = 'Wachtwoord Wijzigen';
       if (removePasswordBtn) removePasswordBtn.classList.remove('hidden');
       if (lockNowBtn) lockNowBtn.classList.remove('hidden');
-      if (confirmPasswordContainer) confirmPasswordContainer.classList.remove('hidden');
+      
+      securityBadge?.classList.add('hidden');
+      securityBadgeMobile?.classList.add('hidden');
     } else {
       if (securityStatusText) securityStatusText.textContent = 'Geen wachtwoord ingesteld';
       if (statusDesc) {
@@ -1119,8 +1124,11 @@ function initEventListeners() {
       if (savePasswordBtn) savePasswordBtn.textContent = 'Wachtwoord Instellen';
       if (removePasswordBtn) removePasswordBtn.classList.add('hidden');
       if (lockNowBtn) lockNowBtn.classList.add('hidden');
-      if (confirmPasswordContainer) confirmPasswordContainer.classList.add('hidden');
+
+      securityBadge?.classList.remove('hidden');
+      securityBadgeMobile?.classList.remove('hidden');
     }
+    if (confirmPasswordContainer) confirmPasswordContainer.classList.remove('hidden');
     createIcons({ icons });
   };
 
