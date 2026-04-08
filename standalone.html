@@ -396,6 +396,11 @@
                     <button id="remove-password-btn" class="w-full bg-red-50 text-red-600 hover:bg-red-100 font-bold py-3 rounded-xl transition-all hidden dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30">
                         Verwijder Beveiliging
                     </button>
+                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+                        <button id="clear-all-data-btn" class="w-full text-slate-400 hover:text-red-500 text-xs font-medium transition-colors">
+                            Alle gegevens wissen en resetten
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -500,6 +505,7 @@
         };
 
         const STORAGE_KEY = 'asset_planner_state';
+        const OBFUSCATION_KEY = 'asset_planner_v1_obfuscate';
 
         function encrypt(data, key) {
             return CryptoJS.AES.encrypt(data, key).toString();
@@ -508,7 +514,8 @@
         function decrypt(data, key) {
             try {
                 const bytes = CryptoJS.AES.decrypt(data, key);
-                return bytes.toString(CryptoJS.enc.Utf8);
+                const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+                return decrypted;
             } catch (e) {
                 return '';
             }
@@ -519,36 +526,96 @@
             const state = {
                 assets,
                 investmentAmount,
-                date: dateInput.value,
+                date: dateInput ? dateInput.value : '',
                 history,
                 isDarkMode,
                 isPlannerMode,
-                isEncrypted: !!masterPassword
             };
             
-            let dataToSave = JSON.stringify(state);
-            if (masterPassword) {
-                dataToSave = encrypt(dataToSave, masterPassword);
-            }
+            const json = JSON.stringify(state);
+            const isLocked = !!masterPassword;
+            const key = isLocked ? masterPassword : OBFUSCATION_KEY;
+            const payload = encrypt(json, key);
             
-            sessionStorage.setItem(STORAGE_KEY, dataToSave);
+            const envelope = {
+                v: 2,
+                locked: isLocked,
+                data: payload
+            };
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(envelope));
+            
+            // Cleanup old unencrypted keys if they exist
+            const oldKeys = ['current_assets', 'current_debts', 'balance_history', 'theme'];
+            oldKeys.forEach(k => localStorage.removeItem(k));
         }
 
         function loadState() {
-            const saved = sessionStorage.getItem(STORAGE_KEY);
-            if (saved) {
-                // Check if it's encrypted (doesn't start with {)
+            // Migration: Check if old keys exist and try to import them if no new state exists
+            const hasNewState = localStorage.getItem(STORAGE_KEY);
+            if (!hasNewState) {
+                const oldAssets = localStorage.getItem('current_assets');
+                if (oldAssets) {
+                    try {
+                        const parsed = JSON.parse(oldAssets);
+                        // Map old format to new format if necessary
+                        // In the screenshot: {id, description, amount}
+                        assets = parsed.map(a => ({
+                            id: a.id || Math.random().toString(36).substring(2, 9),
+                            name: a.description || a.name || 'Asset',
+                            value: a.amount || a.value || 0,
+                            target: 0,
+                            color: '#3b82f6',
+                            category: 'Groei'
+                        }));
+                        saveState(); // Save in new format
+                    } catch (e) {}
+                }
+            }
+
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (!saved) return;
+
+            try {
+                if (saved.trim().startsWith('{')) {
+                    const envelope = JSON.parse(saved);
+                    
+                    // New envelope format
+                    if (envelope.v === 2) {
+                        if (envelope.locked) {
+                            if (!masterPassword) {
+                                isEncrypted = true;
+                                showLockScreen();
+                                return;
+                            }
+                            const decrypted = decrypt(envelope.data, masterPassword);
+                            if (decrypted) {
+                                applyState(JSON.parse(decrypted));
+                            } else {
+                                isEncrypted = true;
+                                showLockScreen();
+                            }
+                        } else {
+                            const decrypted = decrypt(envelope.data, OBFUSCATION_KEY);
+                            if (decrypted) {
+                                applyState(JSON.parse(decrypted));
+                            }
+                        }
+                        return;
+                    }
+                    
+                    // Legacy plain JSON format
+                    applyState(envelope);
+                } else {
+                    // Legacy encrypted format (raw string)
+                    isEncrypted = true;
+                    showLockScreen();
+                }
+            } catch (e) {
+                console.error('Failed to load state', e);
                 if (!saved.trim().startsWith('{')) {
                     isEncrypted = true;
                     showLockScreen();
-                    return;
-                }
-
-                try {
-                    const state = JSON.parse(saved);
-                    applyState(state);
-                } catch (e) {
-                    console.error('Failed to load state', e);
                 }
             }
         }
@@ -1522,6 +1589,16 @@
                 });
             }
 
+            const clearAllDataBtn = document.getElementById('clear-all-data-btn');
+            if (clearAllDataBtn) {
+                clearAllDataBtn.addEventListener('click', () => {
+                    if (confirm('LET OP: Dit verwijdert al je assets, historie en instellingen permanent. Weet je het zeker?')) {
+                        localStorage.removeItem(STORAGE_KEY);
+                        location.reload();
+                    }
+                });
+            }
+
             // Lock Screen UI
             const unlockBtn = document.getElementById('unlock-btn');
             const unlockPasswordInput = document.getElementById('unlock-password-input');
@@ -1529,10 +1606,23 @@
 
             const handleUnlock = () => {
                 const pass = unlockPasswordInput.value;
-                const saved = sessionStorage.getItem(STORAGE_KEY);
+                const saved = localStorage.getItem(STORAGE_KEY);
                 
                 if (saved) {
-                    const decrypted = decrypt(saved, pass);
+                    let payload = saved;
+                    let isEnvelope = false;
+                    
+                    try {
+                        if (saved.trim().startsWith('{')) {
+                            const envelope = JSON.parse(saved);
+                            if (envelope.v === 2) {
+                                payload = envelope.data;
+                                isEnvelope = true;
+                            }
+                        }
+                    } catch (e) {}
+
+                    const decrypted = decrypt(payload, pass);
                     if (decrypted) {
                         try {
                             const state = JSON.parse(decrypted);
@@ -1559,7 +1649,7 @@
             if (forgotPasswordBtn) {
                 forgotPasswordBtn.addEventListener('click', () => {
                     if (confirm('Weet je zeker dat je alle data wilt wissen? Dit kan niet ongedaan worden gemaakt.')) {
-                        sessionStorage.removeItem(STORAGE_KEY);
+                        localStorage.removeItem(STORAGE_KEY);
                         location.reload();
                     }
                 });

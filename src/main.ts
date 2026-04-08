@@ -87,6 +87,7 @@ const formatDate = (dateStr: string) => {
 };
 
 const STORAGE_KEY = 'asset_planner_state';
+const OBFUSCATION_KEY = 'asset_planner_v1_obfuscate';
 
 function encrypt(data: string, key: string): string {
   return CryptoJS.AES.encrypt(data, key).toString();
@@ -95,7 +96,8 @@ function encrypt(data: string, key: string): string {
 function decrypt(data: string, key: string): string {
   try {
     const bytes = CryptoJS.AES.decrypt(data, key);
-    return bytes.toString(CryptoJS.enc.Utf8);
+    const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+    return decrypted;
   } catch (e) {
     return '';
   }
@@ -106,36 +108,95 @@ function saveState() {
   const state = {
     assets,
     investmentAmount,
-    date: dateInput.value,
+    date: dateInput ? dateInput.value : '',
     history,
     isDarkMode,
     isPlannerMode,
-    isEncrypted: !!masterPassword
   };
   
-  let dataToSave = JSON.stringify(state);
-  if (masterPassword) {
-    dataToSave = encrypt(dataToSave, masterPassword);
-  }
+  const json = JSON.stringify(state);
+  const isLocked = !!masterPassword;
+  const key = isLocked ? masterPassword : OBFUSCATION_KEY;
+  const payload = encrypt(json, key);
   
-  localStorage.setItem(STORAGE_KEY, dataToSave);
+  const envelope = {
+    v: 2,
+    locked: isLocked,
+    data: payload
+  };
+  
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(envelope));
+  
+  // Cleanup old unencrypted keys if they exist
+  const oldKeys = ['current_assets', 'current_debts', 'balance_history', 'theme'];
+  oldKeys.forEach(k => localStorage.removeItem(k));
 }
 
 function loadState() {
+  // Migration: Check if old keys exist and try to import them if no new state exists
+  const hasNewState = localStorage.getItem(STORAGE_KEY);
+  if (!hasNewState) {
+    const oldAssets = localStorage.getItem('current_assets');
+    if (oldAssets) {
+      try {
+        const parsed = JSON.parse(oldAssets);
+        assets = parsed.map((a: any) => ({
+          id: a.id || Math.random().toString(36).substring(2, 9),
+          name: a.description || a.name || 'Asset',
+          value: a.amount || a.value || 0,
+          target: 0,
+          color: '#3b82f6',
+          category: 'Groei'
+        }));
+        saveState();
+      } catch (e) {}
+    }
+  }
+
   const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    // Check if it's encrypted (doesn't start with {)
+  if (!saved) return;
+
+  try {
+    if (saved.trim().startsWith('{')) {
+      const envelope = JSON.parse(saved);
+      
+      // New envelope format
+      if (envelope.v === 2) {
+        if (envelope.locked) {
+          if (!masterPassword) {
+            isEncrypted = true;
+            showLockScreen();
+            return;
+          }
+          const decrypted = decrypt(envelope.data, masterPassword);
+          if (decrypted) {
+            applyState(JSON.parse(decrypted));
+          } else {
+            isEncrypted = true;
+            showLockScreen();
+          }
+        } else {
+          const decrypted = decrypt(envelope.data, OBFUSCATION_KEY);
+          if (decrypted) {
+            applyState(JSON.parse(decrypted));
+          }
+        }
+        return;
+      }
+      
+      // Legacy plain JSON format
+      applyState(envelope);
+    } else {
+      // Legacy encrypted format (raw string)
+      isEncrypted = true;
+      showLockScreen();
+    }
+  } catch (e) {
+    console.error('Failed to load state', e);
+    // If it fails, it might be an old encrypted format that JSON.parse failed on
     if (!saved.trim().startsWith('{')) {
       isEncrypted = true;
       showLockScreen();
-      return;
-    }
-
-    try {
-      const state = JSON.parse(saved);
-      applyState(state);
-    } catch (e) {
-      console.error('Failed to load state', e);
     }
   }
 }
@@ -1135,6 +1196,16 @@ function initEventListeners() {
     });
   }
 
+  const clearAllDataBtn = document.getElementById('clear-all-data-btn');
+  if (clearAllDataBtn) {
+    clearAllDataBtn.addEventListener('click', () => {
+      if (confirm('LET OP: Dit verwijdert al je assets, historie en instellingen permanent. Weet je het zeker?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+      }
+    });
+  }
+
   // Unlock logic
   const unlockBtn = document.getElementById('unlock-btn');
   const unlockInput = document.getElementById('unlock-password-input') as HTMLInputElement;
@@ -1144,7 +1215,17 @@ function initEventListeners() {
     const pass = unlockInput.value;
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved && pass) {
-      const decrypted = decrypt(saved, pass);
+      let payload = saved;
+      try {
+        if (saved.trim().startsWith('{')) {
+          const envelope = JSON.parse(saved);
+          if (envelope.v === 2) {
+            payload = envelope.data;
+          }
+        }
+      } catch (e) {}
+
+      const decrypted = decrypt(payload, pass);
       if (decrypted) {
         try {
           const state = JSON.parse(decrypted);
