@@ -1347,6 +1347,38 @@ function initEventListeners() {
     });
   }
 
+  // Info Modal UI
+  const infoBtn = document.getElementById('info-btn');
+  const infoModal = document.getElementById('info-modal');
+  const closeInfoModal = document.getElementById('close-info-modal');
+  const infoModalOk = document.getElementById('info-modal-ok');
+
+  if (infoBtn && infoModal) {
+    infoBtn.addEventListener('click', () => {
+      infoModal.classList.remove('hidden');
+    });
+  }
+
+  if (closeInfoModal && infoModal) {
+    closeInfoModal.addEventListener('click', () => {
+      infoModal.classList.add('hidden');
+    });
+  }
+
+  if (infoModalOk && infoModal) {
+    infoModalOk.addEventListener('click', () => {
+      infoModal.classList.add('hidden');
+    });
+  }
+
+  if (infoModal) {
+    infoModal.addEventListener('click', (e) => {
+      if (e.target === infoModal) {
+        infoModal.classList.add('hidden');
+      }
+    });
+  }
+
   if (securityBtn && securityModal) {
     securityBtn.addEventListener('click', () => {
       securityModal.classList.remove('hidden');
