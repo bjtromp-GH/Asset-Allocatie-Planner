@@ -5,6 +5,64 @@ import CryptoJS from 'crypto-js';
 
 Chart.register(...registerables);
 
+// --- Chart.js Plugin for Center Text ---
+const centerTextPlugin = {
+  id: 'centerText',
+  afterDatasetsDraw: (chart: any) => {
+    const { ctx, chartArea } = chart;
+    if (!chartArea) return;
+    const { left, top, width, height } = chartArea;
+    const options = chart.options.plugins.centerText;
+    if (!options || !options.display) return;
+
+    ctx.save();
+    const centerX = left + width / 2;
+    const centerY = top + height / 2;
+
+    // Main Value
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = options.valueFont || '900 24px Inter, sans-serif';
+    ctx.fillStyle = options.valueColor || (document.documentElement.classList.contains('dark') ? '#ffffff' : '#0f172a');
+    ctx.fillText(options.value, centerX, centerY - 5);
+
+    // Label
+    ctx.font = options.labelFont || 'bold 10px Inter, sans-serif';
+    ctx.fillStyle = options.labelColor || '#94a3b8';
+    ctx.fillText(options.label.toUpperCase(), centerX, centerY + 18);
+    
+    // Badge (optional)
+    if (options.badge && options.badge.text) {
+      const badgeText = options.badge.text;
+      const badgeColor = options.badge.color;
+      const badgeBg = options.badge.bg;
+      
+      ctx.font = 'bold 9px Inter, sans-serif';
+      const textWidth = ctx.measureText(badgeText.toUpperCase()).width;
+      const badgeW = textWidth + 12;
+      const badgeH = 16;
+      const badgeX = centerX - badgeW / 2;
+      const badgeY = centerY + 32;
+      
+      ctx.fillStyle = badgeBg;
+      ctx.beginPath();
+      if (ctx.roundRect) {
+        ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 8);
+      } else {
+        ctx.rect(badgeX, badgeY, badgeW, badgeH);
+      }
+      ctx.fill();
+      
+      ctx.fillStyle = badgeColor;
+      ctx.fillText(badgeText.toUpperCase(), centerX, badgeY + badgeH / 2 + 1);
+    }
+    
+    ctx.restore();
+  }
+};
+
+Chart.register(centerTextPlugin);
+
 interface Asset {
   id: string;
   name: string;
@@ -324,32 +382,39 @@ function updateUI() {
   animateValue('total-value', prevTotalValue, totalValue, 500, formatCurrency);
   animateValue('pie-total-value', prevTotalValue, totalValue, 500, formatCurrency);
   
-  const pieCenterValue = document.getElementById('pie-center-value');
-  const pieCenterStatus = document.getElementById('pie-center-status');
-  if (pieCenterValue && pieCenterStatus) {
-    animateValue('pie-center-value', prevTotalValue, totalValue, 500, formatCurrency);
-    
-    const specPercent = totalValue > 0 ? (categories.Speculatief / totalValue) * 100 : 0;
-    const growthPercent = totalValue > 0 ? (categories.Groei / totalValue) * 100 : 0;
-    const defPercent = totalValue > 0 ? (categories.Defensief / totalValue) * 100 : 0;
-    
-    let status = "Gebalanceerd";
-    let statusClass = "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400";
-    
-    if (specPercent > 15) {
-      status = "Speculatief";
-      statusClass = "bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400";
-    } else if (growthPercent > 60) {
-      status = "Groeigericht";
-      statusClass = "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400";
-    } else if (defPercent > 60) {
-      status = "Defensief";
-      statusClass = "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400";
-    }
-    
-    pieCenterStatus.textContent = status;
-    pieCenterStatus.className = `text-[9px] font-bold px-2 py-0.5 rounded-full mt-1 uppercase tracking-tighter ${statusClass}`;
+  const specPercent = totalValue > 0 ? (categories.Speculatief / totalValue) * 100 : 0;
+  const growthPercent = totalValue > 0 ? (categories.Groei / totalValue) * 100 : 0;
+  const defPercent = totalValue > 0 ? (categories.Defensief / totalValue) * 100 : 0;
+  
+  let status = "Gebalanceerd";
+  let statusColors = {
+    text: isDarkMode ? '#4ade80' : '#15803d',
+    bg: isDarkMode ? 'rgba(22, 101, 52, 0.3)' : '#f0fdf4'
+  };
+  
+  if (specPercent > 15) {
+    status = "Speculatief";
+    statusColors = {
+      text: isDarkMode ? '#fb923c' : '#c2410c',
+      bg: isDarkMode ? 'rgba(154, 52, 18, 0.3)' : '#fff7ed'
+    };
+  } else if (growthPercent > 60) {
+    status = "Groeigericht";
+    statusColors = {
+      text: isDarkMode ? '#60a5fa' : '#1d4ed8',
+      bg: isDarkMode ? 'rgba(30, 64, 175, 0.3)' : '#eff6ff'
+    };
+  } else if (defPercent > 60) {
+    status = "Defensief";
+    statusColors = {
+      text: isDarkMode ? '#4ade80' : '#15803d',
+      bg: isDarkMode ? 'rgba(22, 101, 52, 0.3)' : '#f0fdf4'
+    };
   }
+
+  // Store status for chart plugin
+  (window as any).chartStatus = { text: status, ...statusColors };
+  (window as any).chartTotalValue = formatCurrency(totalValue);
 
   prevTotalValue = totalValue;
 
@@ -688,13 +753,32 @@ function updateCharts() {
           bodyColor: isDarkMode ? '#cbd5e1' : '#64748b',
           borderColor: isDarkMode ? '#334155' : '#e2e8f0',
           borderWidth: 1,
+          yAlign: 'bottom',
           callbacks: {
-            label: (context) => formatCurrency(context.raw as number)
+            label: (context) => {
+              const value = context.raw as number;
+              const total = context.dataset.data.reduce((a: any, b: any) => a + b, 0) as number;
+              const percentage = ((value / total) * 100).toFixed(1);
+              return ` ${context.label}: ${formatCurrency(value)} (${percentage}%)`;
+            },
+            footer: (tooltipItems) => {
+              return 'Totaal: 100%';
+            }
+          }
+        },
+        centerText: {
+          display: true,
+          value: (window as any).chartTotalValue || '€ 0',
+          label: 'Totaal',
+          badge: {
+            text: (window as any).chartStatus?.text,
+            color: (window as any).chartStatus?.text,
+            bg: (window as any).chartStatus?.bg
           }
         }
       },
       cutout: '60%'
-    }
+    } as any
   });
 
   destroyChart(barChartCurrent, barCurrentCanvas);
@@ -998,6 +1082,63 @@ function initEventListeners() {
       resetToDefaults();
     });
   }
+
+  document.getElementById('auto-balance-sandbox-btn')?.addEventListener('click', () => {
+    const currentTotal = sandboxAssets.reduce((sum, a) => sum + a.target, 0);
+    if (currentTotal === 0) {
+      const perAsset = 100 / sandboxAssets.length;
+      sandboxAssets.forEach(a => a.target = perAsset);
+    } else {
+      const factor = 100 / currentTotal;
+      sandboxAssets.forEach(a => a.target = parseFloat((a.target * factor).toFixed(1)));
+    }
+    renderSandboxSliders();
+    updateSandboxChart();
+  });
+
+  document.querySelectorAll('.sandbox-preset-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const preset = (e.currentTarget as HTMLButtonElement).dataset.preset;
+      
+      // Reset all to 0 first
+      sandboxAssets.forEach(a => a.target = 0);
+      
+      const findAsset = (name: string) => sandboxAssets.find(a => a.name.toLowerCase().includes(name.toLowerCase()));
+
+      if (preset === '60-40') {
+        const stocks = findAsset('Aandelen');
+        const bonds = findAsset('Obligaties');
+        if (stocks) stocks.target = 60;
+        if (bonds) bonds.target = 40;
+      } else if (preset === 'aggressive') {
+        const stocks = findAsset('Aandelen');
+        const crypto = findAsset('Bitcoin');
+        const bonds = findAsset('Obligaties');
+        if (stocks) stocks.target = 70;
+        if (crypto) crypto.target = 10;
+        if (bonds) bonds.target = 20;
+      } else if (preset === 'defensive') {
+        const bonds = findAsset('Obligaties');
+        const cash = findAsset('Spaargeld');
+        const gold = findAsset('Goud');
+        if (bonds) bonds.target = 60;
+        if (cash) cash.target = 30;
+        if (gold) gold.target = 10;
+      } else if (preset === 'all-weather') {
+        const stocks = findAsset('Aandelen');
+        const bonds = findAsset('Obligaties');
+        const gold = findAsset('Goud');
+        const commodities = findAsset('Zilver');
+        if (stocks) stocks.target = 30;
+        if (bonds) bonds.target = 55;
+        if (gold) gold.target = 7.5;
+        if (commodities) commodities.target = 7.5;
+      }
+      
+      renderSandboxSliders();
+      updateSandboxChart();
+    });
+  });
 
   const investmentInput = document.getElementById('investment-input') as HTMLInputElement;
   let investmentTimeout: any = null;
@@ -1445,36 +1586,66 @@ function renderSandboxSliders() {
   const container = document.getElementById('sandbox-sliders-container');
   if (!container) return;
 
+  const totalValue = assets.reduce((sum, a) => sum + a.value, 0);
+
   container.innerHTML = '';
   sandboxAssets.forEach((asset, index) => {
     const div = document.createElement('div');
-    div.className = 'space-y-2';
+    div.className = 'bg-white p-4 rounded-2xl border border-slate-100 shadow-sm space-y-4 dark:bg-slate-900/50 dark:border-slate-800';
+    
+    const euroValue = (totalValue * (asset.target / 100));
+    
     div.innerHTML = `
       <div class="flex justify-between items-center">
         <div class="flex items-center gap-2">
           <div class="w-3 h-3 rounded-full" style="background-color: ${asset.color}"></div>
           <span class="text-sm font-bold dark:text-white">${asset.name}</span>
         </div>
-        <span class="text-sm font-mono font-bold text-blue-600 dark:text-blue-400">${asset.target}%</span>
+        <div class="flex items-center gap-3">
+          <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500">${formatCurrency(euroValue)}</span>
+          <div class="relative">
+            <input 
+              type="number" 
+              value="${asset.target}" 
+              step="0.1"
+              min="0"
+              max="100"
+              class="sandbox-number-input w-16 text-right bg-slate-50 border-none rounded-lg px-2 py-1 text-xs font-mono font-bold text-blue-600 focus:ring-1 focus:ring-blue-500 dark:bg-slate-800 dark:text-blue-400 outline-none"
+              data-index="${index}"
+            />
+            <span class="absolute right-1 top-1/2 -translate-y-1/2 text-[10px] text-blue-300 pointer-events-none">%</span>
+          </div>
+        </div>
       </div>
       <input 
         type="range" 
         min="0" 
         max="100" 
-        step="0.5" 
+        step="0.1" 
         value="${asset.target}" 
-        class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600 dark:bg-slate-700"
+        class="sandbox-slider w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600 dark:bg-slate-800"
         data-index="${index}"
       >
     `;
     
-    const slider = div.querySelector('input') as HTMLInputElement;
-    slider.addEventListener('input', (e) => {
-      const val = parseFloat((e.target as HTMLInputElement).value);
-      sandboxAssets[index].target = val;
-      div.querySelector('.font-mono')!.textContent = `${val}%`;
+    const slider = div.querySelector('.sandbox-slider') as HTMLInputElement;
+    const numberInput = div.querySelector('.sandbox-number-input') as HTMLInputElement;
+
+    const updateVal = (val: number) => {
+      const clamped = Math.min(100, Math.max(0, val));
+      sandboxAssets[index].target = clamped;
+      slider.value = clamped.toString();
+      numberInput.value = clamped.toFixed(1);
+      
+      // Update euro display
+      const newEuro = (totalValue * (clamped / 100));
+      div.querySelector('.text-\\[10px\\]')!.textContent = formatCurrency(newEuro);
+      
       updateSandboxChart();
-    });
+    };
+
+    slider.addEventListener('input', (e) => updateVal(parseFloat((e.target as HTMLInputElement).value)));
+    numberInput.addEventListener('change', (e) => updateVal(parseFloat((e.target as HTMLInputElement).value)));
     
     container.appendChild(div);
   });
@@ -1485,8 +1656,6 @@ function updateSandboxChart() {
   if (!ctx) return;
 
   const total = sandboxAssets.reduce((sum, a) => sum + a.target, 0);
-  const totalEl = document.getElementById('sandbox-total-percent');
-  if (totalEl) totalEl.textContent = `${total.toFixed(0)}%`;
 
   const statusMsg = document.getElementById('sandbox-status-msg');
   if (statusMsg) {
@@ -1514,23 +1683,40 @@ function updateSandboxChart() {
 
   if (sandboxChart) {
     sandboxChart.data = data;
+    if ((sandboxChart.options.plugins as any).centerText) {
+      (sandboxChart.options.plugins as any).centerText.value = `${total.toFixed(0)}%`;
+    }
     sandboxChart.update();
   } else {
     sandboxChart = new Chart(ctx, {
       type: 'doughnut',
       data: data,
       options: {
-        cutout: '75%',
+        cutout: '80%',
+        layout: {
+          padding: 20
+        },
         plugins: {
           legend: { display: false },
           tooltip: {
+            yAlign: 'bottom',
             callbacks: {
-              label: (context) => ` ${context.label}: ${context.raw}%`
+              label: (context) => ` ${context.label}: ${context.raw}%`,
+              footer: (tooltipItems) => {
+                const total = tooltipItems[0].dataset.data.reduce((a: any, b: any) => a + b, 0) as number;
+                return `Totaal: ${total.toFixed(1)}%`;
+              }
             }
+          },
+          centerText: {
+            display: true,
+            value: `${total.toFixed(0)}%`,
+            label: 'Totaal',
+            valueFont: '900 32px Inter, sans-serif'
           }
         },
         maintainAspectRatio: false
-      }
+      } as any
     });
   }
 }
