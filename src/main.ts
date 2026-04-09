@@ -44,10 +44,12 @@ let pieChart: Chart | null = null;
 let barChartCurrent: Chart | null = null;
 let barChartComparison: Chart | null = null;
 let historyChart: Chart | null = null;
+let sandboxChart: Chart | null = null;
 
 // Track previous values for animations
 let prevTotalValue = 0;
 let prevCategoryValues = { Groei: 0, Defensief: 0, Speculatief: 0 };
+let sandboxAssets: Asset[] = [];
 
 const formatCurrency = (value: number) => {
   return new Intl.NumberFormat('nl-NL', {
@@ -1395,8 +1397,142 @@ function initEventListeners() {
     });
   }
 
+  const resetSandboxBtn = document.getElementById('reset-sandbox-btn');
+  const applySandboxBtn = document.getElementById('apply-sandbox-btn');
+
+  if (resetSandboxBtn) {
+    resetSandboxBtn.addEventListener('click', () => {
+      initSandbox();
+    });
+  }
+
+  if (applySandboxBtn) {
+    applySandboxBtn.addEventListener('click', () => {
+      const total = sandboxAssets.reduce((sum, a) => sum + a.target, 0);
+      if (Math.abs(total - 100) > 0.1) {
+        if (!confirm(`De totale allocatie is ${total.toFixed(1)}% (geen 100%). Weet je zeker dat je dit wilt toepassen als nieuwe doelen?`)) {
+          return;
+        }
+      }
+      
+      // Apply sandbox targets to real assets
+      assets.forEach(asset => {
+        const sandboxAsset = sandboxAssets.find(sa => sa.id === asset.id);
+        if (sandboxAsset) {
+          asset.target = sandboxAsset.target;
+        }
+      });
+      
+      saveState();
+      updateUI();
+      alert('Nieuwe doel-allocatie toegepast!');
+    });
+  }
+
   updateSecurityUI();
+  initSandbox();
   createIcons({ icons });
+}
+
+// --- Sandbox Logic ---
+function initSandbox() {
+  sandboxAssets = assets.map(a => ({ ...a }));
+  renderSandboxSliders();
+  updateSandboxChart();
+}
+
+function renderSandboxSliders() {
+  const container = document.getElementById('sandbox-sliders-container');
+  if (!container) return;
+
+  container.innerHTML = '';
+  sandboxAssets.forEach((asset, index) => {
+    const div = document.createElement('div');
+    div.className = 'space-y-2';
+    div.innerHTML = `
+      <div class="flex justify-between items-center">
+        <div class="flex items-center gap-2">
+          <div class="w-3 h-3 rounded-full" style="background-color: ${asset.color}"></div>
+          <span class="text-sm font-bold dark:text-white">${asset.name}</span>
+        </div>
+        <span class="text-sm font-mono font-bold text-blue-600 dark:text-blue-400">${asset.target}%</span>
+      </div>
+      <input 
+        type="range" 
+        min="0" 
+        max="100" 
+        step="0.5" 
+        value="${asset.target}" 
+        class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600 dark:bg-slate-700"
+        data-index="${index}"
+      >
+    `;
+    
+    const slider = div.querySelector('input') as HTMLInputElement;
+    slider.addEventListener('input', (e) => {
+      const val = parseFloat((e.target as HTMLInputElement).value);
+      sandboxAssets[index].target = val;
+      div.querySelector('.font-mono')!.textContent = `${val}%`;
+      updateSandboxChart();
+    });
+    
+    container.appendChild(div);
+  });
+}
+
+function updateSandboxChart() {
+  const ctx = document.getElementById('sandbox-pie-chart') as HTMLCanvasElement;
+  if (!ctx) return;
+
+  const total = sandboxAssets.reduce((sum, a) => sum + a.target, 0);
+  const totalEl = document.getElementById('sandbox-total-percent');
+  if (totalEl) totalEl.textContent = `${total.toFixed(0)}%`;
+
+  const statusMsg = document.getElementById('sandbox-status-msg');
+  if (statusMsg) {
+    if (Math.abs(total - 100) < 0.1) {
+      statusMsg.textContent = 'Perfect! De verdeling is exact 100%.';
+      statusMsg.className = 'mt-8 p-4 rounded-xl w-full text-center text-sm font-medium bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400 border border-green-100 dark:border-green-800';
+    } else if (total > 100) {
+      statusMsg.textContent = `Te hoog! Je zit ${ (total - 100).toFixed(1) }% boven de 100%.`;
+      statusMsg.className = 'mt-8 p-4 rounded-xl w-full text-center text-sm font-medium bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400 border border-red-100 dark:border-red-800';
+    } else {
+      statusMsg.textContent = `Nog ${ (100 - total).toFixed(1) }% over om te verdelen.`;
+      statusMsg.className = 'mt-8 p-4 rounded-xl w-full text-center text-sm font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400 border border-blue-100 dark:border-blue-800';
+    }
+  }
+
+  const data = {
+    labels: sandboxAssets.map(a => a.name),
+    datasets: [{
+      data: sandboxAssets.map(a => a.target),
+      backgroundColor: sandboxAssets.map(a => a.color),
+      borderWidth: 0,
+      hoverOffset: 10
+    }]
+  };
+
+  if (sandboxChart) {
+    sandboxChart.data = data;
+    sandboxChart.update();
+  } else {
+    sandboxChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: data,
+      options: {
+        cutout: '75%',
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (context) => ` ${context.label}: ${context.raw}%`
+            }
+          }
+        },
+        maintainAspectRatio: false
+      }
+    });
+  }
 }
 
 // Initial Load

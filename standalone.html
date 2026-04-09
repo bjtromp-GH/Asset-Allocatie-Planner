@@ -290,6 +290,49 @@
                         <!-- D3 Treemap will be rendered here -->
                     </div>
                 </section>
+
+                <!-- Sandbox Section (Order 8) -->
+                <section id="sandbox-section" class="lg:col-span-12 order-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                        <div>
+                            <h2 class="text-xl font-bold flex items-center gap-2 dark:text-white">
+                                <i data-lucide="sliders" class="w-5 h-5 text-blue-600"></i>
+                                Allocatie Zandbak
+                            </h2>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Experimenteer met verschillende verdelingen zonder je echte data te wijzigen.</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button id="reset-sandbox-btn" class="text-xs font-bold uppercase tracking-widest bg-slate-100 hover:bg-slate-200 text-slate-600 px-4 py-2 rounded-xl transition-all dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700">
+                                Reset
+                            </button>
+                            <button id="apply-sandbox-btn" class="text-xs font-bold uppercase tracking-widest bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl transition-all shadow-md shadow-blue-200 dark:shadow-none">
+                                Pas toe op Doelen
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                        <!-- Sliders Column -->
+                        <div id="sandbox-sliders-container" class="lg:col-span-7 space-y-6">
+                            <!-- Dynamically populated -->
+                        </div>
+
+                        <!-- Preview Column -->
+                        <div class="lg:col-span-5 flex flex-col items-center justify-center bg-slate-50 rounded-3xl p-8 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800">
+                            <div class="w-full max-w-[280px] aspect-square relative">
+                                <canvas id="sandbox-pie-chart"></canvas>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                    <span id="sandbox-total-percent" class="text-3xl font-black text-slate-900 dark:text-white">0%</span>
+                                    <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Totaal</span>
+                                </div>
+                            </div>
+                            
+                            <div id="sandbox-status-msg" class="mt-8 p-4 rounded-xl w-full text-center text-sm font-medium transition-all">
+                                <!-- Status message -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
 
             <!-- History Section -->
@@ -517,6 +560,8 @@
         let barChartCurrent = null;
         let barChartComparison = null;
         let historyChart = null;
+        let sandboxChart = null;
+        let sandboxAssets = [];
         let masterPassword = '';
         let isEncrypted = false;
 
@@ -1839,9 +1884,143 @@
                 });
             }
 
+            const resetSandboxBtn = document.getElementById('reset-sandbox-btn');
+            const applySandboxBtn = document.getElementById('apply-sandbox-btn');
+
+            if (resetSandboxBtn) {
+                resetSandboxBtn.addEventListener('click', () => {
+                    initSandbox();
+                });
+            }
+
+            if (applySandboxBtn) {
+                applySandboxBtn.addEventListener('click', () => {
+                    const total = sandboxAssets.reduce((sum, a) => sum + a.target, 0);
+                    if (Math.abs(total - 100) > 0.1) {
+                        if (!confirm(`De totale allocatie is ${total.toFixed(1)}% (geen 100%). Weet je zeker dat je dit wilt toepassen als nieuwe doelen?`)) {
+                            return;
+                        }
+                    }
+                    
+                    // Apply sandbox targets to real assets
+                    assets.forEach(asset => {
+                        const sandboxAsset = sandboxAssets.find(sa => sa.id === asset.id);
+                        if (sandboxAsset) {
+                            asset.target = sandboxAsset.target;
+                        }
+                    });
+                    
+                    saveState();
+                    updateUI();
+                    alert('Nieuwe doel-allocatie toegepast!');
+                });
+            }
+
             updateSecurityUI();
+            initSandbox();
         }
-        
+
+        // --- Sandbox Logic ---
+        function initSandbox() {
+            sandboxAssets = assets.map(a => ({ ...a }));
+            renderSandboxSliders();
+            updateSandboxChart();
+        }
+
+        function renderSandboxSliders() {
+            const container = document.getElementById('sandbox-sliders-container');
+            if (!container) return;
+
+            container.innerHTML = '';
+            sandboxAssets.forEach((asset, index) => {
+                const div = document.createElement('div');
+                div.className = 'space-y-2';
+                div.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full" style="background-color: ${asset.color}"></div>
+                            <span class="text-sm font-bold dark:text-white">${asset.name}</span>
+                        </div>
+                        <span class="text-sm font-mono font-bold text-blue-600 dark:text-blue-400">${asset.target}%</span>
+                    </div>
+                    <input 
+                        type="range" 
+                        min="0" 
+                        max="100" 
+                        step="0.5" 
+                        value="${asset.target}" 
+                        class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600 dark:bg-slate-700"
+                        data-index="${index}"
+                    >
+                `;
+                
+                const slider = div.querySelector('input');
+                slider.addEventListener('input', (e) => {
+                    const val = parseFloat(e.target.value);
+                    sandboxAssets[index].target = val;
+                    div.querySelector('.font-mono').textContent = `${val}%`;
+                    updateSandboxChart();
+                });
+                
+                container.appendChild(div);
+            });
+        }
+
+        function updateSandboxChart() {
+            const ctx = document.getElementById('sandbox-pie-chart');
+            if (!ctx) return;
+
+            const total = sandboxAssets.reduce((sum, a) => sum + a.target, 0);
+            const totalEl = document.getElementById('sandbox-total-percent');
+            if (totalEl) totalEl.textContent = `${total.toFixed(0)}%`;
+
+            const statusMsg = document.getElementById('sandbox-status-msg');
+            if (statusMsg) {
+                if (Math.abs(total - 100) < 0.1) {
+                    statusMsg.textContent = 'Perfect! De verdeling is exact 100%.';
+                    statusMsg.className = 'mt-8 p-4 rounded-xl w-full text-center text-sm font-medium bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400 border border-green-100 dark:border-green-800';
+                } else if (total > 100) {
+                    statusMsg.textContent = `Te hoog! Je zit ${ (total - 100).toFixed(1) }% boven de 100%.`;
+                    statusMsg.className = 'mt-8 p-4 rounded-xl w-full text-center text-sm font-medium bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400 border border-red-100 dark:border-red-800';
+                } else {
+                    statusMsg.textContent = `Nog ${ (100 - total).toFixed(1) }% over om te verdelen.`;
+                    statusMsg.className = 'mt-8 p-4 rounded-xl w-full text-center text-sm font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400 border border-blue-100 dark:border-blue-800';
+                }
+            }
+
+            const data = {
+                labels: sandboxAssets.map(a => a.name),
+                datasets: [{
+                    data: sandboxAssets.map(a => a.target),
+                    backgroundColor: sandboxAssets.map(a => a.color),
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            };
+
+            if (sandboxChart) {
+                sandboxChart.data = data;
+                sandboxChart.update();
+            } else {
+                sandboxChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: data,
+                    options: {
+                        cutout: '75%',
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => ` ${context.label}: ${context.raw}%`
+                                }
+                            }
+                        },
+                        maintainAspectRatio: false
+                    }
+                });
+            }
+        }
+
         // Initial Load
         window.onload = () => {
             loadState();

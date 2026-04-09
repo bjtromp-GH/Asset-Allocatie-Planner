@@ -268,6 +268,49 @@
               <!-- D3 Treemap will be rendered here -->
             </div>
           </section>
+
+          <!-- Sandbox Section (Order 8) -->
+          <section id="sandbox-section" class="lg:col-span-12 order-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+              <div>
+                <h2 class="text-xl font-bold flex items-center gap-2 dark:text-white">
+                  <i data-lucide="sliders" class="w-5 h-5 text-blue-600"></i>
+                  Allocatie Zandbak
+                </h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Experimenteer met verschillende verdelingen zonder je echte data te wijzigen.</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button id="reset-sandbox-btn" class="text-xs font-bold uppercase tracking-widest bg-slate-100 hover:bg-slate-200 text-slate-600 px-4 py-2 rounded-xl transition-all dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700">
+                  Reset
+                </button>
+                <button id="apply-sandbox-btn" class="text-xs font-bold uppercase tracking-widest bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl transition-all shadow-md shadow-blue-200 dark:shadow-none">
+                  Pas toe op Doelen
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+              <!-- Sliders Column -->
+              <div id="sandbox-sliders-container" class="lg:col-span-7 space-y-6">
+                <!-- Dynamically populated -->
+              </div>
+
+              <!-- Preview Column -->
+              <div class="lg:col-span-5 flex flex-col items-center justify-center bg-slate-50 rounded-3xl p-8 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800">
+                <div class="w-full max-w-[280px] aspect-square relative">
+                  <canvas id="sandbox-pie-chart"></canvas>
+                  <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                    <span id="sandbox-total-percent" class="text-3xl font-black text-slate-900 dark:text-white">0%</span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Totaal</span>
+                  </div>
+                </div>
+                
+                <div id="sandbox-status-msg" class="mt-8 p-4 rounded-xl w-full text-center text-sm font-medium transition-all">
+                  <!-- Status message -->
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
 
         <!-- History Section -->
