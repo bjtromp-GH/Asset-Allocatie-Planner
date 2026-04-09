@@ -1282,6 +1282,7 @@ function initEventListeners() {
     });
   }
 
+  updateSecurityUI();
   createIcons({ icons });
 }
 
