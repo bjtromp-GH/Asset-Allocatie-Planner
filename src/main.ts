@@ -1349,15 +1349,17 @@ function initEventListeners() {
 
   // Info Modal UI
   const infoBtn = document.getElementById('info-btn');
+  const infoBtnMobile = document.getElementById('info-btn-mobile');
   const infoModal = document.getElementById('info-modal');
   const closeInfoModal = document.getElementById('close-info-modal');
   const infoModalOk = document.getElementById('info-modal-ok');
 
-  if (infoBtn && infoModal) {
-    infoBtn.addEventListener('click', () => {
-      infoModal.classList.remove('hidden');
-    });
-  }
+  const openInfo = () => {
+    infoModal?.classList.remove('hidden');
+  };
+
+  if (infoBtn) infoBtn.addEventListener('click', openInfo);
+  if (infoBtnMobile) infoBtnMobile.addEventListener('click', openInfo);
 
   if (closeInfoModal && infoModal) {
     closeInfoModal.addEventListener('click', () => {
