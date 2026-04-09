@@ -437,8 +437,22 @@
                     <button id="remove-password-btn" class="w-full bg-red-50 text-red-600 hover:bg-red-100 font-bold py-3 rounded-xl transition-all hidden dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30">
                         Verwijder Beveiliging
                     </button>
-                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800">
-                        <button id="clear-all-data-btn" class="w-full text-slate-400 hover:text-red-500 text-xs font-medium transition-colors">
+                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-4">
+                        <div class="flex flex-col gap-2">
+                            <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">Backup & Herstel</p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button id="export-backup-btn" class="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 px-4 rounded-xl transition-all active:scale-95 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
+                                    <i data-lucide="download" class="w-4 h-4"></i>
+                                    <span>Export</span>
+                                </button>
+                                <button id="import-backup-btn" class="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 px-4 rounded-xl transition-all active:scale-95 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
+                                    <i data-lucide="upload" class="w-4 h-4"></i>
+                                    <span>Import</span>
+                                </button>
+                            </div>
+                            <input type="file" id="backup-file-input" class="hidden" accept=".json">
+                        </div>
+                        <button id="clear-all-data-btn" class="w-full text-slate-400 hover:text-red-500 text-xs font-medium transition-colors pt-2">
                             Alle gegevens wissen en resetten
                         </button>
                     </div>
@@ -1711,6 +1725,61 @@
                         localStorage.removeItem(STORAGE_KEY);
                         location.reload();
                     }
+                });
+            }
+
+            // Backup & Restore
+            const exportBtn = document.getElementById('export-backup-btn');
+            const importBtn = document.getElementById('import-backup-btn');
+            const backupFileInput = document.getElementById('backup-file-input');
+
+            if (exportBtn) {
+                exportBtn.addEventListener('click', () => {
+                    const data = localStorage.getItem(STORAGE_KEY);
+                    if (!data) {
+                        alert('Geen data gevonden om te exporteren.');
+                        return;
+                    }
+                    const blob = new Blob([data], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `portfolio_backup_${new Date().toISOString().split('T')[0]}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                });
+            }
+
+            if (importBtn && backupFileInput) {
+                importBtn.addEventListener('click', () => {
+                    backupFileInput.click();
+                });
+
+                backupFileInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        try {
+                            const content = event.target.result;
+                            // Basic validation
+                            const parsed = JSON.parse(content);
+                            if (parsed.v === 2 && parsed.data) {
+                                if (confirm('Weet je zeker dat je deze backup wilt importeren? Je huidige gegevens worden overschreven.')) {
+                                    localStorage.setItem(STORAGE_KEY, content);
+                                    location.reload();
+                                }
+                            } else {
+                                alert('Ongeldig backup bestand.');
+                            }
+                        } catch (err) {
+                            alert('Fout bij het lezen van het bestand.');
+                        }
+                    };
+                    reader.readAsText(file);
                 });
             }
 

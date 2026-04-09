@@ -1285,6 +1285,61 @@ function initEventListeners() {
     });
   }
 
+  // Backup & Restore
+  const exportBtn = document.getElementById('export-backup-btn');
+  const importBtn = document.getElementById('import-backup-btn');
+  const backupFileInput = document.getElementById('backup-file-input') as HTMLInputElement;
+
+  if (exportBtn) {
+    exportBtn.addEventListener('click', () => {
+      const data = localStorage.getItem(STORAGE_KEY);
+      if (!data) {
+        alert('Geen data gevonden om te exporteren.');
+        return;
+      }
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `portfolio_backup_${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  if (importBtn && backupFileInput) {
+    importBtn.addEventListener('click', () => {
+      backupFileInput.click();
+    });
+
+    backupFileInput.addEventListener('change', (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const content = event.target?.result as string;
+          // Basic validation
+          const parsed = JSON.parse(content);
+          if (parsed.v === 2 && parsed.data) {
+            if (confirm('Weet je zeker dat je deze backup wilt importeren? Je huidige gegevens worden overschreven.')) {
+              localStorage.setItem(STORAGE_KEY, content);
+              location.reload();
+            }
+          } else {
+            alert('Ongeldig backup bestand.');
+          }
+        } catch (err) {
+          alert('Fout bij het lezen van het bestand.');
+        }
+      };
+      reader.readAsText(file);
+    });
+  }
+
   // Unlock logic
   const unlockBtn = document.getElementById('unlock-btn');
   const unlockInput = document.getElementById('unlock-password-input') as HTMLInputElement;
