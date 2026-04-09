@@ -388,26 +388,26 @@ function updateUI() {
   
   let status = "Gebalanceerd";
   let statusColors = {
-    text: isDarkMode ? '#4ade80' : '#15803d',
+    color: isDarkMode ? '#4ade80' : '#15803d',
     bg: isDarkMode ? 'rgba(22, 101, 52, 0.3)' : '#f0fdf4'
   };
   
   if (specPercent > 15) {
     status = "Speculatief";
     statusColors = {
-      text: isDarkMode ? '#fb923c' : '#c2410c',
+      color: isDarkMode ? '#fb923c' : '#c2410c',
       bg: isDarkMode ? 'rgba(154, 52, 18, 0.3)' : '#fff7ed'
     };
   } else if (growthPercent > 60) {
     status = "Groeigericht";
     statusColors = {
-      text: isDarkMode ? '#60a5fa' : '#1d4ed8',
+      color: isDarkMode ? '#60a5fa' : '#1d4ed8',
       bg: isDarkMode ? 'rgba(30, 64, 175, 0.3)' : '#eff6ff'
     };
   } else if (defPercent > 60) {
     status = "Defensief";
     statusColors = {
-      text: isDarkMode ? '#4ade80' : '#15803d',
+      color: isDarkMode ? '#4ade80' : '#15803d',
       bg: isDarkMode ? 'rgba(22, 101, 52, 0.3)' : '#f0fdf4'
     };
   }
@@ -772,7 +772,7 @@ function updateCharts() {
           label: 'Totaal',
           badge: {
             text: (window as any).chartStatus?.text,
-            color: (window as any).chartStatus?.text,
+            color: (window as any).chartStatus?.color,
             bg: (window as any).chartStatus?.bg
           }
         }
@@ -1610,10 +1610,10 @@ function renderSandboxSliders() {
               step="0.1"
               min="0"
               max="100"
-              class="sandbox-number-input w-16 text-right bg-slate-50 border-none rounded-lg px-2 py-1 text-xs font-mono font-bold text-blue-600 focus:ring-1 focus:ring-blue-500 dark:bg-slate-800 dark:text-blue-400 outline-none"
+              class="sandbox-number-input w-20 text-right bg-slate-50 border-none rounded-lg pl-2 pr-6 py-1 text-xs font-mono font-bold text-blue-600 focus:ring-1 focus:ring-blue-500 dark:bg-slate-800 dark:text-blue-400 outline-none"
               data-index="${index}"
             />
-            <span class="absolute right-1 top-1/2 -translate-y-1/2 text-[10px] text-blue-300 pointer-events-none">%</span>
+            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-blue-300 pointer-events-none">%</span>
           </div>
         </div>
       </div>

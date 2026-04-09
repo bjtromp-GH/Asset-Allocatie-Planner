@@ -26,6 +26,46 @@
             display: none;
             -webkit-appearance: none;
         }
+
+        .sandbox-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+        }
+
+        .sandbox-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 28px;
+            height: 12px;
+            background: #2563eb;
+            cursor: pointer;
+            border-radius: 6px;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+            margin-top: -4px;
+        }
+
+        .sandbox-slider::-moz-range-thumb {
+            width: 28px;
+            height: 12px;
+            background: #2563eb;
+            cursor: pointer;
+            border-radius: 6px;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+        }
+
+        .sandbox-slider::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            background: #f1f5f9;
+            border-radius: 2px;
+        }
+
+        .dark .sandbox-slider::-webkit-slider-runnable-track {
+            background: #1e293b;
+        }
     </style>
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-900 selection:bg-blue-100 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
@@ -895,26 +935,26 @@
             
             let status = "Gebalanceerd";
             let statusColors = {
-                text: isDarkMode ? '#4ade80' : '#15803d',
+                color: isDarkMode ? '#4ade80' : '#15803d',
                 bg: isDarkMode ? 'rgba(22, 101, 52, 0.3)' : '#f0fdf4'
             };
             
             if (specPercent > 15) {
                 status = "Speculatief";
                 statusColors = {
-                    text: isDarkMode ? '#fb923c' : '#c2410c',
+                    color: isDarkMode ? '#fb923c' : '#c2410c',
                     bg: isDarkMode ? 'rgba(154, 52, 18, 0.3)' : '#fff7ed'
                 };
             } else if (growthPercent > 60) {
                 status = "Groeigericht";
                 statusColors = {
-                    text: isDarkMode ? '#60a5fa' : '#1d4ed8',
+                    color: isDarkMode ? '#60a5fa' : '#1d4ed8',
                     bg: isDarkMode ? 'rgba(30, 64, 175, 0.3)' : '#eff6ff'
                 };
             } else if (defPercent > 60) {
                 status = "Defensief";
                 statusColors = {
-                    text: isDarkMode ? '#4ade80' : '#15803d',
+                    color: isDarkMode ? '#4ade80' : '#15803d',
                     bg: isDarkMode ? 'rgba(22, 101, 52, 0.3)' : '#f0fdf4'
                 };
             }
@@ -1278,7 +1318,7 @@
                             label: 'Totaal',
                             badge: {
                                 text: chartStatus?.text,
-                                color: chartStatus?.text,
+                                color: chartStatus?.color,
                                 bg: chartStatus?.bg
                             }
                         }
@@ -2098,10 +2138,10 @@
                                     step="0.1"
                                     min="0"
                                     max="100"
-                                    class="sandbox-number-input w-16 text-right bg-slate-50 border-none rounded-lg px-2 py-1 text-xs font-mono font-bold text-blue-600 focus:ring-1 focus:ring-blue-500 dark:bg-slate-800 dark:text-blue-400 outline-none"
+                                    class="sandbox-number-input w-20 text-right bg-slate-50 border-none rounded-lg pl-2 pr-6 py-1 text-xs font-mono font-bold text-blue-600 focus:ring-1 focus:ring-blue-500 dark:bg-slate-800 dark:text-blue-400 outline-none"
                                     data-index="${index}"
                                 />
-                                <span class="absolute right-1 top-1/2 -translate-y-1/2 text-[10px] text-blue-300 pointer-events-none">%</span>
+                                <span class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-blue-300 pointer-events-none">%</span>
                             </div>
                         </div>
                     </div>
