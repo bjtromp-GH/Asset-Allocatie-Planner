@@ -1595,8 +1595,10 @@
             leaf.append("text")
                 .selectAll("tspan")
                 .data(d => {
+                    const totalValue = root.value || 1;
+                    const percentage = ((d.value / totalValue) * 100).toFixed(1);
                     const name = d.data.name;
-                    const value = formatCurrency(d.data.value);
+                    const value = `${formatCurrency(d.data.value)} (${percentage}%)`;
                     return [name, value];
                 })
                 .join("tspan")

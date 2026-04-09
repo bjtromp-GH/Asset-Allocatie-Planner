@@ -971,8 +971,10 @@ function updateTreemap() {
     .attr("clip-path", (d: any) => `url(#clip-${(d.data as any).id})`)
     .selectAll("tspan")
     .data((d: any) => {
+      const totalValue = root.value || 1;
+      const percentage = (((d.value || 0) / totalValue) * 100).toFixed(1);
       const name = (d.data as any).name;
-      const value = formatCurrency((d.data as any).value);
+      const value = `${formatCurrency((d.data as any).value)} (${percentage}%)`;
       return [name, value];
     })
     .join("tspan")
