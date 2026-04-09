@@ -35,6 +35,7 @@ let assets: Asset[] = [...DEFAULT_ASSETS];
 
 let history: HistoryEntry[] = [];
 let investmentAmount = 1000;
+let targetNetWorth = 100000;
 let isPlannerMode = true;
 let isDarkMode = false;
 let masterPassword = '';
@@ -108,6 +109,7 @@ function saveState() {
   const state = {
     assets,
     investmentAmount,
+    targetNetWorth,
     date: dateInput ? dateInput.value : '',
     history,
     isDarkMode,
@@ -204,6 +206,7 @@ function loadState() {
 function applyState(state: any) {
   if (state.assets) assets = state.assets;
   if (state.investmentAmount !== undefined) investmentAmount = state.investmentAmount;
+  if (state.targetNetWorth !== undefined) targetNetWorth = state.targetNetWorth;
   if (state.history) history = state.history;
   if (state.isDarkMode !== undefined) {
     isDarkMode = state.isDarkMode;
@@ -347,6 +350,36 @@ function updateUI() {
   }
 
   prevTotalValue = totalValue;
+
+  // Target Net Worth Logic
+  const targetNetWorthInput = document.getElementById('target-net-worth-input') as HTMLInputElement;
+  const targetProgressBar = document.getElementById('target-progress-bar');
+  const targetProgressPercent = document.getElementById('target-progress-percent');
+  const targetRemainingText = document.getElementById('target-remaining-text');
+
+  if (targetNetWorthInput && !targetNetWorthInput.matches(':focus')) {
+    targetNetWorthInput.value = formatNumber(targetNetWorth);
+  }
+
+  if (targetProgressBar && targetProgressPercent && targetRemainingText) {
+    const progress = targetNetWorth > 0 ? (totalValue / targetNetWorth) * 100 : 0;
+    const clampedProgress = Math.min(100, progress);
+    const remaining = Math.max(0, targetNetWorth - totalValue);
+
+    targetProgressBar.style.width = `${clampedProgress}%`;
+    targetProgressPercent.textContent = `${progress.toFixed(1)}%`;
+    targetRemainingText.textContent = remaining > 0 
+      ? `Nog ${formatCurrency(remaining)} te gaan`
+      : 'Doel bereikt! 🎉';
+    
+    if (progress >= 100) {
+      targetProgressBar.classList.remove('bg-blue-600');
+      targetProgressBar.classList.add('bg-green-500');
+    } else {
+      targetProgressBar.classList.add('bg-blue-600');
+      targetProgressBar.classList.remove('bg-green-500');
+    }
+  }
 
   const targetWarning = document.getElementById('target-warning');
   if (targetWarning) {
@@ -981,6 +1014,31 @@ function initEventListeners() {
       investmentAmount = isValid ? val : 0;
       if (investmentTimeout) clearTimeout(investmentTimeout);
       investmentTimeout = setTimeout(() => updateUI(), 100);
+    });
+  }
+
+  const targetNetWorthInput = document.getElementById('target-net-worth-input') as HTMLInputElement;
+  let targetNetWorthTimeout: any = null;
+  if (targetNetWorthInput) {
+    targetNetWorthInput.addEventListener('input', (e) => {
+      const target = e.target as HTMLInputElement;
+      const cleanValue = target.value.replace(/[^0-9,.]/g, '').replace(',', '.');
+      const val = parseFloat(cleanValue);
+      const isValid = !isNaN(val) && val >= 0;
+      
+      if (!isValid && target.value !== '') {
+        target.classList.add('text-red-500');
+      } else {
+        target.classList.remove('text-red-500');
+      }
+
+      targetNetWorth = isValid ? val : 0;
+      if (targetNetWorthTimeout) clearTimeout(targetNetWorthTimeout);
+      targetNetWorthTimeout = setTimeout(() => updateUI(), 100);
+    });
+
+    targetNetWorthInput.addEventListener('blur', () => {
+      targetNetWorthInput.value = formatNumber(targetNetWorth);
     });
   }
 

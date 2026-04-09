@@ -95,13 +95,15 @@
             </div>
 
             <!-- Risk Profile Summary Cards -->
-            <div id="category-cards" class="hidden md:grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div id="category-cards" class="hidden md:grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <!-- Dynamically populated -->
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <!-- Pie Chart (Order 1 on Mobile, Order 2 on Desktop) -->
-                <section class="lg:col-span-5 order-1 lg:order-2 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <!-- Left Column: Current Allocation & Target Net Worth -->
+            <div class="lg:col-span-5 order-1 lg:order-2 space-y-8">
+                <!-- Pie Chart -->
+                <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
                     <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
                         <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i>
                         Huidige Allocatie (Cirkel)
@@ -126,6 +128,39 @@
                         <!-- Dynamically populated -->
                     </div>
                 </section>
+
+                <!-- Target Net Worth Card -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm dark:bg-slate-900 dark:border-slate-800">
+                    <div class="flex flex-col gap-6">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <i data-lucide="target" class="w-4 h-4 text-blue-600"></i>
+                                <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Doelvermogen</p>
+                            </div>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-slate-400 font-mono text-xl">€</span>
+                                <input 
+                                    id="target-net-worth-input" 
+                                    type="text" 
+                                    class="bg-transparent border-b border-slate-200 hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 font-mono text-2xl font-bold dark:text-white dark:border-slate-800 dark:hover:border-slate-700 w-full"
+                                    placeholder="0"
+                                />
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between items-end mb-2">
+                                <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Voortgang</p>
+                                <p id="target-progress-percent" class="text-sm font-bold text-blue-600 dark:text-blue-400">0%</p>
+                            </div>
+                            <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3 overflow-hidden">
+                                <div id="target-progress-bar" class="h-full bg-blue-600 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                            </div>
+                            <p id="target-remaining-text" class="text-xs text-slate-400 mt-2 dark:text-slate-500">Nog € 0 te gaan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
                 <!-- Asset Management Table (Order 2 on Mobile, Order 1 on Desktop) -->
                 <section id="assets-section" class="lg:col-span-7 order-2 lg:order-1 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
@@ -460,6 +495,7 @@
         let assets = JSON.parse(JSON.stringify(DEFAULT_ASSETS));
 
         let investmentAmount = 1000;
+        let targetNetWorth = 100000;
         let isPlannerMode = true;
         let isDarkMode = false;
         let history = [];
@@ -534,6 +570,7 @@
             const state = {
                 assets,
                 investmentAmount,
+                targetNetWorth,
                 date: dateInput ? dateInput.value : '',
                 history,
                 isDarkMode,
@@ -631,6 +668,7 @@
         function applyState(state) {
             if (state.assets) assets = state.assets;
             if (state.investmentAmount !== undefined) investmentAmount = state.investmentAmount;
+            if (state.targetNetWorth !== undefined) targetNetWorth = state.targetNetWorth;
             if (state.history) history = state.history;
             if (state.isDarkMode !== undefined) {
                 isDarkMode = state.isDarkMode;
@@ -758,6 +796,36 @@
             }
 
             prevTotalValue = totalValue;
+
+            // Target Net Worth Logic
+            const targetNetWorthInput = document.getElementById('target-net-worth-input');
+            const targetProgressBar = document.getElementById('target-progress-bar');
+            const targetProgressPercent = document.getElementById('target-progress-percent');
+            const targetRemainingText = document.getElementById('target-remaining-text');
+
+            if (targetNetWorthInput && document.activeElement !== targetNetWorthInput) {
+                targetNetWorthInput.value = formatNumber(targetNetWorth);
+            }
+
+            if (targetProgressBar && targetProgressPercent && targetRemainingText) {
+                const progress = targetNetWorth > 0 ? (totalValue / targetNetWorth) * 100 : 0;
+                const clampedProgress = Math.min(100, progress);
+                const remaining = Math.max(0, targetNetWorth - totalValue);
+
+                targetProgressBar.style.width = `${clampedProgress}%`;
+                targetProgressPercent.textContent = `${progress.toFixed(1)}%`;
+                targetRemainingText.textContent = remaining > 0 
+                    ? `Nog ${formatCurrency(remaining)} te gaan`
+                    : 'Doel bereikt! 🎉';
+                
+                if (progress >= 100) {
+                    targetProgressBar.classList.remove('bg-blue-600');
+                    targetProgressBar.classList.add('bg-green-500');
+                } else {
+                    targetProgressBar.classList.add('bg-blue-600');
+                    targetProgressBar.classList.remove('bg-green-500');
+                }
+            }
 
             const targetWarning = document.getElementById('target-warning');
             if (targetWarning) {
@@ -1391,6 +1459,30 @@
                     investmentAmount = isValid ? val : 0;
                     if (investmentTimeout) clearTimeout(investmentTimeout);
                     investmentTimeout = setTimeout(() => updateUI(), 100);
+                });
+            }
+
+            const targetNetWorthInput = document.getElementById('target-net-worth-input');
+            let targetNetWorthTimeout = null;
+            if (targetNetWorthInput) {
+                targetNetWorthInput.addEventListener('input', (e) => {
+                    const cleanValue = e.target.value.replace(/[^0-9,.]/g, '').replace(',', '.');
+                    const val = parseFloat(cleanValue);
+                    const isValid = !isNaN(val) && val >= 0;
+                    
+                    if (!isValid && e.target.value !== '') {
+                        e.target.classList.add('text-red-500');
+                    } else {
+                        e.target.classList.remove('text-red-500');
+                    }
+
+                    targetNetWorth = isValid ? val : 0;
+                    if (targetNetWorthTimeout) clearTimeout(targetNetWorthTimeout);
+                    targetNetWorthTimeout = setTimeout(() => updateUI(), 100);
+                });
+
+                targetNetWorthInput.addEventListener('blur', () => {
+                    targetNetWorthInput.value = formatNumber(targetNetWorth);
                 });
             }
 
