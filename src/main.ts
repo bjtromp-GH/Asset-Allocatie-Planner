@@ -439,6 +439,9 @@ function initAverageDutchChart() {
       responsive: true,
       maintainAspectRatio: false,
       cutout: '70%',
+      layout: {
+        padding: 20
+      },
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -879,7 +882,7 @@ function updateCharts() {
       responsive: true,
       maintainAspectRatio: false,
       layout: {
-        padding: 15
+        padding: 25
       },
       onClick: (event, elements) => {
         if (elements.length > 0) {
