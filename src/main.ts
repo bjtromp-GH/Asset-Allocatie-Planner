@@ -97,6 +97,7 @@ let targetNetWorth = 100000;
 let isPlannerMode = true;
 let isDarkMode = false;
 let isPrivacyMode = false;
+let monthlyExpenses = 2500;
 let masterPassword = '';
 let isEncrypted = false;
 let pieChart: Chart | null = null;
@@ -177,6 +178,7 @@ function saveState() {
     isDarkMode,
     isPlannerMode,
     isPrivacyMode,
+    monthlyExpenses,
   };
   
   const json = JSON.stringify(state);
@@ -281,6 +283,9 @@ function applyState(state: any) {
   }
   if (state.isPrivacyMode !== undefined) {
     isPrivacyMode = state.isPrivacyMode;
+  }
+  if (state.monthlyExpenses !== undefined) {
+    monthlyExpenses = state.monthlyExpenses;
   }
   if (state.date) {
     const dateInput = document.getElementById('current-date') as HTMLInputElement;
@@ -410,12 +415,61 @@ function updateUI() {
   
   const privacyToggles = document.querySelectorAll('.privacy-toggle-btn');
   privacyToggles.forEach(btn => {
-    btn.innerHTML = isPrivacyMode ? '<i data-lucide="eye-off" class="w-4 h-4"></i>' : '<i data-lucide="eye" class="w-4 h-4"></i>';
+    btn.innerHTML = isPrivacyMode ? '<i data-lucide="eye-off" class="w-5 h-5"></i>' : '<i data-lucide="eye" class="w-5 h-5"></i>';
   });
   createIcons({ icons });
 
   const totalValue = assets.reduce((sum, asset) => sum + asset.value, 0);
   const totalTarget = assets.reduce((sum, asset) => sum + asset.target, 0);
+
+  // Freedom Calculator Logic
+  const freedomTimeEl = document.getElementById('freedom-time');
+  const freedomPassiveEl = document.getElementById('freedom-passive');
+  const monthlyExpensesInput = document.getElementById('monthly-expenses-input') as HTMLInputElement;
+
+  if (monthlyExpensesInput) {
+    monthlyExpenses = parseFloat(monthlyExpensesInput.value) || 0;
+  }
+
+  if (freedomTimeEl && freedomPassiveEl) {
+    const months = monthlyExpenses > 0 ? totalValue / monthlyExpenses : 0;
+    const passiveMonthly = (totalValue * 0.04) / 12;
+
+    if (isPrivacyMode) {
+      freedomTimeEl.textContent = '•• mnd';
+      freedomPassiveEl.textContent = '€ ••••';
+    } else {
+      if (months >= 12) {
+        freedomTimeEl.textContent = `${(months / 12).toFixed(1)} jr`;
+      } else {
+        freedomTimeEl.textContent = `${Math.floor(months)} mnd`;
+      }
+      freedomPassiveEl.textContent = formatCurrency(passiveMonthly);
+    }
+
+    // Milestones
+    const updateMilestone = (id: number, condition: boolean) => {
+      const icon = document.getElementById(`milestone-icon-${id}`);
+      const check = document.getElementById(`milestone-check-${id}`);
+      if (icon && check) {
+        if (condition) {
+          icon.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-400');
+          icon.classList.add('bg-emerald-100', 'dark:bg-emerald-900/40', 'text-emerald-600', 'dark:text-emerald-400');
+          check.classList.remove('text-slate-200', 'dark:text-slate-800');
+          check.classList.add('text-emerald-500');
+        } else {
+          icon.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-400');
+          icon.classList.remove('bg-emerald-100', 'dark:bg-emerald-900/40', 'text-emerald-600', 'dark:text-emerald-400');
+          check.classList.add('text-slate-200', 'dark:text-slate-800');
+          check.classList.remove('text-emerald-500');
+        }
+      }
+    };
+
+    updateMilestone(1, months >= 1);
+    updateMilestone(2, months >= 12);
+    updateMilestone(3, months >= 60); // 5 years
+  }
 
   const categories = { Groei: 0, Defensief: 0, Speculatief: 0 };
   assets.forEach(a => categories[a.category] += a.value);
@@ -1422,6 +1476,15 @@ function initEventListeners() {
       if (e.target === infoModal) {
         infoModal.classList.add('hidden');
       }
+    });
+  }
+
+  const monthlyExpensesInput = document.getElementById('monthly-expenses-input') as HTMLInputElement;
+  if (monthlyExpensesInput) {
+    monthlyExpensesInput.value = monthlyExpenses.toString();
+    monthlyExpensesInput.addEventListener('input', () => {
+      monthlyExpenses = parseFloat(monthlyExpensesInput.value) || 0;
+      updateUI();
     });
   }
 

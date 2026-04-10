@@ -106,7 +106,7 @@
                         <div class="flex items-center gap-2">
                             <span class="text-[10px] uppercase tracking-wider opacity-60">Totaal Vermogen</span>
                             <button class="privacy-toggle-btn p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition-colors" title="Privacy modus">
-                                <i data-lucide="eye" class="w-4 h-4"></i>
+                                <i data-lucide="eye" class="w-5 h-5"></i>
                             </button>
                         </div>
                         <span id="total-value" class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">€ 0,00</span>
@@ -167,7 +167,7 @@
                         <div class="flex items-center gap-2">
                             <span class="text-[10px] uppercase tracking-wider opacity-60 dark:text-slate-400">Totaal Vermogen</span>
                             <button class="privacy-toggle-btn p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition-colors" title="Privacy modus">
-                                <i data-lucide="eye" class="w-4 h-4"></i>
+                                <i data-lucide="eye" class="w-5 h-5"></i>
                             </button>
                         </div>
                         <span id="pie-total-value" class="text-lg font-bold text-slate-900 dark:text-white">€ 0,00</span>
@@ -210,6 +210,94 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Freedom Calculator Section -->
+                <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+                    <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
+                        <i data-lucide="unlock" class="w-4 h-4 text-amber-500"></i>
+                        Wat kun je met je vermogen?
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Monthly Expenses Input -->
+                        <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="text-[10px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Maandelijkse Uitgaven</label>
+                                <div class="flex items-center gap-1">
+                                    <span class="text-slate-400 text-xs">€</span>
+                                    <input id="monthly-expenses-input" type="number" class="bg-transparent border-none p-0 w-16 text-right font-bold focus:ring-0 text-sm dark:text-white" value="2500" />
+                                </div>
+                            </div>
+                            <div class="w-full bg-slate-200 dark:bg-slate-700 h-1 rounded-full overflow-hidden">
+                                <div class="bg-amber-500 h-full w-full opacity-30"></div>
+                            </div>
+                        </div>
+
+                        <!-- Freedom Metrics -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/50">
+                                <p class="text-[10px] uppercase tracking-wider font-bold text-blue-600 dark:text-blue-400 mb-1">Vrijheid in Tijd</p>
+                                <p id="freedom-time" class="text-xl font-bold text-slate-900 dark:text-white">0 mnd</p>
+                                <p class="text-[10px] text-blue-500/70 dark:text-blue-400/50 mt-1">Niet meer werken</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50">
+                                <p class="text-[10px] uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1">Passief Inkomen</p>
+                                <p id="freedom-passive" class="text-xl font-bold text-slate-900 dark:text-white">€ 0</p>
+                                <p class="text-[10px] text-emerald-500/70 dark:text-emerald-400/50 mt-1">Per maand (4%)</p>
+                            </div>
+                        </div>
+
+                        <!-- Milestones -->
+                        <div class="space-y-3">
+                            <p class="text-[10px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Vrijheids-Mijlpalen</p>
+                            
+                            <div class="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div id="milestone-icon-1" class="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-400">
+                                        <i data-lucide="coffee" class="w-4 h-4"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-bold dark:text-white">Maandje Sabbatical</p>
+                                        <p class="text-[10px] text-slate-400">1 maand vrijheid</p>
+                                    </div>
+                                </div>
+                                <div id="milestone-check-1" class="text-slate-200 dark:text-slate-800">
+                                    <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div id="milestone-icon-2" class="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-400">
+                                        <i data-lucide="plane" class="w-4 h-4"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-bold dark:text-white">Jaar Sabbatical</p>
+                                        <p class="text-[10px] text-slate-400">12 maanden vrijheid</p>
+                                    </div>
+                                </div>
+                                <div id="milestone-check-2" class="text-slate-200 dark:text-slate-800">
+                                    <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div id="milestone-icon-3" class="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-400">
+                                        <i data-lucide="flame" class="w-4 h-4"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-bold dark:text-white">Financiële Basis</p>
+                                        <p class="text-[10px] text-slate-400">5 jaar volledige vrijheid</p>
+                                    </div>
+                                </div>
+                                <div id="milestone-check-3" class="text-slate-200 dark:text-slate-800">
+                                    <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
 
                 <!-- Asset Management Table (Order 2 on Mobile, Order 1 on Desktop) -->
@@ -746,6 +834,7 @@
         let isPlannerMode = true;
         let isDarkMode = false;
         let isPrivacyMode = false;
+        let monthlyExpenses = 2500;
         let history = [];
         let pieChart = null;
         let barChartCurrent = null;
@@ -887,6 +976,7 @@
                 isDarkMode,
                 isPlannerMode,
                 isPrivacyMode,
+                monthlyExpenses,
             };
             
             const json = JSON.stringify(state);
@@ -992,6 +1082,9 @@
             }
             if (state.isPrivacyMode !== undefined) {
                 isPrivacyMode = state.isPrivacyMode;
+            }
+            if (state.monthlyExpenses !== undefined) {
+                monthlyExpenses = state.monthlyExpenses;
             }
             if (state.date) {
                 const dateInput = document.getElementById('current-date');
@@ -1105,12 +1198,61 @@
 
             const privacyToggles = document.querySelectorAll('.privacy-toggle-btn');
             privacyToggles.forEach(btn => {
-                btn.innerHTML = isPrivacyMode ? '<i data-lucide="eye-off" class="w-4 h-4"></i>' : '<i data-lucide="eye" class="w-4 h-4"></i>';
+                btn.innerHTML = isPrivacyMode ? '<i data-lucide="eye-off" class="w-5 h-5"></i>' : '<i data-lucide="eye" class="w-5 h-5"></i>';
             });
             lucide.createIcons();
 
             const totalValue = assets.reduce((sum, asset) => sum + asset.value, 0);
             const totalTarget = assets.reduce((sum, asset) => sum + asset.target, 0);
+
+            // Freedom Calculator Logic
+            const freedomTimeEl = document.getElementById('freedom-time');
+            const freedomPassiveEl = document.getElementById('freedom-passive');
+            const monthlyExpensesInput = document.getElementById('monthly-expenses-input');
+
+            if (monthlyExpensesInput) {
+                monthlyExpenses = parseFloat(monthlyExpensesInput.value) || 0;
+            }
+
+            if (freedomTimeEl && freedomPassiveEl) {
+                const months = monthlyExpenses > 0 ? totalValue / monthlyExpenses : 0;
+                const passiveMonthly = (totalValue * 0.04) / 12;
+
+                if (isPrivacyMode) {
+                    freedomTimeEl.textContent = '•• mnd';
+                    freedomPassiveEl.textContent = '€ ••••';
+                } else {
+                    if (months >= 12) {
+                        freedomTimeEl.textContent = `${(months / 12).toFixed(1)} jr`;
+                    } else {
+                        freedomTimeEl.textContent = `${Math.floor(months)} mnd`;
+                    }
+                    freedomPassiveEl.textContent = formatCurrency(passiveMonthly);
+                }
+
+                // Milestones
+                const updateMilestone = (id, condition) => {
+                    const icon = document.getElementById(`milestone-icon-${id}`);
+                    const check = document.getElementById(`milestone-check-${id}`);
+                    if (icon && check) {
+                        if (condition) {
+                            icon.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-400');
+                            icon.classList.add('bg-emerald-100', 'dark:bg-emerald-900/40', 'text-emerald-600', 'dark:text-emerald-400');
+                            check.classList.remove('text-slate-200', 'dark:text-slate-800');
+                            check.classList.add('text-emerald-500');
+                        } else {
+                            icon.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-400');
+                            icon.classList.remove('bg-emerald-100', 'dark:bg-emerald-900/40', 'text-emerald-600', 'dark:text-emerald-400');
+                            check.classList.add('text-slate-200', 'dark:text-slate-800');
+                            check.classList.remove('text-emerald-500');
+                        }
+                    }
+                };
+
+                updateMilestone(1, months >= 1);
+                updateMilestone(2, months >= 12);
+                updateMilestone(3, months >= 60); // 5 years
+            }
 
             const categories = { Groei: 0, Defensief: 0, Speculatief: 0 };
             assets.forEach(a => categories[a.category] += a.value);
@@ -2112,6 +2254,15 @@
                     if (e.target === infoModal) {
                         infoModal.classList.add('hidden');
                     }
+                });
+            }
+
+            const monthlyExpensesInput = document.getElementById('monthly-expenses-input');
+            if (monthlyExpensesInput) {
+                monthlyExpensesInput.value = monthlyExpenses;
+                monthlyExpensesInput.addEventListener('input', () => {
+                    monthlyExpenses = parseFloat(monthlyExpensesInput.value) || 0;
+                    updateUI();
                 });
             }
 
