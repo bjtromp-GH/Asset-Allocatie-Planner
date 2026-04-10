@@ -158,9 +158,9 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
             <!-- Left Column: Assets & Charts -->
-            <div class="lg:col-span-7 space-y-4 order-2 lg:order-1">
+            <div class="lg:col-span-7 flex flex-col gap-4 order-2 lg:order-1">
                 <!-- Asset Management Table -->
-                <section id="assets-section" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
+                <section id="assets-section" class="order-2 lg:order-1 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
                     <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between dark:border-slate-800">
                         <h2 class="font-semibold flex items-center gap-2 dark:text-white">
                             <i data-lucide="wallet" class="w-4 h-4 text-blue-600"></i>
@@ -197,7 +197,7 @@
                 </section>
 
                 <!-- Bar Chart: Current vs Target -->
-                <section id="comparison-section" class="hidden md:block bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+                <section id="comparison-section" class="order-1 lg:order-2 hidden md:block bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
                     <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
                         <i data-lucide="bar-chart-3" class="w-4 h-4 text-blue-600"></i>
                         Huidig vs Doel
@@ -208,7 +208,7 @@
                 </section>
 
                 <!-- Bar Chart: Current Allocation -->
-                <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+                <section class="order-1 lg:order-3 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
                     <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
                         <i data-lucide="bar-chart-3" class="w-4 h-4 text-blue-600"></i>
                         Huidige Allocatie (Staaf)
