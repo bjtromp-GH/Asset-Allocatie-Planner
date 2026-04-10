@@ -150,9 +150,9 @@
                 <!-- Dynamically populated -->
             </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             <!-- Left Column: Current Allocation & Target Net Worth -->
-            <div class="lg:col-span-5 order-1 lg:order-2 space-y-8">
+            <div class="lg:col-span-5 order-1 lg:order-2 space-y-6">
                 <!-- Pie Chart -->
                 <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
                     <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
@@ -179,7 +179,8 @@
                     </div>
                 </section>
 
-                <!-- Target Net Worth Card -->
+                <div class="grid grid-cols-1 gap-6">
+                    <!-- Target Net Worth Card -->
                 <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm dark:bg-slate-900 dark:border-slate-800">
                     <div class="flex flex-col gap-6">
                         <div>
@@ -337,51 +338,7 @@
                     </div>
                 </section>
 
-                <!-- Investment Simulator (Order 3 on Mobile, Order 3 on Desktop) -->
-                <section id="simulator-section" class="lg:col-span-7 order-3 lg:order-3 hidden md:block bg-blue-600 rounded-2xl shadow-lg shadow-blue-200 p-6 text-white overflow-hidden relative dark:bg-slate-900 dark:border dark:border-slate-800 dark:shadow-none">
-                    <div class="relative z-10">
-                        <div class="flex items-center justify-between mb-4 cursor-pointer group" id="toggle-simulator">
-                            <h2 class="text-lg font-bold flex items-center gap-2">
-                                <i data-lucide="plus" class="w-5 h-5"></i>
-                                Slimme Investering Simulator
-                            </h2>
-                            <i data-lucide="chevron-down" id="simulator-chevron" class="w-5 h-5 transition-transform duration-300"></i>
-                        </div>
-                        
-                        <div id="simulator-content" class="transition-all duration-300 overflow-hidden">
-                            <p class="text-blue-100 text-sm mb-6 max-w-md dark:text-slate-400">
-                                Vul een bedrag in dat je wilt investeren. Wij berekenen precies hoe je dit moet verdelen om zo dicht mogelijk bij je doelallocatie te komen.
-                            </p>
-                            
-                            <div class="flex flex-col sm:flex-row gap-4 items-end">
-                                <div class="flex-1 w-full">
-                                    <label class="text-xs font-bold uppercase tracking-widest text-blue-200 mb-2 block dark:text-slate-500">Investering Bedrag (€)</label>
-                                    <div class="relative">
-                                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-blue-300 font-bold dark:text-slate-500">€</span>
-                                        <input 
-                                            id="investment-input"
-                                            type="number" 
-                                            value="1000"
-                                            class="w-full bg-blue-700/50 border border-blue-400/30 rounded-xl py-3 pl-10 pr-4 text-white font-bold placeholder:text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-white dark:focus:ring-slate-700"
-                                            placeholder="0"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div id="investment-recommendations" class="mt-8 space-y-3 hidden">
-                                <p class="text-xs font-bold uppercase tracking-widest text-blue-200 dark:text-slate-500">Aanbevolen Verdeling:</p>
-                                <div id="recommendations-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    <!-- Dynamically populated -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Decorative background element -->
-                    <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-blue-500 rounded-full blur-3xl opacity-50 dark:bg-slate-800 dark:opacity-20"></div>
-                </section>
-
-                <!-- Bar Chart: Current vs Target (Order 4 on Mobile, Order 4 on Desktop) -->
+            <!-- Bar Chart: Current vs Target (Order 4 on Mobile, Order 4 on Desktop) -->
                 <section id="comparison-section" class="lg:col-span-5 order-4 lg:order-4 hidden md:block bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
                     <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
                         <i data-lucide="bar-chart-3" class="w-4 h-4 text-blue-600"></i>
@@ -426,57 +383,6 @@
                     </h2>
                     <div id="treemap-container" class="h-[400px] w-full">
                         <!-- D3 Treemap will be rendered here -->
-                    </div>
-                </section>
-
-                <!-- Sandbox Section (Order 8) -->
-                <section id="sandbox-section" class="lg:col-span-12 order-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-                        <div>
-                            <h2 class="text-xl font-bold flex items-center gap-2 dark:text-white">
-                                <i data-lucide="sliders" class="w-5 h-5 text-blue-600"></i>
-                                Allocatie Zandbak
-                            </h2>
-                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Experimenteer met verschillende verdelingen zonder je echte data te wijzigen.</p>
-                        </div>
-                        <div class="flex flex-wrap items-center gap-2">
-                            <button id="auto-balance-sandbox-btn" class="text-xs font-bold uppercase tracking-widest bg-amber-100 hover:bg-amber-200 text-amber-700 px-4 py-2 rounded-xl transition-all dark:bg-amber-900/20 dark:text-amber-400 dark:hover:bg-amber-900/40" title="Verdeel resterende percentages proportioneel naar 100%">
-                                Auto-Balance
-                            </button>
-                            <button id="reset-sandbox-btn" class="text-xs font-bold uppercase tracking-widest bg-slate-100 hover:bg-slate-200 text-slate-600 px-4 py-2 rounded-xl transition-all dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700">
-                                Reset
-                            </button>
-                            <button id="apply-sandbox-btn" class="text-xs font-bold uppercase tracking-widest bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl transition-all shadow-md shadow-blue-200 dark:shadow-none">
-                                Pas toe op Doelen
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Presets Bar -->
-                    <div class="mb-8 p-3 bg-slate-50 rounded-2xl flex flex-wrap items-center gap-3 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-2">Presets:</span>
-                        <button data-preset="60-40" class="sandbox-preset-btn text-xs font-semibold px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:border-blue-400 hover:text-blue-600 transition-all dark:bg-slate-900 dark:border-slate-800 dark:text-slate-400">60/40 Portfolio</button>
-                        <button data-preset="aggressive" class="sandbox-preset-btn text-xs font-semibold px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:border-blue-400 hover:text-blue-600 transition-all dark:bg-slate-900 dark:border-slate-800 dark:text-slate-400">Aggressief (80/20)</button>
-                        <button data-preset="defensive" class="sandbox-preset-btn text-xs font-semibold px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:border-blue-400 hover:text-blue-600 transition-all dark:bg-slate-900 dark:border-slate-800 dark:text-slate-400">Defensief (20/80)</button>
-                        <button data-preset="all-weather" class="sandbox-preset-btn text-xs font-semibold px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:border-blue-400 hover:text-blue-600 transition-all dark:bg-slate-900 dark:border-slate-800 dark:text-slate-400">All-Weather</button>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                        <!-- Sliders Column -->
-                        <div id="sandbox-sliders-container" class="lg:col-span-7 space-y-6">
-                            <!-- Dynamically populated -->
-                        </div>
-
-                        <!-- Preview Column -->
-                        <div class="lg:col-span-5 flex flex-col items-center justify-center bg-slate-50 rounded-3xl p-8 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800">
-                            <div class="w-full max-w-[280px] aspect-square relative">
-                                <canvas id="sandbox-pie-chart"></canvas>
-                            </div>
-                            
-                            <div id="sandbox-status-msg" class="mt-8 p-4 rounded-xl w-full text-center text-sm font-medium transition-all">
-                                <!-- Status message -->
-                            </div>
-                        </div>
                     </div>
                 </section>
             </div>
@@ -551,10 +457,6 @@
             <a href="#assets-section" class="flex flex-col items-center gap-1 text-slate-400 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors flex-1">
                 <i data-lucide="wallet" class="w-5 h-5"></i>
                 <span class="text-[9px] font-bold uppercase tracking-widest">Beheer</span>
-            </a>
-            <a href="#simulator-section" class="flex flex-col items-center gap-1 text-slate-400 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors flex-1">
-                <i data-lucide="zap" class="w-5 h-5"></i>
-                <span class="text-[9px] font-bold uppercase tracking-widest">Simulator</span>
             </a>
             <a href="#history-section" class="flex flex-col items-center gap-1 text-slate-400 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors flex-1">
                 <i data-lucide="history" class="w-5 h-5"></i>
@@ -829,7 +731,6 @@
 
         let assets = JSON.parse(JSON.stringify(DEFAULT_ASSETS));
 
-        let investmentAmount = 1000;
         let targetNetWorth = 100000;
         let isPlannerMode = true;
         let isDarkMode = false;
@@ -969,7 +870,6 @@
             const dateInput = document.getElementById('current-date');
             const state = {
                 assets,
-                investmentAmount,
                 targetNetWorth,
                 date: dateInput ? dateInput.value : '',
                 history,
@@ -1069,7 +969,6 @@
 
         function applyState(state) {
             if (state.assets) assets = state.assets;
-            if (state.investmentAmount !== undefined) investmentAmount = state.investmentAmount;
             if (state.targetNetWorth !== undefined) targetNetWorth = state.targetNetWorth;
             if (state.history) history = state.history;
             if (state.isDarkMode !== undefined) {
@@ -1336,12 +1235,10 @@
                 }
             }
 
-            const simulatorSection = document.getElementById('simulator-section');
             const rebalanceSection = document.getElementById('rebalance-section');
             const targetColumnHeader = document.getElementById('target-column-header');
             const comparisonSection = document.getElementById('comparison-section');
 
-            if (simulatorSection) simulatorSection.style.display = isPlannerMode ? '' : 'none';
             if (rebalanceSection) rebalanceSection.style.display = isPlannerMode ? '' : 'none';
             if (targetColumnHeader) targetColumnHeader.style.display = isPlannerMode ? '' : 'none';
             if (comparisonSection) comparisonSection.style.display = isPlannerMode ? '' : 'none';
@@ -1483,44 +1380,6 @@
                         </div>
                     `;
                 }).join('');
-            }
-
-            const recommendationsList = document.getElementById('recommendations-list');
-            const recommendationsContainer = document.getElementById('investment-recommendations');
-            
-            if (recommendationsList && recommendationsContainer) {
-                if (investmentAmount > 0) {
-                    const newTotal = totalValue + investmentAmount;
-                    const distribution = assets.map(asset => {
-                        const idealValue = (asset.target / 100) * newTotal;
-                        const needed = idealValue - asset.value;
-                        return { ...asset, needed: Math.max(0, needed) };
-                    });
-                    const totalNeeded = distribution.reduce((sum, d) => sum + d.needed, 0);
-                    
-                    const smartInvestment = distribution.map(d => ({
-                        name: d.name,
-                        amount: totalNeeded > 0 ? (d.needed / totalNeeded) * investmentAmount : 0,
-                        color: d.color
-                    })).filter(d => d.amount > 0.01);
-
-                    if (smartInvestment.length > 0) {
-                        recommendationsContainer.classList.remove('hidden');
-                        recommendationsList.innerHTML = smartInvestment.map(item => `
-                            <div class="bg-white/10 backdrop-blur-md rounded-xl p-3 flex items-center justify-between border border-white/10">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-2 h-2 rounded-full" style="background-color: ${item.color}"></div>
-                                    <span class="text-sm font-medium">${item.name}</span>
-                                </div>
-                                <span class="font-bold">${formatCurrency(item.amount)}</span>
-                            </div>
-                        `).join('');
-                    } else {
-                        recommendationsContainer.classList.add('hidden');
-                    }
-                } else {
-                    recommendationsContainer.classList.add('hidden');
-                }
             }
 
             const pieTotalValue = document.getElementById('pie-total-value');
@@ -2018,26 +1877,6 @@
                 });
             });
 
-            const investmentInput = document.getElementById('investment-input');
-            let investmentTimeout = null;
-            if (investmentInput) {
-                investmentInput.addEventListener('input', (e) => {
-                    const target = e.target;
-                    const val = parseFloat(target.value);
-                    const isValid = !isNaN(val) && val >= 0;
-                    
-                    if (!isValid && target.value !== '') {
-                        target.classList.add('ring-2', 'ring-red-500', 'border-red-500');
-                    } else {
-                        target.classList.remove('ring-2', 'ring-red-500', 'border-red-500');
-                    }
-
-                    investmentAmount = isValid ? val : 0;
-                    if (investmentTimeout) clearTimeout(investmentTimeout);
-                    investmentTimeout = setTimeout(() => updateUI(), 100);
-                });
-            }
-
             const targetNetWorthInput = document.getElementById('target-net-worth-input');
             let targetNetWorthTimeout = null;
             if (targetNetWorthInput) {
@@ -2140,23 +1979,6 @@
                     } else if (deleteBtn) {
                         const idx = parseInt(deleteBtn.dataset.idx);
                         deleteFromHistory(idx);
-                    }
-                });
-            }
-
-            const toggleSimulator = document.getElementById('toggle-simulator');
-            const simulatorContent = document.getElementById('simulator-content');
-            const simulatorChevron = document.getElementById('simulator-chevron');
-
-            if (toggleSimulator && simulatorContent && simulatorChevron) {
-                toggleSimulator.addEventListener('click', () => {
-                    const isHidden = simulatorContent.classList.contains('h-0');
-                    if (isHidden) {
-                        simulatorContent.classList.remove('h-0', 'opacity-0', 'mt-0');
-                        simulatorChevron.classList.remove('-rotate-90');
-                    } else {
-                        simulatorContent.classList.add('h-0', 'opacity-0', 'mt-0');
-                        simulatorChevron.classList.add('-rotate-90');
                     }
                 });
             }
@@ -2492,185 +2314,7 @@
                 });
             }
 
-            const resetSandboxBtn = document.getElementById('reset-sandbox-btn');
-            const applySandboxBtn = document.getElementById('apply-sandbox-btn');
-
-            if (resetSandboxBtn) {
-                resetSandboxBtn.addEventListener('click', () => {
-                    initSandbox();
-                });
-            }
-
-            if (applySandboxBtn) {
-                applySandboxBtn.addEventListener('click', () => {
-                    const total = sandboxAssets.reduce((sum, a) => sum + a.target, 0);
-                    if (Math.abs(total - 100) > 0.1) {
-                        if (!confirm(`De totale allocatie is ${total.toFixed(1)}% (geen 100%). Weet je zeker dat je dit wilt toepassen als nieuwe doelen?`)) {
-                            return;
-                        }
-                    }
-                    
-                    // Apply sandbox targets to real assets
-                    assets.forEach(asset => {
-                        const sandboxAsset = sandboxAssets.find(sa => sa.id === asset.id);
-                        if (sandboxAsset) {
-                            asset.target = sandboxAsset.target;
-                        }
-                    });
-                    
-                    saveState();
-                    updateUI();
-                    alert('Nieuwe doel-allocatie toegepast!');
-                });
-            }
-
             updateSecurityUI();
-            initSandbox();
-        }
-
-        // --- Sandbox Logic ---
-        function initSandbox() {
-            sandboxAssets = assets.map(a => ({ ...a }));
-            renderSandboxSliders();
-            updateSandboxChart();
-        }
-
-        function renderSandboxSliders() {
-            const container = document.getElementById('sandbox-sliders-container');
-            if (!container) return;
-
-            const totalValue = assets.reduce((sum, a) => sum + a.value, 0);
-
-            container.innerHTML = '';
-            sandboxAssets.forEach((asset, index) => {
-                const div = document.createElement('div');
-                div.className = 'bg-white p-4 rounded-2xl border border-slate-100 shadow-sm space-y-4 dark:bg-slate-900/50 dark:border-slate-800';
-                
-                const euroValue = (totalValue * (asset.target / 100));
-                
-                div.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-center gap-2">
-                            <div class="w-3 h-3 rounded-full" style="background-color: ${asset.color}"></div>
-                            <span class="text-sm font-bold dark:text-white">${asset.name}</span>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500">${formatCurrency(euroValue)}</span>
-                            <div class="relative">
-                                <input 
-                                    type="number" 
-                                    value="${asset.target}" 
-                                    step="0.1"
-                                    min="0"
-                                    max="100"
-                                    class="sandbox-number-input w-20 text-right bg-slate-50 border-none rounded-lg pl-2 pr-6 py-1 text-xs font-mono font-bold text-blue-600 focus:ring-1 focus:ring-blue-500 dark:bg-slate-800 dark:text-blue-400 outline-none"
-                                    data-index="${index}"
-                                />
-                                <span class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-blue-300 pointer-events-none">%</span>
-                            </div>
-                        </div>
-                    </div>
-                    <input 
-                        type="range" 
-                        min="0" 
-                        max="100" 
-                        step="0.1" 
-                        value="${asset.target}" 
-                        class="sandbox-slider w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600 dark:bg-slate-800"
-                        data-index="${index}"
-                    >
-                `;
-                
-                const slider = div.querySelector('.sandbox-slider');
-                const numberInput = div.querySelector('.sandbox-number-input');
-
-                const updateVal = (val) => {
-                    const clamped = Math.min(100, Math.max(0, val));
-                    sandboxAssets[index].target = clamped;
-                    slider.value = clamped;
-                    numberInput.value = clamped.toFixed(1);
-                    
-                    const newEuro = (totalValue * (clamped / 100));
-                    div.querySelector('.text-\\[10px\\]').textContent = formatCurrency(newEuro);
-                    
-                    updateSandboxChart();
-                };
-
-                slider.addEventListener('input', (e) => updateVal(parseFloat(e.target.value)));
-                numberInput.addEventListener('change', (e) => updateVal(parseFloat(e.target.value)));
-                
-                container.appendChild(div);
-            });
-        }
-
-        function updateSandboxChart() {
-            const ctx = document.getElementById('sandbox-pie-chart');
-            if (!ctx) return;
-
-            const total = sandboxAssets.reduce((sum, a) => sum + a.target, 0);
-
-            const statusMsg = document.getElementById('sandbox-status-msg');
-            if (statusMsg) {
-                if (Math.abs(total - 100) < 0.1) {
-                    statusMsg.textContent = 'Perfect! De verdeling is exact 100%.';
-                    statusMsg.className = 'mt-8 p-4 rounded-xl w-full text-center text-sm font-medium bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400 border border-green-100 dark:border-green-800';
-                } else if (total > 100) {
-                    statusMsg.textContent = `Te hoog! Je zit ${ (total - 100).toFixed(1) }% boven de 100%.`;
-                    statusMsg.className = 'mt-8 p-4 rounded-xl w-full text-center text-sm font-medium bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400 border border-red-100 dark:border-red-800';
-                } else {
-                    statusMsg.textContent = `Nog ${ (100 - total).toFixed(1) }% over om te verdelen.`;
-                    statusMsg.className = 'mt-8 p-4 rounded-xl w-full text-center text-sm font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400 border border-blue-100 dark:border-blue-800';
-                }
-            }
-
-            const data = {
-                labels: sandboxAssets.map(a => a.name),
-                datasets: [{
-                    data: sandboxAssets.map(a => a.target),
-                    backgroundColor: sandboxAssets.map(a => a.color),
-                    borderWidth: 0,
-                    hoverOffset: 10
-                }]
-            };
-
-            if (sandboxChart) {
-                sandboxChart.data = data;
-                if (sandboxChart.options.plugins.centerText) {
-                    sandboxChart.options.plugins.centerText.value = `${total.toFixed(0)}%`;
-                }
-                sandboxChart.update();
-            } else {
-                sandboxChart = new Chart(ctx, {
-                    type: 'doughnut',
-                    data: data,
-                    options: {
-                        cutout: '80%',
-                        layout: {
-                            padding: 20
-                        },
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: {
-                                yAlign: 'bottom',
-                                callbacks: {
-                                    label: (context) => ` ${context.label}: ${context.raw}%`,
-                                    footer: (tooltipItems) => {
-                                        const total = tooltipItems[0].dataset.data.reduce((a, b) => a + b, 0);
-                                        return `Totaal: ${total.toFixed(1)}%`;
-                                    }
-                                }
-                            },
-                            centerText: {
-                                display: true,
-                                value: `${total.toFixed(0)}%`,
-                                label: 'Totaal',
-                                valueFont: '900 32px Inter, sans-serif'
-                            }
-                        },
-                        maintainAspectRatio: false
-                    }
-                });
-            }
         }
 
         // Initial Load

@@ -104,12 +104,10 @@ let pieChart: Chart | null = null;
 let barChartCurrent: Chart | null = null;
 let barChartComparison: Chart | null = null;
 let historyChart: Chart | null = null;
-let sandboxChart: Chart | null = null;
 
 // Track previous values for animations
 let prevTotalValue = 0;
 let prevCategoryValues = { Groei: 0, Defensief: 0, Speculatief: 0 };
-let sandboxAssets: Asset[] = [];
 
 const formatCurrency = (value: number) => {
   if (isPrivacyMode) return '€ ••••';
@@ -1181,83 +1179,6 @@ function initEventListeners() {
     });
   }
 
-  document.getElementById('auto-balance-sandbox-btn')?.addEventListener('click', () => {
-    const currentTotal = sandboxAssets.reduce((sum, a) => sum + a.target, 0);
-    if (currentTotal === 0) {
-      const perAsset = 100 / sandboxAssets.length;
-      sandboxAssets.forEach(a => a.target = perAsset);
-    } else {
-      const factor = 100 / currentTotal;
-      sandboxAssets.forEach(a => a.target = parseFloat((a.target * factor).toFixed(1)));
-    }
-    renderSandboxSliders();
-    updateSandboxChart();
-  });
-
-  document.querySelectorAll('.sandbox-preset-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const preset = (e.currentTarget as HTMLButtonElement).dataset.preset;
-      
-      // Reset all to 0 first
-      sandboxAssets.forEach(a => a.target = 0);
-      
-      const findAsset = (name: string) => sandboxAssets.find(a => a.name.toLowerCase().includes(name.toLowerCase()));
-
-      if (preset === '60-40') {
-        const stocks = findAsset('Aandelen');
-        const bonds = findAsset('Obligaties');
-        if (stocks) stocks.target = 60;
-        if (bonds) bonds.target = 40;
-      } else if (preset === 'aggressive') {
-        const stocks = findAsset('Aandelen');
-        const crypto = findAsset('Bitcoin');
-        const bonds = findAsset('Obligaties');
-        if (stocks) stocks.target = 70;
-        if (crypto) crypto.target = 10;
-        if (bonds) bonds.target = 20;
-      } else if (preset === 'defensive') {
-        const bonds = findAsset('Obligaties');
-        const cash = findAsset('Spaargeld');
-        const gold = findAsset('Goud');
-        if (bonds) bonds.target = 60;
-        if (cash) cash.target = 30;
-        if (gold) gold.target = 10;
-      } else if (preset === 'all-weather') {
-        const stocks = findAsset('Aandelen');
-        const bonds = findAsset('Obligaties');
-        const gold = findAsset('Goud');
-        const commodities = findAsset('Zilver');
-        if (stocks) stocks.target = 30;
-        if (bonds) bonds.target = 55;
-        if (gold) gold.target = 7.5;
-        if (commodities) commodities.target = 7.5;
-      }
-      
-      renderSandboxSliders();
-      updateSandboxChart();
-    });
-  });
-
-  const investmentInput = document.getElementById('investment-input') as HTMLInputElement;
-  let investmentTimeout: any = null;
-  if (investmentInput) {
-    investmentInput.addEventListener('input', (e) => {
-      const target = e.target as HTMLInputElement;
-      const val = parseFloat(target.value);
-      const isValid = !isNaN(val) && val >= 0;
-      
-      if (!isValid && target.value !== '') {
-        target.classList.add('ring-2', 'ring-red-500', 'border-red-500');
-      } else {
-        target.classList.remove('ring-2', 'ring-red-500', 'border-red-500');
-      }
-
-      investmentAmount = isValid ? val : 0;
-      if (investmentTimeout) clearTimeout(investmentTimeout);
-      investmentTimeout = setTimeout(() => updateUI(), 100);
-    });
-  }
-
   const targetNetWorthInput = document.getElementById('target-net-worth-input') as HTMLInputElement;
   let targetNetWorthTimeout: any = null;
   if (targetNetWorthInput) {
@@ -1356,23 +1277,6 @@ function initEventListeners() {
 
   if (plannerToggle) plannerToggle.addEventListener('click', handlePlannerToggle);
   if (plannerToggleMobile) plannerToggleMobile.addEventListener('click', handlePlannerToggle);
-
-  const toggleSimulator = document.getElementById('toggle-simulator');
-  const simulatorContent = document.getElementById('simulator-content');
-  const simulatorChevron = document.getElementById('simulator-chevron');
-
-  if (toggleSimulator && simulatorContent && simulatorChevron) {
-    toggleSimulator.addEventListener('click', () => {
-      const isHidden = simulatorContent.classList.contains('h-0');
-      if (isHidden) {
-        simulatorContent.classList.remove('h-0', 'opacity-0', 'mt-0');
-        simulatorChevron.classList.remove('-rotate-90');
-      } else {
-        simulatorContent.classList.add('h-0', 'opacity-0', 'mt-0');
-        simulatorChevron.classList.add('-rotate-90');
-      }
-    });
-  }
 
   const treemapContainer = document.getElementById('treemap-container');
   if (treemapContainer) {
@@ -1727,187 +1631,8 @@ function initEventListeners() {
     });
   }
 
-  const resetSandboxBtn = document.getElementById('reset-sandbox-btn');
-  const applySandboxBtn = document.getElementById('apply-sandbox-btn');
-
-  if (resetSandboxBtn) {
-    resetSandboxBtn.addEventListener('click', () => {
-      initSandbox();
-    });
-  }
-
-  if (applySandboxBtn) {
-    applySandboxBtn.addEventListener('click', () => {
-      const total = sandboxAssets.reduce((sum, a) => sum + a.target, 0);
-      if (Math.abs(total - 100) > 0.1) {
-        if (!confirm(`De totale allocatie is ${total.toFixed(1)}% (geen 100%). Weet je zeker dat je dit wilt toepassen als nieuwe doelen?`)) {
-          return;
-        }
-      }
-      
-      // Apply sandbox targets to real assets
-      assets.forEach(asset => {
-        const sandboxAsset = sandboxAssets.find(sa => sa.id === asset.id);
-        if (sandboxAsset) {
-          asset.target = sandboxAsset.target;
-        }
-      });
-      
-      saveState();
-      updateUI();
-      alert('Nieuwe doel-allocatie toegepast!');
-    });
-  }
-
   updateSecurityUI();
-  initSandbox();
   createIcons({ icons });
-}
-
-// --- Sandbox Logic ---
-function initSandbox() {
-  sandboxAssets = assets.map(a => ({ ...a }));
-  renderSandboxSliders();
-  updateSandboxChart();
-}
-
-function renderSandboxSliders() {
-  const container = document.getElementById('sandbox-sliders-container');
-  if (!container) return;
-
-  const totalValue = assets.reduce((sum, a) => sum + a.value, 0);
-
-  container.innerHTML = '';
-  sandboxAssets.forEach((asset, index) => {
-    const div = document.createElement('div');
-    div.className = 'bg-white p-4 rounded-2xl border border-slate-100 shadow-sm space-y-4 dark:bg-slate-900/50 dark:border-slate-800';
-    
-    const euroValue = (totalValue * (asset.target / 100));
-    
-    div.innerHTML = `
-      <div class="flex justify-between items-center">
-        <div class="flex items-center gap-2">
-          <div class="w-3 h-3 rounded-full" style="background-color: ${asset.color}"></div>
-          <span class="text-sm font-bold dark:text-white">${asset.name}</span>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500">${formatCurrency(euroValue)}</span>
-          <div class="relative">
-            <input 
-              type="number" 
-              value="${asset.target}" 
-              step="0.1"
-              min="0"
-              max="100"
-              class="sandbox-number-input w-20 text-right bg-slate-50 border-none rounded-lg pl-2 pr-6 py-1 text-xs font-mono font-bold text-blue-600 focus:ring-1 focus:ring-blue-500 dark:bg-slate-800 dark:text-blue-400 outline-none"
-              data-index="${index}"
-            />
-            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-blue-300 pointer-events-none">%</span>
-          </div>
-        </div>
-      </div>
-      <input 
-        type="range" 
-        min="0" 
-        max="100" 
-        step="0.1" 
-        value="${asset.target}" 
-        class="sandbox-slider w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600 dark:bg-slate-800"
-        data-index="${index}"
-      >
-    `;
-    
-    const slider = div.querySelector('.sandbox-slider') as HTMLInputElement;
-    const numberInput = div.querySelector('.sandbox-number-input') as HTMLInputElement;
-
-    const updateVal = (val: number) => {
-      const clamped = Math.min(100, Math.max(0, val));
-      sandboxAssets[index].target = clamped;
-      slider.value = clamped.toString();
-      numberInput.value = clamped.toFixed(1);
-      
-      // Update euro display
-      const newEuro = (totalValue * (clamped / 100));
-      div.querySelector('.text-\\[10px\\]')!.textContent = formatCurrency(newEuro);
-      
-      updateSandboxChart();
-    };
-
-    slider.addEventListener('input', (e) => updateVal(parseFloat((e.target as HTMLInputElement).value)));
-    numberInput.addEventListener('change', (e) => updateVal(parseFloat((e.target as HTMLInputElement).value)));
-    
-    container.appendChild(div);
-  });
-}
-
-function updateSandboxChart() {
-  const ctx = document.getElementById('sandbox-pie-chart') as HTMLCanvasElement;
-  if (!ctx) return;
-
-  const total = sandboxAssets.reduce((sum, a) => sum + a.target, 0);
-
-  const statusMsg = document.getElementById('sandbox-status-msg');
-  if (statusMsg) {
-    if (Math.abs(total - 100) < 0.1) {
-      statusMsg.textContent = 'Perfect! De verdeling is exact 100%.';
-      statusMsg.className = 'mt-8 p-4 rounded-xl w-full text-center text-sm font-medium bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400 border border-green-100 dark:border-green-800';
-    } else if (total > 100) {
-      statusMsg.textContent = `Te hoog! Je zit ${ (total - 100).toFixed(1) }% boven de 100%.`;
-      statusMsg.className = 'mt-8 p-4 rounded-xl w-full text-center text-sm font-medium bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400 border border-red-100 dark:border-red-800';
-    } else {
-      statusMsg.textContent = `Nog ${ (100 - total).toFixed(1) }% over om te verdelen.`;
-      statusMsg.className = 'mt-8 p-4 rounded-xl w-full text-center text-sm font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400 border border-blue-100 dark:border-blue-800';
-    }
-  }
-
-  const data = {
-    labels: sandboxAssets.map(a => a.name),
-    datasets: [{
-      data: sandboxAssets.map(a => a.target),
-      backgroundColor: sandboxAssets.map(a => a.color),
-      borderWidth: 0,
-      hoverOffset: 10
-    }]
-  };
-
-  if (sandboxChart) {
-    sandboxChart.data = data;
-    if ((sandboxChart.options.plugins as any).centerText) {
-      (sandboxChart.options.plugins as any).centerText.value = `${total.toFixed(0)}%`;
-    }
-    sandboxChart.update();
-  } else {
-    sandboxChart = new Chart(ctx, {
-      type: 'doughnut',
-      data: data,
-      options: {
-        cutout: '80%',
-        layout: {
-          padding: 20
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            yAlign: 'bottom',
-            callbacks: {
-              label: (context) => ` ${context.label}: ${context.raw}%`,
-              footer: (tooltipItems) => {
-                const total = tooltipItems[0].dataset.data.reduce((a: any, b: any) => a + b, 0) as number;
-                return `Totaal: ${total.toFixed(1)}%`;
-              }
-            }
-          },
-          centerText: {
-            display: true,
-            value: `${total.toFixed(0)}%`,
-            label: 'Totaal',
-            valueFont: '900 32px Inter, sans-serif'
-          }
-        },
-        maintainAspectRatio: false
-      } as any
-    });
-  }
 }
 
 // Initial Load
