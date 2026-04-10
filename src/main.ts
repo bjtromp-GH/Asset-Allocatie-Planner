@@ -349,17 +349,46 @@ function deleteAsset(id: string) {
 }
 
 function addAsset() {
+  const addAssetModal = document.getElementById('add-asset-modal');
+  const newAssetName = document.getElementById('new-asset-name') as HTMLInputElement;
+  const newAssetCategory = document.getElementById('new-asset-category') as HTMLSelectElement;
+  const newAssetTarget = document.getElementById('new-asset-target') as HTMLInputElement;
+
+  if (addAssetModal && newAssetName && newAssetCategory && newAssetTarget) {
+    newAssetName.value = '';
+    newAssetCategory.value = 'Groei';
+    newAssetTarget.value = '0';
+    addAssetModal.classList.remove('hidden');
+    newAssetName.focus();
+  }
+}
+
+function saveNewAsset() {
+  const addAssetModal = document.getElementById('add-asset-modal');
+  const newAssetName = document.getElementById('new-asset-name') as HTMLInputElement;
+  const newAssetCategory = document.getElementById('new-asset-category') as HTMLSelectElement;
+  const newAssetTarget = document.getElementById('new-asset-target') as HTMLInputElement;
+
+  if (!newAssetName || !newAssetCategory || !newAssetTarget) return;
+
+  const name = newAssetName.value.trim() || 'Nieuwe Asset';
+  const category = newAssetCategory.value as Asset['category'];
+  const target = parseFloat(newAssetTarget.value) || 0;
+
   const id = Math.random().toString(36).substring(2, 9);
   const colors = ['#3b82f6', '#10b981', '#6366f1', '#22c55e', '#eab308', '#94a3b8', '#f97316', '#ec4899'];
+  
   const newAsset: Asset = {
     id,
-    name: 'Nieuwe Asset',
+    name,
     value: 0,
-    target: 0,
+    target,
     color: colors[assets.length % colors.length],
-    category: 'Groei'
+    category
   };
+
   assets.push(newAsset);
+  if (addAssetModal) addAssetModal.classList.add('hidden');
   updateUI();
 }
 
@@ -1379,6 +1408,45 @@ function initEventListeners() {
     infoModal.addEventListener('click', (e) => {
       if (e.target === infoModal) {
         infoModal.classList.add('hidden');
+      }
+    });
+  }
+
+  // Add Asset Modal UI
+  const addAssetModal = document.getElementById('add-asset-modal');
+  const closeAddAssetModal = document.getElementById('close-add-asset-modal');
+  const cancelAddAsset = document.getElementById('cancel-add-asset');
+  const saveNewAssetBtn = document.getElementById('save-new-asset');
+
+  if (closeAddAssetModal && addAssetModal) {
+    closeAddAssetModal.addEventListener('click', () => {
+      addAssetModal.classList.add('hidden');
+    });
+  }
+
+  if (cancelAddAsset && addAssetModal) {
+    cancelAddAsset.addEventListener('click', () => {
+      addAssetModal.classList.add('hidden');
+    });
+  }
+
+  if (saveNewAssetBtn) {
+    saveNewAssetBtn.addEventListener('click', saveNewAsset);
+  }
+
+  if (addAssetModal) {
+    addAssetModal.addEventListener('click', (e) => {
+      if (e.target === addAssetModal) {
+        addAssetModal.classList.add('hidden');
+      }
+    });
+
+    // Handle Enter key
+    addAssetModal.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        saveNewAsset();
+      } else if (e.key === 'Escape') {
+        addAssetModal.classList.add('hidden');
       }
     });
   }
