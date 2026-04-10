@@ -98,6 +98,7 @@ let isPlannerMode = true;
 let isDarkMode = false;
 let isPrivacyMode = false;
 let monthlyExpenses = 2500;
+let freedomCustomNetWorth = 0;
 let masterPassword = '';
 let isEncrypted = false;
 let pieChart: Chart | null = null;
@@ -123,6 +124,11 @@ const formatPercent = (value: number) => {
 
 const formatNumber = (value: number) => {
   return new Intl.NumberFormat('nl-NL').format(value);
+};
+
+const parseNumber = (value: string) => {
+  const cleanValue = value.replace(/[^0-9,.]/g, '').replace(',', '.');
+  return parseFloat(cleanValue) || 0;
 };
 
 const animateValue = (id: string, start: number, end: number, duration: number, formatter: (v: number) => string) => {
@@ -424,14 +430,20 @@ function updateUI() {
   const freedomTimeEl = document.getElementById('freedom-time');
   const freedomPassiveEl = document.getElementById('freedom-passive');
   const monthlyExpensesInput = document.getElementById('monthly-expenses-input') as HTMLInputElement;
+  const freedomCustomNetworthInput = document.getElementById('freedom-custom-networth') as HTMLInputElement;
 
   if (monthlyExpensesInput) {
     monthlyExpenses = parseFloat(monthlyExpensesInput.value) || 0;
   }
 
+  if (freedomCustomNetworthInput && !freedomCustomNetworthInput.matches(':focus')) {
+    freedomCustomNetworthInput.value = freedomCustomNetWorth > 0 ? formatNumber(freedomCustomNetWorth) : '';
+  }
+
   if (freedomTimeEl && freedomPassiveEl) {
-    const months = monthlyExpenses > 0 ? totalValue / monthlyExpenses : 0;
-    const passiveMonthly = (totalValue * 0.04) / 12;
+    const calcValue = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : totalValue;
+    const months = monthlyExpenses > 0 ? calcValue / monthlyExpenses : 0;
+    const passiveMonthly = (calcValue * 0.04) / 12;
 
     if (isPrivacyMode) {
       freedomTimeEl.textContent = '•• mnd';
@@ -1389,6 +1401,23 @@ function initEventListeners() {
     monthlyExpensesInput.addEventListener('input', () => {
       monthlyExpenses = parseFloat(monthlyExpensesInput.value) || 0;
       updateUI();
+    });
+  }
+
+  const freedomCustomNetworthInput = document.getElementById('freedom-custom-networth') as HTMLInputElement;
+  if (freedomCustomNetworthInput) {
+    freedomCustomNetworthInput.addEventListener('input', (e) => {
+      const val = (e.target as HTMLInputElement).value;
+      freedomCustomNetWorth = parseNumber(val);
+      updateUI();
+    });
+    freedomCustomNetworthInput.addEventListener('blur', (e) => {
+      const input = e.target as HTMLInputElement;
+      if (freedomCustomNetWorth > 0) {
+        input.value = formatNumber(freedomCustomNetWorth);
+      } else {
+        input.value = '';
+      }
     });
   }
 
