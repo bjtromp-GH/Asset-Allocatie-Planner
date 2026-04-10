@@ -96,6 +96,7 @@ let investmentAmount = 1000;
 let targetNetWorth = 100000;
 let isPlannerMode = true;
 let isDarkMode = false;
+let isPrivacyMode = false;
 let masterPassword = '';
 let isEncrypted = false;
 let pieChart: Chart | null = null;
@@ -110,6 +111,7 @@ let prevCategoryValues = { Groei: 0, Defensief: 0, Speculatief: 0 };
 let sandboxAssets: Asset[] = [];
 
 const formatCurrency = (value: number) => {
+  if (isPrivacyMode) return '€ ••••';
   return new Intl.NumberFormat('nl-NL', {
     style: 'currency',
     currency: 'EUR',
@@ -174,6 +176,7 @@ function saveState() {
     history,
     isDarkMode,
     isPlannerMode,
+    isPrivacyMode,
   };
   
   const json = JSON.stringify(state);
@@ -275,6 +278,9 @@ function applyState(state: any) {
   }
   if (state.isPlannerMode !== undefined) {
     isPlannerMode = state.isPlannerMode;
+  }
+  if (state.isPrivacyMode !== undefined) {
+    isPrivacyMode = state.isPrivacyMode;
   }
   if (state.date) {
     const dateInput = document.getElementById('current-date') as HTMLInputElement;
@@ -401,6 +407,13 @@ function resetToDefaults() {
 
 function updateUI() {
   saveState();
+  
+  const privacyToggles = document.querySelectorAll('.privacy-toggle-btn');
+  privacyToggles.forEach(btn => {
+    btn.innerHTML = isPrivacyMode ? '<i data-lucide="eye-off" class="w-4 h-4"></i>' : '<i data-lucide="eye" class="w-4 h-4"></i>';
+  });
+  createIcons({ icons });
+
   const totalValue = assets.reduce((sum, asset) => sum + asset.value, 0);
   const totalTarget = assets.reduce((sum, asset) => sum + asset.target, 0);
 
@@ -1457,6 +1470,15 @@ function initEventListeners() {
       updateSecurityUI();
     });
   }
+
+  const privacyToggles = document.querySelectorAll('.privacy-toggle-btn');
+  privacyToggles.forEach(btn => {
+    btn.addEventListener('click', () => {
+      isPrivacyMode = !isPrivacyMode;
+      saveState();
+      updateUI();
+    });
+  });
 
   if (securityBtnMobile && securityModal) {
     securityBtnMobile.addEventListener('click', () => {
