@@ -91,6 +91,9 @@
                         <button id="info-btn-mobile" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400">
                             <i data-lucide="info" class="w-5 h-5"></i>
                         </button>
+                        <button id="average-dutch-btn-mobile" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400">
+                            <i data-lucide="users" class="w-5 h-5"></i>
+                        </button>
                     </div>
                 </div>
                 
@@ -121,6 +124,9 @@
                         </button>
                         <button id="info-btn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400" title="Uitleg over de app">
                             <i data-lucide="info" class="w-5 h-5"></i>
+                        </button>
+                        <button id="average-dutch-btn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400" title="Gemiddelde Nederlander">
+                            <i data-lucide="users" class="w-5 h-5"></i>
                         </button>
                         <button id="security-btn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400 relative" title="Beveiliging instellingen">
                             <i data-lucide="lock" class="w-5 h-5"></i>
@@ -668,6 +674,68 @@
                 </button>
             </div>
         </div>
+    </div>
+
+    <!-- Average Dutch Modal -->
+    <div id="average-dutch-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
+      <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-300">
+        <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
+          <div class="flex items-center gap-3">
+            <div class="bg-amber-500 p-2 rounded-xl text-white">
+              <i data-lucide="users" class="w-5 h-5"></i>
+            </div>
+            <h2 class="text-xl font-bold dark:text-white">Gemiddelde Nederlander</h2>
+          </div>
+          <button id="close-average-dutch-modal" class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition-colors text-slate-500 dark:text-slate-400">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">
+            Dit is de gemiddelde vermogensverdeling van een Nederlands huishouden (gebaseerd op CBS data). Let op: dit is inclusief de eigen woning, wat voor veel Nederlanders het grootste deel van het vermogen vormt.
+          </p>
+          
+          <div class="h-[250px] w-full">
+            <canvas id="average-dutch-chart"></canvas>
+          </div>
+
+          <div class="grid grid-cols-1 gap-2">
+            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full bg-[#3b82f6]"></div>
+                <span class="text-sm font-medium dark:text-white">Eigen Woning</span>
+              </div>
+              <span class="text-sm font-bold dark:text-white">58%</span>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full bg-[#10b981]"></div>
+                <span class="text-sm font-medium dark:text-white">Bank- en spaartegoeden</span>
+              </div>
+              <span class="text-sm font-bold dark:text-white">22%</span>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full bg-[#f97316]"></div>
+                <span class="text-sm font-medium dark:text-white">Beleggingen</span>
+              </div>
+              <span class="text-sm font-bold dark:text-white">12%</span>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full bg-[#6366f1]"></div>
+                <span class="text-sm font-medium dark:text-white">Overig (incl. pensioen)</span>
+              </div>
+              <span class="text-sm font-bold dark:text-white">8%</span>
+            </div>
+          </div>
+        </div>
+        <div class="p-6 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800">
+          <button id="close-average-dutch-modal-btn" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 rounded-xl transition-all active:scale-95 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">
+            Sluiten
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Add Asset Modal -->

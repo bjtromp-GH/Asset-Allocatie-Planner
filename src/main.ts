@@ -105,6 +105,7 @@ let pieChart: Chart | null = null;
 let barChartCurrent: Chart | null = null;
 let barChartComparison: Chart | null = null;
 let historyChart: Chart | null = null;
+let averageDutchChart: Chart | null = null;
 
 // Track previous values for animations
 let prevTotalValue = 0;
@@ -412,6 +413,42 @@ function resetToDefaults() {
     assets = JSON.parse(JSON.stringify(DEFAULT_ASSETS));
     updateUI();
   }
+}
+
+function initAverageDutchChart() {
+  const ctx = document.getElementById('average-dutch-chart') as HTMLCanvasElement;
+  if (!ctx) return;
+
+  if (averageDutchChart) averageDutchChart.destroy();
+
+  const isDark = document.documentElement.classList.contains('dark');
+  const textColor = isDark ? '#94a3b8' : '#64748b';
+
+  averageDutchChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Eigen Woning', 'Spaargeld', 'Beleggingen', 'Overig'],
+      datasets: [{
+        data: [58, 22, 12, 8],
+        backgroundColor: ['#3b82f6', '#10b981', '#f97316', '#6366f1'],
+        borderWidth: 0,
+        hoverOffset: 10
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '70%',
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (context) => ` ${context.label}: ${context.raw}%`
+          }
+        }
+      }
+    }
+  });
 }
 
 function updateUI() {
@@ -1661,6 +1698,34 @@ function initEventListeners() {
   }
 
   updateSecurityUI();
+
+  const averageDutchBtn = document.getElementById('average-dutch-btn');
+  const averageDutchBtnMobile = document.getElementById('average-dutch-btn-mobile');
+  const averageDutchModal = document.getElementById('average-dutch-modal');
+  const closeAverageDutchModal = document.getElementById('close-average-dutch-modal');
+  const closeAverageDutchModalBtn = document.getElementById('close-average-dutch-modal-btn');
+
+  const handleOpenAverageDutch = () => {
+    if (averageDutchModal) {
+      averageDutchModal.classList.remove('hidden');
+      initAverageDutchChart();
+    }
+  };
+
+  const handleCloseAverageDutch = () => {
+    if (averageDutchModal) averageDutchModal.classList.add('hidden');
+  };
+
+  if (averageDutchBtn) averageDutchBtn.addEventListener('click', handleOpenAverageDutch);
+  if (averageDutchBtnMobile) averageDutchBtnMobile.addEventListener('click', handleOpenAverageDutch);
+  if (closeAverageDutchModal) closeAverageDutchModal.addEventListener('click', handleCloseAverageDutch);
+  if (closeAverageDutchModalBtn) closeAverageDutchModalBtn.addEventListener('click', handleCloseAverageDutch);
+  if (averageDutchModal) {
+    averageDutchModal.addEventListener('click', (e) => {
+      if (e.target === averageDutchModal) handleCloseAverageDutch();
+    });
+  }
+
   createIcons({ icons });
 }
 
