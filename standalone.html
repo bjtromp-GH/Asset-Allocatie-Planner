@@ -901,7 +901,7 @@
 
         let assets = [];
 
-        let targetNetWorth = 100000;
+        let targetNetWorth = 1000000;
         let isPlannerMode = true;
         let isDarkMode = false;
         let isPrivacyMode = false;
@@ -1272,6 +1272,9 @@
             lucide.createIcons();
 
             const totalValue = assets.reduce((sum, asset) => sum + asset.value, 0);
+            const liquidValue = assets
+                .filter(asset => !asset.name.toLowerCase().includes('vastgoed'))
+                .reduce((sum, asset) => sum + asset.value, 0);
             const totalTarget = assets.reduce((sum, asset) => sum + asset.target, 0);
 
             // Freedom Calculator Logic
@@ -1284,8 +1287,8 @@
             }
 
             if (freedomTimeEl && freedomPassiveEl) {
-                const months = monthlyExpenses > 0 ? totalValue / monthlyExpenses : 0;
-                const passiveMonthly = (totalValue * 0.04) / 12;
+                const months = monthlyExpenses > 0 ? liquidValue / monthlyExpenses : 0;
+                const passiveMonthly = (liquidValue * 0.04) / 12;
 
                 if (isPrivacyMode) {
                     freedomTimeEl.textContent = '•• mnd';

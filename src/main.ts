@@ -93,7 +93,7 @@ let assets: Asset[] = [];
 
 let history: HistoryEntry[] = [];
 let investmentAmount = 1000;
-let targetNetWorth = 100000;
+let targetNetWorth = 1000000;
 let isPlannerMode = true;
 let isDarkMode = false;
 let isPrivacyMode = false;
@@ -464,6 +464,9 @@ function updateUI() {
   createIcons({ icons });
 
   const totalValue = assets.reduce((sum, asset) => sum + asset.value, 0);
+  const liquidValue = assets
+    .filter(asset => !asset.name.toLowerCase().includes('vastgoed'))
+    .reduce((sum, asset) => sum + asset.value, 0);
   const totalTarget = assets.reduce((sum, asset) => sum + asset.target, 0);
 
   // Freedom Calculator Logic
@@ -481,7 +484,7 @@ function updateUI() {
   }
 
   if (freedomTimeEl && freedomPassiveEl) {
-    const calcValue = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : totalValue;
+    const calcValue = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : liquidValue;
     const months = monthlyExpenses > 0 ? calcValue / monthlyExpenses : 0;
     const passiveMonthly = (calcValue * 0.04) / 12;
 
