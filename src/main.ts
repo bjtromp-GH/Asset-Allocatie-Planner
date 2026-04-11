@@ -181,7 +181,6 @@ function saveState() {
     date: dateInput ? dateInput.value : '',
     history,
     isDarkMode,
-    isPlannerMode,
     isPrivacyMode,
     monthlyExpenses,
   };
@@ -282,9 +281,6 @@ function applyState(state: any) {
     isDarkMode = state.isDarkMode;
     document.documentElement.classList.toggle('dark', isDarkMode);
     document.body.classList.toggle('dark', isDarkMode);
-  }
-  if (state.isPlannerMode !== undefined) {
-    isPlannerMode = state.isPlannerMode;
   }
   if (state.isPrivacyMode !== undefined) {
     isPrivacyMode = state.isPrivacyMode;
@@ -1348,16 +1344,6 @@ function initEventListeners() {
   };
 
   if (themeToggle) themeToggle.addEventListener('click', handleThemeToggle);
-
-  const plannerToggle = document.getElementById('planner-toggle');
-
-  const handlePlannerToggle = () => {
-    isPlannerMode = !isPlannerMode;
-    saveState();
-    updateUI();
-  };
-
-  if (plannerToggle) plannerToggle.addEventListener('click', handlePlannerToggle);
 
   const treemapContainer = document.getElementById('treemap-container');
   if (treemapContainer) {
