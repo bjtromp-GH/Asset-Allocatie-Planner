@@ -1831,6 +1831,84 @@ function initEventListeners() {
     });
   }
 
+  // Feedback Logic
+  const feedbackFab = document.getElementById('feedback-fab');
+  const feedbackModal = document.getElementById('feedback-modal');
+  const closeFeedbackModal = document.getElementById('close-feedback-modal');
+  const feedbackSelection = document.getElementById('feedback-selection');
+  const feedbackForm = document.getElementById('feedback-form');
+  const feedbackSuccess = document.getElementById('feedback-success');
+  const feedbackOptionBtns = document.querySelectorAll('.feedback-option-btn');
+  const backToSelection = document.getElementById('back-to-selection');
+  const submitFeedback = document.getElementById('submit-feedback');
+  const closeFeedbackSuccess = document.getElementById('close-feedback-success');
+  const feedbackText = document.getElementById('feedback-text') as HTMLTextAreaElement;
+  const feedbackFormTitle = document.getElementById('feedback-form-title');
+
+  const toggleFeedbackModal = () => {
+    if (feedbackModal) {
+      const isHidden = feedbackModal.classList.contains('hidden');
+      feedbackModal.classList.toggle('hidden');
+      
+      // Toggle FAB icons
+      const msgIcon = feedbackFab?.querySelector('[data-lucide="message-square"]');
+      const xIcon = feedbackFab?.querySelector('[data-lucide="x"]');
+      if (isHidden) {
+        msgIcon?.classList.add('hidden');
+        xIcon?.classList.remove('hidden');
+        // Reset to selection state when opening
+        feedbackSelection?.classList.remove('hidden');
+        feedbackForm?.classList.add('hidden');
+        feedbackSuccess?.classList.add('hidden');
+        if (feedbackText) feedbackText.value = '';
+      } else {
+        msgIcon?.classList.remove('hidden');
+        xIcon?.classList.add('hidden');
+      }
+    }
+  };
+
+  if (feedbackFab) feedbackFab.addEventListener('click', toggleFeedbackModal);
+  if (closeFeedbackModal) closeFeedbackModal.addEventListener('click', toggleFeedbackModal);
+
+  feedbackOptionBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const type = (btn as HTMLElement).dataset.type;
+      feedbackSelection?.classList.add('hidden');
+      feedbackForm?.classList.remove('hidden');
+      if (feedbackFormTitle) {
+        feedbackFormTitle.textContent = type === 'bug' ? 'Meld een probleem' : 'Stel een functie voor';
+      }
+      if (feedbackText) {
+        feedbackText.placeholder = type === 'bug' ? 'Wat gaat er mis?' : 'Wat zou je graag willen zien?';
+        setTimeout(() => feedbackText.focus(), 100);
+      }
+    });
+  });
+
+  if (backToSelection) {
+    backToSelection.addEventListener('click', () => {
+      feedbackForm?.classList.add('hidden');
+      feedbackSelection?.classList.remove('hidden');
+    });
+  }
+
+  if (submitFeedback) {
+    submitFeedback.addEventListener('click', () => {
+      if (feedbackText && feedbackText.value.trim().length < 5) {
+        alert('Vertel ons iets meer...');
+        return;
+      }
+      // Simulate sending
+      feedbackForm?.classList.add('hidden');
+      feedbackSuccess?.classList.remove('hidden');
+    });
+  }
+
+  if (closeFeedbackSuccess) {
+    closeFeedbackSuccess.addEventListener('click', toggleFeedbackModal);
+  }
+
   createIcons({ icons });
 }
 
