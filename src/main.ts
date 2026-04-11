@@ -89,7 +89,7 @@ const DEFAULT_ASSETS: Asset[] = [
   { id: '8', name: 'Auto', value: 1000, target: 8, color: '#ec4899', category: 'Defensief' },
 ];
 
-let assets: Asset[] = [...DEFAULT_ASSETS];
+let assets: Asset[] = [];
 
 let history: HistoryEntry[] = [];
 let investmentAmount = 1000;
@@ -674,7 +674,7 @@ function updateUI() {
                     value="${formatNumber(asset.value)}"
                     data-id="${asset.id}"
                     data-type="value"
-                    class="asset-input w-20 sm:w-24 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-slate-700"
+                    class="asset-input asset-value-input w-20 sm:w-24 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-slate-700"
                   />
                 </div>
                 <span class="font-mono text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 whitespace-nowrap">${formatPercent(currentPercent)}</span>
@@ -1146,6 +1146,38 @@ function highlightAssetRow(id: string) {
       }, 2000);
     }
   });
+}
+
+function showCoachMark() {
+  setTimeout(() => {
+    const firstValueInput = document.querySelector('.asset-value-input') as HTMLInputElement;
+    const coachMark = document.getElementById('coach-mark');
+    
+    if (firstValueInput && coachMark) {
+      const rect = firstValueInput.getBoundingClientRect();
+      coachMark.style.top = `${window.scrollY + rect.top - 50}px`;
+      coachMark.style.left = `${window.scrollX + rect.left + rect.width / 2 - 80}px`;
+      coachMark.classList.remove('hidden');
+      
+      const hide = () => {
+        coachMark.classList.add('hidden');
+        document.removeEventListener('mousedown', hide);
+        firstValueInput.removeEventListener('input', hide);
+      };
+      document.addEventListener('mousedown', hide);
+      firstValueInput.addEventListener('input', hide);
+    }
+  }, 500);
+}
+
+function checkOnboarding() {
+  const completed = localStorage.getItem('onboarding_completed');
+  const hasData = localStorage.getItem(STORAGE_KEY);
+  
+  if (!completed && !hasData) {
+    const modal = document.getElementById('onboarding-modal');
+    if (modal) modal.classList.remove('hidden');
+  }
 }
 
 function initEventListeners() {
@@ -1729,10 +1761,76 @@ function initEventListeners() {
     });
   }
 
+  // Onboarding
+  const onboardingModal = document.getElementById('onboarding-modal');
+  const onboardingStartBtn = document.getElementById('onboarding-start-btn');
+  const onboardingExampleBtn = document.getElementById('onboarding-example-btn');
+  const onboardingCheckboxes = document.querySelectorAll('.onboarding-asset-checkbox') as NodeListOf<HTMLInputElement>;
+
+  if (onboardingStartBtn) {
+    onboardingStartBtn.addEventListener('click', () => {
+      const selectedAssets: Asset[] = [];
+      const colors = ['#3b82f6', '#10b981', '#f97316', '#6366f1', '#eab308', '#ec4899'];
+      
+      onboardingCheckboxes.forEach((cb, index) => {
+        if (cb.checked) {
+          selectedAssets.push({
+            id: Math.random().toString(36).substring(2, 9),
+            name: cb.value,
+            value: 0,
+            target: 0,
+            color: colors[index % colors.length],
+            category: cb.value === 'Crypto' ? 'Speculatief' : (cb.value === 'Spaargeld' || cb.value === 'Goud' ? 'Defensief' : 'Groei')
+          });
+        }
+      });
+      
+      if (selectedAssets.length === 0) {
+        alert('Selecteer ten minste één asset om te beginnen.');
+        return;
+      }
+      
+      assets = selectedAssets;
+      localStorage.setItem('onboarding_completed', 'true');
+      if (onboardingModal) onboardingModal.classList.add('hidden');
+      saveState();
+      updateUI();
+      showCoachMark();
+    });
+  }
+
+  if (onboardingExampleBtn) {
+    onboardingExampleBtn.addEventListener('click', () => {
+      assets = [
+        { id: 'ex1', name: 'Eigen Woning', value: 250000, target: 50, color: '#3b82f6', category: 'Groei' },
+        { id: 'ex2', name: 'Spaargeld', value: 50000, target: 20, color: '#10b981', category: 'Defensief' },
+        { id: 'ex3', name: 'Beleggingen', value: 30000, target: 20, color: '#f97316', category: 'Groei' },
+        { id: 'ex4', name: 'Overig', value: 20000, target: 10, color: '#6366f1', category: 'Defensief' },
+      ];
+      localStorage.setItem('onboarding_completed', 'true');
+      if (onboardingModal) onboardingModal.classList.add('hidden');
+      
+      const banner = document.getElementById('example-data-banner');
+      if (banner) banner.classList.remove('hidden');
+      
+      saveState();
+      updateUI();
+    });
+  }
+
+  const removeExampleBtn = document.getElementById('remove-example-data');
+  if (removeExampleBtn) {
+    removeExampleBtn.addEventListener('click', () => {
+      const banner = document.getElementById('example-data-banner');
+      if (banner) banner.classList.add('hidden');
+    });
+  }
+
   createIcons({ icons });
 }
 
 // Initial Load
 loadState();
+checkOnboarding();
 updateUI();
 initEventListeners();

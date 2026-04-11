@@ -738,6 +738,86 @@
       </div>
     </div>
 
+    <!-- Onboarding Modal -->
+    <div id="onboarding-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md">
+      <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-500">
+        <div class="p-8 text-center border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
+          <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center text-white mx-auto mb-4 shadow-lg shadow-blue-200 dark:shadow-none">
+            <i data-lucide="sparkles" class="w-8 h-8"></i>
+          </div>
+          <h2 class="text-2xl font-black dark:text-white mb-2">Welkom bij je Vermogensplanner</h2>
+          <p class="text-slate-500 dark:text-slate-400">Laten we beginnen met het in kaart brengen van je huidige bezittingen.</p>
+        </div>
+        
+        <div class="p-8">
+          <p class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4">Welke assets heb je al?</p>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
+              <input type="checkbox" value="Spaargeld" class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 onboarding-asset-checkbox" checked>
+              <span class="text-sm font-semibold dark:text-white group-hover:text-blue-600 transition-colors">Spaargeld</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
+              <input type="checkbox" value="Aandelen" class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 onboarding-asset-checkbox" checked>
+              <span class="text-sm font-semibold dark:text-white group-hover:text-blue-600 transition-colors">Aandelen</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
+              <input type="checkbox" value="Vastgoed" class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 onboarding-asset-checkbox">
+              <span class="text-sm font-semibold dark:text-white group-hover:text-blue-600 transition-colors">Vastgoed</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
+              <input type="checkbox" value="Crypto" class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 onboarding-asset-checkbox">
+              <span class="text-sm font-semibold dark:text-white group-hover:text-blue-600 transition-colors">Crypto</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
+              <input type="checkbox" value="Goud" class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 onboarding-asset-checkbox">
+              <span class="text-sm font-semibold dark:text-white group-hover:text-blue-600 transition-colors">Goud</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
+              <input type="checkbox" value="Pensioen" class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 onboarding-asset-checkbox">
+              <span class="text-sm font-semibold dark:text-white group-hover:text-blue-600 transition-colors">Pensioen</span>
+            </label>
+          </div>
+          
+          <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-2xl border border-blue-100 dark:border-blue-800/50 mb-8">
+            <div class="flex gap-3">
+              <i data-lucide="info" class="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0"></i>
+              <p class="text-xs text-blue-800 dark:text-blue-300 leading-relaxed">
+                Geen zorgen, je kunt later altijd assets toevoegen, verwijderen of de namen aanpassen. Dit is alleen om je een vliegende start te geven.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-3">
+            <button id="onboarding-example-btn" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-4 rounded-2xl transition-all active:scale-95 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
+              Verder met voorbeeld data
+            </button>
+            <button id="onboarding-start-btn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-200 transition-all active:scale-95 dark:shadow-none">
+              Start met mijn selectie
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coach Mark / Tooltip -->
+    <div id="coach-mark" class="fixed z-[180] hidden animate-bounce pointer-events-none">
+      <div class="bg-blue-600 text-white px-4 py-2 rounded-xl shadow-xl text-sm font-bold relative">
+        Vul hier je waardes in!
+        <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-blue-600 rotate-45"></div>
+      </div>
+    </div>
+
+    <!-- Example Data Banner -->
+    <div id="example-data-banner" class="fixed top-20 left-1/2 -translate-x-1/2 z-[100] hidden">
+      <div class="bg-amber-100 dark:bg-amber-900/40 border border-amber-200 dark:border-amber-800/50 px-4 py-2 rounded-full shadow-lg flex items-center gap-2 backdrop-blur-md">
+        <i data-lucide="info" class="w-4 h-4 text-amber-600 dark:text-amber-400"></i>
+        <span class="text-xs font-bold text-amber-800 dark:text-amber-200">Dit is een voorbeeld allocatie van een gemiddelde Nederlander</span>
+        <button id="remove-example-data" class="ml-2 p-1 hover:bg-amber-200 dark:hover:bg-amber-800 rounded-full transition-colors">
+          <i data-lucide="x" class="w-3 h-3 text-amber-600 dark:text-amber-400"></i>
+        </button>
+      </div>
+    </div>
+
     <!-- Add Asset Modal -->
     <div id="add-asset-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
         <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-300">
@@ -813,7 +893,7 @@
             { id: '8', name: 'Auto', value: 1000, target: 8, color: '#ec4899', category: 'Defensief' },
         ];
 
-        let assets = JSON.parse(JSON.stringify(DEFAULT_ASSETS));
+        let assets = [];
 
         let targetNetWorth = 100000;
         let isPlannerMode = true;
@@ -1387,7 +1467,7 @@
                                                 value="${formatNumber(asset.value)}"
                                                 data-id="${asset.id}"
                                                 data-type="value"
-                                                class="asset-input w-20 sm:w-24 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-slate-700"
+                                                class="asset-input asset-value-input w-20 sm:w-24 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-slate-700"
                                             />
                                         </div>
                                         <span class="font-mono text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 whitespace-nowrap">${formatPercent(currentPercent)}</span>
@@ -1820,6 +1900,38 @@
                     }, 2000);
                 }
             });
+        }
+
+        function showCoachMark() {
+            setTimeout(() => {
+                const firstValueInput = document.querySelector('.asset-value-input');
+                const coachMark = document.getElementById('coach-mark');
+                
+                if (firstValueInput && coachMark) {
+                    const rect = firstValueInput.getBoundingClientRect();
+                    coachMark.style.top = `${window.scrollY + rect.top - 50}px`;
+                    coachMark.style.left = `${window.scrollX + rect.left + rect.width / 2 - 80}px`;
+                    coachMark.classList.remove('hidden');
+                    
+                    const hide = () => {
+                        coachMark.classList.add('hidden');
+                        document.removeEventListener('mousedown', hide);
+                        firstValueInput.removeEventListener('input', hide);
+                    };
+                    document.addEventListener('mousedown', hide);
+                    firstValueInput.addEventListener('input', hide);
+                }
+            }, 500);
+        }
+
+        function checkOnboarding() {
+            const completed = localStorage.getItem('onboarding_completed');
+            const hasData = localStorage.getItem(STORAGE_KEY);
+            
+            if (!completed && !hasData) {
+                const modal = document.getElementById('onboarding-modal');
+                if (modal) modal.classList.remove('hidden');
+            }
         }
 
         function initEventListeners() {
@@ -2398,12 +2510,78 @@
                 });
             }
 
+            // Onboarding
+            const onboardingModal = document.getElementById('onboarding-modal');
+            const onboardingStartBtn = document.getElementById('onboarding-start-btn');
+            const onboardingExampleBtn = document.getElementById('onboarding-example-btn');
+            const onboardingCheckboxes = document.querySelectorAll('.onboarding-asset-checkbox');
+
+            if (onboardingStartBtn) {
+                onboardingStartBtn.addEventListener('click', () => {
+                    const selectedAssets = [];
+                    const colors = ['#3b82f6', '#10b981', '#f97316', '#6366f1', '#eab308', '#ec4899'];
+                    
+                    onboardingCheckboxes.forEach((cb, index) => {
+                        if (cb.checked) {
+                            selectedAssets.push({
+                                id: Math.random().toString(36).substring(2, 9),
+                                name: cb.value,
+                                value: 0,
+                                target: 0,
+                                color: colors[index % colors.length],
+                                category: cb.value === 'Crypto' ? 'Speculatief' : (cb.value === 'Spaargeld' || cb.value === 'Goud' ? 'Defensief' : 'Groei')
+                            });
+                        }
+                    });
+                    
+                    if (selectedAssets.length === 0) {
+                        alert('Selecteer ten minste één asset om te beginnen.');
+                        return;
+                    }
+                    
+                    assets = selectedAssets;
+                    localStorage.setItem('onboarding_completed', 'true');
+                    if (onboardingModal) onboardingModal.classList.add('hidden');
+                    saveState();
+                    updateUI();
+                    showCoachMark();
+                });
+            }
+
+            if (onboardingExampleBtn) {
+                onboardingExampleBtn.addEventListener('click', () => {
+                    assets = [
+                        { id: 'ex1', name: 'Eigen Woning', value: 250000, target: 50, color: '#3b82f6', category: 'Groei' },
+                        { id: 'ex2', name: 'Spaargeld', value: 50000, target: 20, color: '#10b981', category: 'Defensief' },
+                        { id: 'ex3', name: 'Beleggingen', value: 30000, target: 20, color: '#f97316', category: 'Groei' },
+                        { id: 'ex4', name: 'Overig', value: 20000, target: 10, color: '#6366f1', category: 'Defensief' },
+                    ];
+                    localStorage.setItem('onboarding_completed', 'true');
+                    if (onboardingModal) onboardingModal.classList.add('hidden');
+                    
+                    const banner = document.getElementById('example-data-banner');
+                    if (banner) banner.classList.remove('hidden');
+                    
+                    saveState();
+                    updateUI();
+                });
+            }
+
+            const removeExampleBtn = document.getElementById('remove-example-data');
+            if (removeExampleBtn) {
+                removeExampleBtn.addEventListener('click', () => {
+                    const banner = document.getElementById('example-data-banner');
+                    if (banner) banner.classList.add('hidden');
+                });
+            }
+
             updateSecurityUI();
         }
 
         // Initial Load
         window.onload = () => {
             loadState();
+            checkOnboarding();
             updateUI();
             initEventListeners();
         };
