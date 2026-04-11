@@ -95,10 +95,36 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+          <!-- Pie Chart (Moved to top for mobile order) -->
+          <section class="lg:col-span-5 order-1 lg:order-2 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+            <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
+              <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i>
+              Huidige Allocatie (Cirkel)
+            </h2>
+            <div class="h-[320px] w-full relative">
+              <canvas id="pie-chart"></canvas>
+            </div>
+            
+            <div class="mt-8 flex justify-between items-end border-b border-slate-50 pb-2 dark:border-slate-800">
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] uppercase tracking-wider opacity-60 dark:text-slate-400">Totaal Vermogen</span>
+                <button class="privacy-toggle-btn p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition-colors" title="Privacy modus">
+                  <i data-lucide="eye" class="w-5 h-5"></i>
+                </button>
+              </div>
+              <span id="pie-total-value" class="text-lg font-bold text-slate-900 dark:text-white">€ 0,00</span>
+            </div>
+            
+            <!-- Legend -->
+            <div id="pie-legend" class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 mt-4 dark:border-slate-800">
+              <!-- Dynamically populated -->
+            </div>
+          </section>
+
           <!-- Left Column: Assets & Charts -->
           <div class="lg:col-span-7 flex flex-col gap-4 order-2 lg:order-1">
             <!-- Asset Management Table -->
-            <section id="assets-section" class="order-2 lg:order-1 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
+            <section id="assets-section" class="order-1 lg:order-1 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
               <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between dark:border-slate-800">
                 <h2 class="font-semibold flex items-center gap-2 dark:text-white">
                   <i data-lucide="wallet" class="w-4 h-4 text-blue-600"></i>
@@ -135,7 +161,7 @@
             </section>
 
             <!-- Bar Chart: Current vs Target -->
-            <section id="comparison-section" class="order-1 lg:order-2 hidden md:block bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+            <section id="comparison-section" class="order-2 lg:order-2 hidden md:block bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
               <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
                 <i data-lucide="bar-chart-3" class="w-4 h-4 text-blue-600"></i>
                 Huidig vs Doel
@@ -146,7 +172,7 @@
             </section>
 
             <!-- Bar Chart: Current Allocation -->
-            <section class="order-1 lg:order-3 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+            <section class="order-3 lg:order-3 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
               <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
                 <i data-lucide="bar-chart-3" class="w-4 h-4 text-blue-600"></i>
                 Huidige Allocatie (Staaf)
@@ -157,34 +183,8 @@
             </section>
           </div>
 
-          <!-- Right Column: Pie, Target, Freedom, Rebalance -->
-          <div class="lg:col-span-5 space-y-4 order-1 lg:order-2">
-            <!-- Pie Chart -->
-            <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
-              <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
-                <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i>
-                Huidige Allocatie (Cirkel)
-              </h2>
-              <div class="h-[320px] w-full relative">
-                <canvas id="pie-chart"></canvas>
-              </div>
-              
-              <div class="mt-8 flex justify-between items-end border-b border-slate-50 pb-2 dark:border-slate-800">
-                <div class="flex items-center gap-2">
-                  <span class="text-[10px] uppercase tracking-wider opacity-60 dark:text-slate-400">Totaal Vermogen</span>
-                  <button class="privacy-toggle-btn p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition-colors" title="Privacy modus">
-                    <i data-lucide="eye" class="w-5 h-5"></i>
-                  </button>
-                </div>
-                <span id="pie-total-value" class="text-lg font-bold text-slate-900 dark:text-white">€ 0,00</span>
-              </div>
-              
-              <!-- Legend -->
-              <div id="pie-legend" class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 mt-4 dark:border-slate-800">
-                <!-- Dynamically populated -->
-              </div>
-            </section>
-
+          <!-- Right Column: Target, Freedom, Rebalance -->
+          <div class="lg:col-span-5 space-y-4 order-3 lg:order-2">
             <!-- Target Net Worth Card -->
             <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm dark:bg-slate-900 dark:border-slate-800">
               <div class="flex flex-col gap-6">
