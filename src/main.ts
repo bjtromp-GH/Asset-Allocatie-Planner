@@ -1313,14 +1313,12 @@ function initEventListeners() {
   }
 
   const saveHistoryBtn = document.getElementById('save-history-btn');
-  const saveHistoryBtnMobile = document.getElementById('save-history-btn-mobile');
   
   const handleSaveHistory = () => {
     addToHistory();
   };
 
   if (saveHistoryBtn) saveHistoryBtn.addEventListener('click', handleSaveHistory);
-  if (saveHistoryBtnMobile) saveHistoryBtnMobile.addEventListener('click', handleSaveHistory);
 
   const historyTableBody = document.getElementById('history-table-body');
   if (historyTableBody) {
@@ -1340,7 +1338,6 @@ function initEventListeners() {
   }
 
   const themeToggle = document.getElementById('theme-toggle');
-  const themeToggleMobile = document.getElementById('theme-toggle-mobile');
   
   const handleThemeToggle = () => {
     isDarkMode = !isDarkMode;
@@ -1351,10 +1348,8 @@ function initEventListeners() {
   };
 
   if (themeToggle) themeToggle.addEventListener('click', handleThemeToggle);
-  if (themeToggleMobile) themeToggleMobile.addEventListener('click', handleThemeToggle);
 
   const plannerToggle = document.getElementById('planner-toggle');
-  const plannerToggleMobile = document.getElementById('planner-toggle-mobile');
 
   const handlePlannerToggle = () => {
     isPlannerMode = !isPlannerMode;
@@ -1363,7 +1358,6 @@ function initEventListeners() {
   };
 
   if (plannerToggle) plannerToggle.addEventListener('click', handlePlannerToggle);
-  if (plannerToggleMobile) plannerToggleMobile.addEventListener('click', handlePlannerToggle);
 
   const treemapContainer = document.getElementById('treemap-container');
   if (treemapContainer) {
@@ -1375,7 +1369,6 @@ function initEventListeners() {
 
   // Security UI
   const securityBtn = document.getElementById('security-btn');
-  const securityBtnMobile = document.getElementById('security-btn-mobile');
   const securityModal = document.getElementById('security-modal');
   const closeSecurityModal = document.getElementById('close-security-modal');
   const savePasswordBtn = document.getElementById('save-password-btn');
@@ -1391,7 +1384,6 @@ function initEventListeners() {
   const updateSecurityUI = () => {
     const statusDesc = securityStatusText?.nextElementSibling as HTMLElement;
     const securityBadge = document.getElementById('security-badge');
-    const securityBadgeMobile = document.getElementById('security-badge-mobile');
 
     if (masterPassword) {
       if (securityStatusText) securityStatusText.textContent = 'Portfolio is versleuteld';
@@ -1407,7 +1399,6 @@ function initEventListeners() {
       if (lockNowBtn) lockNowBtn.classList.remove('hidden');
       
       securityBadge?.classList.add('hidden');
-      securityBadgeMobile?.classList.add('hidden');
     } else {
       if (securityStatusText) securityStatusText.textContent = 'Geen wachtwoord ingesteld';
       if (statusDesc) {
@@ -1422,7 +1413,6 @@ function initEventListeners() {
       if (lockNowBtn) lockNowBtn.classList.add('hidden');
 
       securityBadge?.classList.remove('hidden');
-      securityBadgeMobile?.classList.remove('hidden');
     }
     if (confirmPasswordContainer) confirmPasswordContainer.classList.remove('hidden');
     createIcons({ icons });
@@ -1438,7 +1428,6 @@ function initEventListeners() {
 
   // Info Modal UI
   const infoBtn = document.getElementById('info-btn');
-  const infoBtnMobile = document.getElementById('info-btn-mobile');
   const infoModal = document.getElementById('info-modal');
   const closeInfoModal = document.getElementById('close-info-modal');
   const infoModalOk = document.getElementById('info-modal-ok');
@@ -1448,7 +1437,6 @@ function initEventListeners() {
   };
 
   if (infoBtn) infoBtn.addEventListener('click', openInfo);
-  if (infoBtnMobile) infoBtnMobile.addEventListener('click', openInfo);
 
   if (closeInfoModal && infoModal) {
     closeInfoModal.addEventListener('click', () => {
@@ -1551,13 +1539,6 @@ function initEventListeners() {
     });
   });
 
-  if (securityBtnMobile && securityModal) {
-    securityBtnMobile.addEventListener('click', () => {
-      securityModal.classList.remove('hidden');
-      updateSecurityUI();
-    });
-  }
-
   // Add a dedicated lock button or use the security button to lock?
   // Let's add a "Lock Now" button in the security modal.
 
@@ -1625,9 +1606,6 @@ function initEventListeners() {
 
   const resetAppBtn = document.getElementById('reset-app-btn');
   if (resetAppBtn) resetAppBtn.addEventListener('click', resetApp);
-
-  const resetAppBtnMobile = document.getElementById('reset-app-btn-mobile');
-  if (resetAppBtnMobile) resetAppBtnMobile.addEventListener('click', resetApp);
 
   const clearAllDataBtn = document.getElementById('clear-all-data-btn');
   if (clearAllDataBtn) {
@@ -1752,7 +1730,6 @@ function initEventListeners() {
   updateSecurityUI();
 
   const averageDutchBtn = document.getElementById('average-dutch-btn');
-  const averageDutchBtnMobile = document.getElementById('average-dutch-btn-mobile');
   const averageDutchModal = document.getElementById('average-dutch-modal');
   const closeAverageDutchModal = document.getElementById('close-average-dutch-modal');
   const closeAverageDutchModalBtn = document.getElementById('close-average-dutch-modal-btn');
@@ -1769,7 +1746,6 @@ function initEventListeners() {
   };
 
   if (averageDutchBtn) averageDutchBtn.addEventListener('click', handleOpenAverageDutch);
-  if (averageDutchBtnMobile) averageDutchBtnMobile.addEventListener('click', handleOpenAverageDutch);
   if (closeAverageDutchModal) closeAverageDutchModal.addEventListener('click', handleCloseAverageDutch);
   if (closeAverageDutchModalBtn) closeAverageDutchModalBtn.addEventListener('click', handleCloseAverageDutch);
   if (averageDutchModal) {
