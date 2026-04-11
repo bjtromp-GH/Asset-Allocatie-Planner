@@ -849,10 +849,15 @@
     <script type="module" src="/src/main.ts"></script>
 
     <!-- Feedback Button -->
-    <button id="feedback-fab" class="fixed bottom-6 right-6 w-14 h-14 bg-blue-600 text-white rounded-full shadow-2xl flex items-center justify-center z-[150] transition-all hover:scale-110 active:scale-95 group">
-      <i data-lucide="message-square" class="w-6 h-6"></i>
-      <i data-lucide="x" class="w-6 h-6 hidden"></i>
-    </button>
+    <div class="fixed bottom-6 right-6 z-[150] flex items-center justify-center">
+      <div id="feedback-pulse-1" class="absolute w-14 h-14 bg-blue-600/30 rounded-full animate-pulse-ring"></div>
+      <div id="feedback-pulse-2" class="absolute w-14 h-14 bg-blue-600/20 rounded-full animate-pulse-ring" style="animation-delay: 1s"></div>
+      
+      <button id="feedback-fab" class="relative w-14 h-14 bg-blue-600 text-white rounded-full shadow-2xl flex items-center justify-center transition-all hover:scale-110 active:scale-95 group">
+        <i data-lucide="message-square-plus" class="w-6 h-6"></i>
+        <i data-lucide="x" class="w-6 h-6 hidden"></i>
+      </button>
+    </div>
 
     <!-- Feedback Modal -->
     <div id="feedback-modal" class="fixed bottom-24 right-6 z-[160] hidden">

@@ -1851,11 +1851,16 @@ function initEventListeners() {
       feedbackModal.classList.toggle('hidden');
       
       // Toggle FAB icons
-      const msgIcon = feedbackFab?.querySelector('[data-lucide="message-square"]');
+      const msgIcon = feedbackFab?.querySelector('[data-lucide="message-square-plus"]');
       const xIcon = feedbackFab?.querySelector('[data-lucide="x"]');
+      const pulse1 = document.getElementById('feedback-pulse-1');
+      const pulse2 = document.getElementById('feedback-pulse-2');
+      
       if (isHidden) {
         msgIcon?.classList.add('hidden');
         xIcon?.classList.remove('hidden');
+        pulse1?.classList.add('hidden');
+        pulse2?.classList.add('hidden');
         // Reset to selection state when opening
         feedbackSelection?.classList.remove('hidden');
         feedbackForm?.classList.add('hidden');
@@ -1864,6 +1869,8 @@ function initEventListeners() {
       } else {
         msgIcon?.classList.remove('hidden');
         xIcon?.classList.add('hidden');
+        pulse1?.classList.remove('hidden');
+        pulse2?.classList.remove('hidden');
       }
     }
   };
