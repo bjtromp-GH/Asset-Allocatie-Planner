@@ -94,6 +94,9 @@
                         <button id="average-dutch-btn-mobile" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400">
                             <i data-lucide="users" class="w-5 h-5"></i>
                         </button>
+                        <button id="reset-app-btn-mobile" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400" title="Begin opnieuw">
+                            <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+                        </button>
                     </div>
                 </div>
                 
@@ -133,6 +136,9 @@
                             <span id="security-badge" class="absolute top-2 right-2 w-2 h-2 bg-amber-500 rounded-full hidden">
                                 <span class="absolute inset-0 rounded-full bg-amber-500 animate-ping opacity-75"></span>
                             </span>
+                        </button>
+                        <button id="reset-app-btn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400" title="Begin opnieuw (Reset)">
+                            <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
                         </button>
                         <button id="save-history-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all shadow-sm active:scale-95">
                             <i data-lucide="save" class="w-4 h-4"></i>
@@ -2388,6 +2394,20 @@
                     }
                 });
             }
+
+            const resetApp = () => {
+                if (confirm('Weet je zeker dat je helemaal opnieuw wilt beginnen? Alle opgeslagen gegevens en instellingen worden gewist.')) {
+                    localStorage.removeItem(STORAGE_KEY);
+                    localStorage.removeItem('onboarding_completed');
+                    location.reload();
+                }
+            };
+
+            const resetAppBtn = document.getElementById('reset-app-btn');
+            if (resetAppBtn) resetAppBtn.addEventListener('click', resetApp);
+
+            const resetAppBtnMobile = document.getElementById('reset-app-btn-mobile');
+            if (resetAppBtnMobile) resetAppBtnMobile.addEventListener('click', resetApp);
 
             const clearAllDataBtn = document.getElementById('clear-all-data-btn');
             if (clearAllDataBtn) {

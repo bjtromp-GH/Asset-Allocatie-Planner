@@ -1612,6 +1612,20 @@ function initEventListeners() {
     });
   }
 
+  const resetApp = () => {
+    if (confirm('Weet je zeker dat je helemaal opnieuw wilt beginnen? Alle opgeslagen gegevens en instellingen worden gewist.')) {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem('onboarding_completed');
+      location.reload();
+    }
+  };
+
+  const resetAppBtn = document.getElementById('reset-app-btn');
+  if (resetAppBtn) resetAppBtn.addEventListener('click', resetApp);
+
+  const resetAppBtnMobile = document.getElementById('reset-app-btn-mobile');
+  if (resetAppBtnMobile) resetAppBtnMobile.addEventListener('click', resetApp);
+
   const clearAllDataBtn = document.getElementById('clear-all-data-btn');
   if (clearAllDataBtn) {
     clearAllDataBtn.addEventListener('click', () => {
