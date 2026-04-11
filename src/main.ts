@@ -1180,23 +1180,12 @@ function checkOnboarding() {
     if (modal) {
       modal.classList.remove('hidden');
       
-      // Typewriter effect for the question
+      // Smooth fade-up effect for the question
       const questionEl = document.getElementById('onboarding-question');
       if (questionEl) {
-        const text = "Hoeveel ben je waard?";
-        let i = 0;
-        questionEl.classList.remove('opacity-0');
-        questionEl.textContent = "";
-        
-        const typeWriter = () => {
-          if (i < text.length) {
-            questionEl.textContent += text.charAt(i);
-            i++;
-            setTimeout(typeWriter, 50);
-          }
-        };
-        
-        setTimeout(typeWriter, 600); // Delay slightly after modal appears
+        setTimeout(() => {
+          questionEl.classList.remove('opacity-0', 'translate-y-4', 'blur-sm');
+        }, 400); // Delay slightly after modal appears
       }
     }
   }
