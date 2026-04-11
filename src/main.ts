@@ -116,6 +116,8 @@ const formatCurrency = (value: number) => {
   return new Intl.NumberFormat('nl-NL', {
     style: 'currency',
     currency: 'EUR',
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
   }).format(value);
 };
 
@@ -1716,6 +1718,7 @@ function initEventListeners() {
   updateSecurityUI();
 
   const averageDutchBtn = document.getElementById('average-dutch-btn');
+  const averageDutchBtnInline = document.getElementById('average-dutch-btn-inline');
   const averageDutchModal = document.getElementById('average-dutch-modal');
   const closeAverageDutchModal = document.getElementById('close-average-dutch-modal');
   const closeAverageDutchModalBtn = document.getElementById('close-average-dutch-modal-btn');
@@ -1732,6 +1735,7 @@ function initEventListeners() {
   };
 
   if (averageDutchBtn) averageDutchBtn.addEventListener('click', handleOpenAverageDutch);
+  if (averageDutchBtnInline) averageDutchBtnInline.addEventListener('click', handleOpenAverageDutch);
   if (closeAverageDutchModal) closeAverageDutchModal.addEventListener('click', handleCloseAverageDutch);
   if (closeAverageDutchModalBtn) closeAverageDutchModalBtn.addEventListener('click', handleCloseAverageDutch);
   if (averageDutchModal) {

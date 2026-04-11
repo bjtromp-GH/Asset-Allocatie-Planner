@@ -128,6 +128,9 @@
                   Asset Beheer
                 </h2>
                 <div class="flex items-center gap-2">
+                  <button id="average-dutch-btn-inline" class="text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-700 px-2 py-1 rounded-lg hover:bg-amber-200 transition-all dark:bg-amber-900/40 dark:text-amber-400" title="Gemiddelde Nederlander">
+                    Gemiddelde Nederlander
+                  </button>
                   <span id="target-warning" class="hidden text-xs font-medium px-2 py-1 rounded-full"></span>
                   <button id="reset-colors-btn" class="text-slate-400 hover:text-blue-600 transition-all p-1.5 rounded-lg" title="Standaard herstellen">
                     <i data-lucide="refresh-cw" class="w-4 h-4"></i>
@@ -420,15 +423,6 @@
           <i data-lucide="history" class="w-5 h-5"></i>
           <span class="text-[9px] font-bold uppercase tracking-widest">Historie</span>
         </a>
-        <button id="security-btn-mobile" class="flex flex-col items-center gap-1 text-slate-400 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors flex-1">
-          <div class="relative">
-            <i data-lucide="lock" class="w-5 h-5"></i>
-            <span id="security-badge-mobile" class="absolute -top-1 -right-1 w-2 h-2 bg-amber-500 rounded-full hidden">
-              <span class="absolute inset-0 rounded-full bg-amber-500 animate-ping opacity-75"></span>
-            </span>
-          </div>
-          <span class="text-[9px] font-bold uppercase tracking-widest">Slot</span>
-        </button>
       </nav>
 
     </div>
@@ -607,13 +601,13 @@
 
     <!-- Average Dutch Modal -->
     <div id="average-dutch-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-      <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-300">
-        <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
+      <div class="bg-white dark:bg-slate-900 w-full max-w-md sm:max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-300">
+        <div class="p-5 sm:p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
           <div class="flex items-center gap-3">
             <div class="bg-amber-500 p-2 rounded-xl text-white">
-              <i data-lucide="users" class="w-5 h-5"></i>
+              <i data-lucide="users" class="w-4 h-4 sm:w-5 h-5"></i>
             </div>
-            <h2 class="text-xl font-bold dark:text-white">Gemiddelde Nederlander</h2>
+            <h2 class="text-lg sm:text-xl font-bold dark:text-white">Gemiddelde Nederlander</h2>
           </div>
           <button id="close-average-dutch-modal" class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition-colors text-slate-500 dark:text-slate-400">
             <i data-lucide="x" class="w-5 h-5"></i>
@@ -722,12 +716,12 @@
 
     <!-- Onboarding Modal -->
     <div id="onboarding-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md">
-      <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-500">
-        <div class="p-8 text-center border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
-          <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center text-white mx-auto mb-4 shadow-lg shadow-blue-200 dark:shadow-none">
-            <i data-lucide="sparkles" class="w-8 h-8"></i>
+      <div class="bg-white dark:bg-slate-900 w-full max-w-lg sm:max-w-2xl rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-500">
+        <div class="p-6 sm:p-8 text-center border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
+          <div class="w-12 h-12 sm:w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center text-white mx-auto mb-4 shadow-lg shadow-blue-200 dark:shadow-none">
+            <i data-lucide="sparkles" class="w-6 h-6 sm:w-8 h-8"></i>
           </div>
-          <h2 class="text-2xl font-black dark:text-white mb-2">Welkom bij je Vermogensplanner</h2>
+          <h2 class="text-xl sm:text-2xl font-black dark:text-white mb-2">Welkom bij GeldDash</h2>
           <p class="text-slate-500 dark:text-slate-400">Laten we beginnen met het in kaart brengen van je huidige bezittingen.</p>
         </div>
         
@@ -771,7 +765,7 @@
 
           <div class="flex flex-col sm:flex-row gap-3">
             <button id="onboarding-example-btn" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-4 rounded-2xl transition-all active:scale-95 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
-              Verder met voorbeeld data
+              Verder met voorbeeldgegevens
             </button>
             <button id="onboarding-start-btn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-200 transition-all active:scale-95 dark:shadow-none">
               Start met mijn selectie
@@ -789,8 +783,8 @@
       </div>
     </div>
 
-    <!-- Example Data Banner -->
-    <div id="example-data-banner" class="fixed top-20 left-1/2 -translate-x-1/2 z-[100] hidden">
+    <!-- Example Data Banner (Hidden as requested) -->
+    <div id="example-data-banner" class="fixed top-20 left-1/2 -translate-x-1/2 z-[100] hidden opacity-0 pointer-events-none">
       <div class="bg-amber-100 dark:bg-amber-900/40 border border-amber-200 dark:border-amber-800/50 px-4 py-2 rounded-full shadow-lg flex items-center gap-2 backdrop-blur-md">
         <i data-lucide="info" class="w-4 h-4 text-amber-600 dark:text-amber-400"></i>
         <span class="text-xs font-bold text-amber-800 dark:text-amber-200">Dit is een voorbeeld allocatie van een gemiddelde Nederlander</span>
