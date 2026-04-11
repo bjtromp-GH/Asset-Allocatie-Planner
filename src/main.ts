@@ -1177,7 +1177,28 @@ function checkOnboarding() {
   
   if (!completed && !hasData) {
     const modal = document.getElementById('onboarding-modal');
-    if (modal) modal.classList.remove('hidden');
+    if (modal) {
+      modal.classList.remove('hidden');
+      
+      // Typewriter effect for the question
+      const questionEl = document.getElementById('onboarding-question');
+      if (questionEl) {
+        const text = "Hoeveel ben je waard?";
+        let i = 0;
+        questionEl.classList.remove('opacity-0');
+        questionEl.textContent = "";
+        
+        const typeWriter = () => {
+          if (i < text.length) {
+            questionEl.textContent += text.charAt(i);
+            i++;
+            setTimeout(typeWriter, 50);
+          }
+        };
+        
+        setTimeout(typeWriter, 600); // Delay slightly after modal appears
+      }
+    }
   }
 }
 
