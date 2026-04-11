@@ -1810,9 +1810,21 @@ function initEventListeners() {
       assets = selectedAssets;
       localStorage.setItem('onboarding_completed', 'true');
       if (onboardingModal) onboardingModal.classList.add('hidden');
+      
+      const explanationModal = document.getElementById('onboarding-explanation-modal');
+      if (explanationModal) explanationModal.classList.remove('hidden');
+      
       saveState();
       updateUI();
       showCoachMark();
+    });
+  }
+
+  const closeExplanationBtn = document.getElementById('close-explanation-btn');
+  if (closeExplanationBtn) {
+    closeExplanationBtn.addEventListener('click', () => {
+      const explanationModal = document.getElementById('onboarding-explanation-modal');
+      if (explanationModal) explanationModal.classList.add('hidden');
     });
   }
 

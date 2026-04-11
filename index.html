@@ -225,10 +225,11 @@
 
             <!-- Freedom Calculator Section -->
             <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
-              <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
+              <h2 class="font-semibold flex items-center gap-2 mb-1 dark:text-white">
                 <i data-lucide="unlock" class="w-4 h-4 text-amber-500"></i>
                 Wat kun je met je vermogen?
               </h2>
+              <p class="text-[10px] text-slate-400 mb-6 dark:text-slate-500 italic">We gaan hierbij uit van je liquide assets (dus zonder vastgoed).</p>
               
               <div class="space-y-6">
                 <!-- Custom Net Worth Input -->
@@ -670,6 +671,59 @@
         <div class="p-6 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800">
           <button id="close-average-dutch-modal-btn" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 rounded-xl transition-all active:scale-95 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">
             Sluiten
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Onboarding Explanation Modal -->
+    <div id="onboarding-explanation-modal" class="fixed inset-0 z-[250] hidden flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md">
+      <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-500">
+        <div class="relative h-48 overflow-hidden">
+          <img 
+            src="https://picsum.photos/seed/finance-planning/800/400" 
+            alt="Planning" 
+            class="w-full h-full object-cover"
+            referrerPolicy="no-referrer"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-white dark:from-slate-900 to-transparent"></div>
+          <div class="absolute bottom-4 left-6">
+            <div class="bg-blue-600 p-2 rounded-xl text-white w-fit mb-2 shadow-lg">
+              <i data-lucide="pen-tool" class="w-5 h-5"></i>
+            </div>
+            <h2 class="text-2xl font-black dark:text-white">Tijd voor actie!</h2>
+          </div>
+        </div>
+        
+        <div class="p-8 space-y-4">
+          <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+            Ga er even goed voor zitten. Om een eerlijk beeld van je financiële toekomst te krijgen, is het belangrijk dat je nu je assets en hun huidige waarden invult.
+          </p>
+          <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
+            <ul class="space-y-3">
+              <li class="flex items-start gap-3">
+                <div class="mt-1 bg-green-100 dark:bg-green-900/30 p-1 rounded-full">
+                  <i data-lucide="check" class="w-3 h-3 text-green-600 dark:text-green-400"></i>
+                </div>
+                <span class="text-sm text-slate-600 dark:text-slate-400">Vul je <strong>huidige waarde</strong> in bij Asset Beheer.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="mt-1 bg-green-100 dark:bg-green-900/30 p-1 rounded-full">
+                  <i data-lucide="check" class="w-3 h-3 text-green-600 dark:text-green-400"></i>
+                </div>
+                <span class="text-sm text-slate-600 dark:text-slate-400">Stel je <strong>doelpercentages</strong> in voor je ideale verdeling.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="mt-1 bg-green-100 dark:bg-green-900/30 p-1 rounded-full">
+                  <i data-lucide="check" class="w-3 h-3 text-green-600 dark:text-green-400"></i>
+                </div>
+                <span class="text-sm text-slate-600 dark:text-slate-400">Kijk bij de <strong>Planner</strong> wat je volgende stap is.</span>
+              </li>
+            </ul>
+          </div>
+          
+          <button id="close-explanation-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-200 transition-all active:scale-95 dark:shadow-none">
+            Ik ga aan de slag
           </button>
         </div>
       </div>
