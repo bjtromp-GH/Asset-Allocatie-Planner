@@ -2331,6 +2331,8 @@ function initEventListeners() {
   // Intro Screen Logic
   const introScreen = document.getElementById('intro-screen');
   const introProgress = document.getElementById('intro-progress');
+  const introContinueBtn = document.getElementById('intro-continue-btn');
+  const introStatus = document.getElementById('intro-status');
   
   if (introScreen && introProgress) {
     // Start progress bar
@@ -2338,13 +2340,37 @@ function initEventListeners() {
       introProgress.style.width = '100%';
     }, 100);
 
-    // Hide intro screen after 2.5 seconds
+    // Show button after progress finishes
     setTimeout(() => {
+      if (introStatus) introStatus.classList.add('hidden');
+      if (introContinueBtn) introContinueBtn.classList.remove('hidden');
+    }, 2200);
+
+    // Transition on button click
+    introContinueBtn?.addEventListener('click', () => {
       introScreen.classList.add('opacity-0', 'pointer-events-none', 'scale-110');
       setTimeout(() => {
         introScreen.remove();
+        showWelcomePopup();
       }, 1000);
-    }, 2500);
+    });
+  }
+
+  function showWelcomePopup() {
+    const welcomePopup = document.getElementById('welcome-popup');
+    const closeBtn = document.getElementById('close-welcome-popup');
+    const completed = localStorage.getItem('welcome_shown');
+
+    if (welcomePopup && !completed) {
+      welcomePopup.classList.remove('hidden');
+      closeBtn?.addEventListener('click', () => {
+        welcomePopup.classList.add('hidden');
+        localStorage.setItem('welcome_shown', 'true');
+        checkOnboarding();
+      }, { once: true });
+    } else {
+      checkOnboarding();
+    }
   }
 
   createIcons({ icons });
@@ -2352,6 +2378,6 @@ function initEventListeners() {
 
 // Initial Load
 loadState();
-checkOnboarding();
+// checkOnboarding(); // Triggered after intro/welcome
 updateUI();
 initEventListeners();

@@ -15,11 +15,37 @@
     <!-- Intro Screen -->
     <div id="intro-screen" class="fixed inset-0 z-[100] bg-white flex items-center justify-center transition-all duration-1000 ease-in-out overflow-hidden">
       <img src="/src/Introscherm.svg" alt="GeldDash Intro" class="absolute inset-0 w-full h-full object-cover sm:object-contain animate-pulse-slow">
-      <div class="relative z-10 mt-auto mb-12 flex flex-col items-center gap-3">
-        <div class="h-1.5 w-48 bg-slate-200/50 rounded-full overflow-hidden backdrop-blur-sm">
-          <div id="intro-progress" class="h-full bg-blue-600 w-0 transition-all duration-2000 ease-out"></div>
+      <div class="relative z-10 mt-auto mb-16 flex flex-col items-center gap-6">
+        <div class="flex flex-col items-center gap-3">
+          <div class="h-1.5 w-48 bg-slate-200/50 rounded-full overflow-hidden backdrop-blur-sm">
+            <div id="intro-progress" class="h-full bg-blue-600 w-0 transition-all duration-2000 ease-out"></div>
+          </div>
+          <span id="intro-status" class="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] animate-pulse">Initialiseren...</span>
         </div>
-        <span class="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] animate-pulse">Initialiseren...</span>
+        <button id="intro-continue-btn" class="hidden bg-blue-600 hover:bg-blue-700 text-white font-bold px-12 py-4 rounded-2xl shadow-xl shadow-blue-200 transition-all active:scale-95 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          Verder
+        </button>
+      </div>
+    </div>
+
+    <!-- Welcome Popup -->
+    <div id="welcome-popup" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+      <div class="bg-white dark:bg-slate-900 w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-500">
+        <div class="p-8 text-center space-y-6">
+          <div class="w-24 h-24 mx-auto relative">
+            <div class="absolute inset-0 bg-blue-400/20 rounded-full blur-xl animate-pulse"></div>
+            <img src="/src/GeldDash_mascotte_v2.svg" alt="Mascotte" class="w-full h-full object-contain relative z-10 animate-soft-bounce">
+          </div>
+          <div class="space-y-2">
+            <h2 class="text-2xl font-black text-slate-900 dark:text-white">Welkom bij GeldDash!</h2>
+            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+              Klaar om je vermogen naar een hoger niveau te tillen? Laten we beginnen!
+            </p>
+          </div>
+          <button id="close-welcome-popup" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-200 dark:shadow-none transition-all active:scale-95">
+            Aan de slag
+          </button>
+        </div>
       </div>
     </div>
 
