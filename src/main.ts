@@ -2328,6 +2328,25 @@ function initEventListeners() {
     closeFeedbackSuccess.addEventListener('click', toggleFeedbackModal);
   }
 
+  // Intro Screen Logic
+  const introScreen = document.getElementById('intro-screen');
+  const introProgress = document.getElementById('intro-progress');
+  
+  if (introScreen && introProgress) {
+    // Start progress bar
+    setTimeout(() => {
+      introProgress.style.width = '100%';
+    }, 100);
+
+    // Hide intro screen after 2.5 seconds
+    setTimeout(() => {
+      introScreen.classList.add('opacity-0', 'pointer-events-none', 'scale-110');
+      setTimeout(() => {
+        introScreen.remove();
+      }, 1000);
+    }, 2500);
+  }
+
   createIcons({ icons });
 }
 

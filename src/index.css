@@ -42,6 +42,19 @@
   animation: bounceSlow 3s ease-in-out infinite;
 }
 
+@keyframes pulseSlow {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+.animate-pulse-slow {
+  animation: pulseSlow 4s ease-in-out infinite;
+}
+
+.duration-2000 {
+  transition-duration: 2000ms;
+}
+
 /* Bottom Sheet Styles */
 .bottom-sheet {
   position: fixed;
