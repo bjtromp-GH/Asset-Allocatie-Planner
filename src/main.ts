@@ -486,6 +486,28 @@ function updateUI() {
   const liquidValue = assets
     .filter(asset => !asset.name.toLowerCase().includes('vastgoed'))
     .reduce((sum, asset) => sum + asset.value, 0);
+
+  const yieldValue = assets
+    .filter(asset => {
+      const name = asset.name.toLowerCase();
+      // Exclude non-liquid or non-yield assets from 4% rule calculation
+      if (name.includes('vastgoed')) return false;
+      if (name.includes('spaar') || name.includes('bank') || name.includes('cash')) return false;
+      if (name.includes('goud') || name.includes('zilver')) return false;
+      if (name.includes('auto') || name.includes('ebike') || name.includes('fiets')) return false;
+      
+      // Include Groei, Speculatief, or explicitly identified yield assets like Bonds/ETFs
+      return asset.category === 'Groei' || 
+             asset.category === 'Speculatief' || 
+             name.includes('obligatie') || 
+             name.includes('bond') ||
+             name.includes('etf') ||
+             name.includes('aandeel') ||
+             name.includes('crypto') ||
+             name.includes('bitcoin');
+    })
+    .reduce((sum, asset) => sum + asset.value, 0);
+
   const totalTarget = assets.reduce((sum, asset) => sum + asset.target, 0);
 
   // Update Pie Chart Toggle Styles
@@ -521,8 +543,10 @@ function updateUI() {
 
   if (freedomTimeEl && freedomPassiveEl) {
     const calcValue = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : (liquidValue - totalDebts);
+    const yieldValueForPassive = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : (yieldValue - totalDebts);
+    
     const months = monthlyExpenses > 0 ? calcValue / monthlyExpenses : 0;
-    const passiveMonthly = (calcValue * 0.04) / 12;
+    const passiveMonthly = (Math.max(0, yieldValueForPassive) * 0.04) / 12;
 
     if (isPrivacyMode) {
       freedomTimeEl.textContent = '•• mnd';
