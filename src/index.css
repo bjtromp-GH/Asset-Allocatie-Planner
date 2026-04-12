@@ -33,6 +33,15 @@
   animation: softBounce 2s ease-in-out infinite;
 }
 
+@keyframes bounceSlow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.animate-bounce-slow {
+  animation: bounceSlow 3s ease-in-out infinite;
+}
+
 /* Bottom Sheet Styles */
 .bottom-sheet {
   position: fixed;
