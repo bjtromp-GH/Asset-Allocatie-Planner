@@ -72,10 +72,17 @@ interface Asset {
   category: 'Groei' | 'Defensief' | 'Speculatief';
 }
 
+interface Debt {
+  id: string;
+  name: string;
+  value: number;
+}
+
 interface HistoryEntry {
   date: string;
   totalValue: number;
   assets: Asset[];
+  debts?: Debt[];
 }
 
 const DEFAULT_ASSETS: Asset[] = [
@@ -90,6 +97,7 @@ const DEFAULT_ASSETS: Asset[] = [
 ];
 
 let assets: Asset[] = [];
+let debts: Debt[] = [];
 
 let history: HistoryEntry[] = [];
 let investmentAmount = 1000;
@@ -102,6 +110,7 @@ let freedomCustomNetWorth = 0;
 let masterPassword = '';
 let isEncrypted = false;
 let pieChart: Chart | null = null;
+let pieChartMode: 'bruto' | 'netto' = 'bruto';
 let barChartCurrent: Chart | null = null;
 let barChartComparison: Chart | null = null;
 let historyChart: Chart | null = null;
@@ -276,6 +285,7 @@ function loadState() {
 
 function applyState(state: any) {
   if (state.assets) assets = state.assets;
+  if (state.debts) debts = state.debts;
   if (state.investmentAmount !== undefined) investmentAmount = state.investmentAmount;
   if (state.targetNetWorth !== undefined) targetNetWorth = state.targetNetWorth;
   if (state.history) history = state.history;
@@ -321,12 +331,15 @@ function hideLockScreen() {
 
 function addToHistory() {
   const dateInput = document.getElementById('current-date') as HTMLInputElement;
-  const totalValue = assets.reduce((sum, asset) => sum + asset.value, 0);
+  const totalAssets = assets.reduce((sum, asset) => sum + asset.value, 0);
+  const totalDebts = debts.reduce((sum, debt) => sum + debt.value, 0);
+  const netWorth = totalAssets - totalDebts;
   
   const newEntry: HistoryEntry = {
     date: dateInput.value || new Date().toISOString().split('T')[0],
-    totalValue,
-    assets: JSON.parse(JSON.stringify(assets))
+    totalValue: netWorth,
+    assets: JSON.parse(JSON.stringify(assets)),
+    debts: JSON.parse(JSON.stringify(debts))
   };
 
   // Check if entry for this date already exists
@@ -351,6 +364,8 @@ function deleteFromHistory(index: number) {
 function loadFromHistory(index: number) {
   const entry = history[index];
   assets = JSON.parse(JSON.stringify(entry.assets));
+  if (entry.debts) debts = JSON.parse(JSON.stringify(entry.debts));
+  else debts = [];
   const dateInput = document.getElementById('current-date') as HTMLInputElement;
   if (dateInput) dateInput.value = entry.date;
   updateUI();
@@ -461,11 +476,31 @@ function updateUI() {
   });
   createIcons({ icons });
 
-  const totalValue = assets.reduce((sum, asset) => sum + asset.value, 0);
+  const totalAssets = assets.reduce((sum, asset) => sum + asset.value, 0);
+  const totalDebts = debts.reduce((sum, debt) => sum + debt.value, 0);
+  const netWorth = totalAssets - totalDebts;
+
   const liquidValue = assets
     .filter(asset => !asset.name.toLowerCase().includes('vastgoed'))
     .reduce((sum, asset) => sum + asset.value, 0);
   const totalTarget = assets.reduce((sum, asset) => sum + asset.target, 0);
+
+  // Update Pie Chart Toggle Styles
+  const viewBrutoBtn = document.getElementById('view-bruto-btn');
+  const viewNettoBtn = document.getElementById('view-netto-btn');
+  const pieTotalLabel = document.getElementById('pie-total-label');
+
+  if (viewBrutoBtn && viewNettoBtn) {
+    if (pieChartMode === 'bruto') {
+      viewBrutoBtn.className = 'px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400';
+      viewNettoBtn.className = 'px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all text-slate-500 dark:text-slate-400';
+      if (pieTotalLabel) pieTotalLabel.textContent = 'Bruto Vermogen';
+    } else {
+      viewNettoBtn.className = 'px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400';
+      viewBrutoBtn.className = 'px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all text-slate-500 dark:text-slate-400';
+      if (pieTotalLabel) pieTotalLabel.textContent = 'Netto Vermogen';
+    }
+  }
 
   // Freedom Calculator Logic
   const freedomTimeEl = document.getElementById('freedom-time');
@@ -482,7 +517,7 @@ function updateUI() {
   }
 
   if (freedomTimeEl && freedomPassiveEl) {
-    const calcValue = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : liquidValue;
+    const calcValue = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : (liquidValue - totalDebts);
     const months = monthlyExpenses > 0 ? calcValue / monthlyExpenses : 0;
     const passiveMonthly = (calcValue * 0.04) / 12;
 
@@ -493,9 +528,9 @@ function updateUI() {
       if (months >= 12) {
         freedomTimeEl.textContent = `${(months / 12).toFixed(1)} jr`;
       } else {
-        freedomTimeEl.textContent = `${Math.floor(months)} mnd`;
+        freedomTimeEl.textContent = `${Math.max(0, Math.floor(months))} mnd`;
       }
-      freedomPassiveEl.textContent = formatCurrency(passiveMonthly);
+      freedomPassiveEl.textContent = formatCurrency(Math.max(0, passiveMonthly));
     }
 
     // Milestones
@@ -526,12 +561,13 @@ function updateUI() {
   assets.forEach(a => categories[a.category] += a.value);
 
   // Animate total values
-  animateValue('total-value', prevTotalValue, totalValue, 500, formatCurrency);
-  animateValue('pie-total-value', prevTotalValue, totalValue, 500, formatCurrency);
+  const currentDisplayValue = pieChartMode === 'bruto' ? totalAssets : netWorth;
+  animateValue('total-value', prevTotalValue, netWorth, 500, formatCurrency);
+  animateValue('pie-total-value', prevTotalValue, currentDisplayValue, 500, formatCurrency);
   
-  const specPercent = totalValue > 0 ? (categories.Speculatief / totalValue) * 100 : 0;
-  const growthPercent = totalValue > 0 ? (categories.Groei / totalValue) * 100 : 0;
-  const defPercent = totalValue > 0 ? (categories.Defensief / totalValue) * 100 : 0;
+  const specPercent = totalAssets > 0 ? (categories.Speculatief / totalAssets) * 100 : 0;
+  const growthPercent = totalAssets > 0 ? (categories.Groei / totalAssets) * 100 : 0;
+  const defPercent = totalAssets > 0 ? (categories.Defensief / totalAssets) * 100 : 0;
   
   let status = "Gebalanceerd";
   let statusColors = {
@@ -561,9 +597,9 @@ function updateUI() {
 
   // Store status for chart plugin
   (window as any).chartStatus = { text: status, ...statusColors };
-  (window as any).chartTotalValue = formatCurrency(totalValue);
+  (window as any).chartTotalValue = formatCurrency(currentDisplayValue);
 
-  prevTotalValue = totalValue;
+  prevTotalValue = currentDisplayValue;
 
   // Target Net Worth Logic
   const targetNetWorthInput = document.getElementById('target-net-worth-input') as HTMLInputElement;
@@ -576,9 +612,9 @@ function updateUI() {
   }
 
   if (targetProgressBar && targetProgressPercent && targetRemainingText) {
-    const progress = targetNetWorth > 0 ? (totalValue / targetNetWorth) * 100 : 0;
+    const progress = targetNetWorth > 0 ? (netWorth / targetNetWorth) * 100 : 0;
     const clampedProgress = Math.min(100, progress);
-    const remaining = Math.max(0, targetNetWorth - totalValue);
+    const remaining = Math.max(0, targetNetWorth - netWorth);
 
     targetProgressBar.style.width = `${clampedProgress}%`;
     targetProgressPercent.textContent = `${progress.toFixed(1)}%`;
@@ -615,151 +651,301 @@ function updateUI() {
   if (targetColumnHeader) targetColumnHeader.style.display = isPlannerMode ? '' : 'none';
   if (comparisonSection) comparisonSection.style.display = isPlannerMode ? '' : 'none';
   
-  const categoryCards = document.getElementById('category-cards');
-  if (categoryCards) {
-    categoryCards.innerHTML = Object.entries(categories).map(([name, value]) => {
-      const percent = totalValue > 0 ? (value / totalValue) * 100 : 0;
-      const color = name === 'Groei' ? '#3b82f6' : name === 'Defensief' ? '#10b981' : '#f97316';
-      const idPrefix = name.toLowerCase();
-      return `
-        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between dark:bg-slate-900 dark:border-slate-800">
-          <div>
-            <p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1 dark:text-slate-400">${name}</p>
-            <p id="cat-percent-${idPrefix}" class="text-2xl font-bold dark:text-white">${formatPercent(percent)}</p>
-            <p id="cat-value-${idPrefix}" class="text-sm text-slate-400 dark:text-slate-500">${formatCurrency(value)}</p>
-          </div>
-          <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: ${color}15">
-            <div class="w-6 h-6 rounded-full" style="background-color: ${color}"></div>
-          </div>
-        </div>
-      `;
-    }).join('');
+  renderAssets();
+  renderDebts();
+  renderHistory();
+  renderCategoryCards();
+  renderRebalancePlan();
+  renderRecommendations();
+  updateCharts();
+  updateTreemap();
+}
 
-    // Animate category values
-    Object.entries(categories).forEach(([name, value]) => {
-      const idPrefix = name.toLowerCase();
-      const prevValue = (prevCategoryValues as any)[name] || 0;
-      const percent = totalValue > 0 ? (value / totalValue) * 100 : 0;
-      const prevPercent = prevTotalValue > 0 ? (prevValue / prevTotalValue) * 100 : 0;
-      
-      animateValue(`cat-percent-${idPrefix}`, prevPercent, percent, 500, formatPercent);
-      animateValue(`cat-value-${idPrefix}`, prevValue, value, 500, formatCurrency);
+function renderDebts() {
+  const tbody = document.getElementById('debt-table-body');
+  if (!tbody) return;
+
+  tbody.innerHTML = '';
+
+  if (debts.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="3" class="px-6 py-8 text-center text-slate-400 italic text-sm">
+          Geen schulden toegevoegd
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  debts.forEach(debt => {
+    const tr = document.createElement('tr');
+    tr.className = 'hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group';
+    tr.innerHTML = `
+      <td class="px-3 sm:px-6 py-4">
+        <input type="text" value="${debt.name}" class="debt-name-input bg-transparent border-none p-0 focus:ring-0 font-medium text-slate-900 dark:text-white w-full" data-id="${debt.id}" />
+      </td>
+      <td class="px-3 sm:px-6 py-4">
+        <div class="flex items-center gap-1">
+          <span class="text-slate-400 text-xs">€</span>
+          <input type="text" value="${formatNumber(debt.value)}" class="debt-value-input bg-transparent border-none p-0 focus:ring-0 font-mono font-bold text-red-600 dark:text-red-400 w-full" data-id="${debt.id}" />
+        </div>
+      </td>
+      <td class="px-3 sm:px-6 py-4 text-right">
+        <button class="delete-debt-btn p-2 text-slate-300 hover:text-red-500 transition-colors" data-id="${debt.id}">
+          <i data-lucide="trash-2" class="w-4 h-4"></i>
+        </button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // Add event listeners for inputs
+  tbody.querySelectorAll('.debt-name-input').forEach(input => {
+    input.addEventListener('change', (e) => {
+      const id = (e.target as HTMLInputElement).dataset.id;
+      const name = (e.target as HTMLInputElement).value;
+      debts = debts.map(d => d.id === id ? { ...d, name } : d);
+      updateUI();
     });
-    prevCategoryValues = { ...categories };
-  }
+  });
 
-  const tableBody = document.getElementById('asset-table-body');
-  if (tableBody) {
-    tableBody.innerHTML = assets.map(asset => {
-      const currentPercent = totalValue > 0 ? (asset.value / totalValue) * 100 : 0;
-      return `
-        <tr class="hover:bg-slate-50/50 transition-colors group dark:hover:bg-slate-800/50">
-          <td class="px-3 sm:px-6 py-4 min-w-[120px] sm:min-w-[150px]">
-            <div class="flex items-center gap-2 sm:gap-3">
-              <input
-                type="text"
-                value="${asset.name}"
-                data-id="${asset.id}"
-                data-type="name"
-                class="asset-input w-full bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-0 sm:py-1 text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 dark:hover:border-slate-700"
-              />
-            </div>
-          </td>
-          <td class="px-3 sm:px-6 py-4 min-w-[100px] sm:min-w-[180px]">
-            <div class="flex flex-col gap-1.5">
-              <div class="flex items-center justify-between gap-1 sm:gap-2">
-                <div class="flex items-center gap-1">
-                  <span class="text-slate-400 font-mono text-sm sm:text-base">€</span>
-                  <input
-                    type="text"
-                    value="${formatNumber(asset.value)}"
-                    data-id="${asset.id}"
-                    data-type="value"
-                    class="asset-input asset-value-input w-20 sm:w-24 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-slate-700"
-                  />
-                </div>
-                <span class="font-mono text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 whitespace-nowrap">${formatPercent(currentPercent)}</span>
-              </div>
-              <!-- Progress Bar -->
-              <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
-                <div 
-                  class="h-full rounded-full transition-all duration-500" 
-                  style="width: ${Math.min(100, currentPercent)}%; background-color: ${asset.color}"
-                ></div>
-              </div>
-            </div>
-          </td>
-          <td class="px-3 sm:px-6 py-4 text-right min-w-[60px] sm:min-w-[180px]">
-            <div class="flex items-center justify-end gap-2 sm:gap-3">
-              <select
-                data-id="${asset.id}"
-                data-type="category"
-                class="asset-input hidden sm:block bg-transparent border-none text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 focus:ring-0 cursor-pointer hover:text-slate-600 dark:hover:text-slate-200 p-0"
-              >
-                <option value="Groei" ${asset.category === 'Groei' ? 'selected' : ''}>Groei</option>
-                <option value="Defensief" ${asset.category === 'Defensief' ? 'selected' : ''}>Defensief</option>
-                <option value="Speculatief" ${asset.category === 'Speculatief' ? 'selected' : ''}>Speculatief</option>
-              </select>
-              <div class="${isPlannerMode ? 'hidden sm:flex' : 'hidden'} items-center gap-1">
-                <input
-                  type="number"
-                  value="${asset.target}"
-                  data-id="${asset.id}"
-                  data-type="target"
-                  class="asset-input w-8 sm:w-10 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 font-mono text-right text-sm dark:text-white dark:hover:border-slate-700"
-                />
-                <span class="text-slate-400 font-mono text-xs sm:text-sm">%</span>
-              </div>
-              <button data-id="${asset.id}" class="delete-asset-btn text-slate-300 hover:text-red-500 transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100 p-1">
-                <i data-lucide="trash-2" class="w-4 h-4"></i>
-              </button>
-            </div>
-          </td>
-        </tr>
-      `;
-    }).join('');
-  }
+  tbody.querySelectorAll('.debt-value-input').forEach(input => {
+    input.addEventListener('focus', (e) => {
+      const target = e.target as HTMLInputElement;
+      target.value = parseNumber(target.value).toString();
+    });
+    input.addEventListener('blur', (e) => {
+      const target = e.target as HTMLInputElement;
+      const id = target.dataset.id;
+      const value = parseNumber(target.value);
+      debts = debts.map(d => d.id === id ? { ...d, value } : d);
+      updateUI();
+    });
+    input.addEventListener('keypress', (e) => {
+      if ((e as KeyboardEvent).key === 'Enter') (e.target as HTMLInputElement).blur();
+    });
+  });
 
-  const rebalanceList = document.getElementById('rebalance-list');
-  if (rebalanceList) {
-    rebalanceList.innerHTML = assets.map(asset => {
-      const currentPercent = totalValue > 0 ? (asset.value / totalValue) * 100 : 0;
-      const deviation = currentPercent - asset.target;
-      const targetValue = (asset.target / 100) * totalValue;
-      const rebalanceAmount = targetValue - asset.value;
-      
-      const isOver = deviation > 1;
-      const isUnder = deviation < -1;
-      const statusClass = isOver ? "bg-red-50/50 border-red-100 dark:bg-red-900/20 dark:border-red-900/30" : isUnder ? "bg-blue-50/50 border-blue-100 dark:bg-blue-900/20 dark:border-blue-900/30" : "bg-slate-50/50 border-slate-100 dark:bg-slate-800/50 dark:border-slate-800";
-      const icon = isOver ? "arrow-up-right" : isUnder ? "arrow-down-right" : "minus";
-      const iconColor = isOver ? "text-red-500" : isUnder ? "text-blue-500" : "text-slate-400";
+  tbody.querySelectorAll('.delete-debt-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = (btn as HTMLElement).dataset.id;
+      debts = debts.filter(d => d.id !== id);
+      updateUI();
+    });
+  });
 
-      return `
-        <div class="p-4 rounded-xl border flex flex-col gap-1 ${statusClass}">
-          <div class="flex justify-between items-start">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">${asset.name}</span>
-            <i data-lucide="${icon}" class="w-4 h-4 ${iconColor}"></i>
-          </div>
-          <div class="flex items-baseline gap-2">
-            <span class="text-lg font-bold dark:text-white">${rebalanceAmount > 0 ? '+' : ''}${formatCurrency(rebalanceAmount)}</span>
-            <span class="text-xs font-medium ${deviation > 0 ? 'text-red-600 dark:text-red-400' : 'text-blue-600 dark:text-blue-400'}">
-              (${deviation > 0 ? '+' : ''}${deviation.toFixed(1)}%)
-            </span>
-          </div>
-          <p class="text-xs text-slate-500 mt-1 dark:text-slate-400">
-            ${rebalanceAmount > 0 ? `Koop ${formatCurrency(rebalanceAmount)} om doel te bereiken.` : rebalanceAmount < 0 ? `Verkoop ${formatCurrency(Math.abs(rebalanceAmount))} om doel te bereiken.` : "Asset is in balans."}
-          </p>
+  createIcons({ icons });
+}
+
+function renderCategoryCards() {
+  const categoryCards = document.getElementById('category-cards');
+  if (!categoryCards) return;
+
+  const totalAssets = assets.reduce((sum, a) => sum + a.value, 0);
+  const categories = { Groei: 0, Defensief: 0, Speculatief: 0 };
+  assets.forEach(a => categories[a.category] += a.value);
+
+  categoryCards.innerHTML = Object.entries(categories).map(([name, value]) => {
+    const percent = totalAssets > 0 ? (value / totalAssets) * 100 : 0;
+    const color = name === 'Groei' ? '#3b82f6' : name === 'Defensief' ? '#10b981' : '#f97316';
+    const idPrefix = name.toLowerCase();
+    return `
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between dark:bg-slate-900 dark:border-slate-800">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1 dark:text-slate-400">${name}</p>
+          <p id="cat-percent-${idPrefix}" class="text-2xl font-bold dark:text-white">${formatPercent(percent)}</p>
+          <p id="cat-value-${idPrefix}" class="text-sm text-slate-400 dark:text-slate-500">${formatCurrency(value)}</p>
         </div>
-      `;
-    }).join('');
-  }
+        <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: ${color}15">
+          <div class="w-6 h-6 rounded-full" style="background-color: ${color}"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
 
+  // Animate category values
+  Object.entries(categories).forEach(([name, value]) => {
+    const idPrefix = name.toLowerCase();
+    const prevValue = (prevCategoryValues as any)[name] || 0;
+    const percent = totalAssets > 0 ? (value / totalAssets) * 100 : 0;
+    const prevPercent = prevTotalValue > 0 ? (prevValue / prevTotalValue) * 100 : 0;
+    
+    animateValue(`cat-percent-${idPrefix}`, prevPercent, percent, 500, formatPercent);
+    animateValue(`cat-value-${idPrefix}`, prevValue, value, 500, formatCurrency);
+  });
+  prevCategoryValues = { ...categories };
+}
+
+function renderAssets() {
+  const tableBody = document.getElementById('asset-table-body');
+  if (!tableBody) return;
+
+  const totalAssets = assets.reduce((sum, a) => sum + a.value, 0);
+
+  tableBody.innerHTML = assets.map(asset => {
+    const currentPercent = totalAssets > 0 ? (asset.value / totalAssets) * 100 : 0;
+    return `
+      <tr class="hover:bg-slate-50/50 transition-colors group dark:hover:bg-slate-800/50">
+        <td class="px-3 sm:px-6 py-4 min-w-[120px] sm:min-w-[150px]">
+          <div class="flex items-center gap-2 sm:gap-3">
+            <input
+              type="text"
+              value="${asset.name}"
+              data-id="${asset.id}"
+              data-type="name"
+              class="asset-input w-full bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-0 sm:py-1 text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 dark:hover:border-slate-700"
+            />
+          </div>
+        </td>
+        <td class="px-3 sm:px-6 py-4 min-w-[100px] sm:min-w-[180px]">
+          <div class="flex flex-col gap-1.5">
+            <div class="flex items-center justify-between gap-1 sm:gap-2">
+              <div class="flex items-center gap-1">
+                <span class="text-slate-400 font-mono text-sm sm:text-base">€</span>
+                <input
+                  type="text"
+                  value="${formatNumber(asset.value)}"
+                  data-id="${asset.id}"
+                  data-type="value"
+                  class="asset-input asset-value-input w-20 sm:w-24 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-slate-700"
+                />
+              </div>
+              <span class="font-mono text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 whitespace-nowrap">${formatPercent(currentPercent)}</span>
+            </div>
+            <!-- Progress Bar -->
+            <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
+              <div 
+                class="h-full rounded-full transition-all duration-500" 
+                style="width: ${Math.min(100, currentPercent)}%; background-color: ${asset.color}"
+              ></div>
+            </div>
+          </div>
+        </td>
+        <td class="px-3 sm:px-6 py-4 text-right min-w-[60px] sm:min-w-[180px]">
+          <div class="flex items-center justify-end gap-2 sm:gap-3">
+            <select
+              data-id="${asset.id}"
+              data-type="category"
+              class="asset-input hidden sm:block bg-transparent border-none text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 focus:ring-0 cursor-pointer hover:text-slate-600 dark:hover:text-slate-200 p-0"
+            >
+              <option value="Groei" ${asset.category === 'Groei' ? 'selected' : ''}>Groei</option>
+              <option value="Defensief" ${asset.category === 'Defensief' ? 'selected' : ''}>Defensief</option>
+              <option value="Speculatief" ${asset.category === 'Speculatief' ? 'selected' : ''}>Speculatief</option>
+            </select>
+            <div class="${isPlannerMode ? 'hidden sm:flex' : 'hidden'} items-center gap-1">
+              <input
+                type="number"
+                value="${asset.target}"
+                data-id="${asset.id}"
+                data-type="target"
+                class="asset-input w-8 sm:w-10 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 font-mono text-right text-sm dark:text-white dark:hover:border-slate-700"
+              />
+              <span class="text-slate-400 font-mono text-xs sm:text-sm">%</span>
+            </div>
+            <button data-id="${asset.id}" class="delete-asset-btn text-slate-300 hover:text-red-500 transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100 p-1">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  // Add event listeners for inputs
+  tableBody.querySelectorAll('.asset-input').forEach(input => {
+    input.addEventListener('focus', (e) => {
+      const target = e.target as HTMLInputElement;
+      if (target.dataset.type === 'value') {
+        target.value = parseNumber(target.value).toString();
+      }
+    });
+
+    input.addEventListener('blur', (e) => {
+      const target = e.target as HTMLInputElement;
+      const id = target.dataset.id;
+      const type = target.dataset.type;
+      
+      if (type === 'value') {
+        const value = parseNumber(target.value);
+        assets = assets.map(a => a.id === id ? { ...a, value } : a);
+      } else if (type === 'name') {
+        assets = assets.map(a => a.id === id ? { ...a, name: target.value } : a);
+      } else if (type === 'target') {
+        assets = assets.map(a => a.id === id ? { ...a, target: parseFloat(target.value) || 0 } : a);
+      }
+      updateUI();
+    });
+
+    input.addEventListener('change', (e) => {
+      const target = e.target as HTMLSelectElement;
+      if (target.dataset.type === 'category') {
+        const id = target.dataset.id;
+        assets = assets.map(a => a.id === id ? { ...a, category: target.value as Asset['category'] } : a);
+        updateUI();
+      }
+    });
+
+    input.addEventListener('keypress', (e) => {
+      if ((e as KeyboardEvent).key === 'Enter') (e.target as HTMLInputElement).blur();
+    });
+  });
+
+  tableBody.querySelectorAll('.delete-asset-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = (btn as HTMLElement).dataset.id;
+      deleteAsset(id!);
+    });
+  });
+
+  createIcons({ icons });
+}
+
+function renderRebalancePlan() {
+  const totalAssets = assets.reduce((sum, a) => sum + a.value, 0);
+  const rebalanceList = document.getElementById('rebalance-list');
+  if (!rebalanceList) return;
+
+  rebalanceList.innerHTML = assets.map(asset => {
+    const currentPercent = totalAssets > 0 ? (asset.value / totalAssets) * 100 : 0;
+    const deviation = currentPercent - asset.target;
+    const targetValue = (asset.target / 100) * totalAssets;
+    const rebalanceAmount = targetValue - asset.value;
+    
+    const isOver = deviation > 1;
+    const isUnder = deviation < -1;
+    const statusClass = isOver ? "bg-red-50/50 border-red-100 dark:bg-red-900/20 dark:border-red-900/30" : isUnder ? "bg-blue-50/50 border-blue-100 dark:bg-blue-900/20 dark:border-blue-900/30" : "bg-slate-50/50 border-slate-100 dark:bg-slate-800/50 dark:border-slate-800";
+    const icon = isOver ? "arrow-up-right" : isUnder ? "arrow-down-right" : "minus";
+    const iconColor = isOver ? "text-red-500" : isUnder ? "text-blue-500" : "text-slate-400";
+
+    return `
+      <div class="p-4 rounded-xl border flex flex-col gap-1 ${statusClass}">
+        <div class="flex justify-between items-start">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">${asset.name}</span>
+          <i data-lucide="${icon}" class="w-4 h-4 ${iconColor}"></i>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <span class="text-lg font-bold dark:text-white">${rebalanceAmount > 0 ? '+' : ''}${formatCurrency(rebalanceAmount)}</span>
+          <span class="text-xs font-medium ${deviation > 0 ? 'text-red-600 dark:text-red-400' : 'text-blue-600 dark:text-blue-400'}">
+            (${deviation > 0 ? '+' : ''}${deviation.toFixed(1)}%)
+          </span>
+        </div>
+        <p class="text-xs text-slate-500 mt-1 dark:text-slate-400">
+          ${rebalanceAmount > 0 ? `Koop ${formatCurrency(rebalanceAmount)} om doel te bereiken.` : rebalanceAmount < 0 ? `Verkoop ${formatCurrency(Math.abs(rebalanceAmount))} om doel te bereiken.` : "Asset is in balans."}
+        </p>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderRecommendations() {
+  const totalAssets = assets.reduce((sum, a) => sum + a.value, 0);
   const recommendationsList = document.getElementById('recommendations-list');
   const recommendationsContainer = document.getElementById('investment-recommendations');
   
   if (recommendationsList && recommendationsContainer) {
     if (investmentAmount > 0) {
-      const newTotal = totalValue + investmentAmount;
+      const newTotal = totalAssets + investmentAmount;
       const distribution = assets.map(asset => {
         const idealValue = (asset.target / 100) * newTotal;
         const needed = idealValue - asset.value;
@@ -791,6 +977,13 @@ function updateUI() {
       recommendationsContainer.classList.add('hidden');
     }
   }
+}
+
+function renderHistory() {
+  const totalAssets = assets.reduce((sum, a) => sum + a.value, 0);
+  const totalDebts = debts.reduce((sum, d) => sum + d.value, 0);
+  const netWorth = totalAssets - totalDebts;
+  const currentDisplayValue = pieChartMode === 'bruto' ? totalAssets : netWorth;
 
   const dateInput = document.getElementById('current-date') as HTMLInputElement;
   if (dateInput && !dateInput.value) {
@@ -799,21 +992,38 @@ function updateUI() {
 
   const pieTotalValue = document.getElementById('pie-total-value');
   if (pieTotalValue) {
-    pieTotalValue.textContent = formatCurrency(totalValue);
+    pieTotalValue.textContent = formatCurrency(currentDisplayValue);
   }
 
   const pieLegend = document.getElementById('pie-legend');
   if (pieLegend) {
-    pieLegend.innerHTML = assets.map(asset => {
-      const currentPercent = totalValue > 0 ? (asset.value / totalValue) * 100 : 0;
-      return `
+    if (pieChartMode === 'bruto') {
+      pieLegend.innerHTML = assets.map(asset => {
+        const currentPercent = totalAssets > 0 ? (asset.value / totalAssets) * 100 : 0;
+        return `
+          <div class="flex items-center text-sm sm:text-base group">
+            <div class="w-2 h-2 sm:w-3 sm:h-3 rounded-full shrink-0 mr-2 sm:mr-3 transition-transform group-hover:scale-125" style="background-color: ${asset.color}"></div>
+            <span class="text-slate-600 flex-1 truncate dark:text-slate-400" title="${asset.name}">${asset.name}</span>
+            <span class="font-mono font-bold text-slate-900 ml-2 dark:text-white text-sm sm:text-base">${formatPercent(currentPercent)}</span>
+          </div>
+        `;
+      }).join('');
+    } else {
+      const assetPercent = (totalAssets + totalDebts) > 0 ? (totalAssets / (totalAssets + totalDebts)) * 100 : 0;
+      const debtPercent = (totalAssets + totalDebts) > 0 ? (totalDebts / (totalAssets + totalDebts)) * 100 : 0;
+      pieLegend.innerHTML = `
         <div class="flex items-center text-sm sm:text-base group">
-          <div class="w-2 h-2 sm:w-3 sm:h-3 rounded-full shrink-0 mr-2 sm:mr-3 transition-transform group-hover:scale-125" style="background-color: ${asset.color}"></div>
-          <span class="text-slate-600 flex-1 truncate dark:text-slate-400" title="${asset.name}">${asset.name}</span>
-          <span class="font-mono font-bold text-slate-900 ml-2 dark:text-white text-sm sm:text-base">${formatPercent(currentPercent)}</span>
+          <div class="w-2 h-2 sm:w-3 sm:h-3 rounded-full shrink-0 mr-2 sm:mr-3 transition-transform group-hover:scale-125" style="background-color: #3b82f6"></div>
+          <span class="text-slate-600 flex-1 truncate dark:text-slate-400">Bezittingen</span>
+          <span class="font-mono font-bold text-slate-900 ml-2 dark:text-white text-sm sm:text-base">${formatPercent(assetPercent)}</span>
+        </div>
+        <div class="flex items-center text-sm sm:text-base group">
+          <div class="w-2 h-2 sm:w-3 sm:h-3 rounded-full shrink-0 mr-2 sm:mr-3 transition-transform group-hover:scale-125" style="background-color: #ef4444"></div>
+          <span class="text-slate-600 flex-1 truncate dark:text-slate-400">Schulden</span>
+          <span class="font-mono font-bold text-slate-900 ml-2 dark:text-white text-sm sm:text-base">${formatPercent(debtPercent)}</span>
         </div>
       `;
-    }).join('');
+    }
   }
 
   const historyTableBody = document.getElementById('history-table-body');
@@ -849,11 +1059,25 @@ function updateCharts() {
   
   if (!pieCanvas || !barCurrentCanvas || !barComparisonCanvas || !historyCanvas) return;
 
-  const labels = assets.map(a => a.name);
-  const values = assets.map(a => a.value);
-  const colors = assets.map(a => a.color);
-  const totalValue = assets.reduce((sum, a) => sum + a.value, 0);
-  const currentPercents = assets.map(a => totalValue > 0 ? (a.value / totalValue) * 100 : 0);
+  const totalAssets = assets.reduce((sum, a) => sum + a.value, 0);
+  const totalDebts = debts.reduce((sum, d) => sum + d.value, 0);
+  const netWorth = totalAssets - totalDebts;
+
+  let labels: string[] = [];
+  let values: number[] = [];
+  let colors: string[] = [];
+
+  if (pieChartMode === 'bruto') {
+    labels = assets.map(a => a.name);
+    values = assets.map(a => a.value);
+    colors = assets.map(a => a.color);
+  } else {
+    labels = ['Bezittingen', 'Schulden'];
+    values = [totalAssets, totalDebts];
+    colors = ['#3b82f6', '#ef4444'];
+  }
+
+  const currentPercents = assets.map(a => totalAssets > 0 ? (a.value / totalAssets) * 100 : 0);
   const targets = assets.map(a => a.target);
 
   const textColor = isDarkMode ? '#94a3b8' : '#64748b';
@@ -886,7 +1110,7 @@ function updateCharts() {
         padding: 30
       },
       onClick: (event, elements) => {
-        if (elements.length > 0) {
+        if (elements.length > 0 && pieChartMode === 'bruto') {
           const index = elements[0].index;
           const assetId = assets[index].id;
           highlightAssetRow(assetId);
@@ -907,16 +1131,13 @@ function updateCharts() {
               const total = context.dataset.data.reduce((a: any, b: any) => a + b, 0) as number;
               const percentage = ((value / total) * 100).toFixed(1);
               return ` ${context.label}: ${formatCurrency(value)} (${percentage}%)`;
-            },
-            footer: (tooltipItems) => {
-              return 'Totaal: 100%';
             }
           }
         },
         centerText: {
           display: true,
           value: (window as any).chartTotalValue || '€ 0',
-          label: 'Totaal',
+          label: pieChartMode === 'bruto' ? 'Bruto' : 'Netto',
           badge: {
             text: (window as any).chartStatus?.text,
             color: (window as any).chartStatus?.color,
@@ -1835,8 +2056,10 @@ function initEventListeners() {
   const overlay = document.getElementById('bottom-sheet-overlay');
   const beheerSheet = document.getElementById('beheer-bottom-sheet');
   const historieSheet = document.getElementById('historie-bottom-sheet');
+  const vrijheidSheet = document.getElementById('vrijheid-bottom-sheet');
   const mobileBeheerBtn = document.getElementById('mobile-beheer-btn');
   const mobileHistorieBtn = document.getElementById('mobile-historie-btn');
+  const mobileVrijheidBtn = document.getElementById('mobile-vrijheid-btn');
   const closeSheetBtns = document.querySelectorAll('.close-bottom-sheet');
 
   const openSheet = (sheet: HTMLElement | null) => {
@@ -1850,14 +2073,17 @@ function initEventListeners() {
     overlay?.classList.remove('open');
     beheerSheet?.classList.remove('open');
     historieSheet?.classList.remove('open');
+    vrijheidSheet?.classList.remove('open');
     document.body.style.overflow = '';
   };
 
   mobileBeheerBtn?.addEventListener('click', () => {
     const content = document.getElementById('mobile-beheer-content');
     const source = document.getElementById('assets-section');
-    if (content && source) {
+    const debtsSource = document.getElementById('debts-section');
+    if (content && source && debtsSource) {
       content.appendChild(source);
+      content.appendChild(debtsSource);
       openSheet(beheerSheet);
     }
   });
@@ -1868,6 +2094,15 @@ function initEventListeners() {
     if (content && source) {
       content.appendChild(source);
       openSheet(historieSheet);
+    }
+  });
+
+  mobileVrijheidBtn?.addEventListener('click', () => {
+    const content = document.getElementById('mobile-vrijheid-content');
+    const source = document.getElementById('freedom-calculator-section');
+    if (content && source) {
+      content.appendChild(source);
+      openSheet(vrijheidSheet);
     }
   });
 
@@ -1920,6 +2155,28 @@ function initEventListeners() {
 
   if (feedbackFab) feedbackFab.addEventListener('click', toggleFeedbackModal);
   if (closeFeedbackModal) closeFeedbackModal.addEventListener('click', toggleFeedbackModal);
+
+  // Bruto/Netto Toggle
+  const viewBrutoBtn = document.getElementById('view-bruto-btn');
+  const viewNettoBtn = document.getElementById('view-netto-btn');
+
+  viewBrutoBtn?.addEventListener('click', () => {
+    pieChartMode = 'bruto';
+    updateUI();
+  });
+
+  viewNettoBtn?.addEventListener('click', () => {
+    pieChartMode = 'netto';
+    updateUI();
+  });
+
+  // Debt Management
+  const addDebtBtn = document.getElementById('add-debt-btn');
+  addDebtBtn?.addEventListener('click', () => {
+    const id = Math.random().toString(36).substring(2, 9);
+    debts.push({ id, name: 'Nieuwe Schuld', value: 0 });
+    updateUI();
+  });
 
   feedbackOptionBtns.forEach(btn => {
     btn.addEventListener('click', () => {
