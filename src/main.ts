@@ -114,6 +114,7 @@ let pieChartMode: 'bruto' | 'netto' = 'bruto';
 let barChartCurrent: Chart | null = null;
 let barChartComparison: Chart | null = null;
 let historyChart: Chart | null = null;
+let summaryPieChart: Chart | null = null;
 let averageDutchChart: Chart | null = null;
 
 // Track previous values for animations
@@ -2179,6 +2180,84 @@ function initEventListeners() {
   // Bruto/Netto Toggle
   const viewBrutoBtn = document.getElementById('view-bruto-btn');
   const viewNettoBtn = document.getElementById('view-netto-btn');
+
+  // Summary Panel Logic
+  const toggleSummaryBtn = document.getElementById('toggle-summary-panel');
+  const summaryPanel = document.getElementById('summary-panel');
+  const summaryToggleIcon = document.getElementById('summary-toggle-icon');
+  const showSummaryDetailsBtn = document.getElementById('show-summary-details');
+  const summaryDetailsContent = document.getElementById('summary-details-content');
+
+  toggleSummaryBtn?.addEventListener('click', () => {
+    const isOpen = summaryPanel?.classList.contains('opacity-100');
+    if (isOpen) {
+      summaryPanel?.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+      summaryPanel?.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+      summaryToggleIcon?.classList.remove('rotate-180');
+    } else {
+      summaryPanel?.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
+      summaryPanel?.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+      summaryToggleIcon?.classList.add('rotate-180');
+    }
+  });
+
+  showSummaryDetailsBtn?.addEventListener('click', () => {
+    summaryDetailsContent?.classList.toggle('hidden');
+    if (!summaryDetailsContent?.classList.contains('hidden')) {
+      updateSummaryDetails();
+    }
+  });
+
+  function updateSummaryDetails() {
+    const totalAssets = assets.reduce((sum, a) => sum + a.value, 0);
+    const totalDebts = debts.reduce((sum, d) => sum + d.value, 0);
+    const netWorth = totalAssets - totalDebts;
+
+    const assetsEl = document.getElementById('summary-assets-total');
+    const debtsEl = document.getElementById('summary-debts-total');
+    const descEl = document.getElementById('summary-text-description');
+    const canvas = document.getElementById('summary-pie-chart') as HTMLCanvasElement;
+
+    if (assetsEl) assetsEl.textContent = formatCurrency(totalAssets);
+    if (debtsEl) debtsEl.textContent = formatCurrency(totalDebts);
+
+    // Dynamic description
+    if (descEl) {
+      const topAsset = [...assets].sort((a, b) => b.value - a.value)[0];
+      const debtRatio = totalAssets > 0 ? (totalDebts / totalAssets) * 100 : 0;
+      let statusText = "Je vermogen is vandaag stabiel. ";
+      if (debtRatio > 30) statusText = "Let op je schulden, deze vormen een aanzienlijk deel van je portfolio. ";
+      else if (netWorth > 100000) statusText = "Lekker bezig! Je vermogen groeit gestaag. ";
+
+      descEl.innerHTML = `${statusText}Je grootste asset is <span class="text-blue-600 font-bold">${topAsset?.name || 'onbekend'}</span> en je bent op weg naar je doel!`;
+    }
+
+    // Summary Pie Chart
+    if (canvas) {
+      if (summaryPieChart) summaryPieChart.destroy();
+      summaryPieChart = new Chart(canvas.getContext('2d')!, {
+        type: 'doughnut',
+        data: {
+          labels: ['Bezittingen', 'Schulden'],
+          datasets: [{
+            data: [totalAssets, totalDebts],
+            backgroundColor: ['#3b82f6', '#ef4444'],
+            borderWidth: 0,
+            hoverOffset: 10
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { enabled: true }
+          },
+          cutout: '70%'
+        }
+      });
+    }
+  }
 
   viewBrutoBtn?.addEventListener('click', () => {
     pieChartMode = 'bruto';
