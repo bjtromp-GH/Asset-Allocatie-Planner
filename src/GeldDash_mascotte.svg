@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Laag_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100.89 124.55">
+  <!-- Generator: Adobe Illustrator 29.8.3, SVG Export Plug-In . SVG Version: 2.1.1 Build 3)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #ffb727;
+      }
+
+      .st1 {
+        fill: #e4ebfc;
+      }
+
+      .st2 {
+        fill: #fdd355;
+      }
+
+      .st3 {
+        fill: #011c40;
+      }
+
+      .st4, .st5 {
+        stroke-width: 2px;
+      }
+
+      .st4, .st5, .st6 {
+        fill: none;
+        stroke: #011c40;
+      }
+
+      .st4, .st6 {
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .st5 {
+        stroke-miterlimit: 10;
+      }
+
+      .st6 {
+        stroke-width: 1.5px;
+      }
+
+      .st7 {
+        fill: #216dfc;
+      }
+
+      .st8 {
+        fill: #fdfdfd;
+      }
+    </style>
+  </defs>
+  <ellipse class="st1" cx="46.75" cy="121.8" rx="46.75" ry="2.75"/>
+  <g>
+    <path class="st5" d="M20.25,61.42c3.72-1.97,9.04-3.93,16.64-5.57"/>
+    <circle class="st7" cx="42.59" cy="23.33" r="23.33"/>
+    <ellipse class="st3" cx="36.1" cy="21.85" rx="2.39" ry="3.92" transform="translate(-2.55 4.91) rotate(-7.52)"/>
+    <path class="st6" d="M49.4,20.99s2.26-5.59,7.05-1.33"/>
+    <path class="st6" d="M53.13,27.64s-2,7.45-8.91,4.66"/>
+    <path class="st5" d="M87.72,36.42s1.2,11.84-6.65,18.76c0,0-7.32,7.05-17.83,4.66"/>
+    <path class="st4" d="M61.51,85.78l-4.52,33.26s5.99,0,9.45.93"/>
+    <path class="st4" d="M39.69,86.71l-3.99,32.33s-7.05.13-9.45,1.2"/>
+    <path class="st7" d="M24.26,92.57l49.36-5.59-.53-15.43s-1.26-20.25-20.97-23.3c-3.41-.53-6.88-.37-10.21.54-6.96,1.91-18.44,7.75-18.71,25.42l1.06,18.36Z"/>
+    <circle class="st2" cx="86.92" cy="20.32" r="13.97"/>
+    <circle class="st0" cx="86.92" cy="20.32" r="11.99"/>
+    <path class="st8" d="M90.18,23.39l.99,1.01c-.32.51-1.72,2.02-4.35,2.02s-4.57-1.52-5.2-4.19h-1.93l.27-1.16h1.5c-.02-.23-.04-.47-.04-.72,0-.27.02-.54.04-.79h-1.77l.27-1.16h1.68c.65-2.62,2.65-4.12,5.2-4.12s4.01,1.61,4.33,2.11l-.99,1.01c-.63-.87-1.77-1.68-3.3-1.68-1.41,0-2.91.79-3.5,2.67h4.97l-.27,1.16h-4.95c-.02.25-.04.52-.04.79,0,.25.02.49.04.72h4.68l-.27,1.16h-4.19c.6,1.93,2.11,2.74,3.52,2.74,1.55,0,2.69-.72,3.32-1.59Z"/>
+    <path class="st5" d="M23.06,81.79s-11.84-5.99-11.44-10.91c0,0-.33-4.72,8.64-9.46"/>
+    <circle class="st3" cx="87.98" cy="35.49" r="4.48"/>
+    <circle class="st3" cx="23.86" cy="82.99" r="4.48"/>
+  </g>
+</svg>

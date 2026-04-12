@@ -19,8 +19,8 @@
         <div class="bg-blue-600">
           <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <div class="bg-white/20 p-2 rounded-lg text-white">
-                <i data-lucide="trending-up" class="w-5 h-5"></i>
+              <div class="bg-white/20 p-1.5 rounded-lg text-white flex items-center justify-center">
+                <img src="/src/GeldDash_mascotte.svg" class="w-6 h-6" alt="GeldDash Mascotte">
               </div>
               <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white">GeldDash</h1>
             </div>
@@ -664,14 +664,14 @@
     <!-- Onboarding Explanation Modal -->
     <div id="onboarding-explanation-modal" class="fixed inset-0 z-[250] hidden flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md">
       <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-500">
-        <div class="relative h-48 overflow-hidden">
+        <div class="relative h-48 overflow-hidden bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
           <img 
-            src="https://picsum.photos/seed/finance-planning/800/400" 
-            alt="Planning" 
-            class="w-full h-full object-cover"
+            src="/src/GeldDash_mascotte.svg" 
+            alt="GeldDash Mascotte" 
+            class="w-32 h-32 object-contain animate-bounce"
             referrerPolicy="no-referrer"
           />
-          <div class="absolute inset-0 bg-gradient-to-t from-white dark:from-slate-900 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-white dark:from-slate-900 to-transparent opacity-50"></div>
           <div class="absolute bottom-4 left-6">
             <div class="bg-blue-600 p-2 rounded-xl text-white w-fit mb-2 shadow-lg">
               <i data-lucide="pen-tool" class="w-5 h-5"></i>
@@ -717,12 +717,15 @@
     <!-- Onboarding Modal -->
     <div id="onboarding-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md">
       <div class="bg-white dark:bg-slate-900 w-full max-w-lg sm:max-w-2xl rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-500">
-        <div class="p-6 sm:p-8 text-center border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
-          <div class="w-12 h-12 sm:w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center text-white mx-auto mb-4 shadow-lg shadow-blue-200 dark:shadow-none">
+        <div class="p-6 sm:p-8 text-center border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 relative overflow-hidden">
+          <!-- Mascot Background Decoration -->
+          <img src="/src/GeldDash_mascotte.svg" class="absolute -right-4 -top-4 w-24 h-24 opacity-10 rotate-12 pointer-events-none" alt="">
+          
+          <div class="w-12 h-12 sm:w-16 h-16 bg-blue-600 rounded-none sm:rounded-2xl flex items-center justify-center text-white mx-auto mb-4 shadow-lg shadow-blue-200 dark:shadow-none relative z-10">
             <i data-lucide="trending-up" class="w-6 h-6 sm:w-8 h-8"></i>
           </div>
-          <h2 class="text-xl sm:text-2xl font-black dark:text-white mb-1">Welkom bij GeldDash</h2>
-          <div class="h-8 sm:h-10 flex items-center justify-center">
+          <h2 class="text-xl sm:text-2xl font-black dark:text-white mb-1 relative z-10">Welkom bij GeldDash</h2>
+          <div class="h-8 sm:h-10 flex items-center justify-center relative z-10">
             <p id="onboarding-question" class="text-orange-500 text-lg sm:text-2xl font-black uppercase tracking-tight opacity-0 translate-y-4 blur-sm transition-all duration-1000 ease-out">Hoeveel ben je waard?</p>
           </div>
         </div>
@@ -849,7 +852,7 @@
     <script type="module" src="/src/main.ts"></script>
 
     <!-- Feedback Button -->
-    <div class="fixed bottom-6 right-6 z-[150] flex items-center justify-center">
+    <div class="fixed bottom-24 sm:bottom-6 right-6 z-[150] flex items-center justify-center">
       <div id="feedback-pulse-1" class="absolute w-14 h-14 bg-blue-600/30 rounded-full animate-pulse-ring"></div>
       <div id="feedback-pulse-2" class="absolute w-14 h-14 bg-blue-600/20 rounded-full animate-pulse-ring" style="animation-delay: 1s"></div>
       
@@ -860,7 +863,7 @@
     </div>
 
     <!-- Feedback Modal -->
-    <div id="feedback-modal" class="fixed bottom-24 right-6 z-[160] hidden">
+    <div id="feedback-modal" class="fixed bottom-40 sm:bottom-24 right-6 z-[160] hidden">
       <div class="bg-white dark:bg-slate-900 w-[320px] rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-slide-up">
         <!-- Header -->
         <div class="bg-blue-600 p-4 flex items-center justify-between text-white">
