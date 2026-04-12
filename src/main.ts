@@ -2018,27 +2018,37 @@ function initEventListeners() {
   if (onboardingStartBtn) {
     onboardingStartBtn.addEventListener('click', () => {
       const selectedAssets: Asset[] = [];
+      const selectedDebts: Debt[] = [];
       const colors = ['#3b82f6', '#10b981', '#f97316', '#6366f1', '#eab308', '#ec4899'];
       
       onboardingCheckboxes.forEach((cb, index) => {
         if (cb.checked) {
-          selectedAssets.push({
-            id: Math.random().toString(36).substring(2, 9),
-            name: cb.value,
-            value: 0,
-            target: 0,
-            color: colors[index % colors.length],
-            category: cb.value === 'Crypto' ? 'Speculatief' : (cb.value === 'Spaargeld' || cb.value === 'Goud' ? 'Defensief' : 'Groei')
-          });
+          if (cb.value === 'Schulden') {
+            selectedDebts.push({
+              id: Math.random().toString(36).substring(2, 9),
+              name: 'Schulden',
+              value: 0
+            });
+          } else {
+            selectedAssets.push({
+              id: Math.random().toString(36).substring(2, 9),
+              name: cb.value,
+              value: 0,
+              target: 0,
+              color: colors[index % colors.length],
+              category: cb.value === 'Crypto' ? 'Speculatief' : (cb.value === 'Spaargeld' || cb.value === 'Goud' ? 'Defensief' : 'Groei')
+            });
+          }
         }
       });
       
-      if (selectedAssets.length === 0) {
-        alert('Selecteer ten minste één asset om te beginnen.');
+      if (selectedAssets.length === 0 && selectedDebts.length === 0) {
+        alert('Selecteer ten minste één asset of schuld om te beginnen.');
         return;
       }
       
       assets = selectedAssets;
+      debts = selectedDebts;
       localStorage.setItem('onboarding_completed', 'true');
       if (onboardingModal) onboardingModal.classList.add('hidden');
       
