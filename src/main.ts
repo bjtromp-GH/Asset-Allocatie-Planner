@@ -841,7 +841,7 @@ function renderAssets() {
               <option value="Defensief" ${asset.category === 'Defensief' ? 'selected' : ''}>Defensief</option>
               <option value="Speculatief" ${asset.category === 'Speculatief' ? 'selected' : ''}>Speculatief</option>
             </select>
-            <div class="${isPlannerMode ? 'hidden sm:flex' : 'hidden'} items-center gap-1">
+            <div class="${isPlannerMode ? 'flex' : 'hidden'} items-center gap-1">
               <input
                 type="number"
                 value="${asset.target}"
