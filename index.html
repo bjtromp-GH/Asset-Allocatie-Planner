@@ -13,17 +13,13 @@
   </head>
   <body class="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-blue-100 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
     <!-- Intro Screen -->
-    <div id="intro-screen" class="fixed inset-0 z-[100] bg-blue-600 flex items-center justify-center transition-all duration-1000 ease-in-out">
-      <div class="relative w-full max-w-md px-8 flex flex-col items-center">
-        <div class="w-64 h-64 animate-pulse-slow">
-          <img src="/src/Introscherm.svg" alt="GeldDash Intro" class="w-full h-full object-contain">
+    <div id="intro-screen" class="fixed inset-0 z-[100] bg-white flex items-center justify-center transition-all duration-1000 ease-in-out overflow-hidden">
+      <img src="/src/Introscherm.svg" alt="GeldDash Intro" class="absolute inset-0 w-full h-full object-cover sm:object-contain animate-pulse-slow">
+      <div class="relative z-10 mt-auto mb-12 flex flex-col items-center gap-3">
+        <div class="h-1.5 w-48 bg-slate-200/50 rounded-full overflow-hidden backdrop-blur-sm">
+          <div id="intro-progress" class="h-full bg-blue-600 w-0 transition-all duration-2000 ease-out"></div>
         </div>
-        <div class="mt-8 flex flex-col items-center gap-2">
-          <div class="h-1 w-48 bg-white/20 rounded-full overflow-hidden">
-            <div id="intro-progress" class="h-full bg-white w-0 transition-all duration-2000 ease-out"></div>
-          </div>
-          <span class="text-white/60 text-xs font-bold uppercase tracking-widest animate-pulse">Laden...</span>
-        </div>
+        <span class="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] animate-pulse">Initialiseren...</span>
       </div>
     </div>
 
