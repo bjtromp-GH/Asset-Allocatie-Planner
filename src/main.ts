@@ -2246,7 +2246,10 @@ function initEventListeners() {
       let statusText = "Je vermogen is vandaag stabiel. ";
       let iconName = "smile";
 
-      if (debtRatio > 30) {
+      if (totalAssets === 0 && totalDebts === 0) {
+        statusText = "Tijd voor een frisse start! ";
+        iconName = "sparkles";
+      } else if (debtRatio > 30) {
         statusText = "Let op je schulden, deze vormen een aanzienlijk deel van je portfolio. ";
         iconName = "frown";
       } else if (netWorth > 100000) {
@@ -2254,7 +2257,11 @@ function initEventListeners() {
         iconName = "thumbs-up";
       }
 
-      descEl.innerHTML = `${statusText}Je grootste asset is <span class="text-blue-600 font-bold">${topAsset?.name || 'onbekend'}</span> en je bent op weg naar je doel!`;
+      if (totalAssets === 0 && totalDebts === 0) {
+        descEl.innerHTML = `${statusText}Begin met het toevoegen van je eerste assets om je financiële reis te visualiseren.`;
+      } else {
+        descEl.innerHTML = `${statusText}Je grootste asset is <span class="text-blue-600 font-bold">${topAsset?.name || 'onbekend'}</span> en je bent op weg naar je doel!`;
+      }
       
       if (statusIcon) {
         statusIcon.setAttribute('data-lucide', iconName);
