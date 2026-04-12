@@ -2047,10 +2047,10 @@ function initEventListeners() {
       
       onboardingCheckboxes.forEach((cb, index) => {
         if (cb.checked) {
-          if (cb.value === 'Schulden') {
+          if (cb.value === 'Schulden' || cb.value === 'Hypotheekschuld') {
             selectedDebts.push({
               id: Math.random().toString(36).substring(2, 9),
-              name: 'Schulden',
+              name: cb.value === 'Hypotheekschuld' ? 'Hypotheek' : 'Schulden',
               value: 0
             });
           } else {
