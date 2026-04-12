@@ -228,14 +228,9 @@
             <div class="flex items-start justify-between mb-4 relative z-10">
               <div>
                 <h2 class="font-bold text-lg flex items-center gap-2 dark:text-white">
-                  <i data-lucide="sparkles" class="w-5 h-5 text-amber-500 animate-pulse"></i>
                   Wat kun je met je vermogen?
                 </h2>
-                <p class="text-[11px] text-slate-400 dark:text-slate-500 italic mt-1">Ontdek de kracht van jouw kapitaal!</p>
-              </div>
-              <!-- Mascot integration -->
-              <div class="w-12 h-12 flex-shrink-0 animate-bounce-slow">
-                <img src="GeldDash_mascotte.svg" alt="Mascotte" class="w-full h-full object-contain" referrerPolicy="no-referrer" />
+                <p class="text-[11px] text-slate-400 dark:text-slate-500 italic mt-1">We gaan uit van liquide assets, dus zonder vastgoed.</p>
               </div>
             </div>
             
@@ -379,10 +374,9 @@
               </div>
             </div>
           </section>
-        </div>
 
           <!-- Treemap: Asset Distribution (Full Width) -->
-          <section class="lg:col-span-12 order-3 lg:order-3 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800 mb-12">
+          <section class="lg:col-span-12 order-8 lg:order-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800 mb-12">
             <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
               <i data-lucide="layout-grid" class="w-4 h-4 text-blue-600"></i>
               Asset Verdeling (Treemap)
@@ -391,51 +385,51 @@
               <!-- D3 Treemap will be rendered here -->
             </div>
           </section>
-        </div>
 
-        <!-- History Section -->
-        <div id="history-section" class="mt-16 space-y-8 pb-24 lg:pb-0">
-          <div class="flex items-center justify-between">
-            <h2 class="text-2xl font-bold flex items-center gap-3 dark:text-white">
-              <i data-lucide="history" class="w-6 h-6 text-blue-600"></i>
-              Vermogensverloop (Historie)
-            </h2>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Volg je voortgang over de tijd.</p>
-          </div>
-
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <!-- History Chart -->
-            <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
-              <h3 class="font-semibold mb-6 flex items-center gap-2 dark:text-white">
-                <i data-lucide="line-chart" class="w-4 h-4 text-blue-600"></i>
-                Totaal Vermogen Trend
-              </h3>
-              <div class="h-[300px] w-full">
-                <canvas id="history-chart"></canvas>
-              </div>
+          <!-- History Section -->
+          <div id="history-section" class="lg:col-span-12 order-9 lg:order-9 mt-16 space-y-8 pb-24 lg:pb-0">
+            <div class="flex items-center justify-between">
+              <h2 class="text-2xl font-bold flex items-center gap-3 dark:text-white">
+                <i data-lucide="history" class="w-6 h-6 text-blue-600"></i>
+                Vermogensverloop (Historie)
+              </h2>
+              <p class="text-sm text-slate-500 dark:text-slate-400">Volg je voortgang over de tijd.</p>
             </div>
 
-            <!-- History Table -->
-            <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
-              <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800">
-                <h3 class="font-semibold flex items-center gap-2 dark:text-white">
-                  <i data-lucide="list" class="w-4 h-4 text-blue-600"></i>
-                  Logboek
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              <!-- History Chart -->
+              <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+                <h3 class="font-semibold mb-6 flex items-center gap-2 dark:text-white">
+                  <i data-lucide="line-chart" class="w-4 h-4 text-blue-600"></i>
+                  Totaal Vermogen Trend
                 </h3>
+                <div class="h-[300px] w-full">
+                  <canvas id="history-chart"></canvas>
+                </div>
               </div>
-              <div class="max-h-[350px] overflow-y-auto">
-                <table class="w-full text-left border-collapse">
-                  <thead>
-                    <tr class="bg-slate-50/50 text-slate-500 text-xs uppercase tracking-wider font-semibold dark:bg-slate-800/50 dark:text-slate-400">
-                      <th class="px-6 py-3">Datum</th>
-                      <th class="px-6 py-3">Waarde</th>
-                      <th class="px-6 py-3 text-right">Actie</th>
-                    </tr>
-                  </thead>
-                  <tbody id="history-table-body" class="divide-y divide-slate-100 dark:divide-slate-800">
-                    <!-- Dynamically populated -->
-                  </tbody>
-                </table>
+
+              <!-- History Table -->
+              <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
+                <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+                  <h3 class="font-semibold flex items-center gap-2 dark:text-white">
+                    <i data-lucide="list" class="w-4 h-4 text-blue-600"></i>
+                    Logboek
+                  </h3>
+                </div>
+                <div class="max-h-[350px] overflow-y-auto">
+                  <table class="w-full text-left border-collapse">
+                    <thead>
+                      <tr class="bg-slate-50/50 text-slate-500 text-xs uppercase tracking-wider font-semibold dark:bg-slate-800/50 dark:text-slate-400">
+                        <th class="px-6 py-3">Datum</th>
+                        <th class="px-6 py-3">Waarde</th>
+                        <th class="px-6 py-3 text-right">Actie</th>
+                      </tr>
+                    </thead>
+                    <tbody id="history-table-body" class="divide-y divide-slate-100 dark:divide-slate-800">
+                      <!-- Dynamically populated -->
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>

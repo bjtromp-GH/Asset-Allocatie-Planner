@@ -117,7 +117,9 @@ let historyChart: Chart | null = null;
 let averageDutchChart: Chart | null = null;
 
 // Track previous values for animations
-let prevTotalValue = 0;
+let prevNetWorth = 0;
+let prevPieTotal = 0;
+let prevTotalAssets = 0;
 let prevCategoryValues = { Groei: 0, Defensief: 0, Speculatief: 0 };
 
 const formatCurrency = (value: number) => {
@@ -562,8 +564,11 @@ function updateUI() {
 
   // Animate total values
   const currentDisplayValue = pieChartMode === 'bruto' ? totalAssets : netWorth;
-  animateValue('total-value', prevTotalValue, netWorth, 500, formatCurrency);
-  animateValue('pie-total-value', prevTotalValue, currentDisplayValue, 500, formatCurrency);
+  animateValue('total-value', prevNetWorth, netWorth, 500, formatCurrency);
+  animateValue('pie-total-value', prevPieTotal, currentDisplayValue, 500, formatCurrency);
+  
+  prevNetWorth = netWorth;
+  prevPieTotal = currentDisplayValue;
   
   const specPercent = totalAssets > 0 ? (categories.Speculatief / totalAssets) * 100 : 0;
   const growthPercent = totalAssets > 0 ? (categories.Groei / totalAssets) * 100 : 0;
@@ -599,7 +604,9 @@ function updateUI() {
   (window as any).chartStatus = { text: status, ...statusColors };
   (window as any).chartTotalValue = formatCurrency(currentDisplayValue);
 
-  prevTotalValue = currentDisplayValue;
+  prevNetWorth = netWorth;
+  prevPieTotal = currentDisplayValue;
+  prevTotalAssets = totalAssets;
 
   // Target Net Worth Logic
   const targetNetWorthInput = document.getElementById('target-net-worth-input') as HTMLInputElement;
@@ -769,7 +776,7 @@ function renderCategoryCards() {
     const idPrefix = name.toLowerCase();
     const prevValue = (prevCategoryValues as any)[name] || 0;
     const percent = totalAssets > 0 ? (value / totalAssets) * 100 : 0;
-    const prevPercent = prevTotalValue > 0 ? (prevValue / prevTotalValue) * 100 : 0;
+    const prevPercent = prevTotalAssets > 0 ? (prevValue / prevTotalAssets) * 100 : 0;
     
     animateValue(`cat-percent-${idPrefix}`, prevPercent, percent, 500, formatPercent);
     animateValue(`cat-value-${idPrefix}`, prevValue, value, 500, formatCurrency);
