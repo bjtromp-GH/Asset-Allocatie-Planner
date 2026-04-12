@@ -1831,6 +1831,49 @@ function initEventListeners() {
     });
   }
 
+  // Bottom Sheet Logic
+  const overlay = document.getElementById('bottom-sheet-overlay');
+  const beheerSheet = document.getElementById('beheer-bottom-sheet');
+  const historieSheet = document.getElementById('historie-bottom-sheet');
+  const mobileBeheerBtn = document.getElementById('mobile-beheer-btn');
+  const mobileHistorieBtn = document.getElementById('mobile-historie-btn');
+  const closeSheetBtns = document.querySelectorAll('.close-bottom-sheet');
+
+  const openSheet = (sheet: HTMLElement | null) => {
+    if (!sheet || !overlay) return;
+    overlay.classList.add('open');
+    sheet.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeSheets = () => {
+    overlay?.classList.remove('open');
+    beheerSheet?.classList.remove('open');
+    historieSheet?.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  mobileBeheerBtn?.addEventListener('click', () => {
+    const content = document.getElementById('mobile-beheer-content');
+    const source = document.getElementById('assets-section');
+    if (content && source) {
+      content.appendChild(source);
+      openSheet(beheerSheet);
+    }
+  });
+
+  mobileHistorieBtn?.addEventListener('click', () => {
+    const content = document.getElementById('mobile-historie-content');
+    const source = document.getElementById('history-section');
+    if (content && source) {
+      content.appendChild(source);
+      openSheet(historieSheet);
+    }
+  });
+
+  overlay?.addEventListener('click', closeSheets);
+  closeSheetBtns.forEach(btn => btn.addEventListener('click', closeSheets));
+
   // Feedback Logic
   const feedbackFab = document.getElementById('feedback-fab');
   const feedbackModal = document.getElementById('feedback-modal');

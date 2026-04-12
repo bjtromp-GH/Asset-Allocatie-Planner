@@ -19,8 +19,8 @@
         <div class="bg-blue-600">
           <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <div class="bg-white/20 p-1.5 rounded-lg text-white flex items-center justify-center">
-                <img src="/src/GeldDash_mascotte.svg" class="w-6 h-6" alt="GeldDash Mascotte">
+              <div class="bg-white/20 p-2 rounded-lg text-white">
+                <i data-lucide="trending-up" class="w-5 h-5"></i>
               </div>
               <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white">GeldDash</h1>
             </div>
@@ -58,7 +58,7 @@
         <div class="bg-white border-b border-slate-200 dark:bg-slate-900 dark:border-slate-800">
           <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
             <div class="flex flex-col items-start">
-              <span class="text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-bold">Datum</span>
+              <span class="text-[12px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-bold">Datum</span>
               <label for="current-date" class="flex items-center gap-1 cursor-pointer">
                 <input id="current-date" type="date" class="text-sm sm:text-base font-bold text-slate-900 bg-transparent border-none focus:ring-0 p-0 text-left cursor-pointer dark:text-white dark:[color-scheme:dark]" />
                 <i data-lucide="calendar" class="w-4 h-4 text-slate-400 dark:text-slate-500"></i>
@@ -67,7 +67,7 @@
 
             <div class="flex flex-col items-end">
               <div class="flex items-center gap-2">
-                <span class="text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-bold">Totaal Vermogen</span>
+                <span class="text-[12px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-bold">Totaal Vermogen</span>
                 <button class="privacy-toggle-btn p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition-colors" title="Privacy modus">
                   <i data-lucide="eye" class="w-4 h-4"></i>
                 </button>
@@ -81,7 +81,7 @@
       <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Title and Subtitle -->
         <div class="mb-8 flex flex-col items-center justify-center text-center">
-          <p class="text-slate-500 dark:text-slate-400 font-medium max-w-lg">
+          <p class="text-slate-500 dark:text-slate-400 font-medium max-w-lg text-sm sm:text-base">
             Jouw vermogen, volledig in beeld. Ontdek het Geld Dashboard.
           </p>
         </div>
@@ -128,9 +128,6 @@
                   Asset Beheer
                 </h2>
                 <div class="flex items-center gap-2">
-                  <button id="average-dutch-btn-inline" class="text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-700 px-2 py-1 rounded-lg hover:bg-amber-200 transition-all dark:bg-amber-900/40 dark:text-amber-400" title="Gemiddelde Nederlander">
-                    Gemiddelde Nederlander
-                  </button>
                   <span id="target-warning" class="hidden text-xs font-medium px-2 py-1 rounded-full"></span>
                   <button id="reset-colors-btn" class="text-slate-400 hover:text-blue-600 transition-all p-1.5 rounded-lg" title="Standaard herstellen">
                     <i data-lucide="refresh-cw" class="w-4 h-4"></i>
@@ -143,7 +140,7 @@
               <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                   <thead>
-                    <tr class="bg-slate-50/50 text-slate-500 text-[10px] sm:text-xs uppercase tracking-wider font-semibold dark:bg-slate-800/50 dark:text-slate-400">
+                    <tr class="bg-slate-50/50 text-slate-500 text-xs sm:text-xs uppercase tracking-wider font-semibold dark:bg-slate-800/50 dark:text-slate-400">
                       <th class="px-3 sm:px-6 py-3">Asset</th>
                       <th class="px-3 sm:px-6 py-3 whitespace-nowrap">
                         <span class="sm:hidden">Waarde</span>
@@ -191,7 +188,7 @@
                 <div>
                   <div class="flex items-center gap-2 mb-1">
                     <i data-lucide="target" class="w-4 h-4 text-blue-600"></i>
-                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Doelvermogen</p>
+                    <p class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Doelvermogen</p>
                   </div>
                   <div class="flex items-baseline gap-2">
                     <span class="text-slate-400 font-mono text-xl">€</span>
@@ -206,13 +203,13 @@
                 
                 <div>
                   <div class="flex justify-between items-end mb-2">
-                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Voortgang</p>
+                    <p class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Voortgang</p>
                     <p id="target-progress-percent" class="text-sm font-bold text-blue-600 dark:text-blue-400">0%</p>
                   </div>
                   <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3 overflow-hidden">
                     <div id="target-progress-bar" class="h-full bg-blue-600 rounded-full transition-all duration-1000" style="width: 0%"></div>
                   </div>
-                  <p id="target-remaining-text" class="text-xs text-slate-400 mt-2 dark:text-slate-500">Nog € 0 te gaan</p>
+                  <p id="target-remaining-text" class="text-sm text-slate-400 mt-2 dark:text-slate-500">Nog € 0 te gaan</p>
                 </div>
               </div>
             </div>
@@ -223,15 +220,15 @@
                 <i data-lucide="unlock" class="w-4 h-4 text-amber-500"></i>
                 Wat kun je met je vermogen?
               </h2>
-              <p class="text-[10px] text-slate-400 mb-6 dark:text-slate-500 italic">We gaan hierbij uit van je liquide assets (dus zonder vastgoed).</p>
+              <p class="text-[12px] text-slate-400 mb-6 dark:text-slate-500 italic">We gaan hierbij uit van je liquide assets (dus zonder vastgoed).</p>
               
               <div class="space-y-6">
                 <!-- Custom Net Worth Input -->
                 <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
                   <div class="flex items-center justify-between mb-2">
-                    <label class="text-[10px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Vermogen om mee te rekenen</label>
+                    <label class="text-[12px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Vermogen om mee te rekenen</label>
                     <div class="flex items-center gap-1">
-                      <span class="text-slate-400 text-xs">€</span>
+                      <span class="text-slate-400 text-sm">€</span>
                       <input id="freedom-custom-networth" type="text" class="bg-transparent border-none p-0 w-24 text-right font-bold focus:ring-0 text-sm dark:text-white" placeholder="Huidig" />
                     </div>
                   </div>
@@ -243,9 +240,9 @@
                 <!-- Monthly Expenses Input -->
                 <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
                   <div class="flex items-center justify-between mb-2">
-                    <label class="text-[10px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Maandelijkse Uitgaven</label>
+                    <label class="text-[12px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Maandelijkse Uitgaven</label>
                     <div class="flex items-center gap-1">
-                      <span class="text-slate-400 text-xs">€</span>
+                      <span class="text-slate-400 text-sm">€</span>
                       <input id="monthly-expenses-input" type="number" class="bg-transparent border-none p-0 w-16 text-right font-bold focus:ring-0 text-sm dark:text-white" value="2500" />
                     </div>
                   </div>
@@ -257,20 +254,20 @@
                 <!-- Freedom Metrics -->
                 <div class="grid grid-cols-2 gap-4">
                   <div class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/50">
-                    <p class="text-[10px] uppercase tracking-wider font-bold text-blue-600 dark:text-blue-400 mb-1">Vrijheid in Tijd</p>
+                    <p class="text-[12px] uppercase tracking-wider font-bold text-blue-600 dark:text-blue-400 mb-1">Vrijheid in Tijd</p>
                     <p id="freedom-time" class="text-xl font-bold text-slate-900 dark:text-white">0 mnd</p>
-                    <p class="text-[10px] text-blue-500/70 dark:text-blue-400/50 mt-1">Niet meer werken</p>
+                    <p class="text-[12px] text-blue-500/70 dark:text-blue-400/50 mt-1">Niet meer werken</p>
                   </div>
                   <div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50">
-                    <p class="text-[10px] uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1">Passief Inkomen</p>
+                    <p class="text-[12px] uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1">Passief Inkomen</p>
                     <p id="freedom-passive" class="text-xl font-bold text-slate-900 dark:text-white">€ 0</p>
-                    <p class="text-[10px] text-emerald-500/70 dark:text-emerald-400/50 mt-1">Per maand (4%)</p>
+                    <p class="text-[12px] text-emerald-500/70 dark:text-emerald-400/50 mt-1">Per maand (4%)</p>
                   </div>
                 </div>
 
                 <!-- Milestones -->
                 <div class="space-y-3">
-                  <p class="text-[10px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Vrijheids-Mijlpalen</p>
+                  <p class="text-[12px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Vrijheids-Mijlpalen</p>
                   
                   <div class="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                     <div class="flex items-center gap-3">
@@ -279,7 +276,7 @@
                       </div>
                       <div>
                         <p class="text-sm font-bold dark:text-white">Maandje Sabbatical</p>
-                        <p class="text-[10px] text-slate-400">1 maand vrijheid</p>
+                        <p class="text-[12px] text-slate-400">1 maand vrijheid</p>
                       </div>
                     </div>
                     <div id="milestone-check-1" class="text-slate-200 dark:text-slate-800">
@@ -294,7 +291,7 @@
                       </div>
                       <div>
                         <p class="text-sm font-bold dark:text-white">Jaar Sabbatical</p>
-                        <p class="text-[10px] text-slate-400">12 maanden vrijheid</p>
+                        <p class="text-[12px] text-slate-400">12 maanden vrijheid</p>
                       </div>
                     </div>
                     <div id="milestone-check-2" class="text-slate-200 dark:text-slate-800">
@@ -309,7 +306,7 @@
                       </div>
                       <div>
                         <p class="text-sm font-bold dark:text-white">Financiële Basis</p>
-                        <p class="text-[10px] text-slate-400">5 jaar volledige vrijheid</p>
+                        <p class="text-[12px] text-slate-400">5 jaar volledige vrijheid</p>
                       </div>
                     </div>
                     <div id="milestone-check-3" class="text-slate-200 dark:text-slate-800">
@@ -413,16 +410,16 @@
       <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-slate-200 px-4 py-3 flex items-center justify-between z-[60] lg:hidden dark:bg-slate-900/90 dark:border-slate-800 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
         <a href="#app" class="flex flex-col items-center gap-1 text-blue-600 dark:text-blue-400 flex-1">
           <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-          <span class="text-[9px] font-bold uppercase tracking-widest">Overzicht</span>
+          <span class="text-[11px] font-bold uppercase tracking-widest">Overzicht</span>
         </a>
-        <a href="#assets-section" class="flex flex-col items-center gap-1 text-slate-400 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors flex-1">
+        <button id="mobile-beheer-btn" class="flex flex-col items-center gap-1 text-slate-400 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors flex-1">
           <i data-lucide="wallet" class="w-5 h-5"></i>
-          <span class="text-[9px] font-bold uppercase tracking-widest">Beheer</span>
-        </a>
-        <a href="#history-section" class="flex flex-col items-center gap-1 text-slate-400 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors flex-1">
+          <span class="text-[11px] font-bold uppercase tracking-widest">Beheer</span>
+        </button>
+        <button id="mobile-historie-btn" class="flex flex-col items-center gap-1 text-slate-400 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors flex-1">
           <i data-lucide="history" class="w-5 h-5"></i>
-          <span class="text-[9px] font-bold uppercase tracking-widest">Historie</span>
-        </a>
+          <span class="text-[11px] font-bold uppercase tracking-widest">Historie</span>
+        </button>
       </nav>
 
     </div>
@@ -664,20 +661,20 @@
     <!-- Onboarding Explanation Modal -->
     <div id="onboarding-explanation-modal" class="fixed inset-0 z-[250] hidden flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md">
       <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-500">
-        <div class="relative h-48 overflow-hidden bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
-          <img 
-            src="/src/GeldDash_mascotte.svg" 
-            alt="GeldDash Mascotte" 
-            class="w-32 h-32 object-contain animate-bounce"
-            referrerPolicy="no-referrer"
-          />
-          <div class="absolute inset-0 bg-gradient-to-t from-white dark:from-slate-900 to-transparent opacity-50"></div>
-          <div class="absolute bottom-4 left-6">
+        <div class="relative h-48 overflow-hidden bg-blue-50 dark:bg-blue-900/20 flex items-center justify-between px-8">
+          <div class="relative z-10">
             <div class="bg-blue-600 p-2 rounded-xl text-white w-fit mb-2 shadow-lg">
               <i data-lucide="pen-tool" class="w-5 h-5"></i>
             </div>
             <h2 class="text-2xl font-black dark:text-white">Tijd voor actie!</h2>
           </div>
+          <img 
+            src="/src/GeldDash_mascotte.svg" 
+            alt="GeldDash Mascotte" 
+            class="w-28 h-28 object-contain animate-soft-bounce relative z-10"
+            referrerPolicy="no-referrer"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-white dark:from-slate-900 to-transparent opacity-50"></div>
         </div>
         
         <div class="p-8 space-y-4">
@@ -718,9 +715,6 @@
     <div id="onboarding-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md">
       <div class="bg-white dark:bg-slate-900 w-full max-w-lg sm:max-w-2xl rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-500">
         <div class="p-6 sm:p-8 text-center border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 relative overflow-hidden">
-          <!-- Mascot Background Decoration -->
-          <img src="/src/GeldDash_mascotte.svg" class="absolute -right-4 -top-4 w-24 h-24 opacity-10 rotate-12 pointer-events-none" alt="">
-          
           <div class="w-12 h-12 sm:w-16 h-16 bg-blue-600 rounded-none sm:rounded-2xl flex items-center justify-center text-white mx-auto mb-4 shadow-lg shadow-blue-200 dark:shadow-none relative z-10">
             <i data-lucide="trending-up" class="w-6 h-6 sm:w-8 h-8"></i>
           </div>
@@ -849,10 +843,39 @@
       </div>
     </div>
 
+    <!-- Bottom Sheets -->
+    <div id="bottom-sheet-overlay" class="bottom-sheet-overlay"></div>
+    
+    <div id="beheer-bottom-sheet" class="bottom-sheet lg:hidden">
+      <div class="w-12 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto my-4"></div>
+      <div class="px-6 pb-8 max-h-[80vh] overflow-y-auto">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-xl font-black dark:text-white">Asset Beheer</h2>
+          <button class="close-bottom-sheet p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+        <div id="mobile-beheer-content"></div>
+      </div>
+    </div>
+
+    <div id="historie-bottom-sheet" class="bottom-sheet lg:hidden">
+      <div class="w-12 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto my-4"></div>
+      <div class="px-6 pb-8 max-h-[80vh] overflow-y-auto">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-xl font-black dark:text-white">Historie</h2>
+          <button class="close-bottom-sheet p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+        <div id="mobile-historie-content"></div>
+      </div>
+    </div>
+
     <script type="module" src="/src/main.ts"></script>
 
     <!-- Feedback Button -->
-    <div class="fixed bottom-24 sm:bottom-6 right-6 z-[150] flex items-center justify-center">
+    <div class="fixed bottom-20 sm:bottom-6 right-6 z-[150] flex items-center justify-center">
       <div id="feedback-pulse-1" class="absolute w-14 h-14 bg-blue-600/30 rounded-full animate-pulse-ring"></div>
       <div id="feedback-pulse-2" class="absolute w-14 h-14 bg-blue-600/20 rounded-full animate-pulse-ring" style="animation-delay: 1s"></div>
       
@@ -863,7 +886,7 @@
     </div>
 
     <!-- Feedback Modal -->
-    <div id="feedback-modal" class="fixed bottom-40 sm:bottom-24 right-6 z-[160] hidden">
+    <div id="feedback-modal" class="fixed bottom-36 sm:bottom-24 right-6 z-[160] hidden">
       <div class="bg-white dark:bg-slate-900 w-[320px] rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-slide-up">
         <!-- Header -->
         <div class="bg-blue-600 p-4 flex items-center justify-between text-white">
