@@ -1110,10 +1110,19 @@ function updateCharts() {
         padding: 30
       },
       onClick: (event, elements) => {
-        if (elements.length > 0 && pieChartMode === 'bruto') {
+        if (elements.length > 0) {
           const index = elements[0].index;
-          const assetId = assets[index].id;
-          highlightAssetRow(assetId);
+          if (pieChartMode === 'bruto') {
+            const assetId = assets[index].id;
+            highlightAssetRow(assetId);
+          } else {
+            // Netto mode: 0 = Bezittingen, 1 = Schulden
+            if (index === 0) {
+              document.getElementById('assets-section')?.scrollIntoView({ behavior: 'smooth' });
+            } else if (index === 1) {
+              document.getElementById('debts-section')?.scrollIntoView({ behavior: 'smooth' });
+            }
+          }
         }
       },
       plugins: {
