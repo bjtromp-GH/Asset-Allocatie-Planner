@@ -1414,17 +1414,9 @@ function checkOnboarding() {
   const hasData = localStorage.getItem(STORAGE_KEY);
   
   if (!completed && !hasData) {
-    const modal = document.getElementById('onboarding-modal');
-    if (modal) {
-      modal.classList.remove('hidden');
-      
-      // Smooth fade-up effect for the question
-      const questionEl = document.getElementById('onboarding-question');
-      if (questionEl) {
-        setTimeout(() => {
-          questionEl.classList.remove('opacity-0', 'translate-y-4', 'blur-sm');
-        }, 400); // Delay slightly after modal appears
-      }
+    const introScreen = document.getElementById('intro-screen');
+    if (introScreen) {
+      introScreen.classList.remove('hidden');
     }
   }
 }
@@ -1989,6 +1981,31 @@ function initEventListeners() {
   if (averageDutchModal) {
     averageDutchModal.addEventListener('click', (e) => {
       if (e.target === averageDutchModal) handleCloseAverageDutch();
+    });
+  }
+
+  const startIntroBtn = document.getElementById('start-intro-btn');
+  if (startIntroBtn) {
+    startIntroBtn.addEventListener('click', () => {
+      const introScreen = document.getElementById('intro-screen');
+      const onboardingModal = document.getElementById('onboarding-modal');
+      
+      if (introScreen) {
+        introScreen.classList.add('fade-out');
+        setTimeout(() => {
+          introScreen.classList.add('hidden');
+          if (onboardingModal) {
+            onboardingModal.classList.remove('hidden');
+            // Smooth fade-up effect for the question
+            const questionEl = document.getElementById('onboarding-question');
+            if (questionEl) {
+              setTimeout(() => {
+                questionEl.classList.remove('opacity-0', 'translate-y-4', 'blur-sm');
+              }, 400);
+            }
+          }
+        }, 500);
+      }
     });
   }
 
