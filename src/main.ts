@@ -1137,7 +1137,8 @@ function updateCharts() {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: false,
+      maintainAspectRatio: true,
+      aspectRatio: 1,
       layout: {
         padding: 30
       },
@@ -2319,10 +2320,14 @@ function initEventListeners() {
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false,
+          maintainAspectRatio: true,
+          aspectRatio: 1,
           plugins: {
             legend: { display: false },
             tooltip: { enabled: true }
+          },
+          layout: {
+            padding: 20
           },
           cutout: '70%'
         }
