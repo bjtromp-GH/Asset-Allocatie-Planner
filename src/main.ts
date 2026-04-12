@@ -2351,26 +2351,9 @@ function initEventListeners() {
       introScreen.classList.add('opacity-0', 'pointer-events-none', 'scale-110');
       setTimeout(() => {
         introScreen.remove();
-        showWelcomePopup();
+        checkOnboarding();
       }, 1000);
     });
-  }
-
-  function showWelcomePopup() {
-    const welcomePopup = document.getElementById('welcome-popup');
-    const closeBtn = document.getElementById('close-welcome-popup');
-    const completed = localStorage.getItem('welcome_shown');
-
-    if (welcomePopup && !completed) {
-      welcomePopup.classList.remove('hidden');
-      closeBtn?.addEventListener('click', () => {
-        welcomePopup.classList.add('hidden');
-        localStorage.setItem('welcome_shown', 'true');
-        checkOnboarding();
-      }, { once: true });
-    } else {
-      checkOnboarding();
-    }
   }
 
   createIcons({ icons });
