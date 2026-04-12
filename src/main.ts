@@ -2216,20 +2216,33 @@ function initEventListeners() {
     const assetsEl = document.getElementById('summary-assets-total');
     const debtsEl = document.getElementById('summary-debts-total');
     const descEl = document.getElementById('summary-text-description');
+    const statusIcon = document.getElementById('summary-status-icon');
     const canvas = document.getElementById('summary-pie-chart') as HTMLCanvasElement;
 
     if (assetsEl) assetsEl.textContent = formatCurrency(totalAssets);
     if (debtsEl) debtsEl.textContent = formatCurrency(totalDebts);
 
-    // Dynamic description
+    // Dynamic description and icon
     if (descEl) {
       const topAsset = [...assets].sort((a, b) => b.value - a.value)[0];
       const debtRatio = totalAssets > 0 ? (totalDebts / totalAssets) * 100 : 0;
       let statusText = "Je vermogen is vandaag stabiel. ";
-      if (debtRatio > 30) statusText = "Let op je schulden, deze vormen een aanzienlijk deel van je portfolio. ";
-      else if (netWorth > 100000) statusText = "Lekker bezig! Je vermogen groeit gestaag. ";
+      let iconName = "smile";
+
+      if (debtRatio > 30) {
+        statusText = "Let op je schulden, deze vormen een aanzienlijk deel van je portfolio. ";
+        iconName = "frown";
+      } else if (netWorth > 100000) {
+        statusText = "Lekker bezig! Je vermogen groeit gestaag. ";
+        iconName = "thumbs-up";
+      }
 
       descEl.innerHTML = `${statusText}Je grootste asset is <span class="text-blue-600 font-bold">${topAsset?.name || 'onbekend'}</span> en je bent op weg naar je doel!`;
+      
+      if (statusIcon) {
+        statusIcon.setAttribute('data-lucide', iconName);
+        createIcons({ icons });
+      }
     }
 
     // Summary Pie Chart
