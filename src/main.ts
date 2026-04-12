@@ -2033,6 +2033,10 @@ function initEventListeners() {
         { id: 'ex3', name: 'Beleggingen', value: 30000, target: 20, color: '#f97316', category: 'Groei' },
         { id: 'ex4', name: 'Overig', value: 20000, target: 10, color: '#6366f1', category: 'Defensief' },
       ];
+      debts = [
+        { id: 'd1', name: 'Hypotheek', value: 180000 },
+        { id: 'd2', name: 'Studieschuld', value: 15000 },
+      ];
       localStorage.setItem('onboarding_completed', 'true');
       if (onboardingModal) onboardingModal.classList.add('hidden');
       
