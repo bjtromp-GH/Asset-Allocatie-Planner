@@ -1137,10 +1137,9 @@ function updateCharts() {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: true,
-      aspectRatio: 1,
+      maintainAspectRatio: false,
       layout: {
-        padding: 30
+        padding: 20
       },
       onClick: (event, elements) => {
         if (elements.length > 0) {
@@ -2373,11 +2372,44 @@ function initEventListeners() {
     updateUI();
   });
 
+  const investmentInput = document.getElementById('investment-amount-input') as HTMLInputElement;
+  investmentInput?.addEventListener('input', (e) => {
+    investmentAmount = parseFloat((e.target as HTMLInputElement).value) || 0;
+    updateUI();
+  });
+
   // Debt Management
   const addDebtBtn = document.getElementById('add-debt-btn');
+  const addDebtModal = document.getElementById('add-debt-modal');
+  const closeAddDebtModal = document.getElementById('close-add-debt-modal');
+  const cancelAddDebt = document.getElementById('cancel-add-debt');
+  const saveNewDebtBtn = document.getElementById('save-new-debt');
+  const newDebtName = document.getElementById('new-debt-name') as HTMLInputElement;
+  const newDebtValue = document.getElementById('new-debt-value') as HTMLInputElement;
+
   addDebtBtn?.addEventListener('click', () => {
+    if (addDebtModal && newDebtName && newDebtValue) {
+      newDebtName.value = '';
+      newDebtValue.value = '0';
+      addDebtModal.classList.remove('hidden');
+      newDebtName.focus();
+    }
+  });
+
+  const hideDebtModal = () => {
+    if (addDebtModal) addDebtModal.classList.add('hidden');
+  };
+
+  closeAddDebtModal?.addEventListener('click', hideDebtModal);
+  cancelAddDebt?.addEventListener('click', hideDebtModal);
+
+  saveNewDebtBtn?.addEventListener('click', () => {
+    if (!newDebtName || !newDebtValue) return;
+    const name = newDebtName.value.trim() || 'Nieuwe Schuld';
+    const value = parseFloat(newDebtValue.value) || 0;
     const id = Math.random().toString(36).substring(2, 9);
-    debts.push({ id, name: 'Nieuwe Schuld', value: 0 });
+    debts.push({ id, name, value });
+    hideDebtModal();
     updateUI();
   });
 

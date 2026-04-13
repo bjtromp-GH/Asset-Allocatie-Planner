@@ -14,7 +14,7 @@
   <body class="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-blue-100 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
     <div id="app">
       <!-- Header -->
-      <header class="sticky top-0 z-50 shadow-md">
+      <header class="sticky top-0 z-50 bg-blue-600 shadow-md">
         <!-- Top Bar: Blue -->
         <div class="bg-blue-600">
           <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
@@ -46,14 +46,14 @@
               <button id="reset-app-btn" class="p-2 rounded-lg hover:bg-blue-700 transition-colors text-white" title="Begin opnieuw (Reset)">
                 <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
               </button>
-              <button id="save-history-btn" class="bg-white text-blue-600 hover:bg-blue-50 px-3 sm:px-4 py-2 rounded-lg flex items-center gap-2 transition-all shadow-sm active:scale-95 ml-2">
+              <button id="save-history-btn" class="bg-white text-blue-600 hover:bg-blue-50 px-3 sm:px-4 py-2 rounded-lg flex items-center gap-2 transition-all active:scale-95 ml-2">
                 <i data-lucide="save" class="w-4 h-4"></i>
                 <span class="hidden sm:inline">Sla op</span>
               </button>
 
               <!-- Feature Hint Tooltip -->
               <div id="feature-hint" class="absolute top-full mt-4 right-0 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 z-[100] hidden animate-in fade-in slide-in-from-top-4 duration-500 pointer-events-none">
-                <div class="bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-6 py-3 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-700 font-bold text-lg whitespace-nowrap relative pointer-events-auto cursor-pointer group hover:scale-105 transition-transform active:scale-95">
+                <div class="bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-6 py-3 rounded-xl shadow-2xl border border-slate-100 dark:border-slate-700 font-bold text-lg whitespace-nowrap relative pointer-events-auto cursor-pointer group hover:scale-105 transition-transform active:scale-95">
                   <div class="flex items-center gap-2">
                     <span>Ontdek deze opties</span>
                     <div class="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></div>
@@ -94,20 +94,20 @@
           </div>
 
           <!-- Sliding Summary Panel -->
-          <div id="summary-panel" class="absolute top-full left-0 w-full bg-white border-b border-slate-200 shadow-xl dark:bg-slate-900 dark:border-slate-800 transform -translate-y-full opacity-0 pointer-events-none transition-all duration-500 ease-in-out z-30 max-h-[85vh] overflow-y-auto">
+          <div id="summary-panel" class="absolute top-full left-0 w-full bg-white border-b border-slate-200 dark:bg-slate-900 dark:border-slate-800 transform -translate-y-full opacity-0 pointer-events-none transition-all duration-500 ease-in-out z-30 max-h-[85vh] overflow-y-auto">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-24">
               <div class="flex flex-col md:flex-row items-center gap-8">
                 <!-- Mascot & Button -->
                 <div class="flex flex-col items-center text-center space-y-4 md:w-1/3">
                   <div class="w-32 h-32 relative group">
                     <div class="absolute inset-0 bg-blue-400/20 rounded-full blur-2xl group-hover:bg-blue-400/40 transition-colors duration-500"></div>
-                    <img src="/src/GeldDash_mascotte_v2.svg" alt="Mascotte" class="w-full h-full object-contain relative z-10 animate-bounce-slow" referrerPolicy="no-referrer">
+                    <img src="/GeldDash_mascotte.svg" alt="Mascotte" class="w-full h-full object-contain relative z-10 animate-bounce-slow" referrerPolicy="no-referrer">
                   </div>
                   <div class="space-y-2">
                     <h3 class="text-xl font-black text-slate-900 dark:text-white">Hoi! Klaar voor een overzicht?</h3>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Bekijk in één oogopslag hoe je er vandaag voor staat.</p>
                   </div>
-                  <button id="show-summary-details" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded-xl shadow-lg shadow-blue-200 dark:shadow-none transition-all active:scale-95 flex items-center gap-2">
+                  <button id="show-summary-details" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded-xl transition-all active:scale-95 flex items-center gap-2">
                     <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
                     Samenvatting
                   </button>
@@ -117,18 +117,18 @@
                 <div id="summary-details-content" class="hidden flex-1 w-full animate-fade-in">
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                     <div class="space-y-6">
-                      <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+                      <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
                         <p class="text-[10px] uppercase tracking-widest font-black text-slate-400 mb-1">Status Quo</p>
                         <p id="summary-text-description" class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
                           Je vermogen is vandaag stabiel. Je grootste asset is <span class="text-blue-600 font-bold">Aandelen</span> en je bent op weg naar je doel!
                         </p>
                       </div>
                       <div class="grid grid-cols-2 gap-4">
-                        <div class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/50">
+                        <div class="p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/50">
                           <p class="text-[10px] uppercase tracking-widest font-black text-blue-600 mb-1">Assets</p>
                           <p id="summary-assets-total" class="text-lg font-black text-slate-900 dark:text-white">€ 0</p>
                         </div>
-                        <div class="p-4 rounded-2xl bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/50">
+                        <div class="p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/50">
                           <p class="text-[10px] uppercase tracking-widest font-black text-red-600 mb-1">Schulden</p>
                           <p id="summary-debts-total" class="text-lg font-black text-slate-900 dark:text-white">€ 0</p>
                         </div>
@@ -137,7 +137,7 @@
                     <div class="h-[280px] relative flex items-center justify-center">
                       <canvas id="summary-pie-chart"></canvas>
                       <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <div class="w-12 h-12 bg-white dark:bg-slate-900 rounded-full flex items-center justify-center shadow-sm border border-slate-100 dark:border-slate-800">
+                        <div class="w-12 h-12 bg-white dark:bg-slate-900 rounded-full flex items-center justify-center border border-slate-100 dark:border-slate-800">
                           <i id="summary-status-icon" data-lucide="smile" class="w-6 h-6 text-blue-600"></i>
                         </div>
                       </div>
@@ -150,7 +150,7 @@
         </div>
       </header>
 
-      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-32">
         <!-- Title and Subtitle -->
         <div class="mb-8 flex flex-col items-center justify-center text-center">
           <p class="text-slate-500 dark:text-slate-400 font-medium max-w-lg text-sm sm:text-base">
@@ -169,7 +169,7 @@
           <!-- Left Column: Primary Data & Tables (8/12) -->
           <div class="w-full lg:w-2/3 flex flex-col gap-6">
             <!-- Asset Management Table -->
-            <section id="assets-section" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
+            <section id="assets-section" class="bg-white rounded-xl border border-slate-200 overflow-hidden dark:bg-slate-900 dark:border-slate-800">
               <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between dark:border-slate-800">
                 <h2 class="font-semibold flex items-center gap-2 dark:text-white">
                   <i data-lucide="wallet" class="w-4 h-4 text-blue-600"></i>
@@ -180,7 +180,7 @@
                   <button id="reset-colors-btn" class="text-slate-400 hover:text-blue-600 transition-all p-1.5 rounded-lg" title="Standaard herstellen">
                     <i data-lucide="refresh-cw" class="w-4 h-4"></i>
                   </button>
-                  <button id="add-asset-btn" class="bg-blue-600 hover:bg-blue-700 text-white p-1.5 rounded-lg transition-all shadow-sm active:scale-95" title="Asset toevoegen">
+                  <button id="add-asset-btn" class="bg-blue-600 hover:bg-blue-700 text-white p-1.5 rounded-lg transition-all active:scale-95" title="Asset toevoegen">
                     <i data-lucide="plus" class="w-4 h-4"></i>
                   </button>
                 </div>
@@ -206,13 +206,13 @@
             </section>
 
             <!-- Debt Management Table -->
-            <section id="debts-section" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
+            <section id="debts-section" class="bg-white rounded-xl border border-slate-200 overflow-hidden dark:bg-slate-900 dark:border-slate-800">
               <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between dark:border-slate-800">
                 <h2 class="font-semibold flex items-center gap-2 dark:text-white">
                   <i data-lucide="minus-circle" class="w-4 h-4 text-red-500"></i>
                   Schulden
                 </h2>
-                <button id="add-debt-btn" class="bg-red-500 hover:bg-red-600 text-white p-1.5 rounded-lg transition-all shadow-sm active:scale-95" title="Schuld toevoegen">
+                <button id="add-debt-btn" class="bg-red-500 hover:bg-red-600 text-white p-1.5 rounded-lg transition-all active:scale-95" title="Schuld toevoegen">
                   <i data-lucide="plus" class="w-4 h-4"></i>
                 </button>
               </div>
@@ -235,7 +235,7 @@
             <!-- Bar Charts Section -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <!-- Bar Chart: Current vs Target -->
-              <section id="comparison-section" class="hidden md:block bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+              <section id="comparison-section" class="hidden md:block bg-white rounded-xl border border-slate-200 p-6 dark:bg-slate-900 dark:border-slate-800">
                 <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
                   <i data-lucide="bar-chart-3" class="w-4 h-4 text-blue-600"></i>
                   Huidig vs Doel
@@ -246,7 +246,7 @@
               </section>
 
               <!-- Bar Chart: Current Allocation -->
-              <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+              <section class="bg-white rounded-xl border border-slate-200 p-6 dark:bg-slate-900 dark:border-slate-800">
                 <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
                   <i data-lucide="bar-chart-3" class="w-4 h-4 text-blue-600"></i>
                   Huidige Allocatie (Staaf)
@@ -261,18 +261,18 @@
           <!-- Right Column: Visualization & Tools (4/12) -->
           <div class="w-full lg:w-1/3 flex flex-col gap-6">
             <!-- Portfolio Verdeling (Pie Chart) -->
-            <section id="pie-chart-section" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+            <section id="pie-chart-section" class="bg-white rounded-xl border border-slate-200 p-6 dark:bg-slate-900 dark:border-slate-800">
               <div class="flex items-center justify-between mb-4">
                 <h2 class="font-semibold flex items-center gap-2 dark:text-white">
                   <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i>
                   Portfolio Verdeling
                 </h2>
                 <div class="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
-                  <button id="view-bruto-btn" class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400">Bruto</button>
+                  <button id="view-bruto-btn" class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400">Bruto</button>
                   <button id="view-netto-btn" class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all text-slate-500 dark:text-slate-400">Netto</button>
                 </div>
               </div>
-              <div class="h-[280px] w-full relative">
+              <div class="h-[280px] w-full relative flex items-center justify-center">
                 <canvas id="pie-chart"></canvas>
               </div>
               
@@ -293,7 +293,7 @@
             </section>
 
             <!-- Target Net Worth Card -->
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm dark:bg-slate-900 dark:border-slate-800">
+            <div class="bg-white p-6 rounded-xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
               <div class="flex flex-col gap-6">
                 <div>
                   <div class="flex items-center gap-2 mb-1">
@@ -325,7 +325,7 @@
             </div>
 
             <!-- Freedom Calculator Section -->
-            <section id="freedom-calculator-section" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800 relative overflow-hidden group">
+            <section id="freedom-calculator-section" class="bg-white rounded-xl border border-slate-200 p-6 dark:bg-slate-900 dark:border-slate-800 relative overflow-hidden group">
               <!-- Wow factor background effect -->
               <div class="absolute -right-12 -top-12 w-48 h-48 bg-amber-100/30 dark:bg-amber-900/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
               
@@ -369,7 +369,7 @@
 
                 <!-- Freedom Metrics -->
                 <div class="grid grid-cols-1 gap-4">
-                  <div class="p-5 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-100 dark:border-blue-800/50 shadow-sm hover:shadow-md transition-shadow">
+                  <div class="p-5 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-100 dark:border-blue-800/50 hover:shadow-md transition-shadow">
                     <div class="flex justify-between items-start mb-2">
                       <p class="text-[11px] uppercase tracking-widest font-black text-blue-600 dark:text-blue-400">Vrijheid in Tijd</p>
                       <i data-lucide="clock" class="w-4 h-4 text-blue-400"></i>
@@ -377,7 +377,7 @@
                     <p id="freedom-time" class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">0 mnd</p>
                     <p class="text-[11px] text-blue-500/80 dark:text-blue-400/60 mt-2 font-medium">Zonder extra inkomen</p>
                   </div>
-                  <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-100 dark:border-emerald-800/50 shadow-sm hover:shadow-md transition-shadow">
+                  <div class="p-5 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-100 dark:border-emerald-800/50 hover:shadow-md transition-shadow">
                     <div class="flex justify-between items-start mb-2">
                       <p class="text-[11px] uppercase tracking-widest font-black text-emerald-600 dark:text-emerald-400">Passief Inkomen</p>
                       <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i>
@@ -439,8 +439,38 @@
               </div>
             </section>
 
+            <!-- Smart Investment Calculator -->
+            <section id="investment-recommendations" class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl p-6 text-white relative overflow-hidden group">
+              <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
+              
+              <div class="relative z-10">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="font-bold text-lg flex items-center gap-2">
+                    Slimme Investerings Calculator
+                  </h2>
+                </div>
+                
+                <div class="mb-6">
+                  <label class="text-[10px] uppercase tracking-widest font-black opacity-70 mb-2 block">Nieuwe Inleg Bedrag</label>
+                  <div class="flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/20">
+                    <span class="font-bold">€</span>
+                    <input id="investment-amount-input" type="number" class="bg-transparent border-none p-0 w-full font-black focus:ring-0 text-xl placeholder:text-white/30" placeholder="0" value="1000" />
+                  </div>
+                </div>
+
+                <div class="space-y-3">
+                  <p class="text-[10px] uppercase tracking-widest font-black opacity-70">Aanbevolen Verdeling</p>
+                  <div id="recommendations-list" class="space-y-2">
+                    <!-- Dynamically populated -->
+                  </div>
+                </div>
+                
+                <p class="text-[10px] opacity-60 mt-4 italic">Deze verdeling brengt je portfolio het dichtst bij je doelpercentages.</p>
+              </div>
+            </section>
+
             <!-- Rebalancing Strategy -->
-            <section id="rebalance-section" class="hidden md:block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
+            <section id="rebalance-section" class="hidden md:block bg-white rounded-xl border border-slate-200 overflow-hidden dark:bg-slate-900 dark:border-slate-800">
               <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800">
                 <h2 class="font-semibold flex items-center gap-2 dark:text-white">
                   <i data-lucide="refresh-cw" class="w-4 h-4 text-blue-600"></i>
@@ -459,7 +489,7 @@
         <!-- Full Width Sections (Below Masonry) -->
         <div class="mt-6 flex flex-col gap-6">
           <!-- Treemap: Asset Distribution (Full Width) -->
-          <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+            <section class="bg-white rounded-xl border border-slate-200 p-6 dark:bg-slate-900 dark:border-slate-800">
             <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
               <i data-lucide="layout-grid" class="w-4 h-4 text-blue-600"></i>
               Asset Verdeling (Treemap)
@@ -481,7 +511,7 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
               <!-- History Chart -->
-              <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+              <div class="lg:col-span-8 bg-white rounded-xl border border-slate-200 p-6 dark:bg-slate-900 dark:border-slate-800">
                 <h3 class="font-semibold mb-6 flex items-center gap-2 dark:text-white">
                   <i data-lucide="line-chart" class="w-4 h-4 text-blue-600"></i>
                   Totaal Vermogen Trend
@@ -492,7 +522,7 @@
               </div>
 
               <!-- History Table -->
-              <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
+              <div class="lg:col-span-4 bg-white rounded-xl border border-slate-200 overflow-hidden dark:bg-slate-900 dark:border-slate-800">
                 <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800">
                   <h3 class="font-semibold flex items-center gap-2 dark:text-white">
                     <i data-lucide="list" class="w-4 h-4 text-blue-600"></i>
@@ -554,7 +584,7 @@
 
     <!-- Security Modal -->
     <div id="security-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-      <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-md overflow-hidden">
+      <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 w-full max-w-md overflow-hidden">
         <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
           <h3 class="text-lg font-bold flex items-center gap-2 dark:text-white">
             <i data-lucide="shield-check" class="w-5 h-5 text-blue-600"></i>
@@ -599,7 +629,7 @@
                 placeholder="Bevestig wachtwoord..."
               />
             </div>
-            <button id="save-password-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-95 dark:shadow-none">
+            <button id="save-password-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all active:scale-95">
               Wachtwoord Instellen
             </button>
             <button id="lock-now-btn" class="w-full bg-slate-100 text-slate-700 hover:bg-slate-200 font-bold py-3 rounded-xl transition-all active:scale-95 hidden dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
@@ -635,7 +665,7 @@
     <!-- Lock Screen Overlay -->
     <div id="lock-screen" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 bg-slate-900 backdrop-blur-xl">
       <div class="w-full max-w-md text-center space-y-8">
-        <div class="inline-block p-6 rounded-3xl bg-blue-600 text-white shadow-2xl shadow-blue-500/20 animate-bounce">
+        <div class="inline-block p-6 rounded-xl bg-blue-600 text-white shadow-2xl shadow-blue-500/20 animate-bounce">
           <i data-lucide="lock" class="w-12 h-12"></i>
         </div>
         <div class="space-y-2">
@@ -646,10 +676,10 @@
           <input 
             id="unlock-password-input" 
             type="password" 
-            class="w-full bg-slate-800 border border-slate-700 rounded-2xl py-4 px-6 text-white text-center text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+            class="w-full bg-slate-800 border border-slate-700 rounded-xl py-4 px-6 text-white text-center text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
             placeholder="••••••••"
           />
-          <button id="unlock-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-xl shadow-blue-600/20 transition-all active:scale-95">
+          <button id="unlock-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition-all active:scale-95">
             Ontgrendel Portfolio
           </button>
           <button id="forgot-password-btn" class="text-sm text-slate-500 hover:text-slate-300 transition-colors">
@@ -661,7 +691,7 @@
 
     <!-- Info Modal -->
     <div id="info-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-      <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-300">
+      <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-300">
         <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
           <div class="flex items-center gap-3">
             <div class="bg-blue-600 p-2 rounded-xl text-white">
@@ -680,7 +710,7 @@
             </p>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-              <div class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800">
+              <div class="p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800">
                 <div class="flex items-center gap-2 mb-2 text-blue-600 dark:text-blue-400">
                   <i data-lucide="pie-chart" class="w-4 h-4"></i>
                   <h3 class="font-bold text-sm">Allocatie Beheer</h3>
@@ -688,7 +718,7 @@
                 <p class="text-xs text-slate-500 dark:text-slate-400">Houd je huidige bezittingen bij en stel doelpercentages in voor een gebalanceerd portfolio.</p>
               </div>
               
-              <div class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800">
+              <div class="p-4 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800">
                 <div class="flex items-center gap-2 mb-2 text-amber-600 dark:text-amber-400">
                   <i data-lucide="calculator" class="w-4 h-4"></i>
                   <h3 class="font-bold text-sm">Slimme Planner</h3>
@@ -696,7 +726,7 @@
                 <p class="text-xs text-slate-500 dark:text-slate-400">Bereken exact hoeveel je in elke asset moet inleggen om je gewenste verdeling te bereiken.</p>
               </div>
               
-              <div class="p-4 rounded-2xl bg-purple-50 dark:bg-purple-900/20 border border-purple-100 dark:border-purple-800">
+              <div class="p-4 rounded-xl bg-purple-50 dark:bg-purple-900/20 border border-purple-100 dark:border-purple-800">
                 <div class="flex items-center gap-2 mb-2 text-purple-600 dark:text-purple-400">
                   <i data-lucide="lock" class="w-4 h-4"></i>
                   <h3 class="font-bold text-sm">Privacy Eerst</h3>
@@ -717,7 +747,7 @@
           </div>
         </div>
         <div class="p-6 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex justify-end">
-          <button id="info-modal-ok" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded-xl transition-all active:scale-95 shadow-lg shadow-blue-200 dark:shadow-none">
+          <button id="info-modal-ok" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded-xl transition-all active:scale-95">
             Begrepen!
           </button>
         </div>
@@ -726,7 +756,7 @@
 
     <!-- Average Dutch Modal -->
     <div id="average-dutch-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-      <div class="bg-white dark:bg-slate-900 w-full max-w-md sm:max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-300">
+      <div class="bg-white dark:bg-slate-900 w-full max-w-md sm:max-w-lg rounded-xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-300">
         <div class="p-5 sm:p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
           <div class="flex items-center gap-3">
             <div class="bg-amber-500 p-2 rounded-xl text-white">
@@ -788,7 +818,7 @@
 
     <!-- Onboarding Explanation Modal -->
     <div id="onboarding-explanation-modal" class="fixed inset-0 z-[250] hidden flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md">
-      <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-500">
+      <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-500">
         <div class="relative h-48 overflow-hidden bg-blue-50 dark:bg-blue-900/20 flex items-center justify-between px-8">
           <div class="relative z-10">
             <div class="bg-blue-600 p-2 rounded-xl text-white w-fit mb-2 shadow-lg">
@@ -797,7 +827,7 @@
             <h2 class="text-2xl font-black dark:text-white">Tijd voor actie!</h2>
           </div>
           <img 
-            src="GeldDash_mascotte.svg" 
+            src="/GeldDash_mascotte.svg" 
             alt="GeldDash Mascotte" 
             class="w-28 h-28 object-contain animate-soft-bounce relative z-10"
             referrerPolicy="no-referrer"
@@ -809,7 +839,7 @@
           <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
             Ga er even goed voor zitten. Om een eerlijk beeld van je financiële toekomst te krijgen, is het belangrijk dat je nu je assets en hun huidige waarden invult.
           </p>
-          <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
+          <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
             <ul class="space-y-3">
               <li class="flex items-start gap-3">
                 <div class="mt-1 bg-green-100 dark:bg-green-900/30 p-1 rounded-full">
@@ -832,7 +862,7 @@
             </ul>
           </div>
           
-          <button id="close-explanation-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-200 transition-all active:scale-95 dark:shadow-none">
+          <button id="close-explanation-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition-all active:scale-95">
             Ik ga aan de slag
           </button>
         </div>
@@ -850,7 +880,7 @@
         <div class="relative inline-block">
           <div class="absolute inset-0 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
           <img 
-            src="/src/GeldDash_mascotte_v2.svg" 
+            src="/GeldDash_mascotte.svg" 
             alt="Mascotte" 
             class="w-48 h-48 sm:w-64 sm:h-64 object-contain relative z-10 animate-bounce-slow"
             referrerPolicy="no-referrer"
@@ -867,7 +897,7 @@
         </div>
         
         <div class="pt-4">
-          <button id="start-intro-btn" class="group relative inline-flex items-center justify-center px-10 py-5 font-black text-white transition-all duration-200 bg-blue-600 font-pj rounded-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 shadow-xl shadow-blue-200 dark:shadow-none active:scale-95">
+          <button id="start-intro-btn" class="group relative inline-flex items-center justify-center px-10 py-5 font-black text-white transition-all duration-200 bg-blue-600 font-pj rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 active:scale-95">
             <span class="relative flex items-center gap-2 text-xl">
               Aan de slag
               <i data-lucide="arrow-right" class="w-6 h-6 group-hover:translate-x-1 transition-transform"></i>
@@ -883,11 +913,11 @@
 
     <!-- Onboarding Modal -->
     <div id="onboarding-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md">
-      <div class="bg-white dark:bg-slate-900 w-full max-w-lg sm:max-w-2xl rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-500">
+      <div class="bg-white dark:bg-slate-900 w-full max-w-lg sm:max-w-2xl rounded-xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-500">
         <div class="p-6 sm:p-8 text-center border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 relative">
           <div class="w-20 h-20 sm:w-24 h-24 flex items-center justify-center mx-auto mb-4 relative z-10">
             <img 
-              src="GeldDash_mascotte.svg" 
+              src="/GeldDash_mascotte.svg" 
               alt="GeldDash Mascotte" 
               class="w-16 h-16 sm:w-20 h-20 object-contain animate-soft-bounce"
               referrerPolicy="no-referrer"
@@ -902,39 +932,39 @@
         <div class="p-6 sm:p-8">
           <p class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-400 mb-3">Welke assets heb je al?</p>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6">
-            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
+            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
               <input type="checkbox" value="Spaargeld" class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 onboarding-asset-checkbox" checked>
               <span class="text-sm sm:text-base font-semibold dark:text-white group-hover:text-blue-600 transition-colors">Spaargeld</span>
             </label>
-            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
+            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
               <input type="checkbox" value="Aandelen" class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 onboarding-asset-checkbox" checked>
               <span class="text-sm sm:text-base font-semibold dark:text-white group-hover:text-blue-600 transition-colors">Aandelen</span>
             </label>
-            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
+            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
               <input type="checkbox" value="Vastgoed" class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 onboarding-asset-checkbox">
               <span class="text-sm sm:text-base font-semibold dark:text-white group-hover:text-blue-600 transition-colors">Vastgoed</span>
             </label>
-            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
+            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
               <input type="checkbox" value="Crypto" class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 onboarding-asset-checkbox">
               <span class="text-sm sm:text-base font-semibold dark:text-white group-hover:text-blue-600 transition-colors">Crypto</span>
             </label>
-            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
+            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
               <input type="checkbox" value="Goud" class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 onboarding-asset-checkbox">
               <span class="text-sm sm:text-base font-semibold dark:text-white group-hover:text-blue-600 transition-colors">Goud</span>
             </label>
-            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
+            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
               <input type="checkbox" value="Pensioen" class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 onboarding-asset-checkbox">
               <span class="text-sm sm:text-base font-semibold dark:text-white group-hover:text-blue-600 transition-colors">eBike</span>
             </label>
-            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
+            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
               <input type="checkbox" value="Auto" class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 onboarding-asset-checkbox">
               <span class="text-sm sm:text-base font-semibold dark:text-white group-hover:text-blue-600 transition-colors">Auto</span>
             </label>
-            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
+            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
               <input type="checkbox" value="Obligaties" class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 onboarding-asset-checkbox">
               <span class="text-sm sm:text-base font-semibold dark:text-white group-hover:text-blue-600 transition-colors">Obligaties</span>
             </label>
-            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
+            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
               <input type="checkbox" value="Zilver" class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 onboarding-asset-checkbox">
               <span class="text-sm sm:text-base font-semibold dark:text-white group-hover:text-blue-600 transition-colors">Zilver</span>
             </label>
@@ -942,21 +972,21 @@
 
           <p class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-400 mb-3">Heb je schulden?</p>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-8">
-            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
+            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
               <input type="checkbox" value="Schulden" class="w-5 h-5 rounded border-slate-300 text-red-600 focus:ring-red-500 onboarding-asset-checkbox">
               <span class="text-sm sm:text-base font-semibold dark:text-white group-hover:text-red-600 transition-colors">Schulden</span>
             </label>
-            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
+            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
               <input type="checkbox" value="Hypotheekschuld" class="w-5 h-5 rounded border-slate-300 text-red-600 focus:ring-red-500 onboarding-asset-checkbox">
               <span class="text-sm sm:text-base font-semibold dark:text-white group-hover:text-red-600 transition-colors">Hypotheek</span>
             </label>
           </div>
           
           <div class="flex flex-col sm:flex-row gap-3">
-            <button id="onboarding-example-btn" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-4 rounded-2xl transition-all active:scale-95 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
+            <button id="onboarding-example-btn" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-4 rounded-xl transition-all active:scale-95 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
               Verder met voorbeeldgegevens
             </button>
-            <button id="onboarding-start-btn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-200 transition-all active:scale-95 dark:shadow-none">
+            <button id="onboarding-start-btn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition-all active:scale-95">
               Start met mijn selectie
             </button>
           </div>
@@ -985,7 +1015,7 @@
 
     <!-- Add Asset Modal -->
     <div id="add-asset-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-      <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-300">
+      <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-xl border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-300">
         <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
           <div class="flex items-center gap-3">
             <div class="bg-blue-600 p-2 rounded-xl text-white">
@@ -1035,7 +1065,52 @@
           <button id="cancel-add-asset" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 rounded-xl transition-all active:scale-95 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">
             Annuleren
           </button>
-          <button id="save-new-asset" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-95 dark:shadow-none">
+          <button id="save-new-asset" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all active:scale-95">
+            Toevoegen
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Debt Modal -->
+    <div id="add-debt-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
+      <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-xl border border-slate-200 dark:border-slate-800 animate-in fade-in zoom-in duration-300">
+        <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
+          <div class="flex items-center gap-3">
+            <div class="bg-red-500 p-2 rounded-lg text-white">
+              <i data-lucide="plus" class="w-5 h-5"></i>
+            </div>
+            <h2 class="text-xl font-bold dark:text-white">Schuld Toevoegen</h2>
+          </div>
+          <button id="close-add-debt-modal" class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition-colors text-slate-500 dark:text-slate-400">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-4">
+          <div class="space-y-2">
+            <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Naam</label>
+            <input 
+              id="new-debt-name" 
+              type="text" 
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+              placeholder="Bijv. Hypotheek, Studieschuld, Lening..."
+            />
+          </div>
+          <div class="space-y-2">
+            <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Bedrag</label>
+            <input 
+              id="new-debt-value" 
+              type="number" 
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+              placeholder="0"
+            />
+          </div>
+        </div>
+        <div class="p-6 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex gap-3">
+          <button id="cancel-add-debt" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 rounded-xl transition-all active:scale-95 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">
+            Annuleren
+          </button>
+          <button id="save-new-debt" class="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl transition-all active:scale-95">
             Toevoegen
           </button>
         </div>
@@ -1099,7 +1174,7 @@
 
     <!-- Feedback Modal -->
     <div id="feedback-modal" class="fixed bottom-36 sm:bottom-24 right-6 z-[160] hidden">
-      <div class="bg-white dark:bg-slate-900 w-[320px] rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-slide-up">
+      <div class="bg-white dark:bg-slate-900 w-[320px] rounded-xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-slide-up">
         <!-- Header -->
         <div class="bg-blue-600 p-4 flex items-center justify-between text-white">
           <h3 class="font-bold text-sm">Feedback sturen</h3>
@@ -1110,7 +1185,7 @@
 
         <!-- Content: Selection -->
         <div id="feedback-selection" class="p-2 space-y-1">
-          <button class="feedback-option-btn w-full flex items-center gap-4 p-4 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all group text-left" data-type="bug">
+          <button class="feedback-option-btn w-full flex items-center gap-4 p-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all group text-left" data-type="bug">
             <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 group-hover:bg-red-100 group-hover:text-red-600 transition-colors">
               <i data-lucide="bug" class="w-5 h-5"></i>
             </div>
@@ -1121,7 +1196,7 @@
             <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300"></i>
           </button>
 
-          <button class="feedback-option-btn w-full flex items-center gap-4 p-4 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all group text-left" data-type="feature">
+          <button class="feedback-option-btn w-full flex items-center gap-4 p-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all group text-left" data-type="feature">
             <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 group-hover:bg-amber-100 group-hover:text-amber-600 transition-colors">
               <i data-lucide="lightbulb" class="w-5 h-5"></i>
             </div>
@@ -1143,7 +1218,7 @@
             <h4 id="feedback-form-title" class="font-bold dark:text-white">Jouw feedback</h4>
             <textarea id="feedback-text" class="w-full h-32 bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-white" placeholder="Vertel ons meer..."></textarea>
           </div>
-          <button id="submit-feedback" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg transition-all active:scale-95">
+          <button id="submit-feedback" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl transition-all active:scale-95">
             Versturen
           </button>
         </div>
