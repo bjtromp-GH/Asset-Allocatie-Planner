@@ -76,6 +76,7 @@ interface Debt {
   id: string;
   name: string;
   value: number;
+  target: number;
 }
 
 interface HistoryEntry {
@@ -695,11 +696,13 @@ function updateUI() {
   const simulatorSection = document.getElementById('simulator-section');
   const rebalanceSection = document.getElementById('rebalance-section');
   const targetColumnHeader = document.getElementById('target-column-header');
+  const debtTargetColumnHeader = document.getElementById('debt-target-column-header');
   const comparisonSection = document.getElementById('comparison-section');
 
   if (simulatorSection) simulatorSection.style.display = isPlannerMode ? '' : 'none';
   if (rebalanceSection) rebalanceSection.style.display = isPlannerMode ? '' : 'none';
   if (targetColumnHeader) targetColumnHeader.style.display = isPlannerMode ? '' : 'none';
+  if (debtTargetColumnHeader) debtTargetColumnHeader.style.display = isPlannerMode ? '' : 'none';
   if (comparisonSection) comparisonSection.style.display = isPlannerMode ? '' : 'none';
   
   renderAssets();
@@ -721,7 +724,7 @@ function renderDebts() {
   if (debts.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="3" class="px-6 py-8 text-center text-slate-400 italic text-sm">
+        <td colspan="4" class="px-6 py-8 text-center text-slate-400 italic text-sm">
           Geen schulden toegevoegd
         </td>
       </tr>
@@ -740,6 +743,17 @@ function renderDebts() {
         <div class="flex items-center gap-1">
           <span class="text-slate-400 text-xs">€</span>
           <input type="text" value="${formatNumber(debt.value)}" class="debt-value-input bg-transparent border-none p-0 focus:ring-0 font-mono font-bold text-red-600 dark:text-red-400 w-full" data-id="${debt.id}" />
+        </div>
+      </td>
+      <td class="px-3 sm:px-6 py-4 text-right">
+        <div class="${isPlannerMode ? 'flex' : 'hidden'} items-center justify-end gap-1">
+          <input
+            type="number"
+            value="${debt.target || 0}"
+            data-id="${debt.id}"
+            class="debt-target-input w-10 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-red-500 focus:ring-0 transition-all outline-none py-1 font-mono text-right text-sm dark:text-white dark:hover:border-slate-700"
+          />
+          <span class="text-slate-400 font-mono text-xs">%</span>
         </div>
       </td>
       <td class="px-3 sm:px-6 py-4 text-right">
@@ -771,6 +785,19 @@ function renderDebts() {
       const id = target.dataset.id;
       const value = parseNumber(target.value);
       debts = debts.map(d => d.id === id ? { ...d, value } : d);
+      updateUI();
+    });
+    input.addEventListener('keypress', (e) => {
+      if ((e as KeyboardEvent).key === 'Enter') (e.target as HTMLInputElement).blur();
+    });
+  });
+
+  tbody.querySelectorAll('.debt-target-input').forEach(input => {
+    input.addEventListener('blur', (e) => {
+      const target = e.target as HTMLInputElement;
+      const id = target.dataset.id;
+      const targetVal = parseFloat(target.value) || 0;
+      debts = debts.map(d => d.id === id ? { ...d, target: targetVal } : d);
       updateUI();
     });
     input.addEventListener('keypress', (e) => {
@@ -873,7 +900,7 @@ function renderAssets() {
             </div>
           </div>
         </td>
-        <td class="px-3 sm:px-6 py-4 text-right min-w-[60px] sm:min-w-[180px]">
+        <td class="px-3 sm:px-6 py-4 text-right min-w-[80px] sm:min-w-[180px]">
           <div class="flex items-center justify-end gap-2 sm:gap-3">
             <select
               data-id="${asset.id}"
@@ -894,7 +921,7 @@ function renderAssets() {
               />
               <span class="text-slate-400 font-mono text-xs sm:text-sm">%</span>
             </div>
-            <button data-id="${asset.id}" class="delete-asset-btn text-slate-300 hover:text-red-500 transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100 p-1">
+            <button data-id="${asset.id}" class="delete-asset-btn text-slate-400 hover:text-red-500 transition-colors p-1" title="Verwijderen">
               <i data-lucide="trash-2" class="w-4 h-4"></i>
             </button>
           </div>
@@ -1631,7 +1658,7 @@ function initEventListeners() {
         { id: Math.random().toString(36).substr(2, 9), name: 'Overig', value: 20000, target: 8, category: 'Speculatief', color: '#6366f1' }
       ];
       const sampleDebts: Debt[] = [
-        { id: Math.random().toString(36).substr(2, 9), name: 'Hypotheek', value: 120000 }
+        { id: Math.random().toString(36).substr(2, 9), name: 'Hypotheek', value: 120000, target: 100 }
       ];
       assets = sampleAssets;
       debts = sampleDebts;
@@ -2191,7 +2218,8 @@ function initEventListeners() {
             selectedDebts.push({
               id: Math.random().toString(36).substring(2, 9),
               name: cb.value === 'Hypotheekschuld' ? 'Hypotheek' : 'Schulden',
-              value: 0
+              value: 0,
+              target: 0
             });
           } else {
             selectedAssets.push({
@@ -2243,8 +2271,8 @@ function initEventListeners() {
         { id: 'ex4', name: 'Overig', value: 20000, target: 10, color: '#6366f1', category: 'Defensief' },
       ];
       debts = [
-        { id: 'd1', name: 'Hypotheek', value: 180000 },
-        { id: 'd2', name: 'Studieschuld', value: 15000 },
+        { id: 'd1', name: 'Hypotheek', value: 180000, target: 90 },
+        { id: 'd2', name: 'Studieschuld', value: 15000, target: 10 },
       ];
       localStorage.setItem('onboarding_completed', 'true');
       if (onboardingModal) onboardingModal.classList.add('hidden');
@@ -2487,8 +2515,9 @@ function initEventListeners() {
     if (!newDebtName || !newDebtValue) return;
     const name = newDebtName.value.trim() || 'Nieuwe Schuld';
     const value = parseFloat(newDebtValue.value) || 0;
+    const target = parseFloat((document.getElementById('new-debt-target') as HTMLInputElement)?.value) || 0;
     const id = Math.random().toString(36).substring(2, 9);
-    debts.push({ id, name, value });
+    debts.push({ id, name, value, target });
     hideDebtModal();
     updateUI();
   });
