@@ -1416,7 +1416,44 @@ function updateTreemap() {
     .text((d: any) => d);
 }
 
+// Bottom Sheet Logic
+const openSheet = (sheet: HTMLElement | null) => {
+  const overlay = document.getElementById('bottom-sheet-overlay');
+  if (!sheet || !overlay) return;
+  overlay.classList.add('open');
+  sheet.classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+
+const closeSheets = () => {
+  const overlay = document.getElementById('bottom-sheet-overlay');
+  const beheerSheet = document.getElementById('beheer-bottom-sheet');
+  const historieSheet = document.getElementById('historie-bottom-sheet');
+  const vrijheidSheet = document.getElementById('vrijheid-bottom-sheet');
+  overlay?.classList.remove('open');
+  beheerSheet?.classList.remove('open');
+  historieSheet?.classList.remove('open');
+  vrijheidSheet?.classList.remove('open');
+  document.body.style.overflow = '';
+};
+
+const openBeheerSheet = () => {
+  const content = document.getElementById('mobile-beheer-content');
+  const source = document.getElementById('assets-section');
+  const debtsSource = document.getElementById('debts-section');
+  const beheerSheet = document.getElementById('beheer-bottom-sheet');
+  if (content && source && debtsSource) {
+    content.appendChild(source);
+    content.appendChild(debtsSource);
+    openSheet(beheerSheet);
+  }
+};
+
 function highlightAssetRow(id: string) {
+  if (window.innerWidth < 1024) {
+    openBeheerSheet();
+  }
+  
   const inputs = document.querySelectorAll(`.asset-input[data-id="${id}"]`);
   inputs.forEach(input => {
     const tr = input.closest('tr');
@@ -1491,41 +1528,14 @@ function checkOnboarding() {
 }
 
 function initEventListeners() {
-  // Bottom Sheet Logic
-  const overlay = document.getElementById('bottom-sheet-overlay');
-  const beheerSheet = document.getElementById('beheer-bottom-sheet');
-  const historieSheet = document.getElementById('historie-bottom-sheet');
-  const vrijheidSheet = document.getElementById('vrijheid-bottom-sheet');
   const mobileBeheerBtn = document.getElementById('mobile-beheer-btn');
   const mobileHistorieBtn = document.getElementById('mobile-historie-btn');
   const mobileVrijheidBtn = document.getElementById('mobile-vrijheid-btn');
   const closeSheetBtns = document.querySelectorAll('.close-bottom-sheet');
-
-  const openSheet = (sheet: HTMLElement | null) => {
-    if (!sheet || !overlay) return;
-    overlay.classList.add('open');
-    sheet.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeSheets = () => {
-    overlay?.classList.remove('open');
-    beheerSheet?.classList.remove('open');
-    historieSheet?.classList.remove('open');
-    vrijheidSheet?.classList.remove('open');
-    document.body.style.overflow = '';
-  };
-
-  const openBeheerSheet = () => {
-    const content = document.getElementById('mobile-beheer-content');
-    const source = document.getElementById('assets-section');
-    const debtsSource = document.getElementById('debts-section');
-    if (content && source && debtsSource) {
-      content.appendChild(source);
-      content.appendChild(debtsSource);
-      openSheet(beheerSheet);
-    }
-  };
+  const overlay = document.getElementById('bottom-sheet-overlay');
+  const beheerSheet = document.getElementById('beheer-bottom-sheet');
+  const historieSheet = document.getElementById('historie-bottom-sheet');
+  const vrijheidSheet = document.getElementById('vrijheid-bottom-sheet');
 
   const tableBody = document.getElementById('asset-table-body');
   if (tableBody) {
