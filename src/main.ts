@@ -783,7 +783,7 @@ function renderCategoryCards() {
     const color = name === 'Groei' ? '#3b82f6' : name === 'Defensief' ? '#10b981' : '#f97316';
     const idPrefix = name.toLowerCase();
     return `
-      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between dark:bg-slate-900 dark:border-slate-800">
+      <div class="bg-white p-6 rounded-xl border border-slate-200 flex items-center justify-between dark:bg-slate-900 dark:border-slate-800">
         <div>
           <p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1 dark:text-slate-400">${name}</p>
           <p id="cat-percent-${idPrefix}" class="text-2xl font-bold dark:text-white">${formatPercent(percent)}</p>
@@ -2450,6 +2450,22 @@ function initEventListeners() {
   if (closeFeedbackSuccess) {
     closeFeedbackSuccess.addEventListener('click', toggleFeedbackModal);
   }
+
+  // FAQ Modal
+  const faqBtn = document.getElementById('faq-btn');
+  const mobileFaqBtn = document.getElementById('mobile-faq-btn');
+  const faqModal = document.getElementById('faq-modal');
+  const closeFaqModal = document.getElementById('close-faq-modal');
+  const faqModalOk = document.getElementById('faq-modal-ok');
+
+  const toggleFaqModal = () => {
+    faqModal?.classList.toggle('hidden');
+  };
+
+  faqBtn?.addEventListener('click', toggleFaqModal);
+  mobileFaqBtn?.addEventListener('click', toggleFaqModal);
+  closeFaqModal?.addEventListener('click', toggleFaqModal);
+  faqModalOk?.addEventListener('click', toggleFaqModal);
 
   createIcons({ icons });
 }
