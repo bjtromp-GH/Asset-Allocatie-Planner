@@ -517,12 +517,12 @@ function updateUI() {
 
   if (viewBrutoBtn && viewNettoBtn) {
     if (pieChartMode === 'bruto') {
-      viewBrutoBtn.className = 'px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400';
-      viewNettoBtn.className = 'px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all text-slate-500 dark:text-slate-400';
+      viewBrutoBtn.className = 'px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all bg-white shadow-sm text-blue-600';
+      viewNettoBtn.className = 'px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all text-white/80 hover:text-white';
       if (pieTotalLabel) pieTotalLabel.textContent = 'Bruto Vermogen';
     } else {
-      viewNettoBtn.className = 'px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400';
-      viewBrutoBtn.className = 'px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all text-slate-500 dark:text-slate-400';
+      viewNettoBtn.className = 'px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all bg-white shadow-sm text-blue-600';
+      viewBrutoBtn.className = 'px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all text-white/80 hover:text-white';
       if (pieTotalLabel) pieTotalLabel.textContent = 'Netto Vermogen';
     }
   }

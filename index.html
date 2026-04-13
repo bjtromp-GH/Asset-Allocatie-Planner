@@ -259,6 +259,36 @@
                 </div>
               </section>
             </div>
+
+            <!-- Smart Investment Calculator -->
+            <section id="investment-recommendations" class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl p-6 text-white relative overflow-hidden group">
+              <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
+              
+              <div class="relative z-10">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="font-bold text-lg flex items-center gap-2">
+                    Slimme Investerings Calculator
+                  </h2>
+                </div>
+                
+                <div class="mb-6">
+                  <label class="text-[10px] uppercase tracking-widest font-black opacity-70 mb-2 block">Nieuwe Inleg Bedrag</label>
+                  <div class="flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/20">
+                    <span class="font-bold">€</span>
+                    <input id="investment-amount-input" type="number" class="bg-transparent border-none p-0 w-full font-black focus:ring-0 text-xl placeholder:text-white/30" placeholder="0" value="1000" />
+                  </div>
+                </div>
+
+                <div class="space-y-3">
+                  <p class="text-[10px] uppercase tracking-widest font-black opacity-70">Aanbevolen Verdeling</p>
+                  <div id="recommendations-list" class="space-y-2">
+                    <!-- Dynamically populated -->
+                  </div>
+                </div>
+                
+                <p class="text-[10px] opacity-60 mt-4 italic">Deze verdeling brengt je portfolio het dichtst bij je doelpercentages.</p>
+              </div>
+            </section>
           </div>
  
           <!-- Right Column: Visualization & Tools (4/12) -->
@@ -270,9 +300,9 @@
                   <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i>
                   Portfolio Verdeling
                 </h2>
-                <div class="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
-                  <button id="view-bruto-btn" class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400">Bruto</button>
-                  <button id="view-netto-btn" class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all text-slate-500 dark:text-slate-400">Netto</button>
+                <div class="flex bg-blue-600 p-1 rounded-xl shadow-inner">
+                  <button id="view-bruto-btn" class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all bg-white text-blue-600 shadow-sm">Bruto</button>
+                  <button id="view-netto-btn" class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all text-white/80 hover:text-white">Netto</button>
                 </div>
               </div>
               <div class="h-[280px] w-full relative flex items-center justify-center">
@@ -446,38 +476,6 @@
 
         <!-- Full Width Sections (Below Masonry) -->
         <div class="mt-6 flex flex-col gap-6">
-          <!-- Smart Investment Calculator (Desktop: 2/3 width, Mobile: Full) -->
-          <div class="w-full lg:w-2/3">
-            <section id="investment-recommendations" class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl p-6 text-white relative overflow-hidden group">
-              <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
-              
-              <div class="relative z-10">
-                <div class="flex items-center justify-between mb-4">
-                  <h2 class="font-bold text-lg flex items-center gap-2">
-                    Slimme Investerings Calculator
-                  </h2>
-                </div>
-                
-                <div class="mb-6">
-                  <label class="text-[10px] uppercase tracking-widest font-black opacity-70 mb-2 block">Nieuwe Inleg Bedrag</label>
-                  <div class="flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/20">
-                    <span class="font-bold">€</span>
-                    <input id="investment-amount-input" type="number" class="bg-transparent border-none p-0 w-full font-black focus:ring-0 text-xl placeholder:text-white/30" placeholder="0" value="1000" />
-                  </div>
-                </div>
-
-                <div class="space-y-3">
-                  <p class="text-[10px] uppercase tracking-widest font-black opacity-70">Aanbevolen Verdeling</p>
-                  <div id="recommendations-list" class="space-y-2">
-                    <!-- Dynamically populated -->
-                  </div>
-                </div>
-                
-                <p class="text-[10px] opacity-60 mt-4 italic">Deze verdeling brengt je portfolio het dichtst bij je doelpercentages.</p>
-              </div>
-            </section>
-          </div>
-
           <!-- Rebalancing Strategy -->
           <section id="rebalance-section" class="hidden md:block bg-white rounded-xl border border-slate-200 overflow-hidden dark:bg-slate-900 dark:border-slate-800">
             <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800">
