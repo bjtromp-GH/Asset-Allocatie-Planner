@@ -629,6 +629,25 @@ function updateUI() {
   (window as any).chartStatus = { text: status, ...statusColors };
   (window as any).chartTotalValue = formatCurrency(currentDisplayValue);
 
+  // Pie Chart Empty State Logic
+  const pieEmptyState = document.getElementById('pie-empty-state');
+  const pieSummary = document.getElementById('pie-summary-container');
+  const pieLegend = document.getElementById('pie-legend');
+  
+  if (pieEmptyState) {
+    if (totalAssets === 0) {
+      pieEmptyState.classList.remove('hidden');
+      pieSummary?.classList.add('hidden');
+      pieLegend?.classList.add('hidden');
+      (window as any).chartCenterTextDisplay = false;
+    } else {
+      pieEmptyState.classList.add('hidden');
+      pieSummary?.classList.remove('hidden');
+      pieLegend?.classList.remove('hidden');
+      (window as any).chartCenterTextDisplay = true;
+    }
+  }
+
   prevNetWorth = netWorth;
   prevPieTotal = currentDisplayValue;
   prevTotalAssets = totalAssets;
@@ -1170,13 +1189,13 @@ function updateCharts() {
             label: (context) => {
               const value = context.raw as number;
               const total = context.dataset.data.reduce((a: any, b: any) => a + b, 0) as number;
-              const percentage = ((value / total) * 100).toFixed(1);
+              const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0';
               return ` ${context.label}: ${formatCurrency(value)} (${percentage}%)`;
             }
           }
         },
         centerText: {
-          display: true,
+          display: (window as any).chartCenterTextDisplay !== false,
           value: (window as any).chartTotalValue || '€ 0',
           label: pieChartMode === 'bruto' ? 'Bruto' : 'Netto',
           badge: {
@@ -1551,6 +1570,45 @@ function initEventListeners() {
   if (resetColorsBtn) {
     resetColorsBtn.addEventListener('click', () => {
       resetToDefaults();
+    });
+  }
+
+  // Pie Chart Empty State Buttons
+  const loadExampleBtn = document.getElementById('load-example-btn');
+  if (loadExampleBtn) {
+    loadExampleBtn.addEventListener('click', () => {
+      const sampleAssets: Asset[] = [
+        { id: Math.random().toString(36).substr(2, 9), name: 'S&P 500 ETF', value: 45000, target: 40, category: 'Groei', color: '#3b82f6' },
+        { id: Math.random().toString(36).substr(2, 9), name: 'Bitcoin', value: 12000, target: 10, category: 'Speculatief', color: '#f59e0b' },
+        { id: Math.random().toString(36).substr(2, 9), name: 'Spaarrekening', value: 25000, target: 30, category: 'Defensief', color: '#10b981' },
+        { id: Math.random().toString(36).substr(2, 9), name: 'Staatsobligaties', value: 18000, target: 20, category: 'Defensief', color: '#6366f1' }
+      ];
+      assets = sampleAssets;
+      updateUI();
+      
+      // Show success toast or similar
+      const toast = document.createElement('div');
+      toast.className = 'fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-xl shadow-2xl z-[200] animate-in fade-in slide-in-from-bottom-4';
+      toast.innerHTML = '<div class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i><span class="font-bold text-sm">Voorbeeldgegevens geladen!</span></div>';
+      document.body.appendChild(toast);
+      createIcons({ icons });
+      setTimeout(() => {
+        toast.classList.add('animate-out', 'fade-out', 'slide-out-to-bottom-4');
+        setTimeout(() => toast.remove(), 500);
+      }, 3000);
+    });
+  }
+
+  const focusAssetsBtn = document.getElementById('focus-assets-btn');
+  if (focusAssetsBtn) {
+    focusAssetsBtn.addEventListener('click', () => {
+      document.getElementById('assets-section')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Highlight the first input
+      setTimeout(() => {
+        const firstInput = document.querySelector('.asset-value-input') as HTMLInputElement;
+        firstInput?.focus();
+        firstInput?.select();
+      }, 800);
     });
   }
 

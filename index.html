@@ -307,9 +307,29 @@
               </div>
               <div class="h-[280px] w-full relative flex items-center justify-center">
                 <canvas id="pie-chart"></canvas>
+                <!-- Empty State Overlay -->
+                <div id="pie-empty-state" class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-xl hidden z-20">
+                  <div class="text-center p-6">
+                    <div class="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <i data-lucide="pie-chart" class="w-8 h-8 text-blue-600"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 dark:text-white mb-2">Geen data om te tonen</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-6 max-w-[200px] mx-auto">Vul je assets in om je portfolio verdeling te zien of start met een voorbeeld.</p>
+                    <div class="flex flex-col gap-2">
+                      <button id="load-example-btn" class="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition-all active:scale-95 flex items-center justify-center gap-2">
+                        <i data-lucide="database" class="w-4 h-4"></i>
+                        Laad voorbeeld gegevens
+                      </button>
+                      <button id="focus-assets-btn" class="w-full py-2.5 px-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-bold text-sm transition-all hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-95 flex items-center justify-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                        Vul je assets in
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
               
-              <div class="mt-6 flex justify-between items-end border-b border-slate-50 pb-2 dark:border-slate-800">
+              <div id="pie-summary-container" class="mt-6 flex justify-between items-end border-b border-slate-50 pb-2 dark:border-slate-800">
                 <div class="flex items-center gap-2">
                   <span id="pie-total-label" class="text-[12px] uppercase tracking-wider opacity-60 dark:text-slate-400">Bruto Vermogen</span>
                   <button class="privacy-toggle-btn p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition-colors" title="Privacy modus">
