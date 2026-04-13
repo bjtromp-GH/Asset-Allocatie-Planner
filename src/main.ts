@@ -1620,7 +1620,11 @@ function initEventListeners() {
         { id: Math.random().toString(36).substr(2, 9), name: 'Beleggingen', value: 30000, target: 12, category: 'Groei', color: '#f97316' },
         { id: Math.random().toString(36).substr(2, 9), name: 'Overig', value: 20000, target: 8, category: 'Speculatief', color: '#6366f1' }
       ];
+      const sampleDebts: Debt[] = [
+        { id: Math.random().toString(36).substr(2, 9), name: 'Hypotheek', value: 120000 }
+      ];
       assets = sampleAssets;
+      debts = sampleDebts;
       updateUI();
       
       // Show success toast or similar

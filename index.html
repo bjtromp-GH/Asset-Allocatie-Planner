@@ -171,6 +171,58 @@
           
           <!-- Left Column: Primary Data & Tables (8/12) -->
           <div class="w-full lg:w-2/3 flex flex-col gap-6">
+            <!-- Portfolio Verdeling (Pie Chart) -->
+            <section id="pie-chart-section" class="bg-white rounded-xl border border-slate-200 p-6 dark:bg-slate-900 dark:border-slate-800">
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="font-semibold flex items-center gap-2 dark:text-white">
+                  <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600 animate-float"></i>
+                  Portfolio Verdeling
+                </h2>
+                <div class="flex bg-blue-600 p-1 rounded-xl shadow-inner">
+                  <button id="view-bruto-btn" class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all bg-white text-blue-600 shadow-sm">Bruto</button>
+                  <button id="view-netto-btn" class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all text-white/80 hover:text-white">Netto</button>
+                </div>
+              </div>
+              <div class="h-[280px] w-full relative flex items-center justify-center">
+                <canvas id="pie-chart"></canvas>
+                <!-- Empty State Overlay -->
+                <div id="pie-empty-state" class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-xl hidden z-20">
+                  <div class="text-center p-6">
+                    <div class="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <i data-lucide="pie-chart" class="w-8 h-8 text-blue-600 animate-pulse"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 dark:text-white mb-2">Nog geen data</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-6 max-w-[200px] mx-auto">Vul je assets in of laad voorbeelddata</p>
+                    <div class="flex flex-col gap-2">
+                      <button id="load-example-btn" class="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition-all active:scale-95 flex items-center justify-center gap-2">
+                        <i data-lucide="database" class="w-4 h-4"></i>
+                        Laad voorbeeld gegevens
+                      </button>
+                      <button id="focus-assets-btn" class="w-full py-2.5 px-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-bold text-sm transition-all hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-95 flex items-center justify-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                        Vul je assets in
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div id="pie-summary-container" class="mt-6 flex justify-between items-end border-b border-slate-50 pb-2 dark:border-slate-800">
+                <div class="flex items-center gap-2">
+                  <span id="pie-total-label" class="text-[12px] uppercase tracking-wider opacity-60 dark:text-slate-400">Bruto Vermogen</span>
+                  <button class="privacy-toggle-btn p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition-colors" title="Privacy modus">
+                    <i data-lucide="eye" class="w-5 h-5"></i>
+                  </button>
+                </div>
+                <span id="pie-total-value" class="text-lg font-bold text-slate-900 dark:text-white">€ 0,00</span>
+              </div>
+              
+              <!-- Legend -->
+              <div id="pie-legend" class="flex flex-col gap-2 mt-4 dark:border-slate-800">
+                <!-- Dynamically populated -->
+              </div>
+            </section>
+
             <!-- Asset Management Table -->
             <section id="assets-section" class="bg-white rounded-xl border border-slate-200 overflow-hidden dark:bg-slate-900 dark:border-slate-800">
               <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between dark:border-slate-800">
@@ -292,59 +344,7 @@
           </div>
  
           <!-- Right Column: Visualization & Tools (4/12) -->
-          <div class="w-full lg:w-1/3 flex flex-col gap-6 order-first lg:order-none">
-            <!-- Portfolio Verdeling (Pie Chart) -->
-            <section id="pie-chart-section" class="bg-white rounded-xl border border-slate-200 p-6 dark:bg-slate-900 dark:border-slate-800">
-              <div class="flex items-center justify-between mb-4">
-                <h2 class="font-semibold flex items-center gap-2 dark:text-white">
-                  <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i>
-                  Portfolio Verdeling
-                </h2>
-                <div class="flex bg-blue-600 p-1 rounded-xl shadow-inner">
-                  <button id="view-bruto-btn" class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all bg-white text-blue-600 shadow-sm">Bruto</button>
-                  <button id="view-netto-btn" class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all text-white/80 hover:text-white">Netto</button>
-                </div>
-              </div>
-              <div class="h-[280px] w-full relative flex items-center justify-center">
-                <canvas id="pie-chart"></canvas>
-                <!-- Empty State Overlay -->
-                <div id="pie-empty-state" class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-xl hidden z-20">
-                  <div class="text-center p-6">
-                    <div class="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <i data-lucide="pie-chart" class="w-8 h-8 text-blue-600"></i>
-                    </div>
-                    <h3 class="font-bold text-slate-900 dark:text-white mb-2">Nog geen data</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-6 max-w-[200px] mx-auto">Vul je assets in of laad voorbeelddata</p>
-                    <div class="flex flex-col gap-2">
-                      <button id="load-example-btn" class="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition-all active:scale-95 flex items-center justify-center gap-2">
-                        <i data-lucide="database" class="w-4 h-4"></i>
-                        Laad voorbeeld gegevens
-                      </button>
-                      <button id="focus-assets-btn" class="w-full py-2.5 px-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-bold text-sm transition-all hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-95 flex items-center justify-center gap-2">
-                        <i data-lucide="plus" class="w-4 h-4"></i>
-                        Vul je assets in
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div id="pie-summary-container" class="mt-6 flex justify-between items-end border-b border-slate-50 pb-2 dark:border-slate-800">
-                <div class="flex items-center gap-2">
-                  <span id="pie-total-label" class="text-[12px] uppercase tracking-wider opacity-60 dark:text-slate-400">Bruto Vermogen</span>
-                  <button class="privacy-toggle-btn p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition-colors" title="Privacy modus">
-                    <i data-lucide="eye" class="w-5 h-5"></i>
-                  </button>
-                </div>
-                <span id="pie-total-value" class="text-lg font-bold text-slate-900 dark:text-white">€ 0,00</span>
-              </div>
-              
-              <!-- Legend -->
-              <div id="pie-legend" class="flex flex-col gap-2 mt-4 dark:border-slate-800">
-                <!-- Dynamically populated -->
-              </div>
-            </section>
-
+          <div class="w-full lg:w-1/3 flex flex-col gap-6">
             <!-- Target Net Worth Card -->
             <div class="bg-white p-6 rounded-xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
               <div class="flex flex-col gap-6">
