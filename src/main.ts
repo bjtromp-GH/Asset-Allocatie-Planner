@@ -1491,6 +1491,42 @@ function checkOnboarding() {
 }
 
 function initEventListeners() {
+  // Bottom Sheet Logic
+  const overlay = document.getElementById('bottom-sheet-overlay');
+  const beheerSheet = document.getElementById('beheer-bottom-sheet');
+  const historieSheet = document.getElementById('historie-bottom-sheet');
+  const vrijheidSheet = document.getElementById('vrijheid-bottom-sheet');
+  const mobileBeheerBtn = document.getElementById('mobile-beheer-btn');
+  const mobileHistorieBtn = document.getElementById('mobile-historie-btn');
+  const mobileVrijheidBtn = document.getElementById('mobile-vrijheid-btn');
+  const closeSheetBtns = document.querySelectorAll('.close-bottom-sheet');
+
+  const openSheet = (sheet: HTMLElement | null) => {
+    if (!sheet || !overlay) return;
+    overlay.classList.add('open');
+    sheet.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeSheets = () => {
+    overlay?.classList.remove('open');
+    beheerSheet?.classList.remove('open');
+    historieSheet?.classList.remove('open');
+    vrijheidSheet?.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  const openBeheerSheet = () => {
+    const content = document.getElementById('mobile-beheer-content');
+    const source = document.getElementById('assets-section');
+    const debtsSource = document.getElementById('debts-section');
+    if (content && source && debtsSource) {
+      content.appendChild(source);
+      content.appendChild(debtsSource);
+      openSheet(beheerSheet);
+    }
+  };
+
   const tableBody = document.getElementById('asset-table-body');
   if (tableBody) {
     tableBody.addEventListener('input', (e) => {
@@ -1577,11 +1613,12 @@ function initEventListeners() {
   const loadExampleBtn = document.getElementById('load-example-btn');
   if (loadExampleBtn) {
     loadExampleBtn.addEventListener('click', () => {
+      // Average Dutchman Data
       const sampleAssets: Asset[] = [
-        { id: Math.random().toString(36).substr(2, 9), name: 'S&P 500 ETF', value: 45000, target: 40, category: 'Groei', color: '#3b82f6' },
-        { id: Math.random().toString(36).substr(2, 9), name: 'Bitcoin', value: 12000, target: 10, category: 'Speculatief', color: '#f59e0b' },
-        { id: Math.random().toString(36).substr(2, 9), name: 'Spaarrekening', value: 25000, target: 30, category: 'Defensief', color: '#10b981' },
-        { id: Math.random().toString(36).substr(2, 9), name: 'Staatsobligaties', value: 18000, target: 20, category: 'Defensief', color: '#6366f1' }
+        { id: Math.random().toString(36).substr(2, 9), name: 'Eigen Woning', value: 145000, target: 58, category: 'Groei', color: '#3b82f6' },
+        { id: Math.random().toString(36).substr(2, 9), name: 'Spaargeld', value: 55000, target: 22, category: 'Defensief', color: '#10b981' },
+        { id: Math.random().toString(36).substr(2, 9), name: 'Beleggingen', value: 30000, target: 12, category: 'Groei', color: '#f97316' },
+        { id: Math.random().toString(36).substr(2, 9), name: 'Overig', value: 20000, target: 8, category: 'Speculatief', color: '#6366f1' }
       ];
       assets = sampleAssets;
       updateUI();
@@ -1602,7 +1639,12 @@ function initEventListeners() {
   const focusAssetsBtn = document.getElementById('focus-assets-btn');
   if (focusAssetsBtn) {
     focusAssetsBtn.addEventListener('click', () => {
-      document.getElementById('assets-section')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (window.innerWidth < 1024) {
+        openBeheerSheet();
+      } else {
+        document.getElementById('assets-section')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      
       // Highlight the first input
       setTimeout(() => {
         const firstInput = document.querySelector('.asset-value-input') as HTMLInputElement;
@@ -2210,41 +2252,7 @@ function initEventListeners() {
     });
   }
 
-  // Bottom Sheet Logic
-  const overlay = document.getElementById('bottom-sheet-overlay');
-  const beheerSheet = document.getElementById('beheer-bottom-sheet');
-  const historieSheet = document.getElementById('historie-bottom-sheet');
-  const vrijheidSheet = document.getElementById('vrijheid-bottom-sheet');
-  const mobileBeheerBtn = document.getElementById('mobile-beheer-btn');
-  const mobileHistorieBtn = document.getElementById('mobile-historie-btn');
-  const mobileVrijheidBtn = document.getElementById('mobile-vrijheid-btn');
-  const closeSheetBtns = document.querySelectorAll('.close-bottom-sheet');
-
-  const openSheet = (sheet: HTMLElement | null) => {
-    if (!sheet || !overlay) return;
-    overlay.classList.add('open');
-    sheet.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeSheets = () => {
-    overlay?.classList.remove('open');
-    beheerSheet?.classList.remove('open');
-    historieSheet?.classList.remove('open');
-    vrijheidSheet?.classList.remove('open');
-    document.body.style.overflow = '';
-  };
-
-  mobileBeheerBtn?.addEventListener('click', () => {
-    const content = document.getElementById('mobile-beheer-content');
-    const source = document.getElementById('assets-section');
-    const debtsSource = document.getElementById('debts-section');
-    if (content && source && debtsSource) {
-      content.appendChild(source);
-      content.appendChild(debtsSource);
-      openSheet(beheerSheet);
-    }
-  });
+  mobileBeheerBtn?.addEventListener('click', openBeheerSheet);
 
   mobileHistorieBtn?.addEventListener('click', () => {
     const content = document.getElementById('mobile-historie-content');
