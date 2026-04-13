@@ -25,7 +25,7 @@
               <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white">GeldDash</h1>
             </div>
             
-            <div class="flex items-center gap-1 sm:gap-2">
+            <div class="flex items-center gap-1 sm:gap-2 relative" id="header-actions-container">
               <!-- Mobile & Desktop Actions -->
               <button id="theme-toggle" class="p-2 rounded-lg hover:bg-blue-700 transition-colors text-white" title="Wissel thema">
                 <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
@@ -50,6 +50,18 @@
                 <i data-lucide="save" class="w-4 h-4"></i>
                 <span class="hidden sm:inline">Sla op</span>
               </button>
+
+              <!-- Feature Hint Tooltip -->
+              <div id="feature-hint" class="absolute top-full mt-4 right-0 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 z-[100] hidden animate-in fade-in slide-in-from-top-4 duration-500 pointer-events-none">
+                <div class="bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-6 py-3 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-700 font-bold text-lg whitespace-nowrap relative pointer-events-auto cursor-pointer group hover:scale-105 transition-transform active:scale-95">
+                  <div class="flex items-center gap-2">
+                    <span>Ontdek deze opties</span>
+                    <div class="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></div>
+                  </div>
+                  <!-- Arrow -->
+                  <div class="absolute -top-2 right-8 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 w-4 h-4 bg-white dark:bg-slate-800 border-t border-l border-slate-100 dark:border-slate-700 rotate-45"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

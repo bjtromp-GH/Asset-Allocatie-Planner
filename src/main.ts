@@ -1434,6 +1434,26 @@ function showCoachMark() {
   }, 500);
 }
 
+function showFeatureHint() {
+  const featureHint = document.getElementById('feature-hint');
+  if (featureHint) {
+    setTimeout(() => {
+      featureHint.classList.remove('hidden');
+      
+      const hide = () => {
+        featureHint.classList.add('hidden');
+        document.removeEventListener('mousedown', hide);
+        featureHint.removeEventListener('click', hide);
+      };
+      
+      // Auto-hide after 8 seconds or on click
+      setTimeout(hide, 8000);
+      document.addEventListener('mousedown', hide);
+      featureHint.addEventListener('click', hide);
+    }, 1000);
+  }
+}
+
 function checkOnboarding() {
   const completed = localStorage.getItem('onboarding_completed');
   const hasData = localStorage.getItem(STORAGE_KEY);
@@ -1442,6 +1462,12 @@ function checkOnboarding() {
     const introScreen = document.getElementById('intro-screen');
     if (introScreen) {
       introScreen.classList.remove('hidden');
+    }
+  } else {
+    // Onboarding already done, show hint once per session
+    if (!sessionStorage.getItem('feature_hint_shown')) {
+      showFeatureHint();
+      sessionStorage.setItem('feature_hint_shown', 'true');
     }
   }
 }
@@ -2091,6 +2117,7 @@ function initEventListeners() {
     closeExplanationBtn.addEventListener('click', () => {
       const explanationModal = document.getElementById('onboarding-explanation-modal');
       if (explanationModal) explanationModal.classList.add('hidden');
+      showFeatureHint();
     });
   }
 
@@ -2114,6 +2141,7 @@ function initEventListeners() {
       
       saveState();
       updateUI();
+      showFeatureHint();
     });
   }
 
