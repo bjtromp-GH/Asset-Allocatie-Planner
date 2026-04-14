@@ -1,7 +1,120 @@
 import { Chart, registerables } from 'chart.js';
-import { createIcons, icons } from 'lucide';
-import * as d3 from 'd3';
+import { 
+  createIcons, 
+  TrendingUp, 
+  HelpCircle, 
+  Sun, 
+  Moon, 
+  Info, 
+  Users, 
+  Lock, 
+  RotateCcw, 
+  Save, 
+  Calendar, 
+  Eye, 
+  ChevronDown, 
+  LayoutDashboard, 
+  Smile, 
+  Wallet, 
+  RefreshCw, 
+  Plus, 
+  MinusCircle, 
+  BarChart3, 
+  PieChart, 
+  Database, 
+  Target, 
+  Clock, 
+  Coffee, 
+  CheckCircle2, 
+  Plane, 
+  Flame, 
+  LayoutGrid, 
+  History, 
+  LineChart, 
+  List, 
+  X, 
+  ShieldCheck, 
+  Unlock, 
+  Download, 
+  Upload, 
+  Calculator, 
+  PenTool, 
+  Check, 
+  ArrowRight, 
+  MessageSquarePlus, 
+  Bug, 
+  ChevronRight, 
+  Lightbulb, 
+  ArrowLeft, 
+  EyeOff, 
+  Trash2, 
+  ArrowUpRight, 
+  ArrowDownRight, 
+  Minus, 
+  CheckCircle,
+  Sparkles,
+  Frown,
+  ThumbsUp
+} from 'lucide';
+import { hierarchy, treemap, select } from 'd3';
 import CryptoJS from 'crypto-js';
+
+const usedIcons = {
+  TrendingUp,
+  HelpCircle,
+  Sun,
+  Moon,
+  Info,
+  Users,
+  Lock,
+  RotateCcw,
+  Save,
+  Calendar,
+  Eye,
+  ChevronDown,
+  LayoutDashboard,
+  Smile,
+  Wallet,
+  RefreshCw,
+  Plus,
+  MinusCircle,
+  BarChart3,
+  PieChart,
+  Database,
+  Target,
+  Clock,
+  Coffee,
+  CheckCircle2,
+  Plane,
+  Flame,
+  LayoutGrid,
+  History,
+  LineChart,
+  List,
+  X,
+  ShieldCheck,
+  Unlock,
+  Download,
+  Upload,
+  Calculator,
+  PenTool,
+  Check,
+  ArrowRight,
+  MessageSquarePlus,
+  Bug,
+  ChevronRight,
+  Lightbulb,
+  ArrowLeft,
+  EyeOff,
+  Trash2,
+  ArrowUpRight,
+  ArrowDownRight,
+  Minus,
+  CheckCircle,
+  Sparkles,
+  Frown,
+  ThumbsUp
+};
 
 Chart.register(...registerables);
 
@@ -482,7 +595,6 @@ function updateUI() {
   privacyToggles.forEach(btn => {
     btn.innerHTML = isPrivacyMode ? '<i data-lucide="eye-off" class="w-5 h-5"></i>' : '<i data-lucide="eye" class="w-5 h-5"></i>';
   });
-  createIcons({ icons });
 
   const totalAssets = assets.reduce((sum, asset) => sum + asset.value, 0);
   const totalDebts = debts.reduce((sum, debt) => sum + debt.value, 0);
@@ -717,6 +829,7 @@ function updateUI() {
   renderRecommendations();
   updateCharts();
   updateTreemap();
+  createIcons({ icons: usedIcons });
 }
 
 function renderDebts() {
@@ -816,8 +929,6 @@ function renderDebts() {
       updateUI();
     });
   });
-
-  createIcons({ icons });
 }
 
 function renderCategoryCards() {
@@ -980,8 +1091,6 @@ function renderAssets() {
       deleteAsset(id!);
     });
   });
-
-  createIcons({ icons });
 }
 
 function renderRebalancePlan() {
@@ -1131,7 +1240,6 @@ function renderHistory() {
   }
 
   updateCharts();
-  createIcons({ icons });
 }
 
 function updateCharts() {
@@ -1392,17 +1500,17 @@ function updateTreemap() {
     children: assets.filter(a => a.value > 0)
   };
 
-  const root = d3.hierarchy(data)
+  const root = hierarchy(data)
     .sum(d => (d as any).value)
     .sort((a, b) => (b.value || 0) - (a.value || 0));
 
-  d3.treemap()
+  treemap()
     .size([width, height])
     .padding(2)
     .round(true)
     (root);
 
-  const svg = d3.select(container)
+  const svg = select(container)
     .append("svg")
     .attr("width", width)
     .attr("height", height)
@@ -1674,7 +1782,7 @@ function initEventListeners() {
       toast.className = 'fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-xl shadow-2xl z-[200] animate-in fade-in slide-in-from-bottom-4';
       toast.innerHTML = '<div class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i><span class="font-bold text-sm">Voorbeeldgegevens geladen!</span></div>';
       document.body.appendChild(toast);
-      createIcons({ icons });
+      createIcons({ icons: usedIcons });
       setTimeout(() => {
         toast.classList.add('animate-out', 'fade-out', 'slide-out-to-bottom-4');
         setTimeout(() => toast.remove(), 500);
@@ -1839,7 +1947,7 @@ function initEventListeners() {
       securityBadge?.classList.remove('hidden');
     }
     if (confirmPasswordContainer) confirmPasswordContainer.classList.remove('hidden');
-    createIcons({ icons });
+    createIcons({ icons: usedIcons });
   };
 
   if (lockNowBtn) {
@@ -2441,7 +2549,7 @@ function initEventListeners() {
       
       if (statusIcon) {
         statusIcon.setAttribute('data-lucide', iconName);
-        createIcons({ icons });
+        createIcons({ icons: usedIcons });
       }
     }
 
@@ -2582,7 +2690,7 @@ function initEventListeners() {
   closeFaqModal?.addEventListener('click', toggleFaqModal);
   faqModalOk?.addEventListener('click', toggleFaqModal);
 
-  createIcons({ icons });
+  createIcons({ icons: usedIcons });
 }
 
 // Initial Load
