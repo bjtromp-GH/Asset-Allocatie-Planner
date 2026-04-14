@@ -70,6 +70,7 @@ interface Asset {
   target: number;
   color: string;
   category: 'Groei' | 'Defensief' | 'Speculatief';
+  isRealEstate?: boolean;
 }
 
 interface Debt {
@@ -87,14 +88,14 @@ interface HistoryEntry {
 }
 
 const DEFAULT_ASSETS: Asset[] = [
-  { id: '1', name: 'Aandelen', value: 5000, target: 45, color: '#3b82f6', category: 'Groei' },
-  { id: '2', name: 'Obligaties', value: 1500, target: 15, color: '#10b981', category: 'Defensief' },
-  { id: '3', name: 'Vastgoed', value: 1000, target: 10, color: '#6366f1', category: 'Groei' },
-  { id: '4', name: 'Spaargeld', value: 1000, target: 5, color: '#22c55e', category: 'Defensief' },
-  { id: '5', name: 'Goud', value: 500, target: 5, color: '#eab308', category: 'Defensief' },
-  { id: '6', name: 'Zilver', value: 200, target: 2, color: '#94a3b8', category: 'Defensief' },
-  { id: '7', name: 'Bitcoin', value: 800, target: 10, color: '#f97316', category: 'Speculatief' },
-  { id: '8', name: 'Auto', value: 1000, target: 8, color: '#ec4899', category: 'Defensief' },
+  { id: '1', name: 'Aandelen', value: 5000, target: 45, color: '#3b82f6', category: 'Groei', isRealEstate: false },
+  { id: '2', name: 'Obligaties', value: 1500, target: 15, color: '#10b981', category: 'Defensief', isRealEstate: false },
+  { id: '3', name: 'Vastgoed', value: 1000, target: 10, color: '#6366f1', category: 'Groei', isRealEstate: true },
+  { id: '4', name: 'Spaargeld', value: 1000, target: 5, color: '#22c55e', category: 'Defensief', isRealEstate: false },
+  { id: '5', name: 'Goud', value: 500, target: 5, color: '#eab308', category: 'Defensief', isRealEstate: false },
+  { id: '6', name: 'Zilver', value: 200, target: 2, color: '#94a3b8', category: 'Defensief', isRealEstate: false },
+  { id: '7', name: 'Bitcoin', value: 800, target: 10, color: '#f97316', category: 'Speculatief', isRealEstate: false },
+  { id: '8', name: 'Auto', value: 1000, target: 8, color: '#ec4899', category: 'Defensief', isRealEstate: false },
 ];
 
 let assets: Asset[] = [];
@@ -401,12 +402,14 @@ function saveNewAsset() {
   const newAssetName = document.getElementById('new-asset-name') as HTMLInputElement;
   const newAssetCategory = document.getElementById('new-asset-category') as HTMLSelectElement;
   const newAssetTarget = document.getElementById('new-asset-target') as HTMLInputElement;
+  const newAssetIsRealEstate = document.getElementById('new-asset-is-real-estate') as HTMLInputElement;
 
   if (!newAssetName || !newAssetCategory || !newAssetTarget) return;
 
   const name = newAssetName.value.trim() || 'Nieuwe Asset';
   const category = newAssetCategory.value as Asset['category'];
   const target = parseFloat(newAssetTarget.value) || 0;
+  const isRealEstate = newAssetIsRealEstate?.checked || false;
 
   const id = Math.random().toString(36).substring(2, 9);
   const colors = ['#3b82f6', '#10b981', '#6366f1', '#22c55e', '#eab308', '#94a3b8', '#f97316', '#ec4899'];
@@ -417,7 +420,8 @@ function saveNewAsset() {
     value: 0,
     target,
     color: colors[assets.length % colors.length],
-    category
+    category,
+    isRealEstate
   };
 
   assets.push(newAsset);
@@ -485,14 +489,14 @@ function updateUI() {
   const netWorth = totalAssets - totalDebts;
 
   const liquidValue = assets
-    .filter(asset => !asset.name.toLowerCase().includes('vastgoed'))
+    .filter(asset => !asset.isRealEstate)
     .reduce((sum, asset) => sum + asset.value, 0);
 
   const yieldValue = assets
     .filter(asset => {
       const name = asset.name.toLowerCase();
       // Exclude non-liquid or non-yield assets from 4% rule calculation
-      if (name.includes('vastgoed')) return false;
+      if (asset.isRealEstate) return false;
       if (name.includes('spaar') || name.includes('bank') || name.includes('cash')) return false;
       if (name.includes('goud') || name.includes('zilver')) return false;
       if (name.includes('auto') || name.includes('ebike') || name.includes('fiets')) return false;
@@ -866,7 +870,7 @@ function renderAssets() {
     return `
       <tr class="hover:bg-slate-50/50 transition-colors group dark:hover:bg-slate-800/50">
         <td class="px-3 sm:px-6 py-4 min-w-[120px] sm:min-w-[150px]">
-          <div class="flex items-center gap-2 sm:gap-3">
+          <div class="flex flex-col gap-0.5">
             <input
               type="text"
               value="${asset.name}"
@@ -874,6 +878,7 @@ function renderAssets() {
               data-type="name"
               class="asset-input w-full bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-0 sm:py-1 text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 dark:hover:border-slate-700"
             />
+            ${asset.isRealEstate ? '<span class="text-[9px] font-bold uppercase tracking-widest text-blue-500 dark:text-blue-400">Vastgoed</span>' : ''}
           </div>
         </td>
         <td class="px-3 sm:px-6 py-4 min-w-[100px] sm:min-w-[180px]">
@@ -1232,7 +1237,7 @@ function updateCharts() {
           }
         }
       },
-      cutout: '60%'
+      cutout: '75%'
     } as any
   });
 
@@ -1652,10 +1657,10 @@ function initEventListeners() {
     loadExampleBtn.addEventListener('click', () => {
       // Average Dutchman Data
       const sampleAssets: Asset[] = [
-        { id: Math.random().toString(36).substr(2, 9), name: 'Eigen Woning', value: 145000, target: 58, category: 'Groei', color: '#3b82f6' },
-        { id: Math.random().toString(36).substr(2, 9), name: 'Spaargeld', value: 55000, target: 22, category: 'Defensief', color: '#10b981' },
-        { id: Math.random().toString(36).substr(2, 9), name: 'Beleggingen', value: 30000, target: 12, category: 'Groei', color: '#f97316' },
-        { id: Math.random().toString(36).substr(2, 9), name: 'Overig', value: 20000, target: 8, category: 'Speculatief', color: '#6366f1' }
+        { id: Math.random().toString(36).substr(2, 9), name: 'Eigen Woning', value: 145000, target: 58, category: 'Groei', color: '#3b82f6', isRealEstate: true },
+        { id: Math.random().toString(36).substr(2, 9), name: 'Spaargeld', value: 55000, target: 22, category: 'Defensief', color: '#10b981', isRealEstate: false },
+        { id: Math.random().toString(36).substr(2, 9), name: 'Beleggingen', value: 30000, target: 12, category: 'Groei', color: '#f97316', isRealEstate: false },
+        { id: Math.random().toString(36).substr(2, 9), name: 'Overig', value: 20000, target: 8, category: 'Speculatief', color: '#6366f1', isRealEstate: false }
       ];
       const sampleDebts: Debt[] = [
         { id: Math.random().toString(36).substr(2, 9), name: 'Hypotheek', value: 120000, target: 100 }
@@ -2228,7 +2233,8 @@ function initEventListeners() {
               value: 0,
               target: 0,
               color: colors[index % colors.length],
-              category: cb.value === 'Crypto' ? 'Speculatief' : (cb.value === 'Spaargeld' || cb.value === 'Goud' ? 'Defensief' : 'Groei')
+              category: cb.value === 'Crypto' ? 'Speculatief' : (cb.value === 'Spaargeld' || cb.value === 'Goud' ? 'Defensief' : 'Groei'),
+              isRealEstate: cb.value === 'Eigen Woning'
             });
           }
         }
