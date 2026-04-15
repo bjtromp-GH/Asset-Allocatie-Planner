@@ -292,8 +292,10 @@ function encrypt(data: string, key: string): string {
 }
 
 function decrypt(data: string, key: string): string {
+  if (!data || !key) return '';
   try {
     const bytes = CryptoJS.AES.decrypt(data, key);
+    if (!bytes) return '';
     const decrypted = bytes.toString(CryptoJS.enc.Utf8);
     return decrypted;
   } catch (e) {
@@ -302,6 +304,8 @@ function decrypt(data: string, key: string): string {
 }
 
 function saveState() {
+  if (isEncrypted) return; // Never save while the app is locked to prevent data corruption
+  
   const dateInput = document.getElementById('current-date') as HTMLInputElement;
   const state = {
     assets,
@@ -2084,8 +2088,8 @@ function initEventListeners() {
 
   if (savePasswordBtn) {
     savePasswordBtn.addEventListener('click', () => {
-      const newPass = masterPasswordInput.value;
-      const confirmPass = confirmPasswordInput.value;
+      const newPass = masterPasswordInput.value.trim();
+      const confirmPass = confirmPasswordInput.value.trim();
       
       if (!newPass) {
         alert('Voer een wachtwoord in.');
@@ -2113,6 +2117,7 @@ function initEventListeners() {
       securityModal?.classList.add('hidden');
       masterPasswordInput.value = '';
       confirmPasswordInput.value = '';
+      updateSecurityUI(); // Ensure UI reflects the new state
       alert('Portfolio is nu versleuteld met je wachtwoord.');
     });
   }
@@ -2210,7 +2215,7 @@ function initEventListeners() {
   const forgotPasswordBtn = document.getElementById('forgot-password-btn');
 
   const attemptUnlock = () => {
-    const pass = unlockInput.value;
+    const pass = unlockInput.value.trim();
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved && pass) {
       let payload = saved;
@@ -2231,14 +2236,33 @@ function initEventListeners() {
           applyState(state);
           hideLockScreen();
           unlockInput.value = '';
+          updateSecurityUI(); // Ensure UI reflects the unlocked state
         } catch (e) {
-          alert('Ongeldig wachtwoord.');
+          alert('Ongeldig wachtwoord of beschadigde data.');
         }
       } else {
         alert('Ongeldig wachtwoord.');
       }
     }
   };
+
+  // Password visibility toggles
+  document.querySelectorAll('.toggle-password').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = (btn as HTMLElement).dataset.target;
+      const input = document.getElementById(targetId!) as HTMLInputElement;
+      const icon = btn.querySelector('i');
+      
+      if (input.type === 'password') {
+        input.type = 'text';
+        if (icon) icon.setAttribute('data-lucide', 'eye-off');
+      } else {
+        input.type = 'password';
+        if (icon) icon.setAttribute('data-lucide', 'eye');
+      }
+      createIcons({ icons: usedIcons });
+    });
+  });
 
   if (unlockBtn) {
     unlockBtn.addEventListener('click', attemptUnlock);
