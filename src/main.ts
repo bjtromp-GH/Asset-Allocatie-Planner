@@ -2719,6 +2719,19 @@ function initEventListeners() {
   closeFaqModal?.addEventListener('click', toggleFaqModal);
   faqModalOk?.addEventListener('click', toggleFaqModal);
 
+  // Inspiration Modal
+  const inspirationTrigger = document.getElementById('inspiration-trigger');
+  const inspirationModal = document.getElementById('inspiration-modal');
+  const closeInspirationBtn = document.getElementById('close-inspiration-btn');
+
+  inspirationTrigger?.addEventListener('click', () => {
+    inspirationModal?.classList.remove('hidden');
+  });
+
+  closeInspirationBtn?.addEventListener('click', () => {
+    inspirationModal?.classList.add('hidden');
+  });
+
   createIcons({ icons: usedIcons });
 }
 
