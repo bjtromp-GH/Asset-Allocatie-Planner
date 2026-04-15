@@ -904,8 +904,6 @@ function renderDebts() {
   debts.forEach(debt => {
     const tr = document.createElement('tr');
     tr.className = 'hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group';
-    const displayValue = isPrivacyMode ? '••••' : formatNumber(debt.value);
-    
     tr.innerHTML = `
       <td class="px-3 sm:px-6 py-4">
         <input type="text" value="${debt.name}" class="debt-name-input bg-transparent border-none p-0 focus:ring-0 font-medium text-slate-900 dark:text-white w-full" data-id="${debt.id}" />
@@ -913,13 +911,7 @@ function renderDebts() {
       <td class="px-3 sm:px-6 py-4">
         <div class="flex items-center gap-1">
           <span class="text-slate-400 text-xs">€</span>
-          <input 
-            type="text" 
-            value="${displayValue}" 
-            class="debt-value-input bg-transparent border-none p-0 focus:ring-0 font-mono font-bold text-red-600 dark:text-red-400 w-full ${isPrivacyMode ? 'cursor-not-allowed opacity-50' : ''}" 
-            data-id="${debt.id}" 
-            ${isPrivacyMode ? 'readonly' : ''} 
-          />
+          <input type="text" value="${formatNumber(debt.value)}" class="debt-value-input bg-transparent border-none p-0 focus:ring-0 font-mono font-bold text-red-600 dark:text-red-400 w-full" data-id="${debt.id}" />
         </div>
       </td>
       <td class="px-3 sm:px-6 py-4 text-right">
@@ -1038,8 +1030,6 @@ function renderAssets() {
 
   tableBody.innerHTML = assets.map(asset => {
     const currentPercent = totalAssets > 0 ? (asset.value / totalAssets) * 100 : 0;
-    const displayValue = isPrivacyMode ? '••••' : formatNumber(asset.value);
-    
     return `
       <tr class="hover:bg-slate-50/50 transition-colors group dark:hover:bg-slate-800/50">
         <td class="px-3 sm:px-6 py-4 min-w-[120px] sm:min-w-[150px]">
@@ -1061,11 +1051,10 @@ function renderAssets() {
                 <span class="text-slate-400 font-mono text-sm sm:text-base">€</span>
                 <input
                   type="text"
-                  value="${displayValue}"
+                  value="${formatNumber(asset.value)}"
                   data-id="${asset.id}"
                   data-type="value"
-                  ${isPrivacyMode ? 'readonly' : ''}
-                  class="asset-input asset-value-input w-20 sm:w-24 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-slate-700 ${isPrivacyMode ? 'cursor-not-allowed opacity-50' : ''}"
+                  class="asset-input asset-value-input w-20 sm:w-24 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-slate-700"
                 />
               </div>
               <span class="font-mono text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 whitespace-nowrap">${formatPercent(currentPercent)}</span>
@@ -1208,24 +1197,11 @@ function renderRecommendations() {
       });
       const totalNeeded = distribution.reduce((sum, d) => sum + d.needed, 0);
       
-      let smartInvestment;
-      if (totalNeeded > 0) {
-        smartInvestment = distribution.map(d => ({
-          name: d.name,
-          amount: (d.needed / totalNeeded) * investmentAmount,
-          color: d.color
-        }));
-      } else {
-        // If already balanced or no targets, distribute by target percentages
-        const totalTarget = assets.reduce((sum, a) => sum + a.target, 0);
-        smartInvestment = assets.map(a => ({
-          name: a.name,
-          amount: totalTarget > 0 ? (a.target / totalTarget) * investmentAmount : 0,
-          color: a.color
-        }));
-      }
-
-      smartInvestment = smartInvestment.filter(d => d.amount > 0.01);
+      const smartInvestment = distribution.map(d => ({
+        name: d.name,
+        amount: totalNeeded > 0 ? (d.needed / totalNeeded) * investmentAmount : 0,
+        color: d.color
+      })).filter(d => d.amount > 0.01);
 
       if (smartInvestment.length > 0) {
         recommendationsContainer.classList.remove('hidden');
