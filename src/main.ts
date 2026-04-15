@@ -1818,6 +1818,7 @@ function initEventListeners() {
   const onboardingMascot = document.getElementById('onboarding-mascot');
   const explanationMascot = document.getElementById('explanation-mascot');
   const freedomMascot = document.getElementById('freedom-mascot');
+  const headerPieIcon = document.getElementById('header-pie-icon');
   
   if (loadExampleBtn) {
     loadExampleBtn.addEventListener('click', () => {
@@ -1851,6 +1852,12 @@ function initEventListeners() {
 
   if (freedomMascot) {
     freedomMascot.addEventListener('click', () => {
+      loadExampleData();
+    });
+  }
+
+  if (headerPieIcon) {
+    headerPieIcon.addEventListener('click', () => {
       loadExampleData();
     });
   }
