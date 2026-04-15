@@ -338,16 +338,26 @@ function saveState() {
 
 function loadExampleData(silent = false) {
   const sampleAssets: Asset[] = [
-    { id: Math.random().toString(36).substr(2, 9), name: 'Eigen Woning', value: 145000, target: 58, category: 'Groei', color: '#3b82f6', isRealEstate: true },
-    { id: Math.random().toString(36).substr(2, 9), name: 'Spaargeld', value: 55000, target: 22, category: 'Defensief', color: '#10b981', isRealEstate: false },
-    { id: Math.random().toString(36).substr(2, 9), name: 'Beleggingen', value: 30000, target: 12, category: 'Groei', color: '#f97316', isRealEstate: false },
-    { id: Math.random().toString(36).substr(2, 9), name: 'Overig', value: 20000, target: 8, category: 'Speculatief', color: '#6366f1', isRealEstate: false }
+    { id: Math.random().toString(36).substr(2, 9), name: 'Eigen Woning', value: 345000, target: 58, category: 'Groei', color: '#3b82f6', isRealEstate: true },
+    { id: Math.random().toString(36).substr(2, 9), name: 'Spaargeld', value: 45000, target: 22, category: 'Defensief', color: '#10b981', isRealEstate: false },
+    { id: Math.random().toString(36).substr(2, 9), name: 'Beleggingen', value: 85000, target: 12, category: 'Groei', color: '#f97316', isRealEstate: false },
+    { id: Math.random().toString(36).substr(2, 9), name: 'Overig', value: 15000, target: 8, category: 'Speculatief', color: '#6366f1', isRealEstate: false }
   ];
   const sampleDebts: Debt[] = [
-    { id: Math.random().toString(36).substr(2, 9), name: 'Hypotheek', value: 120000, target: 100 }
+    { id: Math.random().toString(36).substr(2, 9), name: 'Hypotheek', value: 110000, target: 100 }
   ];
   assets = sampleAssets;
   debts = sampleDebts;
+  freedomCustomNetWorth = 0;
+  monthlyExpenses = 2500;
+  
+  // Update inputs manually to reflect reset values
+  const monthlyExpensesInput = document.getElementById('monthly-expenses-input') as HTMLInputElement;
+  if (monthlyExpensesInput) monthlyExpensesInput.value = '2500';
+  
+  const freedomCustomNetworthInput = document.getElementById('freedom-custom-networth') as HTMLInputElement;
+  if (freedomCustomNetworthInput) freedomCustomNetworthInput.value = '';
+
   updateUI();
   
   if (!silent) {
