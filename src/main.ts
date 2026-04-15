@@ -381,9 +381,6 @@ function loadState() {
         }));
         saveState();
       } catch (e) {}
-    } else {
-      // If no state at all, load example data by default
-      loadExampleData(true);
     }
   }
 
@@ -2156,6 +2153,7 @@ function initEventListeners() {
     clearAllDataBtn.addEventListener('click', () => {
       if (confirm('LET OP: Dit verwijdert al je assets, historie en instellingen permanent. Weet je het zeker?')) {
         localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem('onboarding_completed');
         location.reload();
       }
     });
