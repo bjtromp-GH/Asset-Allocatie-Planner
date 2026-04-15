@@ -1792,8 +1792,16 @@ function initEventListeners() {
 
   // Pie Chart Empty State Buttons
   const loadExampleBtn = document.getElementById('load-example-btn');
+  const pieEmptyIcon = document.getElementById('pie-empty-icon');
+  
   if (loadExampleBtn) {
     loadExampleBtn.addEventListener('click', () => {
+      loadExampleData();
+    });
+  }
+
+  if (pieEmptyIcon) {
+    pieEmptyIcon.addEventListener('click', () => {
       loadExampleData();
     });
   }
