@@ -156,7 +156,7 @@
         <!-- Title and Subtitle -->
         <div class="mb-8 flex flex-col items-center justify-center text-center">
           <p class="text-slate-500 dark:text-slate-400 font-medium max-w-lg text-sm sm:text-base">
-            Jouw vermogen, volledig in beeld. Ontdek het Geld Dashboard.
+            Jouw vermogen, volledig in beeld.
           </p>
         </div>
 
@@ -395,7 +395,7 @@
                 <!-- Custom Net Worth Input -->
                 <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:border-blue-200 dark:hover:border-blue-900 transition-colors">
                   <div class="flex items-center justify-between mb-2">
-                    <label class="text-[11px] uppercase tracking-widest font-black text-slate-400 dark:text-slate-500">Vermogen om mee te rekenen</label>
+                    <label class="text-[11px] uppercase tracking-widest font-black text-slate-400 dark:text-slate-500">VERMOGEN OM MEE TE REKENEN</label>
                     <div class="flex items-center gap-1">
                       <span class="text-blue-500 font-bold text-sm">€</span>
                       <input id="freedom-custom-networth" type="text" class="bg-transparent border-none p-0 w-24 text-right font-black focus:ring-0 text-base dark:text-white" placeholder="Huidig" />
@@ -409,7 +409,7 @@
                 <!-- Monthly Expenses Input -->
                 <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:border-amber-200 dark:hover:border-amber-900 transition-colors">
                   <div class="flex items-center justify-between mb-2">
-                    <label class="text-[11px] uppercase tracking-widest font-black text-slate-400 dark:text-slate-500">Maandelijkse Uitgaven</label>
+                    <label class="text-[11px] uppercase tracking-widest font-black text-slate-400 dark:text-slate-500">MAANDELIJKSE UITGAVEN</label>
                     <div class="flex items-center gap-1">
                       <span class="text-amber-500 font-bold text-sm">€</span>
                       <input id="monthly-expenses-input" type="number" class="bg-transparent border-none p-0 w-16 text-right font-black focus:ring-0 text-base dark:text-white" value="2500" />
@@ -421,22 +421,27 @@
                 </div>
 
                 <!-- Freedom Metrics -->
-                <div class="grid grid-cols-1 gap-4">
-                  <div class="p-5 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-100 dark:border-blue-800/50 hover:shadow-md transition-shadow">
-                    <div class="flex justify-between items-start mb-2">
-                      <p class="text-[11px] uppercase tracking-widest font-black text-blue-600 dark:text-blue-400">Vrijheid in Tijd</p>
+                <div class="grid grid-cols-1 gap-4 relative">
+                  <!-- Mascot Overlay -->
+                  <div class="absolute -right-4 -bottom-6 w-36 sm:w-44 z-10 pointer-events-none">
+                    <img src="/GeldDash_mascotte_v2.svg" alt="Mascotte" class="w-full h-auto drop-shadow-xl" />
+                  </div>
+
+                  <div class="p-5 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-100 dark:border-blue-800/50 hover:shadow-md transition-shadow relative overflow-hidden">
+                    <div class="flex justify-between items-start mb-2 relative z-20">
+                      <p class="text-[11px] uppercase tracking-widest font-black text-blue-600 dark:text-blue-400">VRIJHEID IN TIJD</p>
                       <i data-lucide="clock" class="w-4 h-4 text-blue-400"></i>
                     </div>
-                    <p id="freedom-time" class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">0 mnd</p>
-                    <p class="text-[11px] text-blue-500/80 dark:text-blue-400/60 mt-2 font-medium">Zonder extra inkomen</p>
+                    <p id="freedom-time" class="text-3xl font-black text-slate-900 dark:text-white tracking-tight relative z-20">0 mnd</p>
+                    <p class="text-[11px] text-blue-500/80 dark:text-blue-400/60 mt-2 font-medium relative z-20">Zonder extra inkomen</p>
                   </div>
-                  <div class="p-5 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-100 dark:border-emerald-800/50 hover:shadow-md transition-shadow">
-                    <div class="flex justify-between items-start mb-2">
-                      <p class="text-[11px] uppercase tracking-widest font-black text-emerald-600 dark:text-emerald-400">Passief Inkomen</p>
+                  <div class="p-5 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-100 dark:border-emerald-800/50 hover:shadow-md transition-shadow relative overflow-hidden">
+                    <div class="flex justify-between items-start mb-2 relative z-20">
+                      <p class="text-[11px] uppercase tracking-widest font-black text-emerald-600 dark:text-emerald-400">PASSIEF INKOMEN</p>
                       <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i>
                     </div>
-                    <p id="freedom-passive" class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">€ 0</p>
-                    <p class="text-[11px] text-emerald-500/80 dark:text-emerald-400/60 mt-2 font-medium">Per maand (4% regel)</p>
+                    <p id="freedom-passive" class="text-3xl font-black text-slate-900 dark:text-white tracking-tight relative z-20">€ 0</p>
+                    <p class="text-[11px] text-emerald-500/80 dark:text-emerald-400/60 mt-2 font-medium relative z-20">Per maand (4% regel)</p>
                   </div>
                 </div>
 
@@ -575,7 +580,7 @@
       <!-- Footer -->
       <footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-slate-200 mt-12 dark:border-slate-800">
         <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-slate-400 text-sm dark:text-slate-500">
-          <p>© 2026 GeldDash. Jouw vermogen, volledig in beeld. Ontdek het Geld Dashboard.</p>
+          <p>© 2026 GeldDash. Jouw vermogen, volledig in beeld.</p>
           <div class="flex gap-6">
             <a href="GeldDash_Privacy_Policy.pdf" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 transition-colors dark:hover:text-blue-400">Privacy</a>
             <a href="#" class="hover:text-blue-600 transition-colors dark:hover:text-blue-400">Contact</a>
@@ -966,7 +971,7 @@
         <div class="relative inline-block">
           <div class="absolute inset-0 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
           <img 
-            src="/GeldDash_mascotte.svg" 
+            src="/GeldDash_mascotte_v2.svg" 
             alt="Mascotte" 
             class="w-48 h-48 sm:w-64 sm:h-64 object-contain relative z-10 animate-bounce-slow"
             referrerPolicy="no-referrer"
@@ -980,6 +985,10 @@
           </h1>
           <p class="text-lg text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
             Krijg grip op je vermogen, stel doelen en zie je rijkdom groeien met jouw persoonlijke financiële dashboard.
+          </p>
+          <p class="text-[10px] sm:text-xs text-slate-400 dark:text-slate-500 font-medium bg-slate-100 dark:bg-slate-800/50 py-1.5 px-3 rounded-full inline-block">
+            <i data-lucide="info" class="w-3 h-3 inline-block mr-1 -mt-0.5"></i>
+            Beste ervaring op tablet of desktop
           </p>
         </div>
         
