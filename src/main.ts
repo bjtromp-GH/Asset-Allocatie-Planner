@@ -338,13 +338,14 @@ function saveState() {
 
 function loadExampleData(silent = false) {
   const sampleAssets: Asset[] = [
-    { id: Math.random().toString(36).substr(2, 9), name: 'Eigen Woning', value: 345000, target: 58, category: 'Groei', color: '#3b82f6', isRealEstate: true },
-    { id: Math.random().toString(36).substr(2, 9), name: 'Spaargeld', value: 45000, target: 22, category: 'Defensief', color: '#10b981', isRealEstate: false },
-    { id: Math.random().toString(36).substr(2, 9), name: 'Beleggingen', value: 85000, target: 12, category: 'Groei', color: '#f97316', isRealEstate: false },
-    { id: Math.random().toString(36).substr(2, 9), name: 'Overig', value: 15000, target: 8, category: 'Speculatief', color: '#6366f1', isRealEstate: false }
+    { id: 'ex1', name: 'Eigen Woning', value: 250000, target: 50, color: '#3b82f6', category: 'Groei', isRealEstate: true },
+    { id: 'ex2', name: 'Spaargeld', value: 50000, target: 20, color: '#10b981', category: 'Defensief', isRealEstate: false },
+    { id: 'ex3', name: 'Beleggingen', value: 30000, target: 20, color: '#f97316', category: 'Groei', isRealEstate: false },
+    { id: 'ex4', name: 'Overig', value: 20000, target: 10, color: '#6366f1', category: 'Defensief', isRealEstate: false }
   ];
   const sampleDebts: Debt[] = [
-    { id: Math.random().toString(36).substr(2, 9), name: 'Hypotheek', value: 110000, target: 100 }
+    { id: 'd1', name: 'Hypotheek', value: 180000, target: 90 },
+    { id: 'd2', name: 'Studieschuld', value: 15000, target: 10 }
   ];
   assets = sampleAssets;
   debts = sampleDebts;
@@ -357,6 +358,16 @@ function loadExampleData(silent = false) {
   
   const freedomCustomNetworthInput = document.getElementById('freedom-custom-networth') as HTMLInputElement;
   if (freedomCustomNetworthInput) freedomCustomNetworthInput.value = '';
+
+  // Handle onboarding completion if called from onboarding/intro
+  localStorage.setItem('onboarding_completed', 'true');
+  const onboardingModal = document.getElementById('onboarding-modal');
+  if (onboardingModal) onboardingModal.classList.add('hidden');
+  const introScreen = document.getElementById('intro-screen');
+  if (introScreen) introScreen.classList.add('hidden');
+  
+  const banner = document.getElementById('example-data-banner');
+  if (banner) banner.classList.remove('hidden');
 
   updateUI();
   
@@ -1803,6 +1814,10 @@ function initEventListeners() {
   // Pie Chart Empty State Buttons
   const loadExampleBtn = document.getElementById('load-example-btn');
   const pieEmptyIcon = document.getElementById('pie-empty-icon');
+  const introMascot = document.getElementById('intro-mascot');
+  const onboardingMascot = document.getElementById('onboarding-mascot');
+  const explanationMascot = document.getElementById('explanation-mascot');
+  const freedomMascot = document.getElementById('freedom-mascot');
   
   if (loadExampleBtn) {
     loadExampleBtn.addEventListener('click', () => {
@@ -1812,6 +1827,30 @@ function initEventListeners() {
 
   if (pieEmptyIcon) {
     pieEmptyIcon.addEventListener('click', () => {
+      loadExampleData();
+    });
+  }
+
+  if (introMascot) {
+    introMascot.addEventListener('click', () => {
+      loadExampleData();
+    });
+  }
+
+  if (onboardingMascot) {
+    onboardingMascot.addEventListener('click', () => {
+      loadExampleData();
+    });
+  }
+
+  if (explanationMascot) {
+    explanationMascot.addEventListener('click', () => {
+      loadExampleData();
+    });
+  }
+
+  if (freedomMascot) {
+    freedomMascot.addEventListener('click', () => {
       loadExampleData();
     });
   }
@@ -2425,25 +2464,7 @@ function initEventListeners() {
 
   if (onboardingExampleBtn) {
     onboardingExampleBtn.addEventListener('click', () => {
-      assets = [
-        { id: 'ex1', name: 'Eigen Woning', value: 250000, target: 50, color: '#3b82f6', category: 'Groei' },
-        { id: 'ex2', name: 'Spaargeld', value: 50000, target: 20, color: '#10b981', category: 'Defensief' },
-        { id: 'ex3', name: 'Beleggingen', value: 30000, target: 20, color: '#f97316', category: 'Groei' },
-        { id: 'ex4', name: 'Overig', value: 20000, target: 10, color: '#6366f1', category: 'Defensief' },
-      ];
-      debts = [
-        { id: 'd1', name: 'Hypotheek', value: 180000, target: 90 },
-        { id: 'd2', name: 'Studieschuld', value: 15000, target: 10 },
-      ];
-      localStorage.setItem('onboarding_completed', 'true');
-      if (onboardingModal) onboardingModal.classList.add('hidden');
-      
-      const banner = document.getElementById('example-data-banner');
-      if (banner) banner.classList.remove('hidden');
-      
-      saveState();
-      updateUI();
-      showFeatureHint();
+      loadExampleData();
     });
   }
 
