@@ -336,6 +336,33 @@ function saveState() {
   oldKeys.forEach(k => localStorage.removeItem(k));
 }
 
+function loadExampleData(silent = false) {
+  const sampleAssets: Asset[] = [
+    { id: Math.random().toString(36).substr(2, 9), name: 'Eigen Woning', value: 145000, target: 58, category: 'Groei', color: '#3b82f6', isRealEstate: true },
+    { id: Math.random().toString(36).substr(2, 9), name: 'Spaargeld', value: 55000, target: 22, category: 'Defensief', color: '#10b981', isRealEstate: false },
+    { id: Math.random().toString(36).substr(2, 9), name: 'Beleggingen', value: 30000, target: 12, category: 'Groei', color: '#f97316', isRealEstate: false },
+    { id: Math.random().toString(36).substr(2, 9), name: 'Overig', value: 20000, target: 8, category: 'Speculatief', color: '#6366f1', isRealEstate: false }
+  ];
+  const sampleDebts: Debt[] = [
+    { id: Math.random().toString(36).substr(2, 9), name: 'Hypotheek', value: 120000, target: 100 }
+  ];
+  assets = sampleAssets;
+  debts = sampleDebts;
+  updateUI();
+  
+  if (!silent) {
+    const toast = document.createElement('div');
+    toast.className = 'fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-xl shadow-2xl z-[200] animate-in fade-in slide-in-from-bottom-4';
+    toast.innerHTML = '<div class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i><span class="font-bold text-sm">Voorbeeldgegevens geladen!</span></div>';
+    document.body.appendChild(toast);
+    createIcons({ icons: usedIcons });
+    setTimeout(() => {
+      toast.classList.add('animate-out', 'fade-out', 'slide-out-to-bottom-4');
+      setTimeout(() => toast.remove(), 500);
+    }, 3000);
+  }
+}
+
 function loadState() {
   // Migration: Check if old keys exist and try to import them if no new state exists
   const hasNewState = localStorage.getItem(STORAGE_KEY);
@@ -354,6 +381,9 @@ function loadState() {
         }));
         saveState();
       } catch (e) {}
+    } else {
+      // If no state at all, load example data by default
+      loadExampleData(true);
     }
   }
 
@@ -1767,30 +1797,7 @@ function initEventListeners() {
   const loadExampleBtn = document.getElementById('load-example-btn');
   if (loadExampleBtn) {
     loadExampleBtn.addEventListener('click', () => {
-      // Average Dutchman Data
-      const sampleAssets: Asset[] = [
-        { id: Math.random().toString(36).substr(2, 9), name: 'Eigen Woning', value: 145000, target: 58, category: 'Groei', color: '#3b82f6', isRealEstate: true },
-        { id: Math.random().toString(36).substr(2, 9), name: 'Spaargeld', value: 55000, target: 22, category: 'Defensief', color: '#10b981', isRealEstate: false },
-        { id: Math.random().toString(36).substr(2, 9), name: 'Beleggingen', value: 30000, target: 12, category: 'Groei', color: '#f97316', isRealEstate: false },
-        { id: Math.random().toString(36).substr(2, 9), name: 'Overig', value: 20000, target: 8, category: 'Speculatief', color: '#6366f1', isRealEstate: false }
-      ];
-      const sampleDebts: Debt[] = [
-        { id: Math.random().toString(36).substr(2, 9), name: 'Hypotheek', value: 120000, target: 100 }
-      ];
-      assets = sampleAssets;
-      debts = sampleDebts;
-      updateUI();
-      
-      // Show success toast or similar
-      const toast = document.createElement('div');
-      toast.className = 'fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-xl shadow-2xl z-[200] animate-in fade-in slide-in-from-bottom-4';
-      toast.innerHTML = '<div class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i><span class="font-bold text-sm">Voorbeeldgegevens geladen!</span></div>';
-      document.body.appendChild(toast);
-      createIcons({ icons: usedIcons });
-      setTimeout(() => {
-        toast.classList.add('animate-out', 'fade-out', 'slide-out-to-bottom-4');
-        setTimeout(() => toast.remove(), 500);
-      }, 3000);
+      loadExampleData();
     });
   }
 
