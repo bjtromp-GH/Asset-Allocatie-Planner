@@ -375,6 +375,10 @@ function loadExampleData(silent = false) {
 
   updateUI();
   
+  if (window.innerWidth < 1024) {
+    openBeheerSheet();
+  }
+  
   if (!silent) {
     const toast = document.createElement('div');
     toast.className = 'fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-xl shadow-2xl z-[200] animate-in fade-in slide-in-from-bottom-4';
