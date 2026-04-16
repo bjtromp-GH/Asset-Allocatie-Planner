@@ -3,23 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#2563EB">
+    <meta name="theme-color" content="#059669">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="icon" type="image/svg+xml" href="/GeldDash_Beeldmerk.svg?v=2">
     <link rel="shortcut icon" href="/GeldDash_Beeldmerk.svg?v=2">
     <link rel="apple-touch-icon" href="/GeldDash_Beeldmerk.svg?v=2">
-    <link rel="mask-icon" href="/GeldDash_Beeldmerk.svg?v=2" color="#2563EB">
+    <link rel="mask-icon" href="/GeldDash_Beeldmerk.svg?v=2" color="#059669">
     <link rel="manifest" href="/manifest.json">
     <title>GeldDash</title>
     <link rel="stylesheet" href="/src/index.css">
   </head>
-  <body class="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-blue-100 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
+  <body class="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-emerald-100 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
     <div id="app">
       <!-- Header -->
-      <header class="sticky top-0 z-50 bg-blue-600 shadow-md">
+      <header class="sticky top-0 z-50 bg-emerald-600 shadow-md">
         <!-- Top Bar: Blue -->
-        <div class="bg-blue-600">
+        <div class="bg-emerald-600">
           <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
             <div class="flex items-center gap-2">
               <button id="inspiration-trigger" class="hover:scale-110 transition-transform active:scale-95" title="Inspiratie">
@@ -30,29 +30,29 @@
             
             <div class="flex items-center gap-1 sm:gap-2 relative" id="header-actions-container">
               <!-- Mobile & Desktop Actions -->
-              <button id="faq-btn" class="hidden sm:block p-2 rounded-lg hover:bg-blue-700 transition-colors text-white" title="Veelgestelde vragen">
+              <button id="faq-btn" class="hidden sm:block p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" title="Veelgestelde vragen">
                 <i data-lucide="help-circle" class="w-5 h-5"></i>
               </button>
-              <button id="theme-toggle" class="p-2 rounded-lg hover:bg-blue-700 transition-colors text-white" title="Wissel thema">
+              <button id="theme-toggle" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" title="Wissel thema">
                 <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
                 <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
               </button>
-              <button id="info-btn" class="p-2 rounded-lg hover:bg-blue-700 transition-colors text-white" title="Uitleg over de app">
+              <button id="info-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" title="Uitleg over de app">
                 <i data-lucide="info" class="w-5 h-5"></i>
               </button>
-              <button id="average-dutch-btn" class="p-2 rounded-lg hover:bg-blue-700 transition-colors text-white" title="Gemiddelde Nederlander">
+              <button id="average-dutch-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" title="Gemiddelde Nederlander">
                 <i data-lucide="users" class="w-5 h-5"></i>
               </button>
-              <button id="security-btn" class="p-2 rounded-lg hover:bg-blue-700 transition-colors text-white relative" title="Beveiliging instellingen">
+              <button id="security-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white relative" title="Beveiliging instellingen">
                 <i data-lucide="lock" class="w-5 h-5"></i>
                 <span id="security-badge" class="absolute top-2 right-2 w-2 h-2 bg-amber-500 rounded-full hidden">
                   <span class="absolute inset-0 rounded-full bg-amber-500 animate-ping opacity-75"></span>
                 </span>
               </button>
-              <button id="reset-app-btn" class="p-2 rounded-lg hover:bg-blue-700 transition-colors text-white" title="Begin opnieuw (Reset)">
+              <button id="reset-app-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" title="Begin opnieuw (Reset)">
                 <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
               </button>
-              <button id="save-history-btn" class="bg-white text-blue-600 hover:bg-blue-50 px-3 sm:px-4 py-2 rounded-lg flex items-center gap-2 transition-all active:scale-95 ml-2">
+              <button id="save-history-btn" class="bg-white text-emerald-600 hover:bg-emerald-50 px-3 sm:px-4 py-2 rounded-lg flex items-center gap-2 transition-all active:scale-95 ml-2">
                 <i data-lucide="save" class="w-4 h-4"></i>
                 <span class="hidden sm:inline">Sla op</span>
               </button>
@@ -62,7 +62,7 @@
                 <div class="bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-6 py-3 rounded-xl shadow-2xl border border-slate-100 dark:border-slate-700 font-bold text-lg whitespace-nowrap relative pointer-events-auto cursor-pointer group hover:scale-105 transition-transform active:scale-95">
                   <div class="flex items-center gap-2">
                     <span>Ontdek deze opties</span>
-                    <div class="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></div>
+                    <div class="w-2 h-2 bg-emerald-600 rounded-full animate-pulse"></div>
                   </div>
                   <!-- Arrow -->
                   <div class="absolute -top-2 right-12 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 w-4 h-4 bg-white dark:bg-slate-800 border-t border-l border-slate-100 dark:border-slate-700 rotate-45"></div>
@@ -106,14 +106,14 @@
                 <!-- Mascot & Button -->
                 <div class="flex flex-col items-center text-center space-y-4 md:w-1/3">
                   <div class="w-32 h-32 relative group">
-                    <div class="absolute inset-0 bg-blue-400/20 rounded-full blur-2xl group-hover:bg-blue-400/40 transition-colors duration-500"></div>
+                    <div class="absolute inset-0 bg-emerald-400/20 rounded-full blur-2xl group-hover:bg-emerald-400/40 transition-colors duration-500"></div>
                     <img src="https://lh3.googleusercontent.com/d/1TKwElEgt2D2MiMhUrM1rnZ_bueGCTc_K" alt="Mascotte" class="w-full h-full object-contain relative z-10 animate-bounce-slow">
                   </div>
                   <div class="space-y-2">
                     <h3 class="text-xl font-black text-slate-900 dark:text-white">Hoi! Klaar voor een overzicht?</h3>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Bekijk in één oogopslag hoe je er vandaag voor staat.</p>
                   </div>
-                  <button id="show-summary-details" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded-xl transition-all active:scale-95 flex items-center gap-2">
+                  <button id="show-summary-details" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-8 py-3 rounded-xl transition-all active:scale-95 flex items-center gap-2">
                     <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
                     Samenvatting
                   </button>
@@ -126,12 +126,12 @@
                       <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
                         <p class="text-[10px] uppercase tracking-widest font-black text-slate-400 mb-1">Status Quo</p>
                         <p id="summary-text-description" class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
-                          Je vermogen is vandaag stabiel. Je grootste asset is <span class="text-blue-600 font-bold">Aandelen</span> en je bent op weg naar je doel!
+                          Je vermogen is vandaag stabiel. Je grootste asset is <span class="text-emerald-600 font-bold">Aandelen</span> en je bent op weg naar je doel!
                         </p>
                       </div>
                       <div class="grid grid-cols-2 gap-4">
-                        <div class="p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/50">
-                          <p class="text-[10px] uppercase tracking-widest font-black text-blue-600 mb-1">Assets</p>
+                        <div class="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50">
+                          <p class="text-[10px] uppercase tracking-widest font-black text-emerald-600 mb-1">Assets</p>
                           <p id="summary-assets-total" class="text-lg font-black text-slate-900 dark:text-white">€ 0</p>
                         </div>
                         <div class="p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/50">
@@ -144,7 +144,7 @@
                       <canvas id="summary-pie-chart"></canvas>
                       <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <div class="w-12 h-12 bg-white dark:bg-slate-900 rounded-full flex items-center justify-center border border-slate-100 dark:border-slate-800">
-                          <i id="summary-status-icon" data-lucide="smile" class="w-6 h-6 text-blue-600"></i>
+                          <i id="summary-status-icon" data-lucide="smile" class="w-6 h-6 text-emerald-600"></i>
                         </div>
                       </div>
                     </div>
@@ -161,7 +161,7 @@
         <div class="mb-4 flex justify-center lg:justify-end">
           <div id="greeting-bubble" class="relative bg-white dark:bg-slate-800 px-4 py-2 rounded-2xl rounded-tr-none shadow-sm border border-slate-100 dark:border-slate-800 animate-in slide-in-from-top-2 duration-700">
             <div class="flex items-start gap-2">
-              <div class="w-2 h-2 rounded-full bg-blue-500 mt-1.5 animate-pulse"></div>
+              <div class="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 animate-pulse"></div>
               <div>
                 <p id="greeting-text" class="text-sm font-bold text-slate-800 dark:text-white leading-tight">Laden...</p>
                 <p id="greeting-subtext" class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Financieel assistent</p>
@@ -195,15 +195,15 @@
             <section id="assets-section" class="bg-white rounded-xl border border-slate-200 overflow-hidden dark:bg-slate-900 dark:border-slate-800">
               <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between dark:border-slate-800">
                 <h2 class="font-semibold flex items-center gap-2 dark:text-white">
-                  <i data-lucide="wallet" class="w-4 h-4 text-blue-600"></i>
+                  <i data-lucide="wallet" class="w-4 h-4 text-emerald-600"></i>
                   Asset Beheer
                 </h2>
                 <div class="flex items-center gap-2">
                   <span id="target-warning" class="hidden text-xs font-medium px-2 py-1 rounded-full"></span>
-                  <button id="reset-colors-btn" class="text-slate-400 hover:text-blue-600 transition-all p-1.5 rounded-lg" title="Standaard herstellen">
+                  <button id="reset-colors-btn" class="text-slate-400 hover:text-emerald-600 transition-all p-1.5 rounded-lg" title="Standaard herstellen">
                     <i data-lucide="refresh-cw" class="w-4 h-4"></i>
                   </button>
-                  <button id="add-asset-btn" class="bg-blue-600 hover:bg-blue-700 text-white p-1.5 rounded-lg transition-all active:scale-95" title="Asset toevoegen">
+                  <button id="add-asset-btn" class="bg-emerald-600 hover:bg-emerald-700 text-white p-1.5 rounded-lg transition-all active:scale-95" title="Asset toevoegen">
                     <i data-lucide="plus" class="w-4 h-4"></i>
                   </button>
                 </div>
@@ -261,7 +261,7 @@
               <!-- Bar Chart: Current vs Target -->
               <section id="comparison-section" class="hidden md:block bg-white rounded-xl border border-slate-200 p-6 dark:bg-slate-900 dark:border-slate-800">
                 <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
-                  <i data-lucide="bar-chart-3" class="w-4 h-4 text-blue-600"></i>
+                  <i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-600"></i>
                   Huidig vs Doel
                 </h2>
                 <div class="h-[250px] w-full">
@@ -272,7 +272,7 @@
               <!-- Bar Chart: Current Allocation -->
               <section class="bg-white rounded-xl border border-slate-200 p-6 dark:bg-slate-900 dark:border-slate-800">
                 <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
-                  <i data-lucide="bar-chart-3" class="w-4 h-4 text-blue-600"></i>
+                  <i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-600"></i>
                   Huidige Allocatie (Staaf)
                 </h2>
                 <div class="h-[250px] w-full">
@@ -282,7 +282,7 @@
             </div>
 
             <!-- Smart Investment Calculator -->
-            <section id="investment-recommendations" class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl p-6 text-white relative overflow-hidden group">
+            <section id="investment-recommendations" class="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-xl p-6 text-white relative overflow-hidden group">
               <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
               
               <div class="relative z-10">
@@ -318,11 +318,11 @@
             <section id="pie-chart-section" class="bg-white rounded-xl border border-slate-200 p-6 dark:bg-slate-900 dark:border-slate-800">
               <div class="flex items-center justify-between mb-4">
                 <h2 class="font-semibold flex items-center gap-2 dark:text-white">
-                  <i id="header-pie-icon" data-lucide="pie-chart" class="w-4 h-4 text-blue-600 animate-float cursor-pointer hover:scale-125 transition-transform" title="Klik om voorbeelddata te laden"></i>
+                  <i id="header-pie-icon" data-lucide="pie-chart" class="w-4 h-4 text-emerald-600 animate-float cursor-pointer hover:scale-125 transition-transform" title="Klik om voorbeelddata te laden"></i>
                   Portfolio Verdeling
                 </h2>
-                <div class="flex bg-blue-600 p-1 rounded-xl shadow-inner">
-                  <button id="view-bruto-btn" class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all bg-white text-blue-600 shadow-sm">Bruto</button>
+                <div class="flex bg-emerald-600 p-1 rounded-xl shadow-inner">
+                  <button id="view-bruto-btn" class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all bg-white text-emerald-600 shadow-sm">Bruto</button>
                   <button id="view-netto-btn" class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all text-white/80 hover:text-white">Netto</button>
                 </div>
               </div>
@@ -331,13 +331,13 @@
                 <!-- Empty State Overlay -->
                 <div id="pie-empty-state" class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-xl hidden z-20">
                   <div class="text-center p-6">
-                    <div id="pie-empty-icon" class="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-4 cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-800 transition-colors group" title="Klik om voorbeelddata te laden">
-                      <i data-lucide="pie-chart" class="w-8 h-8 text-blue-600 animate-pulse group-hover:scale-110 transition-transform"></i>
+                    <div id="pie-empty-icon" class="w-16 h-16 bg-emerald-50 dark:bg-emerald-900/20 rounded-full flex items-center justify-center mx-auto mb-4 cursor-pointer hover:bg-emerald-100 dark:hover:bg-emerald-800 transition-colors group" title="Klik om voorbeelddata te laden">
+                      <i data-lucide="pie-chart" class="w-8 h-8 text-emerald-600 animate-pulse group-hover:scale-110 transition-transform"></i>
                     </div>
                     <h3 class="font-bold text-slate-900 dark:text-white mb-2">Nog geen data</h3>
                     <p class="text-xs text-slate-500 dark:text-slate-400 mb-6 max-w-[200px] mx-auto">Vul je assets in of laad voorbeelddata</p>
                     <div class="flex flex-col gap-2">
-                      <button id="load-example-btn" class="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition-all active:scale-95 flex items-center justify-center gap-2">
+                      <button id="load-example-btn" class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-sm transition-all active:scale-95 flex items-center justify-center gap-2">
                         <i data-lucide="database" class="w-4 h-4"></i>
                         Laad voorbeeld gegevens
                       </button>
@@ -367,15 +367,15 @@
             </section>
 
             <!-- Target Net Worth Card -->
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800 group relative overflow-hidden transition-all hover:shadow-xl hover:shadow-blue-500/5">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800 group relative overflow-hidden transition-all hover:shadow-xl hover:shadow-emerald-500/5">
               <!-- Animated Background Glow -->
-              <div class="absolute -top-24 -right-24 w-64 h-64 bg-blue-500/5 rounded-full blur-[80px] group-hover:bg-blue-500/10 transition-all duration-700"></div>
+              <div class="absolute -top-24 -right-24 w-64 h-64 bg-emerald-500/5 rounded-full blur-[80px] group-hover:bg-emerald-500/10 transition-all duration-700"></div>
               
               <div class="flex flex-col gap-6 relative z-10">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800/50 group-hover:scale-110 transition-transform">
-                      <i data-lucide="target" class="w-6 h-6 text-blue-600 dark:text-blue-400"></i>
+                    <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center dark:bg-emerald-900/30 border border-emerald-100 dark:border-emerald-800/50 group-hover:scale-110 transition-transform">
+                      <i data-lucide="target" class="w-6 h-6 text-emerald-600 dark:text-emerald-400"></i>
                     </div>
                     <div>
                       <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-0.5">Financieel Doel</p>
@@ -386,18 +386,18 @@
 
                 <div class="relative">
                   <div class="flex items-baseline gap-2 absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none z-20">
-                    <span class="text-blue-400 font-mono text-2xl font-bold">€</span>
+                    <span class="text-emerald-400 font-mono text-2xl font-bold">€</span>
                   </div>
                   <input 
                     id="target-net-worth-input" 
                     type="text" 
-                    class="w-full bg-slate-50 border border-slate-200 pl-12 pr-4 py-6 rounded-2xl text-4xl font-black text-slate-900 placeholder:text-slate-300 focus:bg-white focus:border-blue-500 focus:ring-8 focus:ring-blue-500/5 transition-all outline-none dark:bg-slate-800/50 dark:border-slate-700 dark:text-white shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] dark:shadow-none"
+                    class="w-full bg-slate-50 border border-slate-200 pl-12 pr-4 py-6 rounded-2xl text-4xl font-black text-slate-900 placeholder:text-slate-300 focus:bg-white focus:border-emerald-500 focus:ring-8 focus:ring-emerald-500/5 transition-all outline-none dark:bg-slate-800/50 dark:border-slate-700 dark:text-white shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] dark:shadow-none"
                     placeholder="0"
                   />
                   <!-- Smart Prompt when target is low or zero -->
                   <div id="target-prompt" class="absolute right-5 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none transition-all duration-300">
-                    <span class="text-[10px] font-black uppercase tracking-wider text-blue-600 dark:text-blue-400 bg-blue-50 px-3 py-1.5 rounded-full dark:bg-blue-900/50 border border-blue-100 dark:border-blue-800/30 shadow-sm">Stel doel in</span>
-                    <i data-lucide="sparkles" class="w-4 h-4 text-blue-500 animate-pulse"></i>
+                    <span class="text-[10px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 px-3 py-1.5 rounded-full dark:bg-emerald-900/50 border border-emerald-100 dark:border-emerald-800/30 shadow-sm">Stel doel in</span>
+                    <i data-lucide="sparkles" class="w-4 h-4 text-emerald-500 animate-pulse"></i>
                   </div>
                 </div>
                 
@@ -405,16 +405,16 @@
                   <div class="flex justify-between items-end mb-3">
                     <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Voortgang naar succes</p>
                     <div class="flex items-baseline gap-1">
-                      <span id="target-progress-percent" class="text-lg font-black text-blue-600 dark:text-blue-400">0%</span>
+                      <span id="target-progress-percent" class="text-lg font-black text-emerald-600 dark:text-emerald-400">0%</span>
                     </div>
                   </div>
                   <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-4 overflow-hidden p-1 shadow-inner relative">
-                    <div id="target-progress-bar" class="h-full bg-blue-600 rounded-full transition-all duration-1000 relative shadow-lg shadow-blue-500/20" style="width: 0%">
+                    <div id="target-progress-bar" class="h-full bg-emerald-600 rounded-full transition-all duration-1000 relative shadow-lg shadow-emerald-500/20" style="width: 0%">
                       <div class="absolute inset-x-0 top-0 h-1/2 bg-white/20 rounded-full"></div>
                     </div>
                   </div>
                   <div class="flex items-center gap-2 mt-4 text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-800/30 p-3 rounded-xl border border-dashed border-slate-200 dark:border-slate-700/50">
-                    <i data-lucide="info" class="w-4 h-4 text-blue-400"></i>
+                    <i data-lucide="info" class="w-4 h-4 text-emerald-400"></i>
                     <p id="target-remaining-text" class="text-xs font-medium">Bereken hoeveel je nog nodig hebt voor je doel.</p>
                   </div>
                 </div>
@@ -437,16 +437,16 @@
               
               <div class="space-y-6 relative z-10">
                 <!-- Custom Net Worth Input -->
-                <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:border-blue-200 dark:hover:border-blue-900 transition-colors">
+                <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800 hover:border-emerald-200 dark:hover:border-emerald-900 transition-colors">
                   <div class="flex items-center justify-between mb-2">
                     <label class="text-[11px] uppercase tracking-widest font-black text-slate-400 dark:text-slate-500">VERMOGEN OM MEE TE REKENEN</label>
                     <div class="flex items-center gap-1">
-                      <span class="text-blue-500 font-bold text-sm">€</span>
+                      <span class="text-emerald-500 font-bold text-sm">€</span>
                       <input id="freedom-custom-networth" type="text" class="bg-transparent border-none p-0 w-24 text-right font-black focus:ring-0 text-base dark:text-white" placeholder="Huidig" />
                     </div>
                   </div>
                   <div class="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
-                    <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-full w-full opacity-40"></div>
+                    <div class="bg-gradient-to-r from-emerald-400 to-emerald-600 h-full w-full opacity-40"></div>
                   </div>
                 </div>
 
@@ -477,13 +477,13 @@
                     />
                   </div>
 
-                  <div class="p-5 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-100 dark:border-blue-800/50 hover:shadow-md transition-shadow relative overflow-hidden">
+                  <div class="p-5 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-100 dark:border-emerald-800/50 hover:shadow-md transition-shadow relative overflow-hidden">
                     <div class="flex justify-between items-start mb-2 relative z-20">
-                      <p class="text-[11px] uppercase tracking-widest font-black text-blue-600 dark:text-blue-400">VRIJHEID IN TIJD</p>
-                      <i data-lucide="clock" class="w-4 h-4 text-blue-400"></i>
+                      <p class="text-[11px] uppercase tracking-widest font-black text-emerald-600 dark:text-emerald-400">VRIJHEID IN TIJD</p>
+                      <i data-lucide="clock" class="w-4 h-4 text-emerald-400"></i>
                     </div>
                     <p id="freedom-time" class="text-3xl font-black text-slate-900 dark:text-white tracking-tight relative z-20">0 mnd</p>
-                    <p class="text-[11px] text-blue-500/80 dark:text-blue-400/60 mt-2 font-medium relative z-20">Zonder extra inkomen</p>
+                    <p class="text-[11px] text-emerald-500/80 dark:text-emerald-400/60 mt-2 font-medium relative z-20">Zonder extra inkomen</p>
                   </div>
                   <div class="p-5 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-100 dark:border-emerald-800/50 hover:shadow-md transition-shadow relative overflow-hidden">
                     <div class="flex justify-between items-start mb-2 relative z-20">
@@ -555,7 +555,7 @@
           <section id="rebalance-section" class="hidden md:block bg-white rounded-xl border border-slate-200 overflow-hidden dark:bg-slate-900 dark:border-slate-800">
             <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800">
               <h2 class="font-semibold flex items-center gap-2 dark:text-white">
-                <i data-lucide="refresh-cw" class="w-4 h-4 text-blue-600"></i>
+                <i data-lucide="refresh-cw" class="w-4 h-4 text-emerald-600"></i>
                 Herbalanceringsplan
               </h2>
             </div>
@@ -569,7 +569,7 @@
           <!-- Treemap: Asset Distribution (Full Width) -->
             <section class="bg-white rounded-xl border border-slate-200 p-6 dark:bg-slate-900 dark:border-slate-800">
             <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
-              <i data-lucide="layout-grid" class="w-4 h-4 text-blue-600"></i>
+              <i data-lucide="layout-grid" class="w-4 h-4 text-emerald-600"></i>
               Asset Verdeling (Treemap)
             </h2>
             <div id="treemap-container" class="h-[400px] w-full">
@@ -581,7 +581,7 @@
           <div id="history-section" class="mt-10 space-y-8 pb-24 lg:pb-0">
             <div class="flex items-center justify-between">
               <h2 class="text-2xl font-bold flex items-center gap-3 dark:text-white">
-                <i data-lucide="history" class="w-6 h-6 text-blue-600"></i>
+                <i data-lucide="history" class="w-6 h-6 text-emerald-600"></i>
                 Vermogensverloop (Historie)
               </h2>
               <p class="text-sm text-slate-500 dark:text-slate-400">Volg je voortgang over de tijd.</p>
@@ -591,7 +591,7 @@
               <!-- History Chart -->
               <div class="lg:col-span-8 bg-white rounded-xl border border-slate-200 p-6 dark:bg-slate-900 dark:border-slate-800">
                 <h3 class="font-semibold mb-6 flex items-center gap-2 dark:text-white">
-                  <i data-lucide="line-chart" class="w-4 h-4 text-blue-600"></i>
+                  <i data-lucide="line-chart" class="w-4 h-4 text-emerald-600"></i>
                   Totaal Vermogen Trend
                 </h3>
                 <div class="h-[300px] w-full">
@@ -1422,9 +1422,9 @@
           </button>
           <div class="space-y-2">
             <h4 id="feedback-form-title" class="font-bold dark:text-white">Jouw feedback</h4>
-            <textarea id="feedback-text" class="w-full h-32 bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-white" placeholder="Vertel ons meer..."></textarea>
+            <textarea id="feedback-text" class="w-full h-32 bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-white" placeholder="Vertel ons meer..."></textarea>
           </div>
-          <button id="submit-feedback" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl transition-all active:scale-95">
+          <button id="submit-feedback" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl transition-all active:scale-95">
             Versturen
           </button>
         </div>
