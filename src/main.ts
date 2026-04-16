@@ -860,9 +860,20 @@ function updateUI() {
   const targetProgressBar = document.getElementById('target-progress-bar');
   const targetProgressPercent = document.getElementById('target-progress-percent');
   const targetRemainingText = document.getElementById('target-remaining-text');
+  const targetPrompt = document.getElementById('target-prompt');
 
   if (targetNetWorthInput && !targetNetWorthInput.matches(':focus')) {
-    targetNetWorthInput.value = formatNumber(targetNetWorth);
+    targetNetWorthInput.value = targetNetWorth > 0 ? formatNumber(targetNetWorth) : '';
+  }
+
+  if (targetPrompt) {
+    if (targetNetWorth === 0 && (!targetNetWorthInput || !targetNetWorthInput.matches(':focus'))) {
+      targetPrompt.style.opacity = '1';
+      targetPrompt.style.transform = 'translateY(-50%) scale(1)';
+    } else {
+      targetPrompt.style.opacity = '0';
+      targetPrompt.style.transform = 'translateY(-50%) scale(0.9)';
+    }
   }
 
   if (targetProgressBar && targetProgressPercent && targetRemainingText) {
@@ -872,9 +883,9 @@ function updateUI() {
 
     targetProgressBar.style.width = `${clampedProgress}%`;
     targetProgressPercent.textContent = `${progress.toFixed(1)}%`;
-    targetRemainingText.textContent = remaining > 0 
-      ? `Nog ${formatCurrency(remaining)} te gaan`
-      : 'Doel bereikt! 🎉';
+    targetRemainingText.textContent = targetNetWorth === 0
+      ? 'Stel een doel in om je voortgang te zien.'
+      : (remaining > 0 ? `Nog ${formatCurrency(remaining)} te gaan` : 'Doel bereikt! 🎉');
     
     if (progress >= 100) {
       targetProgressBar.classList.remove('bg-blue-600');
@@ -1917,6 +1928,13 @@ function initEventListeners() {
   const targetNetWorthInput = document.getElementById('target-net-worth-input') as HTMLInputElement;
   let targetNetWorthTimeout: any = null;
   if (targetNetWorthInput) {
+    targetNetWorthInput.addEventListener('focus', () => {
+      updateUI();
+    });
+    targetNetWorthInput.addEventListener('blur', () => {
+      updateUI();
+    });
+
     targetNetWorthInput.addEventListener('input', (e) => {
       const target = e.target as HTMLInputElement;
       const cleanValue = target.value.replace(/[^0-9,.]/g, '').replace(',', '.');

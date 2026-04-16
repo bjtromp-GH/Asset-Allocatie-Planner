@@ -350,33 +350,56 @@
             </section>
 
             <!-- Target Net Worth Card -->
-            <div class="bg-white p-6 rounded-xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
-              <div class="flex flex-col gap-6">
-                <div>
-                  <div class="flex items-center gap-2 mb-1">
-                    <i data-lucide="target" class="w-4 h-4 text-blue-600"></i>
-                    <p class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Doelvermogen</p>
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800 group relative overflow-hidden transition-all hover:shadow-xl hover:shadow-blue-500/5">
+              <!-- Animated Background Glow -->
+              <div class="absolute -top-24 -right-24 w-64 h-64 bg-blue-500/5 rounded-full blur-[80px] group-hover:bg-blue-500/10 transition-all duration-700"></div>
+              
+              <div class="flex flex-col gap-6 relative z-10">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800/50 group-hover:scale-110 transition-transform">
+                      <i data-lucide="target" class="w-6 h-6 text-blue-600 dark:text-blue-400"></i>
+                    </div>
+                    <div>
+                      <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-0.5">Financieel Doel</p>
+                      <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100">Doelvermogen</h3>
+                    </div>
                   </div>
-                  <div class="flex items-baseline gap-2">
-                    <span class="text-slate-400 font-mono text-xl">€</span>
-                    <input 
-                      id="target-net-worth-input" 
-                      type="text" 
-                      class="bg-transparent border-b border-slate-200 hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 font-mono text-2xl font-bold dark:text-white dark:border-slate-800 dark:hover:border-slate-700 w-full"
-                      placeholder="0"
-                    />
+                </div>
+
+                <div class="relative">
+                  <div class="flex items-baseline gap-2 absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none z-20">
+                    <span class="text-blue-400 font-mono text-2xl font-bold">€</span>
+                  </div>
+                  <input 
+                    id="target-net-worth-input" 
+                    type="text" 
+                    class="w-full bg-slate-50 border border-slate-200 pl-12 pr-4 py-6 rounded-2xl text-4xl font-black text-slate-900 placeholder:text-slate-300 focus:bg-white focus:border-blue-500 focus:ring-8 focus:ring-blue-500/5 transition-all outline-none dark:bg-slate-800/50 dark:border-slate-700 dark:text-white shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] dark:shadow-none"
+                    placeholder="0"
+                  />
+                  <!-- Smart Prompt when target is low or zero -->
+                  <div id="target-prompt" class="absolute right-5 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none transition-all duration-300">
+                    <span class="text-[10px] font-black uppercase tracking-wider text-blue-600 dark:text-blue-400 bg-blue-50 px-3 py-1.5 rounded-full dark:bg-blue-900/50 border border-blue-100 dark:border-blue-800/30 shadow-sm">Stel doel in</span>
+                    <i data-lucide="sparkles" class="w-4 h-4 text-blue-500 animate-pulse"></i>
                   </div>
                 </div>
                 
-                <div>
-                  <div class="flex justify-between items-end mb-2">
-                    <p class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Voortgang</p>
-                    <p id="target-progress-percent" class="text-sm font-bold text-blue-600 dark:text-blue-400">0%</p>
+                <div class="pt-2">
+                  <div class="flex justify-between items-end mb-3">
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Voortgang naar succes</p>
+                    <div class="flex items-baseline gap-1">
+                      <span id="target-progress-percent" class="text-lg font-black text-blue-600 dark:text-blue-400">0%</span>
+                    </div>
                   </div>
-                  <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3 overflow-hidden">
-                    <div id="target-progress-bar" class="h-full bg-blue-600 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                  <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-4 overflow-hidden p-1 shadow-inner relative">
+                    <div id="target-progress-bar" class="h-full bg-blue-600 rounded-full transition-all duration-1000 relative shadow-lg shadow-blue-500/20" style="width: 0%">
+                      <div class="absolute inset-x-0 top-0 h-1/2 bg-white/20 rounded-full"></div>
+                    </div>
                   </div>
-                  <p id="target-remaining-text" class="text-sm text-slate-400 mt-2 dark:text-slate-500">Nog € 0 te gaan</p>
+                  <div class="flex items-center gap-2 mt-4 text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-800/30 p-3 rounded-xl border border-dashed border-slate-200 dark:border-slate-700/50">
+                    <i data-lucide="info" class="w-4 h-4 text-blue-400"></i>
+                    <p id="target-remaining-text" class="text-xs font-medium">Bereken hoeveel je nog nodig hebt voor je doel.</p>
+                  </div>
                 </div>
               </div>
             </div>
