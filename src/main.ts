@@ -674,8 +674,51 @@ function initAverageDutchChart() {
   });
 }
 
+function updateGreeting() {
+  const greetingText = document.getElementById('greeting-text');
+  const greetingSubtext = document.getElementById('greeting-subtext');
+  if (!greetingText || !greetingSubtext) return;
+
+  const now = new Date();
+  const hour = now.getHours();
+  let greeting = '';
+  let subtext = '';
+
+  if (hour >= 5 && hour < 12) {
+    greeting = 'Goedemorgen! ☀️';
+    subtext = 'Klaar voor een nieuwe dag vol groei?';
+  } else if (hour >= 12 && hour < 18) {
+    greeting = 'Goedemiddag! ☕';
+    subtext = 'Je vermogen werkt hard voor je.';
+  } else if (hour >= 18 && hour < 24) {
+    greeting = 'Goedenavond! 🌙';
+    subtext = 'Even ontspannen en je doelen checken.';
+  } else {
+    greeting = 'Goedenacht! 💤';
+    subtext = 'Droom groot, je vermogen groeit door.';
+  }
+
+  // Af en toe een willekeurige tip
+  const quotes = [
+    "Rijkdom is wat je niet ziet: de auto's die je niet koopt.",
+    "Geduld is de beste vriend van je vermogen.",
+    "Kleine beetjes maken een groot verschil op de lange termijn.",
+    "Focus op je spaarpercentage voor maximale impact.",
+    "Beleggen is het kopen van je toekomstige vrijheid."
+  ];
+
+  // Gebruik de subtext als we geen quote tonen
+  if (Math.random() > 0.8) {
+    subtext = quotes[Math.floor(Math.random() * quotes.length)];
+  }
+
+  greetingText.textContent = greeting;
+  greetingSubtext.textContent = subtext;
+}
+
 function updateUI() {
   saveState();
+  updateGreeting();
   
   const privacyToggles = document.querySelectorAll('.privacy-toggle-btn');
   privacyToggles.forEach(btn => {

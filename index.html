@@ -72,6 +72,25 @@
           </div>
         </div>
 
+        <!-- Greeting Message Bubble -->
+        <div class="bg-slate-50 dark:bg-slate-950 px-4 pt-4 sm:px-6 lg:px-8">
+          <div class="max-w-7xl mx-auto flex justify-center lg:justify-end">
+            <div id="greeting-bubble" class="relative bg-white dark:bg-slate-800 px-4 py-2 rounded-2xl rounded-tr-none shadow-sm border border-slate-100 dark:border-slate-800 animate-in slide-in-from-top-2 duration-700">
+              <div class="flex items-start gap-2">
+                <div class="w-2 h-2 rounded-full bg-blue-500 mt-1.5 animate-pulse"></div>
+                <div>
+                  <p id="greeting-text" class="text-sm font-bold text-slate-800 dark:text-white leading-tight">Laden...</p>
+                  <p id="greeting-subtext" class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Financieel assistent</p>
+                </div>
+              </div>
+              <!-- WhatsApp-style "tail" -->
+              <div class="absolute top-0 -right-2 w-4 h-4 overflow-hidden pointer-events-none">
+                <div class="absolute top-0 right-0 w-4 h-4 bg-white dark:bg-slate-800 rotate-45 transform origin-top-right border-t border-r border-slate-100 dark:border-slate-800"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Bottom Bar: White -->
         <div class="bg-white border-b border-slate-200 dark:bg-slate-900 dark:border-slate-800 relative z-40">
           <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">

@@ -113,6 +113,25 @@
                 </div>
             </div>
 
+            <!-- Greeting Message Bubble -->
+            <div class="bg-slate-50 dark:bg-slate-950 px-4 pt-4 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto flex justify-center lg:justify-end">
+                    <div id="greeting-bubble" class="relative bg-white dark:bg-slate-800 px-4 py-2 rounded-2xl rounded-tr-none shadow-sm border border-slate-100 dark:border-slate-800 animate-in slide-in-from-top-2 duration-700">
+                        <div class="flex items-start gap-2">
+                            <div class="w-2 h-2 rounded-full bg-blue-500 mt-1.5 animate-pulse"></div>
+                            <div>
+                                <p id="greeting-text" class="text-sm font-bold text-slate-800 dark:text-white leading-tight">Laden...</p>
+                                <p id="greeting-subtext" class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Financieel assistent</p>
+                            </div>
+                        </div>
+                        <!-- WhatsApp-style "tail" -->
+                        <div class="absolute top-0 -right-2 w-4 h-4 overflow-hidden pointer-events-none">
+                            <div class="absolute top-0 right-0 w-4 h-4 bg-white dark:bg-slate-800 rotate-45 transform origin-top-right border-t border-r border-slate-100 dark:border-slate-800"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Bottom Bar: White -->
             <div class="bg-white border-b border-slate-200 dark:bg-slate-900 dark:border-slate-800">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
@@ -219,6 +238,34 @@
                     </div>
                 </section>
 
+                <!-- Debts Section -->
+                <section id="debts-section" class="order-1 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
+                    <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between dark:border-slate-800">
+                      <h2 class="font-semibold flex items-center gap-2 dark:text-white">
+                        <i data-lucide="trending-down" class="w-4 h-4 text-red-500"></i>
+                        Schulden
+                      </h2>
+                      <button id="add-debt-btn" class="bg-red-500 hover:bg-red-600 text-white p-1.5 rounded-lg transition-all shadow-sm active:scale-95" title="Schuld toevoegen">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                      </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                      <table class="w-full text-left border-collapse">
+                        <thead>
+                          <tr class="bg-slate-50/50 text-slate-500 text-[10px] sm:text-xs uppercase tracking-wider font-semibold dark:bg-slate-800/50 dark:text-slate-400">
+                            <th class="px-3 sm:px-6 py-3">Naam</th>
+                            <th class="px-3 sm:px-6 py-3">Bedrag</th>
+                            <th class="px-3 sm:px-6 py-3 text-right">Rente (%)</th>
+                            <th class="px-3 sm:px-6 py-3 text-right">Acties</th>
+                          </tr>
+                        </thead>
+                        <tbody id="debt-table-body" class="divide-y divide-slate-100 dark:divide-slate-800">
+                          <!-- Dynamically populated -->
+                        </tbody>
+                      </table>
+                    </div>
+                </section>
+
                 <!-- Bar Chart: Current vs Target -->
                 <section id="comparison-section" class="order-2 lg:order-2 hidden md:block bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
                     <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
@@ -245,33 +292,56 @@
             <!-- Right Column: Target, Freedom, Rebalance -->
             <div class="lg:col-span-5 space-y-6 order-3 lg:order-2">
                 <!-- Target Net Worth Card -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm dark:bg-slate-900 dark:border-slate-800">
-                    <div class="flex flex-col gap-6">
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <i data-lucide="target" class="w-4 h-4 text-blue-600"></i>
-                                <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Doelvermogen</p>
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm dark:bg-slate-900 dark:border-slate-800 group relative overflow-hidden transition-all hover:shadow-xl hover:shadow-blue-500/5">
+                    <!-- Animated Background Glow -->
+                    <div class="absolute -top-24 -right-24 w-64 h-64 bg-blue-500/5 rounded-full blur-[80px] group-hover:bg-blue-500/10 transition-all duration-700"></div>
+                    
+                    <div class="flex flex-col gap-6 relative z-10">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800/50 group-hover:scale-110 transition-transform">
+                                    <i data-lucide="target" class="w-6 h-6 text-blue-600 dark:text-blue-400"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-0.5">Financieel Doel</p>
+                                    <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100">Doelvermogen</h3>
+                                </div>
                             </div>
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-slate-400 font-mono text-xl">€</span>
-                                <input 
-                                    id="target-net-worth-input" 
-                                    type="text" 
-                                    class="bg-transparent border-b border-slate-200 hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 font-mono text-2xl font-bold dark:text-white dark:border-slate-800 dark:hover:border-slate-700 w-full"
-                                    placeholder="0"
-                                />
+                        </div>
+
+                        <div class="relative">
+                            <div class="flex items-baseline gap-2 absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none z-20">
+                                <span class="text-blue-400 font-mono text-2xl font-bold">€</span>
+                            </div>
+                            <input 
+                                id="target-net-worth-input" 
+                                type="text" 
+                                class="w-full bg-slate-50 border border-slate-200 pl-12 pr-4 py-6 rounded-2xl text-4xl font-black text-slate-900 placeholder:text-slate-300 focus:bg-white focus:border-blue-500 focus:ring-8 focus:ring-blue-500/5 transition-all outline-none dark:bg-slate-800/50 dark:border-slate-700 dark:text-white shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] dark:shadow-none"
+                                placeholder="0"
+                            />
+                            <!-- Smart Prompt when target is low or zero -->
+                            <div id="target-prompt" class="absolute right-5 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none transition-all duration-300">
+                                <span class="text-[10px] font-black uppercase tracking-wider text-blue-600 dark:text-blue-400 bg-blue-50 px-3 py-1.5 rounded-full dark:bg-blue-900/50 border border-blue-100 dark:border-blue-800/30 shadow-sm">Stel doel in</span>
+                                <i data-lucide="sparkles" class="w-4 h-4 text-blue-500 animate-pulse"></i>
                             </div>
                         </div>
                         
-                        <div>
-                            <div class="flex justify-between items-end mb-2">
-                                <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Voortgang</p>
-                                <p id="target-progress-percent" class="text-sm font-bold text-blue-600 dark:text-blue-400">0%</p>
+                        <div class="pt-2">
+                            <div class="flex justify-between items-end mb-3">
+                                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Voortgang naar succes</p>
+                                <div class="flex items-baseline gap-1">
+                                    <span id="target-progress-percent" class="text-lg font-black text-blue-600 dark:text-blue-400">0%</span>
+                                </div>
                             </div>
-                            <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3 overflow-hidden">
-                                <div id="target-progress-bar" class="h-full bg-blue-600 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                            <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-4 overflow-hidden p-1 shadow-inner relative">
+                                <div id="target-progress-bar" class="h-full bg-blue-600 rounded-full transition-all duration-1000 relative shadow-lg shadow-blue-500/20" style="width: 0%">
+                                    <div class="absolute inset-x-0 top-0 h-1/2 bg-white/20 rounded-full"></div>
+                                </div>
                             </div>
-                            <p id="target-remaining-text" class="text-xs text-slate-400 mt-2 dark:text-slate-500">Nog € 0 te gaan</p>
+                            <div class="flex items-center gap-2 mt-4 text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-800/30 p-3 rounded-xl border border-dashed border-slate-200 dark:border-slate-700/50">
+                                <i data-lucide="info" class="w-4 h-4 text-blue-400"></i>
+                                <p id="target-remaining-text" class="text-xs font-medium">Bereken hoeveel je nog nodig hebt voor je doel.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -927,12 +997,15 @@
         ];
 
         let assets = [];
+        let debts = [];
 
         let targetNetWorth = 1000000;
         let isPlannerMode = true;
         let isDarkMode = false;
         let isPrivacyMode = false;
         let monthlyExpenses = 2500;
+        let freedomCustomNetWorth = 0;
+        let pieChartMode = 'bruto';
         let history = [];
         let pieChart = null;
         let barChartCurrent = null;
@@ -1069,6 +1142,7 @@
             const dateInput = document.getElementById('current-date');
             const state = {
                 assets,
+                debts,
                 targetNetWorth,
                 date: dateInput ? dateInput.value : '',
                 history,
@@ -1076,6 +1150,8 @@
                 isPlannerMode,
                 isPrivacyMode,
                 monthlyExpenses,
+                freedomCustomNetWorth,
+                pieChartMode
             };
             
             const json = JSON.stringify(state);
@@ -1168,6 +1244,7 @@
 
         function applyState(state) {
             if (state.assets) assets = state.assets;
+            if (state.debts) debts = state.debts;
             if (state.targetNetWorth !== undefined) targetNetWorth = state.targetNetWorth;
             if (state.history) history = state.history;
             if (state.isDarkMode !== undefined) {
@@ -1183,6 +1260,12 @@
             }
             if (state.monthlyExpenses !== undefined) {
                 monthlyExpenses = state.monthlyExpenses;
+            }
+            if (state.freedomCustomNetWorth !== undefined) {
+                freedomCustomNetWorth = state.freedomCustomNetWorth;
+            }
+            if (state.pieChartMode !== undefined) {
+                pieChartMode = state.pieChartMode;
             }
             if (state.date) {
                 const dateInput = document.getElementById('current-date');
@@ -1247,6 +1330,22 @@
             }
         }
 
+        function addDebt() {
+            const id = Math.random().toString(36).substr(2, 9);
+            debts.push({
+                id,
+                name: 'Nieuwe Schuld',
+                value: 0,
+                interest: 0
+            });
+            updateUI();
+        }
+
+        function deleteDebt(id) {
+            debts = debts.filter(d => d.id !== id);
+            updateUI();
+        }
+
         function saveNewAsset() {
             const addAssetModal = document.getElementById('add-asset-modal');
             const newAssetName = document.getElementById('new-asset-name');
@@ -1291,8 +1390,49 @@
             updateUI();
         }
 
+        function updateGreeting() {
+            const greetingText = document.getElementById('greeting-text');
+            const greetingSubtext = document.getElementById('greeting-subtext');
+            if (!greetingText || !greetingSubtext) return;
+
+            const now = new Date();
+            const hour = now.getHours();
+            let greeting = '';
+            let subtext = '';
+
+            if (hour >= 5 && hour < 12) {
+                greeting = 'Goedemorgen! ☀️';
+                subtext = 'Klaar voor een nieuwe dag vol groei?';
+            } else if (hour >= 12 && hour < 18) {
+                greeting = 'Goedemiddag! ☕';
+                subtext = 'Je vermogen werkt hard voor je.';
+            } else if (hour >= 18 && hour < 24) {
+                greeting = 'Goedenavond! 🌙';
+                subtext = 'Even ontspannen en je doelen checken.';
+            } else {
+                greeting = 'Goedenacht! 💤';
+                subtext = 'Droom groot, je vermogen groeit door.';
+            }
+
+            const quotes = [
+                "Rijkdom is wat je niet ziet: de auto's die je niet koopt.",
+                "Geduld is de beste vriend van je vermogen.",
+                "Kleine beetjes maken een groot verschil op de lange termijn.",
+                "Focus op je spaarpercentage voor maximale impact.",
+                "Beleggen is het kopen van je toekomstige vrijheid."
+            ];
+
+            if (Math.random() > 0.8) {
+                subtext = quotes[Math.floor(Math.random() * quotes.length)];
+            }
+
+            greetingText.textContent = greeting;
+            greetingSubtext.textContent = subtext;
+        }
+
         function updateUI() {
             saveState();
+            updateGreeting();
 
             const privacyToggles = document.querySelectorAll('.privacy-toggle-btn');
             privacyToggles.forEach(btn => {
@@ -1300,10 +1440,18 @@
             });
             lucide.createIcons();
 
-            const totalValue = assets.reduce((sum, asset) => sum + asset.value, 0);
-            const liquidValue = assets
+            const totalAssets = assets.reduce((sum, asset) => sum + asset.value, 0);
+            const totalDebts = debts.reduce((sum, debt) => sum + debt.value, 0);
+            const totalValue = totalAssets - totalDebts;
+
+            const liquidAssets = assets
                 .filter(asset => !asset.name.toLowerCase().includes('vastgoed'))
                 .reduce((sum, asset) => sum + asset.value, 0);
+            
+            // For freedom calc, we use liquid assets minus some debts? 
+            // Usually Net Worth includes all, but liquid assets is more specific for freedom.
+            const liquidValue = liquidAssets; 
+
             const totalTarget = assets.reduce((sum, asset) => sum + asset.target, 0);
 
             // Freedom Calculator Logic
@@ -1402,9 +1550,20 @@
             const targetProgressBar = document.getElementById('target-progress-bar');
             const targetProgressPercent = document.getElementById('target-progress-percent');
             const targetRemainingText = document.getElementById('target-remaining-text');
+            const targetPrompt = document.getElementById('target-prompt');
 
             if (targetNetWorthInput && document.activeElement !== targetNetWorthInput) {
-                targetNetWorthInput.value = formatNumber(targetNetWorth);
+                targetNetWorthInput.value = targetNetWorth > 0 ? formatNumber(targetNetWorth) : '';
+            }
+
+            if (targetPrompt) {
+                if (targetNetWorth === 0 && document.activeElement !== targetNetWorthInput) {
+                    targetPrompt.style.opacity = '1';
+                    targetPrompt.style.transform = 'translateY(-50%) scale(1)';
+                } else {
+                    targetPrompt.style.opacity = '0';
+                    targetPrompt.style.transform = 'translateY(-50%) scale(0.9)';
+                }
             }
 
             if (targetProgressBar && targetProgressPercent && targetRemainingText) {
@@ -1414,9 +1573,9 @@
 
                 targetProgressBar.style.width = `${clampedProgress}%`;
                 targetProgressPercent.textContent = `${progress.toFixed(1)}%`;
-                targetRemainingText.textContent = remaining > 0 
-                    ? `Nog ${formatCurrency(remaining)} te gaan`
-                    : 'Doel bereikt! 🎉';
+                targetRemainingText.textContent = targetNetWorth === 0
+                    ? 'Stel een doel in om je voortgang te zien.'
+                    : (remaining > 0 ? `Nog ${formatCurrency(remaining)} te gaan` : 'Doel bereikt! 🎉');
                 
                 if (progress >= 100) {
                     targetProgressBar.classList.remove('bg-blue-600');
@@ -1548,6 +1707,53 @@
                         </tr>
                     `;
                 }).join('');
+            }
+
+            const debtTableBody = document.getElementById('debt-table-body');
+            if (debtTableBody) {
+                debtTableBody.innerHTML = debts.map(debt => `
+                    <tr class="hover:bg-slate-50/50 transition-colors group dark:hover:bg-slate-800/50">
+                        <td class="px-3 sm:px-6 py-4">
+                            <input
+                                type="text"
+                                value="${debt.name}"
+                                data-id="${debt.id}"
+                                data-type="name"
+                                class="debt-input w-full bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 dark:hover:border-slate-700"
+                            />
+                        </td>
+                        <td class="px-3 sm:px-6 py-4">
+                            <div class="flex items-center gap-1">
+                                <span class="text-slate-400 font-mono text-sm">€</span>
+                                <input
+                                    type="text"
+                                    value="${formatNumber(debt.value)}"
+                                    data-id="${debt.id}"
+                                    data-type="value"
+                                    class="debt-input debt-value-input w-24 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-slate-700"
+                                />
+                            </div>
+                        </td>
+                        <td class="px-3 sm:px-6 py-4 text-right">
+                          <div class="flex items-center justify-end gap-1">
+                            <input
+                                type="number"
+                                step="0.1"
+                                value="${debt.interest}"
+                                data-id="${debt.id}"
+                                data-type="interest"
+                                class="debt-input w-12 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 font-mono text-right text-sm dark:text-white dark:hover:border-slate-700"
+                            />
+                            <span class="text-slate-400 font-mono text-xs">%</span>
+                          </div>
+                        </td>
+                        <td class="px-3 sm:px-6 py-4 text-right">
+                            <button data-id="${debt.id}" class="delete-debt-btn text-slate-300 hover:text-red-500 transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100 p-1">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
             }
 
             const rebalanceList = document.getElementById('rebalance-list');
@@ -2048,6 +2254,50 @@
                 });
             }
 
+            const addDebtBtn = document.getElementById('add-debt-btn');
+            if (addDebtBtn) {
+                addDebtBtn.addEventListener('click', () => {
+                    addDebt();
+                });
+            }
+
+            const debtTableBody = document.getElementById('debt-table-body');
+            if (debtTableBody) {
+                debtTableBody.addEventListener('change', (e) => {
+                    const target = e.target;
+                    if (target.classList.contains('debt-input')) {
+                        const id = target.dataset.id;
+                        const type = target.dataset.type;
+                        let rawValue = target.value;
+                        
+                        if (type === 'value') {
+                            rawValue = rawValue.replace(/\./g, '').replace(',', '.');
+                        }
+                        
+                        let val = parseFloat(rawValue);
+                        if (isNaN(val)) val = 0;
+                        
+                        debts = debts.map(d => {
+                            if (d.id === id) {
+                                if (type === 'name') return { ...d, name: rawValue };
+                                return { ...d, [type]: val };
+                            }
+                            return d;
+                        });
+                        updateUI();
+                    }
+                });
+
+                debtTableBody.addEventListener('click', (e) => {
+                    const target = e.target;
+                    const deleteBtn = target.closest('.delete-debt-btn');
+                    if (deleteBtn) {
+                        const id = deleteBtn.dataset.id;
+                        deleteDebt(id);
+                    }
+                });
+            }
+
             const resetColorsBtn = document.getElementById('reset-colors-btn');
             if (resetColorsBtn) {
                 resetColorsBtn.addEventListener('click', () => {
@@ -2114,6 +2364,10 @@
             const targetNetWorthInput = document.getElementById('target-net-worth-input');
             let targetNetWorthTimeout = null;
             if (targetNetWorthInput) {
+                targetNetWorthInput.addEventListener('focus', () => {
+                    updateUI();
+                });
+
                 targetNetWorthInput.addEventListener('input', (e) => {
                     const cleanValue = e.target.value.replace(/[^0-9,.]/g, '').replace(',', '.');
                     const val = parseFloat(cleanValue);
@@ -2131,7 +2385,8 @@
                 });
 
                 targetNetWorthInput.addEventListener('blur', () => {
-                    targetNetWorthInput.value = formatNumber(targetNetWorth);
+                    targetNetWorthInput.value = targetNetWorth > 0 ? formatNumber(targetNetWorth) : '';
+                    updateUI();
                 });
             }
 
@@ -2667,16 +2922,32 @@
             if (onboardingExampleBtn) {
                 onboardingExampleBtn.addEventListener('click', () => {
                     assets = [
-                        { id: 'ex1', name: 'Eigen Woning', value: 250000, target: 50, color: '#3b82f6', category: 'Groei' },
-                        { id: 'ex2', name: 'Spaargeld', value: 50000, target: 20, color: '#10b981', category: 'Defensief' },
-                        { id: 'ex3', name: 'Beleggingen', value: 30000, target: 20, color: '#f97316', category: 'Groei' },
-                        { id: 'ex4', name: 'Overig', value: 20000, target: 10, color: '#6366f1', category: 'Defensief' },
+                        { id: 'ex1', name: 'Eigen Woning', value: 375000, target: 50, color: '#3b82f6', category: 'Groei' },
+                        { id: 'ex2', name: 'Spaargeld', value: 45000, target: 20, color: '#10b981', category: 'Defensief' },
+                        { id: 'ex3', name: 'Beleggingen', value: 65000, target: 20, color: '#f97316', category: 'Groei' },
+                        { id: 'ex4', name: 'Crypto', value: 15000, target: 10, color: '#6366f1', category: 'Speculatief' },
                     ];
+                    debts = [
+                        { id: 'd1', name: 'Hypotheek', value: 280000, interest: 3.5 },
+                        { id: 'd2', name: 'Studieschuld', value: 15000, interest: 2.5 }
+                    ];
+                    targetNetWorth = 1000000;
                     localStorage.setItem('onboarding_completed', 'true');
                     if (onboardingModal) onboardingModal.classList.add('hidden');
                     
                     saveState();
                     updateUI();
+
+                    // Als we op mobiel zijn, open beheer (indien beschikbaar)
+                    if (window.innerWidth < 1024) {
+                        const openBeheerBtn = document.getElementById('open-beheer-btn'); // Of een andere trigger
+                        if (confirm('Voorbeeld data geladen! Wil je je assets en schulden direct aanpassen?')) {
+                            // In standalone is er geen sliding sheet in de HTML gevonden, 
+                            // maar we kunnen scrollen naar de beheer sectie
+                            const assetsSection = document.getElementById('assets-section');
+                            if (assetsSection) assetsSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }
                 });
             }
 
