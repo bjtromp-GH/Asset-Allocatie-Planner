@@ -203,7 +203,7 @@ interface HistoryEntry {
 const DEFAULT_ASSETS: Asset[] = [
   { id: '1', name: 'Aandelen', value: 5000, target: 45, color: '#10b981', category: 'Groei', isRealEstate: false },
   { id: '2', name: 'Obligaties', value: 1500, target: 15, color: '#10b981', category: 'Defensief', isRealEstate: false },
-  { id: '3', name: 'Vastgoed', value: 1000, target: 10, color: '#6366f1', category: 'Groei', isRealEstate: true },
+  { id: '3', name: 'Vastgoed', value: 1000, target: 10, color: '#0d9488', category: 'Groei', isRealEstate: true },
   { id: '4', name: 'Spaargeld', value: 1000, target: 5, color: '#22c55e', category: 'Defensief', isRealEstate: false },
   { id: '5', name: 'Goud', value: 500, target: 5, color: '#eab308', category: 'Defensief', isRealEstate: false },
   { id: '6', name: 'Zilver', value: 200, target: 2, color: '#94a3b8', category: 'Defensief', isRealEstate: false },
@@ -345,7 +345,7 @@ function loadExampleData(silent = false) {
     { id: 'ex1', name: 'Eigen Woning', value: 250000, target: 50, color: '#059669', category: 'Groei', isRealEstate: true },
     { id: 'ex2', name: 'Spaargeld', value: 50000, target: 20, color: '#10b981', category: 'Defensief', isRealEstate: false },
     { id: 'ex3', name: 'Beleggingen', value: 30000, target: 20, color: '#f97316', category: 'Groei', isRealEstate: false },
-    { id: 'ex4', name: 'Overig', value: 20000, target: 10, color: '#6366f1', category: 'Defensief', isRealEstate: false }
+    { id: 'ex4', name: 'Overig', value: 20000, target: 10, color: '#0d9488', category: 'Defensief', isRealEstate: false }
   ];
   const sampleDebts: Debt[] = [
     { id: 'd1', name: 'Hypotheek', value: 180000, target: 90 },
@@ -611,7 +611,7 @@ function saveNewAsset() {
   const isRealEstate = newAssetIsRealEstate?.checked || false;
 
   const id = Math.random().toString(36).substring(2, 9);
-  const colors = ['#10b981', '#059669', '#6366f1', '#22c55e', '#eab308', '#94a3b8', '#f97316', '#ec4899'];
+  const colors = ['#10b981', '#059669', '#0d9488', '#22c55e', '#eab308', '#94a3b8', '#f97316', '#ec4899'];
   
   const newAsset: Asset = {
     id,
@@ -650,7 +650,7 @@ function initAverageDutchChart() {
       labels: ['Eigen Woning', 'Spaargeld', 'Beleggingen', 'Overig'],
       datasets: [{
         data: [58, 22, 12, 8],
-        backgroundColor: ['#10b981', '#059669', '#f97316', '#6366f1'],
+        backgroundColor: ['#10b981', '#059669', '#f97316', '#0d9488'],
         borderWidth: 0,
         hoverOffset: 10
       }]
@@ -733,13 +733,6 @@ function updateUI() {
     .filter(asset => !asset.isRealEstate)
     .reduce((sum, asset) => sum + asset.value, 0);
 
-  const nonMortgageDebts = debts
-    .filter(debt => {
-      const name = debt.name.toLowerCase();
-      return !name.includes('hypotheek') && !name.includes('mortgage');
-    })
-    .reduce((sum, debt) => sum + debt.value, 0);
-
   const yieldValue = assets
     .filter(asset => {
       const name = asset.name.toLowerCase();
@@ -795,8 +788,8 @@ function updateUI() {
   }
 
   if (freedomTimeEl && freedomPassiveEl) {
-    const calcValue = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : (liquidValue - nonMortgageDebts);
-    const yieldValueForPassive = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : (yieldValue - nonMortgageDebts);
+    const calcValue = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : (liquidValue - totalDebts);
+    const yieldValueForPassive = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : (yieldValue - totalDebts);
     
     const months = monthlyExpenses > 0 ? calcValue / monthlyExpenses : 0;
     const passiveMonthly = (Math.max(0, yieldValueForPassive) * 0.04) / 12;
@@ -1452,7 +1445,7 @@ function updateCharts() {
           const index = elements[0].index;
           if (pieChartMode === 'bruto') {
             const assetId = assets[index].id;
-            highlightAssetRow(assetId, false);
+            highlightAssetRow(assetId);
           } else {
             // Netto mode: 0 = Bezittingen, 1 = Schulden
             if (index === 0) {
@@ -1736,8 +1729,8 @@ const openBeheerSheet = () => {
   }
 };
 
-function highlightAssetRow(id: string, openSheet = true) {
-  if (openSheet && window.innerWidth < 1024) {
+function highlightAssetRow(id: string) {
+  if (window.innerWidth < 1024) {
     openBeheerSheet();
   }
   
@@ -2518,7 +2511,7 @@ function initEventListeners() {
     onboardingStartBtn.addEventListener('click', () => {
       const selectedAssets: Asset[] = [];
       const selectedDebts: Debt[] = [];
-      const colors = ['#10b981', '#059669', '#f97316', '#6366f1', '#eab308', '#ec4899'];
+      const colors = ['#10b981', '#059669', '#f97316', '#0d9488', '#eab308', '#ec4899'];
       
       onboardingCheckboxes.forEach((cb, index) => {
         if (cb.checked) {
