@@ -887,6 +887,18 @@
               <span class="text-xs sm:text-sm font-semibold dark:text-white group-hover:text-emerald-600 transition-colors">Pensioen</span>
             </label>
           </div>
+
+          <p class="text-[10px] sm:text-sm font-bold uppercase tracking-wider text-slate-400 mb-3 sm:mb-4">Heb je schulden?</p>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 mb-6 sm:mb-8">
+            <label class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
+              <input type="checkbox" value="Schulden" class="w-4 h-4 sm:w-5 h-5 rounded border-slate-300 accent-red-600 text-red-600 focus:ring-red-500 onboarding-asset-checkbox">
+              <span class="text-xs sm:text-sm font-semibold dark:text-white group-hover:text-red-600 transition-colors">Schulden</span>
+            </label>
+            <label class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
+              <input type="checkbox" value="Hypotheek" class="w-4 h-4 sm:w-5 h-5 rounded border-slate-300 accent-red-600 text-red-600 focus:ring-red-500 onboarding-asset-checkbox">
+              <span class="text-xs sm:text-sm font-semibold dark:text-white group-hover:text-red-600 transition-colors">Hypotheek</span>
+            </label>
+          </div>
           
           <div class="flex flex-col sm:flex-row gap-3">
             <button id="onboarding-example-btn" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 sm:py-4 rounded-2xl transition-all active:scale-95 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 text-sm sm:text-base">
@@ -1446,10 +1458,12 @@
                 .filter(asset => !asset.name.toLowerCase().includes('vastgoed'))
                 .reduce((sum, asset) => sum + asset.value, 0);
             
-            // For freedom calc, we use liquid assets minus some debts? 
-            // Usually Net Worth includes all, but liquid assets is more specific for freedom.
-            const liquidValue = liquidAssets; 
+            const freedomDebts = debts
+                .filter(debt => !debt.name.toLowerCase().includes('hypotheek'))
+                .reduce((sum, debt) => sum + debt.value, 0);
 
+            const liquidValue = liquidAssets; 
+            
             const totalTarget = assets.reduce((sum, asset) => sum + asset.target, 0);
 
             // Freedom Calculator Logic
@@ -1462,8 +1476,8 @@
             }
 
             if (freedomTimeEl && freedomPassiveEl) {
-                const months = monthlyExpenses > 0 ? liquidValue / monthlyExpenses : 0;
-                const passiveMonthly = (liquidValue * 0.04) / 12;
+                const months = monthlyExpenses > 0 ? (liquidValue - freedomDebts) / monthlyExpenses : 0;
+                const passiveMonthly = (Math.max(0, liquidValue - freedomDebts) * 0.04) / 12;
 
                 if (isPrivacyMode) {
                     freedomTimeEl.textContent = '•• mnd';
@@ -2876,27 +2890,38 @@
             if (onboardingStartBtn) {
                 onboardingStartBtn.addEventListener('click', () => {
                     const selectedAssets = [];
+                    const selectedDebts = [];
                     const colors = ['#059669', '#10b981', '#f97316', '#0d9488', '#eab308', '#ec4899'];
                     
                     onboardingCheckboxes.forEach((cb, index) => {
                         if (cb.checked) {
-                            selectedAssets.push({
-                                id: Math.random().toString(36).substring(2, 9),
-                                name: cb.value,
-                                value: 0,
-                                target: 0,
-                                color: colors[index % colors.length],
-                                category: cb.value === 'Crypto' ? 'Speculatief' : (cb.value === 'Spaargeld' || cb.value === 'Goud' ? 'Defensief' : 'Groei')
-                            });
+                            if (cb.value === 'Schulden' || cb.value === 'Hypotheek') {
+                                selectedDebts.push({
+                                    id: Math.random().toString(36).substring(2, 9),
+                                    name: cb.value,
+                                    value: 0,
+                                    target: 0
+                                });
+                            } else {
+                                selectedAssets.push({
+                                    id: Math.random().toString(36).substring(2, 9),
+                                    name: cb.value,
+                                    value: 0,
+                                    target: 0,
+                                    color: colors[index % colors.length],
+                                    category: cb.value === 'Crypto' ? 'Speculatief' : (cb.value === 'Spaargeld' || cb.value === 'Goud' ? 'Defensief' : 'Groei')
+                                });
+                            }
                         }
                     });
                     
-                    if (selectedAssets.length === 0) {
-                        alert('Selecteer ten minste één asset om te beginnen.');
+                    if (selectedAssets.length === 0 && selectedDebts.length === 0) {
+                        alert('Selecteer ten minste één asset of schuld om te beginnen.');
                         return;
                     }
                     
                     assets = selectedAssets;
+                    debts = selectedDebts;
                     localStorage.setItem('onboarding_completed', 'true');
                     if (onboardingModal) onboardingModal.classList.add('hidden');
                     

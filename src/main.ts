@@ -729,6 +729,10 @@ function updateUI() {
   const totalDebts = debts.reduce((sum, debt) => sum + debt.value, 0);
   const netWorth = totalAssets - totalDebts;
 
+  const freedomDebts = debts
+    .filter(debt => !debt.name.toLowerCase().includes('hypotheek'))
+    .reduce((sum, debt) => sum + debt.value, 0);
+
   const liquidValue = assets
     .filter(asset => !asset.isRealEstate)
     .reduce((sum, asset) => sum + asset.value, 0);
@@ -788,8 +792,8 @@ function updateUI() {
   }
 
   if (freedomTimeEl && freedomPassiveEl) {
-    const calcValue = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : (liquidValue - totalDebts);
-    const yieldValueForPassive = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : (yieldValue - totalDebts);
+    const calcValue = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : (liquidValue - freedomDebts);
+    const yieldValueForPassive = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : (yieldValue - freedomDebts);
     
     const months = monthlyExpenses > 0 ? calcValue / monthlyExpenses : 0;
     const passiveMonthly = (Math.max(0, yieldValueForPassive) * 0.04) / 12;
