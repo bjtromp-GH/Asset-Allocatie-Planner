@@ -201,7 +201,7 @@ interface HistoryEntry {
 }
 
 const DEFAULT_ASSETS: Asset[] = [
-  { id: '1', name: 'Aandelen', value: 5000, target: 45, color: '#3b82f6', category: 'Groei', isRealEstate: false },
+  { id: '1', name: 'Aandelen', value: 5000, target: 45, color: '#10b981', category: 'Groei', isRealEstate: false },
   { id: '2', name: 'Obligaties', value: 1500, target: 15, color: '#10b981', category: 'Defensief', isRealEstate: false },
   { id: '3', name: 'Vastgoed', value: 1000, target: 10, color: '#6366f1', category: 'Groei', isRealEstate: true },
   { id: '4', name: 'Spaargeld', value: 1000, target: 5, color: '#22c55e', category: 'Defensief', isRealEstate: false },
@@ -342,7 +342,7 @@ function saveState() {
 
 function loadExampleData(silent = false) {
   const sampleAssets: Asset[] = [
-    { id: 'ex1', name: 'Eigen Woning', value: 250000, target: 50, color: '#3b82f6', category: 'Groei', isRealEstate: true },
+    { id: 'ex1', name: 'Eigen Woning', value: 250000, target: 50, color: '#059669', category: 'Groei', isRealEstate: true },
     { id: 'ex2', name: 'Spaargeld', value: 50000, target: 20, color: '#10b981', category: 'Defensief', isRealEstate: false },
     { id: 'ex3', name: 'Beleggingen', value: 30000, target: 20, color: '#f97316', category: 'Groei', isRealEstate: false },
     { id: 'ex4', name: 'Overig', value: 20000, target: 10, color: '#6366f1', category: 'Defensief', isRealEstate: false }
@@ -408,7 +408,7 @@ function loadState() {
             name: a.description || a.name || 'Asset',
             value: a.amount || a.value || 0,
             target: 0,
-            color: '#3b82f6',
+            color: '#10b981',
             category: 'Groei'
           }));
         }
@@ -611,7 +611,7 @@ function saveNewAsset() {
   const isRealEstate = newAssetIsRealEstate?.checked || false;
 
   const id = Math.random().toString(36).substring(2, 9);
-  const colors = ['#3b82f6', '#10b981', '#6366f1', '#22c55e', '#eab308', '#94a3b8', '#f97316', '#ec4899'];
+  const colors = ['#10b981', '#059669', '#6366f1', '#22c55e', '#eab308', '#94a3b8', '#f97316', '#ec4899'];
   
   const newAsset: Asset = {
     id,
@@ -650,7 +650,7 @@ function initAverageDutchChart() {
       labels: ['Eigen Woning', 'Spaargeld', 'Beleggingen', 'Overig'],
       datasets: [{
         data: [58, 22, 12, 8],
-        backgroundColor: ['#3b82f6', '#10b981', '#f97316', '#6366f1'],
+        backgroundColor: ['#10b981', '#059669', '#f97316', '#6366f1'],
         borderWidth: 0,
         hoverOffset: 10
       }]
@@ -763,11 +763,11 @@ function updateUI() {
 
   if (viewBrutoBtn && viewNettoBtn) {
     if (pieChartMode === 'bruto') {
-      viewBrutoBtn.className = 'px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all bg-white shadow-sm text-blue-600';
+      viewBrutoBtn.className = 'px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all bg-white shadow-sm text-emerald-600';
       viewNettoBtn.className = 'px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all text-white/80 hover:text-white';
       if (pieTotalLabel) pieTotalLabel.textContent = 'Bruto Vermogen';
     } else {
-      viewNettoBtn.className = 'px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all bg-white shadow-sm text-blue-600';
+      viewNettoBtn.className = 'px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all bg-white shadow-sm text-emerald-600';
       viewBrutoBtn.className = 'px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all text-white/80 hover:text-white';
       if (pieTotalLabel) pieTotalLabel.textContent = 'Netto Vermogen';
     }
@@ -860,8 +860,8 @@ function updateUI() {
   } else if (growthPercent > 60) {
     status = "Groeigericht";
     statusColors = {
-      color: isDarkMode ? '#60a5fa' : '#1d4ed8',
-      bg: isDarkMode ? 'rgba(30, 64, 175, 0.3)' : '#eff6ff'
+      color: isDarkMode ? '#10b981' : '#059669',
+      bg: isDarkMode ? 'rgba(5, 150, 105, 0.3)' : '#ecfdf5'
     };
   } else if (defPercent > 60) {
     status = "Defensief";
@@ -931,10 +931,10 @@ function updateUI() {
       : (remaining > 0 ? `Nog ${formatCurrency(remaining)} te gaan` : 'Doel bereikt! 🎉');
     
     if (progress >= 100) {
-      targetProgressBar.classList.remove('bg-blue-600');
+      targetProgressBar.classList.remove('bg-emerald-600');
       targetProgressBar.classList.add('bg-green-500');
     } else {
-      targetProgressBar.classList.add('bg-blue-600');
+      targetProgressBar.classList.add('bg-emerald-600');
       targetProgressBar.classList.remove('bg-green-500');
     }
   }
@@ -1081,7 +1081,7 @@ function renderCategoryCards() {
 
   categoryCards.innerHTML = Object.entries(categories).map(([name, value]) => {
     const percent = totalAssets > 0 ? (value / totalAssets) * 100 : 0;
-    const color = name === 'Groei' ? '#3b82f6' : name === 'Defensief' ? '#10b981' : '#f97316';
+    const color = name === 'Groei' ? '#10b981' : name === 'Defensief' ? '#059669' : '#f97316';
     const idPrefix = name.toLowerCase();
     return `
       <div class="bg-white p-6 rounded-xl border border-slate-200 flex items-center justify-between dark:bg-slate-900 dark:border-slate-800">
@@ -1127,9 +1127,9 @@ function renderAssets() {
               value="${asset.name}"
               data-id="${asset.id}"
               data-type="name"
-              class="asset-input w-full bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-0 sm:py-1 text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 dark:hover:border-slate-700"
+              class="asset-input w-full bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-0 sm:py-1 text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 dark:hover:border-slate-700"
             />
-            ${asset.isRealEstate ? '<span class="text-[9px] font-bold uppercase tracking-widest text-blue-500 dark:text-blue-400">Vastgoed</span>' : ''}
+            ${asset.isRealEstate ? '<span class="text-[9px] font-bold uppercase tracking-widest text-emerald-500 dark:text-emerald-400">Vastgoed</span>' : ''}
           </div>
         </td>
         <td class="px-3 sm:px-6 py-4 min-w-[100px] sm:min-w-[180px]">
@@ -1142,10 +1142,10 @@ function renderAssets() {
                   value="${formatNumber(asset.value)}"
                   data-id="${asset.id}"
                   data-type="value"
-                  class="asset-input asset-value-input w-20 sm:w-24 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-slate-700"
+                  class="asset-input asset-value-input w-20 sm:w-24 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-slate-700"
                 />
               </div>
-              <span class="font-mono text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 whitespace-nowrap">${formatPercent(currentPercent)}</span>
+              <span class="font-mono text-xs sm:text-sm font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">${formatPercent(currentPercent)}</span>
             </div>
             <!-- Progress Bar -->
             <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
@@ -1173,7 +1173,7 @@ function renderAssets() {
                 value="${asset.target}"
                 data-id="${asset.id}"
                 data-type="target"
-                class="asset-input w-8 sm:w-10 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:ring-0 transition-all outline-none py-1 font-mono text-right text-sm dark:text-white dark:hover:border-slate-700"
+                class="asset-input w-8 sm:w-10 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-right text-sm dark:text-white dark:hover:border-slate-700"
               />
               <span class="text-slate-400 font-mono text-xs sm:text-sm">%</span>
             </div>
@@ -1246,9 +1246,9 @@ function renderRebalancePlan() {
     
     const isOver = deviation > 1;
     const isUnder = deviation < -1;
-    const statusClass = isOver ? "bg-red-50/50 border-red-100 dark:bg-red-900/20 dark:border-red-900/30" : isUnder ? "bg-blue-50/50 border-blue-100 dark:bg-blue-900/20 dark:border-blue-900/30" : "bg-slate-50/50 border-slate-100 dark:bg-slate-800/50 dark:border-slate-800";
+    const statusClass = isOver ? "bg-red-50/50 border-red-100 dark:bg-red-900/20 dark:border-red-900/30" : isUnder ? "bg-emerald-50/50 border-emerald-100 dark:bg-emerald-900/20 dark:border-emerald-900/30" : "bg-slate-50/50 border-slate-100 dark:bg-slate-800/50 dark:border-slate-800";
     const icon = isOver ? "arrow-up-right" : isUnder ? "arrow-down-right" : "minus";
-    const iconColor = isOver ? "text-red-500" : isUnder ? "text-blue-500" : "text-slate-400";
+    const iconColor = isOver ? "text-red-500" : isUnder ? "text-emerald-500" : "text-slate-400";
 
     return `
       <div class="p-4 rounded-xl border flex flex-col gap-1 ${statusClass}">
@@ -1258,7 +1258,7 @@ function renderRebalancePlan() {
         </div>
         <div class="flex items-baseline gap-2">
           <span class="text-lg font-bold dark:text-white">${rebalanceAmount > 0 ? '+' : ''}${formatCurrency(rebalanceAmount)}</span>
-          <span class="text-xs font-medium ${deviation > 0 ? 'text-red-600 dark:text-red-400' : 'text-blue-600 dark:text-blue-400'}">
+          <span class="text-xs font-medium ${deviation > 0 ? 'text-red-600 dark:text-red-400' : 'text-emerald-600 dark:text-emerald-400'}">
             (${deviation > 0 ? '+' : ''}${deviation.toFixed(1)}%)
           </span>
         </div>
@@ -1345,7 +1345,7 @@ function renderHistory() {
       const debtPercent = (totalAssets + totalDebts) > 0 ? (totalDebts / (totalAssets + totalDebts)) * 100 : 0;
       pieLegend.innerHTML = `
         <div class="flex items-center text-sm sm:text-base group">
-          <div class="w-2 h-2 sm:w-3 sm:h-3 rounded-full shrink-0 mr-2 sm:mr-3 transition-transform group-hover:scale-125" style="background-color: #3b82f6"></div>
+          <div class="w-2 h-2 sm:w-3 sm:h-3 rounded-full shrink-0 mr-2 sm:mr-3 transition-transform group-hover:scale-125" style="background-color: #10b981"></div>
           <span class="text-slate-600 flex-1 truncate dark:text-slate-400">Bezittingen</span>
           <span class="font-mono font-bold text-slate-900 ml-2 dark:text-white text-sm sm:text-base">${formatPercent(assetPercent)}</span>
         </div>
@@ -1367,7 +1367,7 @@ function renderHistory() {
           <td class="px-6 py-4 text-sm font-medium text-slate-700 whitespace-nowrap dark:text-slate-300">${formatDate(entry.date)}</td>
           <td class="px-6 py-4 text-sm font-mono dark:text-slate-400">${formatCurrency(entry.totalValue)}</td>
           <td class="px-6 py-4 text-right space-x-2">
-            <button data-idx="${realIdx}" class="load-history-btn text-blue-600 hover:text-blue-800 p-1 transition-colors dark:text-blue-400 dark:hover:text-blue-300" title="Laden">
+            <button data-idx="${realIdx}" class="load-history-btn text-emerald-600 hover:text-emerald-800 p-1 transition-colors dark:text-emerald-400 dark:hover:text-emerald-300" title="Laden">
               <i data-lucide="upload" class="w-4 h-4"></i>
             </button>
             <button data-idx="${realIdx}" class="delete-history-btn text-red-600 hover:text-red-800 p-1 transition-colors dark:text-red-400 dark:hover:text-red-300" title="Verwijderen">
@@ -1405,7 +1405,7 @@ function updateCharts() {
   } else {
     labels = ['Bezittingen', 'Schulden'];
     values = [totalAssets, totalDebts];
-    colors = ['#3b82f6', '#ef4444'];
+    colors = ['#10b981', '#ef4444'];
   }
 
   const currentPercents = assets.map(a => totalAssets > 0 ? (a.value / totalAssets) * 100 : 0);
@@ -1526,7 +1526,7 @@ function updateCharts() {
         {
           label: 'Huidig',
           data: currentPercents,
-          backgroundColor: '#3b82f6',
+          backgroundColor: '#10b981',
           borderRadius: 4,
           barThickness: 12
         },
@@ -1579,12 +1579,12 @@ function updateCharts() {
       datasets: [{
         label: 'Totaal Vermogen',
         data: history.map(h => h.totalValue),
-        borderColor: '#3b82f6',
-        backgroundColor: isDarkMode ? 'rgba(59, 130, 246, 0.05)' : 'rgba(59, 130, 246, 0.1)',
+        borderColor: '#10b981',
+        backgroundColor: isDarkMode ? 'rgba(16, 185, 129, 0.05)' : 'rgba(16, 185, 129, 0.1)',
         fill: true,
         tension: 0.4,
         pointRadius: 4,
-        pointBackgroundColor: '#3b82f6'
+        pointBackgroundColor: '#10b981'
       }]
     },
     options: {
@@ -1738,10 +1738,10 @@ function highlightAssetRow(id: string) {
   inputs.forEach(input => {
     const tr = input.closest('tr');
     if (tr) {
-      tr.classList.add('bg-blue-50', 'dark:bg-blue-900/20', 'scale-[1.01]', 'ring-1', 'ring-blue-200', 'dark:ring-blue-800');
+      tr.classList.add('bg-emerald-50', 'dark:bg-emerald-900/20', 'scale-[1.01]', 'ring-1', 'ring-emerald-200', 'dark:ring-emerald-800');
       tr.scrollIntoView({ behavior: 'smooth', block: 'center' });
       setTimeout(() => {
-        tr.classList.remove('bg-blue-50', 'dark:bg-blue-900/20', 'scale-[1.01]', 'ring-1', 'ring-blue-200', 'dark:ring-blue-800');
+        tr.classList.remove('bg-emerald-50', 'dark:bg-emerald-900/20', 'scale-[1.01]', 'ring-1', 'ring-emerald-200', 'dark:ring-emerald-800');
       }, 2000);
     }
   });
@@ -2511,7 +2511,7 @@ function initEventListeners() {
     onboardingStartBtn.addEventListener('click', () => {
       const selectedAssets: Asset[] = [];
       const selectedDebts: Debt[] = [];
-      const colors = ['#3b82f6', '#10b981', '#f97316', '#6366f1', '#eab308', '#ec4899'];
+      const colors = ['#10b981', '#059669', '#f97316', '#6366f1', '#eab308', '#ec4899'];
       
       onboardingCheckboxes.forEach((cb, index) => {
         if (cb.checked) {
@@ -2714,7 +2714,7 @@ function initEventListeners() {
       if (totalAssets === 0 && totalDebts === 0) {
         descEl.innerHTML = `${statusText}Begin met het toevoegen van je eerste assets om je financiële reis te visualiseren.`;
       } else {
-        descEl.innerHTML = `${statusText}Je grootste asset is <span class="text-blue-600 font-bold">${topAsset?.name || 'onbekend'}</span> en je bent op weg naar je doel!`;
+        descEl.innerHTML = `${statusText}Je grootste asset is <span class="text-emerald-600 font-bold">${topAsset?.name || 'onbekend'}</span> en je bent op weg naar je doel!`;
       }
       
       if (statusIcon) {
@@ -2732,7 +2732,7 @@ function initEventListeners() {
           labels: ['Bezittingen', 'Schulden'],
           datasets: [{
             data: [totalAssets, totalDebts],
-            backgroundColor: ['#3b82f6', '#ef4444'],
+            backgroundColor: ['#10b981', '#ef4444'],
             borderWidth: 0,
             hoverOffset: 10
           }]
