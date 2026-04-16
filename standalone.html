@@ -1450,6 +1450,13 @@
             // Usually Net Worth includes all, but liquid assets is more specific for freedom.
             const liquidValue = liquidAssets; 
 
+            const nonMortgageDebts = debts
+                .filter(debt => {
+                    const name = debt.name.toLowerCase();
+                    return !name.includes('hypotheek') && !name.includes('mortgage');
+                })
+                .reduce((sum, debt) => sum + debt.value, 0);
+
             const totalTarget = assets.reduce((sum, asset) => sum + asset.target, 0);
 
             // Freedom Calculator Logic
@@ -1462,8 +1469,9 @@
             }
 
             if (freedomTimeEl && freedomPassiveEl) {
-                const months = monthlyExpenses > 0 ? liquidValue / monthlyExpenses : 0;
-                const passiveMonthly = (liquidValue * 0.04) / 12;
+                const calcValue = Math.max(0, liquidValue - nonMortgageDebts);
+                const months = monthlyExpenses > 0 ? calcValue / monthlyExpenses : 0;
+                const passiveMonthly = (calcValue * 0.04) / 12;
 
                 if (isPrivacyMode) {
                     freedomTimeEl.textContent = '•• mnd';
@@ -1885,7 +1893,7 @@
                         if (elements.length > 0) {
                             const index = elements[0].index;
                             const assetId = assets[index].id;
-                            highlightAssetRow(assetId);
+                            highlightAssetRow(assetId, false);
                         }
                     },
                     plugins: {
@@ -2130,7 +2138,10 @@
                 .text(d => d);
         }
 
-        function highlightAssetRow(id) {
+        function highlightAssetRow(id, openSheet = true) {
+            if (openSheet && window.innerWidth < 1024) {
+                openBeheerSheet();
+            }
             const inputs = document.querySelectorAll(`.asset-input[data-id="${id}"]`);
             inputs.forEach(input => {
                 const tr = input.closest('tr');

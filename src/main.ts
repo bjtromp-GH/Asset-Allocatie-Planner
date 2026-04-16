@@ -733,6 +733,13 @@ function updateUI() {
     .filter(asset => !asset.isRealEstate)
     .reduce((sum, asset) => sum + asset.value, 0);
 
+  const nonMortgageDebts = debts
+    .filter(debt => {
+      const name = debt.name.toLowerCase();
+      return !name.includes('hypotheek') && !name.includes('mortgage');
+    })
+    .reduce((sum, debt) => sum + debt.value, 0);
+
   const yieldValue = assets
     .filter(asset => {
       const name = asset.name.toLowerCase();
@@ -788,8 +795,8 @@ function updateUI() {
   }
 
   if (freedomTimeEl && freedomPassiveEl) {
-    const calcValue = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : (liquidValue - totalDebts);
-    const yieldValueForPassive = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : (yieldValue - totalDebts);
+    const calcValue = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : (liquidValue - nonMortgageDebts);
+    const yieldValueForPassive = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : (yieldValue - nonMortgageDebts);
     
     const months = monthlyExpenses > 0 ? calcValue / monthlyExpenses : 0;
     const passiveMonthly = (Math.max(0, yieldValueForPassive) * 0.04) / 12;
@@ -1445,7 +1452,7 @@ function updateCharts() {
           const index = elements[0].index;
           if (pieChartMode === 'bruto') {
             const assetId = assets[index].id;
-            highlightAssetRow(assetId);
+            highlightAssetRow(assetId, false);
           } else {
             // Netto mode: 0 = Bezittingen, 1 = Schulden
             if (index === 0) {
@@ -1729,8 +1736,8 @@ const openBeheerSheet = () => {
   }
 };
 
-function highlightAssetRow(id: string) {
-  if (window.innerWidth < 1024) {
+function highlightAssetRow(id: string, openSheet = true) {
+  if (openSheet && window.innerWidth < 1024) {
     openBeheerSheet();
   }
   
