@@ -309,6 +309,7 @@ function saveState() {
   const dateInput = document.getElementById('current-date') as HTMLInputElement;
   const state = {
     assets,
+    debts,
     investmentAmount,
     targetNetWorth,
     date: dateInput ? dateInput.value : '',
@@ -316,6 +317,9 @@ function saveState() {
     isDarkMode,
     isPrivacyMode,
     monthlyExpenses,
+    freedomCustomNetWorth,
+    isPlannerMode,
+    pieChartMode
   };
   
   const json = JSON.stringify(state);
@@ -389,19 +393,36 @@ function loadState() {
   const hasNewState = localStorage.getItem(STORAGE_KEY);
   if (!hasNewState) {
     const oldAssets = localStorage.getItem('current_assets');
-    if (oldAssets) {
+    const oldDebts = localStorage.getItem('current_debts');
+    
+    if (oldAssets || oldDebts) {
       try {
-        const parsed = JSON.parse(oldAssets);
-        assets = parsed.map((a: any) => ({
-          id: a.id || Math.random().toString(36).substring(2, 9),
-          name: a.description || a.name || 'Asset',
-          value: a.amount || a.value || 0,
-          target: 0,
-          color: '#3b82f6',
-          category: 'Groei'
-        }));
+        if (oldAssets) {
+          const parsed = JSON.parse(oldAssets);
+          assets = parsed.map((a: any) => ({
+            id: a.id || Math.random().toString(36).substring(2, 9),
+            name: a.description || a.name || 'Asset',
+            value: a.amount || a.value || 0,
+            target: 0,
+            color: '#3b82f6',
+            category: 'Groei'
+          }));
+        }
+        
+        if (oldDebts) {
+          const parsed = JSON.parse(oldDebts);
+          debts = parsed.map((d: any) => ({
+            id: d.id || Math.random().toString(36).substring(2, 9),
+            name: d.description || d.name || 'Schuld',
+            value: d.amount || d.value || 0,
+            target: 0
+          }));
+        }
+        
         saveState();
-      } catch (e) {}
+      } catch (e) {
+        console.error('Migration failed', e);
+      }
     }
   }
 
@@ -469,6 +490,15 @@ function applyState(state: any) {
   }
   if (state.monthlyExpenses !== undefined) {
     monthlyExpenses = state.monthlyExpenses;
+  }
+  if (state.freedomCustomNetWorth !== undefined) {
+    freedomCustomNetWorth = state.freedomCustomNetWorth;
+  }
+  if (state.isPlannerMode !== undefined) {
+    isPlannerMode = state.isPlannerMode;
+  }
+  if (state.pieChartMode !== undefined) {
+    pieChartMode = state.pieChartMode;
   }
   if (state.date) {
     const dateInput = document.getElementById('current-date') as HTMLInputElement;
