@@ -73,7 +73,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen bg-slate-50 text-slate-900 selection:bg-emerald-100 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
+<body class="min-h-screen bg-zinc-50 text-zinc-900 selection:bg-emerald-100 transition-colors duration-300 dark:bg-zinc-950 dark:text-zinc-100">
     <div id="app">
         <!-- Header -->
         <header class="sticky top-0 z-50 border-b border-emerald-500/30 shadow-md">
@@ -114,24 +114,24 @@
             </div>
 
             <!-- Bottom Bar: White -->
-            <div class="bg-white border-b border-emerald-100 dark:bg-slate-900 dark:border-emerald-900/30">
+            <div class="bg-white border-b border-emerald-100 dark:bg-zinc-900 dark:border-emerald-900/30">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
                     <div class="flex flex-col items-start">
-                        <span class="text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-bold">Datum</span>
+                        <span class="text-[10px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500 font-bold">Datum</span>
                         <label for="current-date" class="flex items-center gap-1 cursor-pointer">
-                            <input id="current-date" type="date" class="text-sm sm:text-base font-bold text-slate-900 bg-transparent border-none focus:ring-0 p-0 text-left cursor-pointer dark:text-white dark:[color-scheme:dark]" />
-                            <i data-lucide="calendar" class="w-4 h-4 text-slate-400 dark:text-slate-500"></i>
+                            <input id="current-date" type="date" class="text-sm sm:text-base font-bold text-zinc-900 bg-transparent border-none focus:ring-0 p-0 text-left cursor-pointer dark:text-white dark:[color-scheme:dark]" />
+                            <i data-lucide="calendar" class="w-4 h-4 text-zinc-400 dark:text-zinc-500"></i>
                         </label>
                     </div>
 
                     <div class="flex flex-col items-end">
                         <div class="flex items-center gap-2">
-                            <span class="text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-bold">Totaal Vermogen</span>
-                            <button class="privacy-toggle-btn p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition-colors" title="Privacy modus">
+                            <span class="text-[10px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500 font-bold">Totaal Vermogen</span>
+                            <button class="privacy-toggle-btn p-1 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 transition-colors" title="Privacy modus">
                                 <i data-lucide="eye" class="w-4 h-4"></i>
                             </button>
                         </div>
-                        <span id="total-value" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">€ 0,00</span>
+                        <span id="total-value" class="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white">€ 0,00</span>
                     </div>
                 </div>
             </div>
@@ -140,24 +140,24 @@
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <!-- Greeting Message Bubble -->
             <div class="mb-2 flex justify-center lg:justify-end">
-                <div id="greeting-bubble" class="relative bg-white dark:bg-slate-800 px-4 py-2 rounded-2xl rounded-tr-none shadow-sm border border-slate-100 dark:border-slate-800 animate-in slide-in-from-top-2 duration-700">
+                <div id="greeting-bubble" class="relative bg-white dark:bg-zinc-800 px-4 py-2 rounded-2xl rounded-tr-none shadow-sm border border-zinc-100 dark:border-zinc-800 animate-in slide-in-from-top-2 duration-700">
                     <div class="flex items-start gap-2">
                         <div class="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 animate-pulse"></div>
                         <div>
-                            <p id="greeting-text" class="text-sm font-bold text-slate-800 dark:text-white leading-tight">Laden...</p>
-                            <p id="greeting-subtext" class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Financieel assistent</p>
+                            <p id="greeting-text" class="text-sm font-bold text-zinc-800 dark:text-white leading-tight">Laden...</p>
+                            <p id="greeting-subtext" class="text-[10px] text-zinc-500 dark:text-zinc-400 font-medium">Financieel assistent</p>
                         </div>
                     </div>
                     <!-- WhatsApp-style "tail" -->
                     <div class="absolute top-0 -right-2 w-4 h-4 overflow-hidden pointer-events-none">
-                        <div class="absolute top-0 right-0 w-4 h-4 bg-white dark:bg-slate-800 rotate-45 transform origin-top-right border-t border-r border-slate-100 dark:border-slate-800"></div>
+                        <div class="absolute top-0 right-0 w-4 h-4 bg-white dark:bg-zinc-800 rotate-45 transform origin-top-right border-t border-r border-zinc-100 dark:border-zinc-800"></div>
                     </div>
                 </div>
             </div>
 
             <!-- Title and Subtitle -->
             <div class="mb-4 flex flex-col items-center justify-center text-center">
-                <p class="text-slate-500 dark:text-slate-400 font-medium max-w-lg">
+                <p class="text-zinc-500 dark:text-zinc-400 font-medium max-w-lg text-sm sm:text-base">
                     Alles op één plek. Krijg inzicht in je totale vermogen.
                 </p>
             </div>
@@ -167,10 +167,10 @@
                 <!-- Dynamically populated -->
             </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
             <!-- Pie Chart (Moved to top for mobile order) -->
-            <section class="lg:col-span-5 order-1 lg:order-2 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
-                <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
+            <section class="lg:col-span-5 order-1 lg:order-2 bg-white rounded-2xl border border-zinc-200 shadow-sm p-4 sm:p-6 dark:bg-zinc-900 dark:border-zinc-800">
+                <h2 class="font-semibold flex items-center gap-2 mb-4 sm:mb-6 dark:text-white">
                     <i data-lucide="pie-chart" class="w-4 h-4 text-emerald-600"></i>
                     Huidige Allocatie (Cirkel)
                 </h2>
@@ -178,18 +178,18 @@
                     <canvas id="pie-chart"></canvas>
                 </div>
                 
-                <div class="mt-8 flex justify-between items-end border-b border-slate-50 pb-2 dark:border-slate-800">
+                <div class="mt-8 flex justify-between items-end border-b border-zinc-50 pb-2 dark:border-zinc-800">
                     <div class="flex items-center gap-2">
-                        <span class="text-[10px] uppercase tracking-wider opacity-60 dark:text-slate-400">Totaal Vermogen</span>
-                        <button class="privacy-toggle-btn p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition-colors" title="Privacy modus">
+                        <span class="text-[10px] uppercase tracking-wider opacity-60 dark:text-zinc-400">Totaal Vermogen</span>
+                        <button class="privacy-toggle-btn p-1 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 transition-colors" title="Privacy modus">
                             <i data-lucide="eye" class="w-5 h-5"></i>
                         </button>
                     </div>
-                    <span id="pie-total-value" class="text-lg font-bold text-slate-900 dark:text-white">€ 0,00</span>
+                    <span id="pie-total-value" class="text-lg font-bold text-zinc-900 dark:text-white">€ 0,00</span>
                 </div>
                 
                 <!-- Legend -->
-                <div id="pie-legend" class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 mt-4 dark:border-slate-800">
+                <div id="pie-legend" class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 mt-4 dark:border-zinc-800">
                     <!-- Dynamically populated -->
                 </div>
             </section>
@@ -197,8 +197,8 @@
             <!-- Left Column: Assets & Charts -->
             <div class="lg:col-span-7 flex flex-col gap-6 order-2 lg:order-1">
                 <!-- Asset Management Table -->
-                <section id="assets-section" class="order-1 lg:order-1 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
-                    <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between dark:border-slate-800">
+                <section id="assets-section" class="order-1 lg:order-1 bg-white rounded-2xl border border-zinc-200 shadow-sm overflow-hidden dark:bg-zinc-900 dark:border-zinc-800">
+                    <div class="px-6 py-4 border-b border-zinc-100 flex items-center justify-between dark:border-zinc-800">
                         <h2 class="font-semibold flex items-center gap-2 dark:text-white">
                             <i data-lucide="wallet" class="w-4 h-4 text-emerald-600"></i>
                             Asset Beheer
@@ -208,7 +208,7 @@
                                 Gemiddelde Nederlander
                             </button>
                             <span id="target-warning" class="hidden text-xs font-medium px-2 py-1 rounded-full"></span>
-                            <button id="reset-colors-btn" class="text-slate-400 hover:text-emerald-600 transition-all p-1.5 rounded-lg" title="Standaard herstellen">
+                            <button id="reset-colors-btn" class="text-zinc-400 hover:text-emerald-600 transition-all p-1.5 rounded-lg" title="Standaard herstellen">
                                 <i data-lucide="refresh-cw" class="w-4 h-4"></i>
                             </button>
                             <button id="add-asset-btn" class="bg-emerald-600 hover:bg-emerald-700 text-white p-1.5 rounded-lg transition-all shadow-sm active:scale-95" title="Asset toevoegen">
@@ -219,7 +219,7 @@
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
                             <thead>
-                                <tr class="bg-slate-50/50 text-slate-500 text-[10px] sm:text-xs uppercase tracking-wider font-semibold dark:bg-slate-800/50 dark:text-slate-400">
+                                <tr class="bg-zinc-50/50 text-zinc-500 text-[10px] sm:text-xs uppercase tracking-wider font-semibold dark:bg-zinc-800/50 dark:text-zinc-400">
                                     <th class="px-3 sm:px-6 py-3">Asset</th>
                                     <th class="px-3 sm:px-6 py-3 whitespace-nowrap">
                                         <span class="sm:hidden">Waarde</span>
@@ -229,7 +229,7 @@
                                     <th class="px-3 sm:px-6 py-3 text-right sm:hidden">Acties</th>
                                 </tr>
                             </thead>
-                            <tbody id="asset-table-body" class="divide-y divide-slate-100 dark:divide-slate-800">
+                            <tbody id="asset-table-body" class="divide-y divide-zinc-100 dark:divide-zinc-800">
                                 <!-- Dynamically populated -->
                             </tbody>
                         </table>
@@ -237,8 +237,8 @@
                 </section>
 
                 <!-- Debts Section -->
-                <section id="debts-section" class="order-1 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
-                    <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between dark:border-slate-800">
+                <section id="debts-section" class="order-1 bg-white rounded-2xl border border-zinc-200 shadow-sm overflow-hidden dark:bg-zinc-900 dark:border-zinc-800">
+                    <div class="px-6 py-4 border-b border-zinc-100 flex items-center justify-between dark:border-zinc-800">
                       <h2 class="font-semibold flex items-center gap-2 dark:text-white">
                         <i data-lucide="trending-down" class="w-4 h-4 text-red-500"></i>
                         Schulden
@@ -250,14 +250,14 @@
                     <div class="overflow-x-auto">
                       <table class="w-full text-left border-collapse">
                         <thead>
-                          <tr class="bg-slate-50/50 text-slate-500 text-[10px] sm:text-xs uppercase tracking-wider font-semibold dark:bg-slate-800/50 dark:text-slate-400">
+                          <tr class="bg-zinc-50/50 text-zinc-500 text-[10px] sm:text-xs uppercase tracking-wider font-semibold dark:bg-zinc-800/50 dark:text-zinc-400">
                             <th class="px-3 sm:px-6 py-3">Naam</th>
                             <th class="px-3 sm:px-6 py-3">Bedrag</th>
                             <th class="px-3 sm:px-6 py-3 text-right">Rente (%)</th>
                             <th class="px-3 sm:px-6 py-3 text-right">Acties</th>
                           </tr>
                         </thead>
-                        <tbody id="debt-table-body" class="divide-y divide-slate-100 dark:divide-slate-800">
+                        <tbody id="debt-table-body" class="divide-y divide-zinc-100 dark:divide-zinc-800">
                           <!-- Dynamically populated -->
                         </tbody>
                       </table>
@@ -265,7 +265,7 @@
                 </section>
 
                 <!-- Bar Chart: Current vs Target -->
-                <section id="comparison-section" class="order-2 lg:order-2 hidden md:block bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+                <section id="comparison-section" class="order-2 lg:order-2 hidden md:block bg-white rounded-2xl border border-zinc-200 shadow-sm p-6 dark:bg-zinc-900 dark:border-zinc-800">
                     <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
                         <i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-600"></i>
                         Huidig vs Doel
@@ -276,7 +276,7 @@
                 </section>
 
                 <!-- Bar Chart: Current Allocation -->
-                <section class="order-3 lg:order-3 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+                <section class="order-3 lg:order-3 bg-white rounded-2xl border border-zinc-200 shadow-sm p-6 dark:bg-zinc-900 dark:border-zinc-800">
                     <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
                         <i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-600"></i>
                         Huidige Allocatie (Staaf)
@@ -290,7 +290,7 @@
             <!-- Right Column: Target, Freedom, Rebalance -->
             <div class="lg:col-span-5 space-y-6 order-3 lg:order-2">
                 <!-- Target Net Worth Card -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm dark:bg-slate-900 dark:border-slate-800 group relative overflow-hidden transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                <div class="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm dark:bg-zinc-900 dark:border-zinc-800 group relative overflow-hidden transition-all hover:shadow-xl hover:shadow-emerald-500/5">
                     <!-- Animated Background Glow -->
                     <div class="absolute -top-24 -right-24 w-64 h-64 bg-emerald-500/5 rounded-full blur-[80px] group-hover:bg-emerald-500/10 transition-all duration-700"></div>
                     
@@ -314,7 +314,7 @@
                             <input 
                                 id="target-net-worth-input" 
                                 type="text" 
-                                class="w-full bg-slate-50 border border-slate-200 pl-12 pr-4 py-6 rounded-2xl text-4xl font-black text-slate-900 placeholder:text-slate-300 focus:bg-white focus:border-emerald-500 focus:ring-8 focus:ring-emerald-500/5 transition-all outline-none dark:bg-slate-800/50 dark:border-slate-700 dark:text-white shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] dark:shadow-none"
+                                class="w-full bg-zinc-50 border border-zinc-200 pl-12 pr-4 py-6 rounded-2xl text-4xl font-black text-zinc-900 placeholder:text-zinc-300 focus:bg-white focus:border-emerald-500 focus:ring-8 focus:ring-emerald-500/5 transition-all outline-none dark:bg-zinc-800/50 dark:border-zinc-700 dark:text-white shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] dark:shadow-none"
                                 placeholder="0"
                             />
                             <!-- Smart Prompt when target is low or zero -->
@@ -326,17 +326,17 @@
                         
                         <div class="pt-2">
                             <div class="flex justify-between items-end mb-3">
-                                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Voortgang naar succes</p>
+                                <p class="text-[10px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Voortgang naar succes</p>
                                 <div class="flex items-baseline gap-1">
                                     <span id="target-progress-percent" class="text-lg font-black text-emerald-600 dark:text-emerald-400">0%</span>
                                 </div>
                             </div>
-                            <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-4 overflow-hidden p-1 shadow-inner relative">
+                            <div class="w-full bg-zinc-100 dark:bg-zinc-800 rounded-full h-4 overflow-hidden p-1 shadow-inner relative">
                                 <div id="target-progress-bar" class="h-full bg-emerald-600 rounded-full transition-all duration-1000 relative shadow-lg shadow-emerald-500/20" style="width: 0%">
                                     <div class="absolute inset-x-0 top-0 h-1/2 bg-white/20 rounded-full"></div>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-2 mt-4 text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-800/30 p-3 rounded-xl border border-dashed border-slate-200 dark:border-slate-700/50">
+                            <div class="flex items-center gap-2 mt-4 text-zinc-400 dark:text-zinc-500 bg-zinc-50 dark:bg-zinc-800/30 p-3 rounded-xl border border-dashed border-zinc-200 dark:border-zinc-700/50">
                                 <i data-lucide="info" class="w-4 h-4 text-emerald-400"></i>
                                 <p id="target-remaining-text" class="text-xs font-medium">Bereken hoeveel je nog nodig hebt voor je doel.</p>
                             </div>
@@ -345,38 +345,38 @@
                 </div>
 
                 <!-- Freedom Calculator Section -->
-                <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+                <section class="bg-white rounded-2xl border border-zinc-200 shadow-sm p-6 dark:bg-zinc-900 dark:border-zinc-800">
                     <h2 class="font-semibold flex items-center gap-2 mb-1 dark:text-white">
                         <i data-lucide="unlock" class="w-4 h-4 text-amber-500"></i>
                         Wat kun je met je vermogen?
                     </h2>
-                    <p class="text-[10px] text-slate-400 mb-6 dark:text-slate-500 italic">We gaan hierbij uit van je liquide assets (dus zonder vastgoed).</p>
+                    <p class="text-[10px] text-zinc-400 mb-6 dark:text-zinc-500 italic">We gaan hierbij uit van je liquide assets (dus zonder vastgoed).</p>
                     
                     <div class="space-y-6">
                         <!-- Custom Net Worth Input -->
-                        <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+                        <div class="bg-zinc-50 dark:bg-zinc-800/50 p-4 rounded-xl border border-zinc-100 dark:border-zinc-800">
                             <div class="flex items-center justify-between mb-2">
-                                <label class="text-[10px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Vermogen om mee te rekenen</label>
+                                <label class="text-[10px] uppercase tracking-wider font-bold text-zinc-500 dark:text-zinc-400">Vermogen om mee te rekenen</label>
                                 <div class="flex items-center gap-1">
-                                    <span class="text-slate-400 text-xs">€</span>
+                                    <span class="text-zinc-400 text-xs">€</span>
                                     <input id="freedom-custom-networth" type="text" class="bg-transparent border-none p-0 w-24 text-right font-bold focus:ring-0 text-sm dark:text-white" placeholder="Huidig" />
                                 </div>
                             </div>
-                            <div class="w-full bg-slate-200 dark:bg-slate-700 h-1 rounded-full overflow-hidden">
+                            <div class="w-full bg-zinc-200 dark:bg-zinc-700 h-1 rounded-full overflow-hidden">
                                 <div class="bg-emerald-500 h-full w-full opacity-30"></div>
                             </div>
                         </div>
 
                         <!-- Monthly Expenses Input -->
-                        <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+                        <div class="bg-zinc-50 dark:bg-zinc-800/50 p-4 rounded-xl border border-zinc-100 dark:border-zinc-800">
                             <div class="flex items-center justify-between mb-2">
-                                <label class="text-[10px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Maandelijkse Uitgaven</label>
+                                <label class="text-[10px] uppercase tracking-wider font-bold text-zinc-500 dark:text-zinc-400">Maandelijkse Uitgaven</label>
                                 <div class="flex items-center gap-1">
-                                    <span class="text-slate-400 text-xs">€</span>
+                                    <span class="text-zinc-400 text-xs">€</span>
                                     <input id="monthly-expenses-input" type="number" class="bg-transparent border-none p-0 w-16 text-right font-bold focus:ring-0 text-sm dark:text-white" value="2500" />
                                 </div>
                             </div>
-                            <div class="w-full bg-slate-200 dark:bg-slate-700 h-1 rounded-full overflow-hidden">
+                            <div class="w-full bg-zinc-200 dark:bg-zinc-700 h-1 rounded-full overflow-hidden">
                                 <div class="bg-amber-500 h-full w-full opacity-30"></div>
                             </div>
                         </div>
@@ -385,61 +385,61 @@
                         <div class="grid grid-cols-2 gap-4">
                             <div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50">
                                 <p class="text-[10px] uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1">Vrijheid in Tijd</p>
-                                <p id="freedom-time" class="text-xl font-bold text-slate-900 dark:text-white">0 mnd</p>
+                                <p id="freedom-time" class="text-xl font-bold text-zinc-900 dark:text-white">0 mnd</p>
                                 <p class="text-[10px] text-emerald-500/70 dark:text-emerald-400/50 mt-1">Niet meer werken</p>
                             </div>
                             <div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50">
                                 <p class="text-[10px] uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1">Passief Inkomen</p>
-                                <p id="freedom-passive" class="text-xl font-bold text-slate-900 dark:text-white">€ 0</p>
+                                <p id="freedom-passive" class="text-xl font-bold text-zinc-900 dark:text-white">€ 0</p>
                                 <p class="text-[10px] text-emerald-500/70 dark:text-emerald-400/50 mt-1">Per maand (4%)</p>
                             </div>
                         </div>
 
                         <!-- Milestones -->
                         <div class="space-y-3">
-                            <p class="text-[10px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Vrijheids-Mijlpalen</p>
+                            <p class="text-[10px] uppercase tracking-wider font-bold text-zinc-500 dark:text-zinc-400">Vrijheids-Mijlpalen</p>
                             
-                            <div class="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                            <div class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 dark:border-zinc-800 group hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
                                 <div class="flex items-center gap-3">
-                                    <div id="milestone-icon-1" class="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-400">
+                                    <div id="milestone-icon-1" class="w-8 h-8 rounded-lg flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 text-zinc-400">
                                         <i data-lucide="coffee" class="w-4 h-4"></i>
                                     </div>
                                     <div>
                                         <p class="text-sm font-bold dark:text-white">Maandje Sabbatical</p>
-                                        <p class="text-[10px] text-slate-400">1 maand vrijheid</p>
+                                        <p class="text-[10px] text-zinc-400">1 maand vrijheid</p>
                                     </div>
                                 </div>
-                                <div id="milestone-check-1" class="text-slate-200 dark:text-slate-800">
+                                <div id="milestone-check-1" class="text-zinc-200 dark:text-zinc-800">
                                     <i data-lucide="check-circle-2" class="w-5 h-5"></i>
                                 </div>
                             </div>
 
-                            <div class="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                            <div class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 dark:border-zinc-800 group hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
                                 <div class="flex items-center gap-3">
-                                    <div id="milestone-icon-2" class="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-400">
+                                    <div id="milestone-icon-2" class="w-8 h-8 rounded-lg flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 text-zinc-400">
                                         <i data-lucide="plane" class="w-4 h-4"></i>
                                     </div>
                                     <div>
                                         <p class="text-sm font-bold dark:text-white">Jaar Sabbatical</p>
-                                        <p class="text-[10px] text-slate-400">12 maanden vrijheid</p>
+                                        <p class="text-[10px] text-zinc-400">12 maanden vrijheid</p>
                                     </div>
                                 </div>
-                                <div id="milestone-check-2" class="text-slate-200 dark:text-slate-800">
+                                <div id="milestone-check-2" class="text-zinc-200 dark:text-zinc-800">
                                     <i data-lucide="check-circle-2" class="w-5 h-5"></i>
                                 </div>
                             </div>
 
-                            <div class="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                            <div class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 dark:border-zinc-800 group hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
                                 <div class="flex items-center gap-3">
-                                    <div id="milestone-icon-3" class="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-400">
+                                    <div id="milestone-icon-3" class="w-8 h-8 rounded-lg flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 text-zinc-400">
                                         <i data-lucide="flame" class="w-4 h-4"></i>
                                     </div>
                                     <div>
                                         <p class="text-sm font-bold dark:text-white">Financiële Basis</p>
-                                        <p class="text-[10px] text-slate-400">5 jaar volledige vrijheid</p>
+                                        <p class="text-[10px] text-zinc-400">5 jaar volledige vrijheid</p>
                                     </div>
                                 </div>
-                                <div id="milestone-check-3" class="text-slate-200 dark:text-slate-800">
+                                <div id="milestone-check-3" class="text-zinc-200 dark:text-zinc-800">
                                     <i data-lucide="check-circle-2" class="w-5 h-5"></i>
                                 </div>
                             </div>
@@ -448,8 +448,8 @@
                 </section>
 
                 <!-- Rebalancing Strategy -->
-                <section id="rebalance-section" class="hidden md:block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
-                    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+                <section id="rebalance-section" class="hidden md:block bg-white rounded-2xl border border-zinc-200 shadow-sm overflow-hidden dark:bg-zinc-900 dark:border-zinc-800">
+                    <div class="px-6 py-4 border-b border-zinc-100 dark:border-zinc-800">
                         <h2 class="font-semibold flex items-center gap-2 dark:text-white">
                             <i data-lucide="refresh-cw" class="w-4 h-4 text-emerald-600"></i>
                             Herbalanceringsplan
@@ -464,7 +464,7 @@
             </div>
 
             <!-- Treemap: Asset Distribution (Full Width) -->
-            <section class="lg:col-span-12 order-3 lg:order-3 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+            <section class="lg:col-span-12 order-3 lg:order-3 bg-white rounded-2xl border border-zinc-200 shadow-sm p-6 dark:bg-zinc-900 dark:border-zinc-800">
                 <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
                     <i data-lucide="layout-grid" class="w-4 h-4 text-emerald-600"></i>
                     Asset Verdeling (Treemap)
@@ -482,12 +482,12 @@
                         <i data-lucide="history" class="w-6 h-6 text-emerald-600"></i>
                         Vermogensverloop (Historie)
                     </h2>
-                    <p class="text-sm text-slate-500 dark:text-slate-400">Volg je voortgang over de tijd.</p>
+                    <p class="text-sm text-zinc-500 dark:text-zinc-400">Volg je voortgang over de tijd.</p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <!-- History Chart -->
-                    <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 dark:bg-slate-900 dark:border-slate-800">
+                    <div class="lg:col-span-8 bg-white rounded-2xl border border-zinc-200 shadow-sm p-6 dark:bg-zinc-900 dark:border-zinc-800">
                         <h3 class="font-semibold mb-6 flex items-center gap-2 dark:text-white">
                             <i data-lucide="line-chart" class="w-4 h-4 text-emerald-600"></i>
                             Totaal Vermogen Trend
@@ -498,8 +498,8 @@
                     </div>
 
                     <!-- History Table -->
-                    <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
-                        <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+                    <div class="lg:col-span-4 bg-white rounded-2xl border border-zinc-200 shadow-sm overflow-hidden dark:bg-zinc-900 dark:border-zinc-800">
+                        <div class="px-6 py-4 border-b border-zinc-100 dark:border-zinc-800">
                             <h3 class="font-semibold flex items-center gap-2 dark:text-white">
                                 <i data-lucide="list" class="w-4 h-4 text-emerald-600"></i>
                                 Logboek
@@ -508,13 +508,13 @@
                         <div class="max-h-[350px] overflow-y-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
-                                    <tr class="bg-slate-50/50 text-slate-500 text-xs uppercase tracking-wider font-semibold dark:bg-slate-800/50 dark:text-slate-400">
+                                    <tr class="bg-zinc-50/50 text-zinc-500 text-xs uppercase tracking-wider font-semibold dark:bg-zinc-800/50 dark:text-zinc-400">
                                         <th class="px-6 py-3">Datum</th>
                                         <th class="px-6 py-3">Waarde</th>
                                         <th class="px-6 py-3 text-right">Actie</th>
                                     </tr>
                                 </thead>
-                                <tbody id="history-table-body" class="divide-y divide-slate-100 dark:divide-slate-800">
+                                <tbody id="history-table-body" class="divide-y divide-zinc-100 dark:divide-zinc-800">
                                     <!-- Dynamically populated -->
                                 </tbody>
                             </table>
@@ -525,8 +525,8 @@
         </main>
 
         <!-- Footer -->
-        <footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-slate-200 mt-12 dark:border-slate-800">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-slate-400 text-sm dark:text-slate-500">
+        <footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-zinc-200 mt-12 dark:border-zinc-800">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-zinc-400 text-sm dark:text-zinc-500">
                 <p>© 2026 GeldDash. Alles op één plek. Krijg inzicht in je totale vermogen.</p>
                 <div class="flex gap-6">
                     <a href="#" class="hover:text-emerald-600 transition-colors dark:hover:text-emerald-400">Privacy</a>
@@ -537,16 +537,16 @@
         </footer>
 
         <!-- Mobile Bottom Navigation -->
-        <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-slate-200 px-4 py-3 flex items-center justify-between z-[60] lg:hidden dark:bg-slate-900/90 dark:border-slate-800 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+        <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-zinc-200 px-4 py-3 flex items-center justify-between z-[60] lg:hidden dark:bg-zinc-900/90 dark:border-zinc-800 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
             <a href="#app" class="flex flex-col items-center gap-1 text-emerald-600 dark:text-emerald-400 flex-1">
                 <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
                 <span class="text-[9px] font-bold uppercase tracking-widest">Overzicht</span>
             </a>
-            <a href="#assets-section" class="flex flex-col items-center gap-1 text-slate-400 hover:text-emerald-600 dark:text-slate-500 dark:hover:text-emerald-400 transition-colors flex-1">
+            <a href="#assets-section" class="flex flex-col items-center gap-1 text-zinc-400 hover:text-emerald-600 dark:text-zinc-500 dark:hover:text-emerald-400 transition-colors flex-1">
                 <i data-lucide="wallet" class="w-5 h-5"></i>
                 <span class="text-[9px] font-bold uppercase tracking-widest">Beheer</span>
             </a>
-            <a href="#history-section" class="flex flex-col items-center gap-1 text-slate-400 hover:text-emerald-600 dark:text-slate-500 dark:hover:text-emerald-400 transition-colors flex-1">
+            <a href="#history-section" class="flex flex-col items-center gap-1 text-zinc-400 hover:text-emerald-600 dark:text-zinc-500 dark:hover:text-emerald-400 transition-colors flex-1">
                 <i data-lucide="history" class="w-5 h-5"></i>
                 <span class="text-[9px] font-bold uppercase tracking-widest">Historie</span>
             </a>
@@ -554,22 +554,22 @@
     </div>
 
     <!-- Security Modal -->
-    <div id="security-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-        <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200 dark:border-slate-800">
-            <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+    <div id="security-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-zinc-900/50 backdrop-blur-sm">
+        <div class="bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-zinc-200 dark:border-zinc-800">
+            <div class="p-6 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
                 <h3 class="text-xl font-bold dark:text-white">Beveiliging</h3>
-                <button id="close-security-modal" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                <button id="close-security-modal" class="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300">
                     <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
             </div>
             <div class="p-6 space-y-6">
                 <div class="flex items-center gap-4">
-                    <div id="security-status-icon" class="p-2 rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                    <div id="security-status-icon" class="p-2 rounded-lg bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
                         <i data-lucide="unlock" class="w-5 h-5"></i>
                     </div>
                     <div>
                         <p id="security-status-text" class="font-bold dark:text-white text-sm">Geen wachtwoord ingesteld</p>
-                        <p class="text-[10px] text-slate-500 dark:text-slate-400 leading-tight mt-1">
+                        <p class="text-[10px] text-zinc-500 dark:text-zinc-400 leading-tight mt-1">
                             <span class="text-amber-600 dark:text-amber-400 font-semibold">Huidige status: Basis obfuscatie.</span><br>
                             Zonder wachtwoord is je data verborgen in de browser, maar niet cryptografisch beveiligd tegen hackers. Stel een wachtwoord in voor volledige AES-256 encryptie.
                         </p>
@@ -578,20 +578,20 @@
 
                 <div class="space-y-4">
                     <div>
-                        <label class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2 block">Master Wachtwoord</label>
+                        <label class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2 block">Master Wachtwoord</label>
                         <input 
                             id="master-password-input"
                             type="password" 
-                            class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+                            class="w-full bg-zinc-50 border border-zinc-200 rounded-xl py-3 px-4 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all dark:bg-zinc-800 dark:border-zinc-700 dark:text-white"
                             placeholder="••••••••"
                         />
                     </div>
                     <div id="confirm-password-container">
-                        <label class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2 block">Bevestig Wachtwoord</label>
+                        <label class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2 block">Bevestig Wachtwoord</label>
                         <input 
                             id="confirm-password-input"
                             type="password" 
-                            class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+                            class="w-full bg-zinc-50 border border-zinc-200 rounded-xl py-3 px-4 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all dark:bg-zinc-800 dark:border-zinc-700 dark:text-white"
                             placeholder="••••••••"
                         />
                     </div>
@@ -601,28 +601,28 @@
                     <button id="save-password-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-emerald-200 dark:shadow-none">
                         Wachtwoord Instellen
                     </button>
-                    <button id="lock-now-btn" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl transition-all hidden dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
+                    <button id="lock-now-btn" class="w-full bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-bold py-3 rounded-xl transition-all hidden dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700">
                         Vergrendel Nu
                     </button>
                     <button id="remove-password-btn" class="w-full bg-red-50 text-red-600 hover:bg-red-100 font-bold py-3 rounded-xl transition-all hidden dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30">
                         Verwijder Beveiliging
                     </button>
-                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-4">
+                    <div class="pt-4 border-t border-zinc-100 dark:border-zinc-800 space-y-4">
                         <div class="flex flex-col gap-2">
-                            <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">Backup & Herstel</p>
+                            <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">Backup & Herstel</p>
                             <div class="grid grid-cols-2 gap-2">
-                                <button id="export-backup-btn" class="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 px-4 rounded-xl transition-all active:scale-95 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
+                                <button id="export-backup-btn" class="flex items-center justify-center gap-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-bold py-2 px-4 rounded-xl transition-all active:scale-95 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700">
                                     <i data-lucide="download" class="w-4 h-4"></i>
                                     <span>Export</span>
                                 </button>
-                                <button id="import-backup-btn" class="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 px-4 rounded-xl transition-all active:scale-95 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
+                                <button id="import-backup-btn" class="flex items-center justify-center gap-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-bold py-2 px-4 rounded-xl transition-all active:scale-95 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700">
                                     <i data-lucide="upload" class="w-4 h-4"></i>
                                     <span>Import</span>
                                 </button>
                             </div>
                             <input type="file" id="backup-file-input" class="hidden" accept=".json">
                         </div>
-                        <button id="clear-all-data-btn" class="w-full text-slate-400 hover:text-red-500 text-xs font-medium transition-colors pt-2">
+                        <button id="clear-all-data-btn" class="w-full text-zinc-400 hover:text-red-500 text-xs font-medium transition-colors pt-2">
                             Alle gegevens wissen en resetten
                         </button>
                     </div>
@@ -632,21 +632,21 @@
     </div>
 
     <!-- Lock Screen -->
-    <div id="lock-screen" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 bg-slate-50 dark:bg-slate-950">
+    <div id="lock-screen" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 bg-zinc-50 dark:bg-zinc-950">
         <div class="max-w-md w-full text-center space-y-8">
             <div class="flex flex-col items-center gap-4">
                 <div class="bg-emerald-600 p-4 rounded-2xl text-white shadow-xl shadow-emerald-200 dark:shadow-none">
                     <i data-lucide="lock" class="w-10 h-10"></i>
                 </div>
                 <h2 class="text-3xl font-black tracking-tight dark:text-white">Portfolio Vergrendeld</h2>
-                <p class="text-slate-500 dark:text-slate-400">Voer je master wachtwoord in om toegang te krijgen.</p>
+                <p class="text-zinc-500 dark:text-zinc-400">Voer je master wachtwoord in om toegang te krijgen.</p>
             </div>
 
             <div class="space-y-4">
                 <input 
                     id="unlock-password-input"
                     type="password" 
-                    class="w-full bg-white border border-slate-200 rounded-2xl py-4 px-6 text-center text-2xl tracking-[0.5em] focus:outline-none focus:ring-4 focus:ring-emerald-500/20 transition-all dark:bg-slate-900 dark:border-slate-800 dark:text-white"
+                    class="w-full bg-white border border-zinc-200 rounded-2xl py-4 px-6 text-center text-2xl tracking-[0.5em] focus:outline-none focus:ring-4 focus:ring-emerald-500/20 transition-all dark:bg-zinc-900 dark:border-zinc-800 dark:text-white"
                     placeholder="••••••••"
                 />
                 <button id="unlock-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl transition-all shadow-xl shadow-emerald-200 dark:shadow-none text-lg">
@@ -654,29 +654,29 @@
                 </button>
             </div>
 
-            <button id="forgot-password-btn" class="text-slate-400 hover:text-red-500 transition-colors text-sm font-medium">
+            <button id="forgot-password-btn" class="text-zinc-400 hover:text-red-500 transition-colors text-sm font-medium">
                 Wachtwoord vergeten? (Wist alle data)
             </button>
         </div>
     </div>
 
     <!-- Info Modal -->
-    <div id="info-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-        <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-300">
-            <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
+    <div id="info-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4 bg-zinc-900/50 backdrop-blur-sm">
+        <div class="bg-white dark:bg-zinc-900 w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden border border-zinc-100 dark:border-zinc-800 animate-in fade-in zoom-in duration-300">
+            <div class="p-6 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between bg-zinc-50 dark:bg-zinc-800/50">
                 <div class="flex items-center gap-3">
                     <div class="bg-emerald-600 p-2 rounded-xl text-white">
                         <i data-lucide="info" class="w-5 h-5"></i>
                     </div>
                     <h2 class="text-xl font-bold dark:text-white">Over GeldDash</h2>
                 </div>
-                <button id="close-info-modal" class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition-colors text-slate-500 dark:text-slate-400">
+                <button id="close-info-modal" class="p-2 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-xl transition-colors text-zinc-500 dark:text-zinc-400">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
             <div class="p-8 space-y-6 max-h-[70vh] overflow-y-auto">
                 <div class="space-y-4">
-                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+                    <p class="text-zinc-600 dark:text-zinc-300 leading-relaxed">
                         Welkom bij <strong>GeldDash</strong>! Deze applicatie is ontworpen om je te helpen bij het beheren, visualiseren en plannen van je beleggingsportfolio op een veilige en intuïtieve manier.
                     </p>
                     
@@ -686,7 +686,7 @@
                                 <i data-lucide="pie-chart" class="w-4 h-4"></i>
                                 <h3 class="font-bold text-sm">Allocatie Beheer</h3>
                             </div>
-                            <p class="text-xs text-slate-500 dark:text-slate-400">Houd je huidige bezittingen bij en stel doelpercentages in voor een gebalanceerd portfolio.</p>
+                            <p class="text-xs text-zinc-500 dark:text-zinc-400">Houd je huidige bezittingen bij en stel doelpercentages in voor een gebalanceerd portfolio.</p>
                         </div>
                         
                         <div class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800">
@@ -694,7 +694,7 @@
                                 <i data-lucide="calculator" class="w-4 h-4"></i>
                                 <h3 class="font-bold text-sm">Slimme Planner</h3>
                             </div>
-                            <p class="text-xs text-slate-500 dark:text-slate-400">Bereken exact hoeveel je in elke asset moet inleggen om je gewenste verdeling te bereiken.</p>
+                            <p class="text-xs text-zinc-500 dark:text-zinc-400">Bereken exact hoeveel je in elke asset moet inleggen om je gewenste verdeling te bereiken.</p>
                         </div>
                         
                         <div class="p-4 rounded-2xl bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800">
@@ -702,7 +702,7 @@
                                 <i data-lucide="sliders" class="w-4 h-4"></i>
                                 <h3 class="font-bold text-sm">Allocatie Zandbak</h3>
                             </div>
-                            <p class="text-xs text-slate-500 dark:text-slate-400">Experimenteer met verschillende verdelingen en presets zonder je echte data te beïnvloeden.</p>
+                            <p class="text-xs text-zinc-500 dark:text-zinc-400">Experimenteer met verschillende verdelingen en presets zonder je echte data te beïnvloeden.</p>
                         </div>
                         
                         <div class="p-4 rounded-2xl bg-purple-50 dark:bg-purple-900/20 border border-purple-100 dark:border-purple-800">
@@ -710,14 +710,14 @@
                                 <i data-lucide="lock" class="w-4 h-4"></i>
                                 <h3 class="font-bold text-sm">Privacy Eerst</h3>
                             </div>
-                            <p class="text-xs text-slate-500 dark:text-slate-400">Al je gegevens worden lokaal in je browser opgeslagen. Gebruik een master wachtwoord voor extra beveiliging.</p>
+                            <p class="text-xs text-zinc-500 dark:text-zinc-400">Al je gegevens worden lokaal in je browser opgeslagen. Gebruik een master wachtwoord voor extra beveiliging.</p>
                         </div>
                     </div>
                 </div>
                 
-                <div class="space-y-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+                <div class="space-y-3 pt-4 border-t border-zinc-100 dark:border-zinc-800">
                     <h3 class="font-bold dark:text-white">Hoe te gebruiken?</h3>
-                    <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400 list-disc pl-4">
+                    <ul class="space-y-2 text-sm text-zinc-600 dark:text-zinc-400 list-disc pl-4">
                         <li>Voeg je assets toe in de tabel en vul de huidige waarde en je doelpercentage in.</li>
                         <li>Gebruik de <strong>Planner</strong> om te zien hoe je een nieuwe inleg het beste kunt verdelen.</li>
                         <li>Sla je voortgang op met de <strong>Sla op</strong> knop om een historie op te bouwen.</li>
@@ -725,7 +725,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="p-6 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+            <div class="p-6 bg-zinc-50 dark:bg-zinc-800/50 border-t border-zinc-100 dark:border-zinc-800 flex justify-end">
                 <button id="info-modal-ok" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-8 rounded-xl transition-all active:scale-95 shadow-lg shadow-emerald-200 dark:shadow-none">
                     Begrepen!
                 </button>
@@ -734,21 +734,21 @@
     </div>
 
     <!-- Average Dutch Modal -->
-    <div id="average-dutch-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-      <div class="bg-white dark:bg-slate-900 w-full max-w-md sm:max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-300">
-        <div class="p-4 sm:p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
+    <div id="average-dutch-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4 bg-zinc-900/50 backdrop-blur-sm">
+      <div class="bg-white dark:bg-zinc-900 w-full max-w-md sm:max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-zinc-100 dark:border-zinc-800 animate-in fade-in zoom-in duration-300">
+        <div class="p-4 sm:p-6 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between bg-zinc-50 dark:bg-zinc-800/50">
           <div class="flex items-center gap-3">
             <div class="bg-amber-500 p-2 rounded-xl text-white">
               <i data-lucide="users" class="w-5 h-5"></i>
             </div>
             <h2 class="text-lg sm:text-xl font-bold dark:text-white">Gemiddelde Nederlander</h2>
           </div>
-          <button id="close-average-dutch-modal" class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition-colors text-slate-500 dark:text-slate-400">
+          <button id="close-average-dutch-modal" class="p-2 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-xl transition-colors text-zinc-500 dark:text-zinc-400">
             <i data-lucide="x" class="w-5 h-5"></i>
           </button>
         </div>
         <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
-          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+          <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
             Dit is de gemiddelde vermogensverdeling van een Nederlands huishouden (gebaseerd op CBS data). Let op: dit is inclusief de eigen woning, wat voor veel Nederlanders het grootste deel van het vermogen vormt.
           </p>
           
@@ -757,28 +757,28 @@
           </div>
 
           <div class="grid grid-cols-1 gap-2">
-            <div class="flex items-center justify-between p-2 sm:p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+            <div class="flex items-center justify-between p-2 sm:p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-800">
               <div class="flex items-center gap-2">
                 <div class="w-3 h-3 rounded-full bg-[#059669]"></div>
                 <span class="text-xs sm:text-sm font-medium dark:text-white">Eigen Woning</span>
               </div>
               <span class="text-xs sm:text-sm font-bold dark:text-white">58%</span>
             </div>
-            <div class="flex items-center justify-between p-2 sm:p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+            <div class="flex items-center justify-between p-2 sm:p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-800">
               <div class="flex items-center gap-2">
                 <div class="w-3 h-3 rounded-full bg-[#10b981]"></div>
                 <span class="text-xs sm:text-sm font-medium dark:text-white">Bank- en spaartegoeden</span>
               </div>
               <span class="text-xs sm:text-sm font-bold dark:text-white">22%</span>
             </div>
-            <div class="flex items-center justify-between p-2 sm:p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+            <div class="flex items-center justify-between p-2 sm:p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-800">
               <div class="flex items-center gap-2">
                 <div class="w-3 h-3 rounded-full bg-[#f97316]"></div>
                 <span class="text-xs sm:text-sm font-medium dark:text-white">Beleggingen</span>
               </div>
               <span class="text-xs sm:text-sm font-bold dark:text-white">12%</span>
             </div>
-            <div class="flex items-center justify-between p-2 sm:p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+            <div class="flex items-center justify-between p-2 sm:p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-800">
               <div class="flex items-center gap-2">
                 <div class="w-3 h-3 rounded-full bg-[#0d9488]"></div>
                 <span class="text-xs sm:text-sm font-medium dark:text-white">Overig (incl. pensioen)</span>
@@ -787,8 +787,8 @@
             </div>
           </div>
         </div>
-        <div class="p-4 sm:p-6 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800">
-          <button id="close-average-dutch-modal-btn" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 rounded-xl transition-all active:scale-95 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">
+        <div class="p-4 sm:p-6 bg-zinc-50 dark:bg-zinc-800/50 border-t border-zinc-100 dark:border-zinc-800">
+          <button id="close-average-dutch-modal-btn" class="w-full bg-zinc-200 hover:bg-zinc-300 text-zinc-700 font-bold py-3 rounded-xl transition-all active:scale-95 dark:bg-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-600">
             Sluiten
           </button>
         </div>
@@ -796,8 +796,8 @@
     </div>
 
     <!-- Onboarding Explanation Modal -->
-    <div id="onboarding-explanation-modal" class="fixed inset-0 z-[250] hidden flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md">
-      <div class="bg-white dark:bg-slate-900 w-full max-w-md sm:max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-500">
+    <div id="onboarding-explanation-modal" class="fixed inset-0 z-[250] hidden flex items-center justify-center p-4 bg-zinc-900/80 backdrop-blur-md">
+      <div class="bg-white dark:bg-zinc-900 w-full max-w-md sm:max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-zinc-100 dark:border-zinc-800 animate-in fade-in zoom-in duration-500">
         <div class="relative h-40 sm:h-48 overflow-hidden">
           <img 
             src="https://picsum.photos/seed/finance-planning/800/400" 
@@ -805,7 +805,7 @@
             class="w-full h-full object-cover"
             referrerPolicy="no-referrer"
           />
-          <div class="absolute inset-0 bg-gradient-to-t from-white dark:from-slate-900 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-white dark:from-zinc-900 to-transparent"></div>
           <div class="absolute bottom-4 left-6">
             <div class="bg-emerald-600 p-2 rounded-xl text-white w-fit mb-2 shadow-lg">
               <i data-lucide="pen-tool" class="w-5 h-5"></i>
@@ -815,28 +815,28 @@
         </div>
         
         <div class="p-6 sm:p-8 space-y-4">
-          <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+          <p class="text-sm sm:text-base text-zinc-600 dark:text-zinc-300 leading-relaxed">
             Ga er even goed voor zitten. Om een eerlijk beeld van je financiële toekomst te krijgen, is het belangrijk dat je nu je assets en hun huidige waarden invult.
           </p>
-          <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
+          <div class="bg-zinc-50 dark:bg-zinc-800/50 p-4 rounded-2xl border border-zinc-100 dark:border-zinc-800">
             <ul class="space-y-3">
               <li class="flex items-start gap-3">
                 <div class="mt-1 bg-green-100 dark:bg-green-900/30 p-1 rounded-full">
                   <i data-lucide="check" class="w-3 h-3 text-green-600 dark:text-green-400"></i>
                 </div>
-                <span class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">Vul je <strong>huidige waarde</strong> in bij Asset Beheer.</span>
+                <span class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">Vul je <strong>huidige waarde</strong> in bij Asset Beheer.</span>
               </li>
               <li class="flex items-start gap-3">
                 <div class="mt-1 bg-green-100 dark:bg-green-900/30 p-1 rounded-full">
                   <i data-lucide="check" class="w-3 h-3 text-green-600 dark:text-green-400"></i>
                 </div>
-                <span class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">Stel je <strong>doelpercentages</strong> in voor je ideale verdeling.</span>
+                <span class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">Stel je <strong>doelpercentages</strong> in voor je ideale verdeling.</span>
               </li>
               <li class="flex items-start gap-3">
                 <div class="mt-1 bg-green-100 dark:bg-green-900/30 p-1 rounded-full">
                   <i data-lucide="check" class="w-3 h-3 text-green-600 dark:text-green-400"></i>
                 </div>
-                <span class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">Kijk bij de <strong>Planner</strong> wat je volgende stap is.</span>
+                <span class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">Kijk bij de <strong>Planner</strong> wat je volgende stap is.</span>
               </li>
             </ul>
           </div>
@@ -849,62 +849,62 @@
     </div>
 
     <!-- Onboarding Modal -->
-    <div id="onboarding-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md">
-      <div class="bg-white dark:bg-slate-900 w-full max-w-md sm:max-w-xl rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-500">
-        <div class="p-4 sm:p-8 text-center border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
-          <div class="w-10 h-10 sm:w-16 h-16 bg-emerald-600 rounded-2xl flex items-center justify-center text-white mx-auto mb-3 sm:mb-4 shadow-lg shadow-emerald-200 dark:shadow-none">
-            <i data-lucide="trending-up" class="w-5 h-5 sm:w-8 h-8"></i>
+    <div id="onboarding-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 bg-zinc-900/80 backdrop-blur-md">
+      <div class="bg-white dark:bg-zinc-900 w-full max-w-md sm:max-w-xl rounded-xl shadow-2xl overflow-hidden border border-zinc-100 dark:border-zinc-800 animate-in fade-in zoom-in duration-500">
+        <div class="p-2 sm:p-8 text-center border-b border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50">
+          <div class="w-8 h-8 sm:w-16 h-16 bg-emerald-600 rounded-xl flex items-center justify-center text-white mx-auto mb-1.5 sm:mb-4 shadow-lg shadow-emerald-200 dark:shadow-none">
+            <i data-lucide="trending-up" class="w-4 h-4 sm:w-8 h-8"></i>
           </div>
-          <h2 class="text-lg sm:text-2xl font-black dark:text-white mb-1">Welkom bij GeldDash</h2>
-          <p class="text-orange-500 text-xl sm:text-3xl font-black uppercase tracking-tight">Hoeveel ben je waard?</p>
+          <h2 class="text-base sm:text-2xl font-black dark:text-white mb-0.5 leading-tight">Welkom bij GeldDash</h2>
+          <p class="text-orange-500 text-lg sm:text-3xl font-black uppercase tracking-tight">Hoeveel ben je waard?</p>
         </div>
         
-        <div class="p-4 sm:p-8">
-          <p class="text-[10px] sm:text-sm font-bold uppercase tracking-wider text-slate-400 mb-3 sm:mb-4">Welke assets heb je al?</p>
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 mb-6 sm:mb-8">
-            <label class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
-              <input type="checkbox" value="Spaargeld" class="w-4 h-4 sm:w-5 h-5 rounded border-slate-300 accent-emerald-600 text-emerald-600 focus:ring-emerald-500 onboarding-asset-checkbox" checked>
-              <span class="text-xs sm:text-sm font-semibold dark:text-white group-hover:text-emerald-600 transition-colors">Spaargeld</span>
+        <div class="p-2 sm:p-8">
+          <p class="text-[9px] sm:text-sm font-bold uppercase tracking-wider text-zinc-400 mb-1.5 sm:mb-4">Welke assets heb je al?</p>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-3 mb-3 sm:mb-8">
+            <label class="flex items-center gap-1.5 sm:gap-3 p-1.5 sm:p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all group">
+              <input type="checkbox" value="Spaargeld" class="w-4 h-4 sm:w-5 h-5 rounded border-zinc-300 accent-emerald-600 text-emerald-600 focus:ring-emerald-500 onboarding-asset-checkbox" checked>
+              <span class="text-[11px] sm:text-sm font-semibold dark:text-white group-hover:text-emerald-600 transition-colors">Spaargeld</span>
             </label>
-            <label class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
-              <input type="checkbox" value="Aandelen" class="w-4 h-4 sm:w-5 h-5 rounded border-slate-300 accent-emerald-600 text-emerald-600 focus:ring-emerald-500 onboarding-asset-checkbox" checked>
-              <span class="text-xs sm:text-sm font-semibold dark:text-white group-hover:text-emerald-600 transition-colors">Aandelen</span>
+            <label class="flex items-center gap-1.5 sm:gap-3 p-1.5 sm:p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all group">
+              <input type="checkbox" value="Aandelen" class="w-4 h-4 sm:w-5 h-5 rounded border-zinc-300 accent-emerald-600 text-emerald-600 focus:ring-emerald-500 onboarding-asset-checkbox" checked>
+              <span class="text-[11px] sm:text-sm font-semibold dark:text-white group-hover:text-emerald-600 transition-colors">Aandelen</span>
             </label>
-            <label class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
-              <input type="checkbox" value="Vastgoed" class="w-4 h-4 sm:w-5 h-5 rounded border-slate-300 accent-emerald-600 text-emerald-600 focus:ring-emerald-500 onboarding-asset-checkbox">
-              <span class="text-xs sm:text-sm font-semibold dark:text-white group-hover:text-emerald-600 transition-colors">Vastgoed</span>
+            <label class="flex items-center gap-1.5 sm:gap-3 p-1.5 sm:p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all group">
+              <input type="checkbox" value="Vastgoed" class="w-4 h-4 sm:w-5 h-5 rounded border-zinc-300 accent-emerald-600 text-emerald-600 focus:ring-emerald-500 onboarding-asset-checkbox">
+              <span class="text-[11px] sm:text-sm font-semibold dark:text-white group-hover:text-emerald-600 transition-colors">Vastgoed</span>
             </label>
-            <label class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
-              <input type="checkbox" value="Crypto" class="w-4 h-4 sm:w-5 h-5 rounded border-slate-300 accent-emerald-600 text-emerald-600 focus:ring-emerald-500 onboarding-asset-checkbox">
-              <span class="text-xs sm:text-sm font-semibold dark:text-white group-hover:text-emerald-600 transition-colors">Crypto</span>
+            <label class="flex items-center gap-1.5 sm:gap-3 p-1.5 sm:p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all group">
+              <input type="checkbox" value="Crypto" class="w-4 h-4 sm:w-5 h-5 rounded border-zinc-300 accent-emerald-600 text-emerald-600 focus:ring-emerald-500 onboarding-asset-checkbox">
+              <span class="text-[11px] sm:text-sm font-semibold dark:text-white group-hover:text-emerald-600 transition-colors">Crypto</span>
             </label>
-            <label class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
-              <input type="checkbox" value="Goud" class="w-4 h-4 sm:w-5 h-5 rounded border-slate-300 accent-emerald-600 text-emerald-600 focus:ring-emerald-500 onboarding-asset-checkbox">
-              <span class="text-xs sm:text-sm font-semibold dark:text-white group-hover:text-emerald-600 transition-colors">Goud</span>
+            <label class="flex items-center gap-1.5 sm:gap-3 p-1.5 sm:p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all group">
+              <input type="checkbox" value="Goud" class="w-4 h-4 sm:w-5 h-5 rounded border-zinc-300 accent-emerald-600 text-emerald-600 focus:ring-emerald-500 onboarding-asset-checkbox">
+              <span class="text-[11px] sm:text-sm font-semibold dark:text-white group-hover:text-emerald-600 transition-colors">Goud</span>
             </label>
-            <label class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
-              <input type="checkbox" value="Pensioen" class="w-4 h-4 sm:w-5 h-5 rounded border-slate-300 accent-emerald-600 text-emerald-600 focus:ring-emerald-500 onboarding-asset-checkbox">
-              <span class="text-xs sm:text-sm font-semibold dark:text-white group-hover:text-emerald-600 transition-colors">Pensioen</span>
+            <label class="flex items-center gap-1.5 sm:gap-3 p-1.5 sm:p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all group">
+              <input type="checkbox" value="Pensioen" class="w-4 h-4 sm:w-5 h-5 rounded border-zinc-300 accent-emerald-600 text-emerald-600 focus:ring-emerald-500 onboarding-asset-checkbox">
+              <span class="text-[11px] sm:text-sm font-semibold dark:text-white group-hover:text-emerald-600 transition-colors">Pensioen</span>
             </label>
           </div>
 
-          <p class="text-[10px] sm:text-sm font-bold uppercase tracking-wider text-slate-400 mb-3 sm:mb-4">Heb je schulden?</p>
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 mb-6 sm:mb-8">
-            <label class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
-              <input type="checkbox" value="Schulden" class="w-4 h-4 sm:w-5 h-5 rounded border-slate-300 accent-red-600 text-red-600 focus:ring-red-500 onboarding-asset-checkbox">
-              <span class="text-xs sm:text-sm font-semibold dark:text-white group-hover:text-red-600 transition-colors">Schulden</span>
+          <p class="text-[9px] sm:text-sm font-bold uppercase tracking-wider text-zinc-400 mb-1.5 sm:mb-4">Heb je schulden?</p>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-3 mb-3 sm:mb-8">
+            <label class="flex items-center gap-1.5 sm:gap-3 p-1.5 sm:p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all group">
+              <input type="checkbox" value="Schulden" class="w-4 h-4 sm:w-5 h-5 rounded border-zinc-300 accent-red-600 text-red-600 focus:ring-red-500 onboarding-asset-checkbox">
+              <span class="text-[11px] sm:text-sm font-semibold dark:text-white group-hover:text-red-600 transition-colors">Schulden</span>
             </label>
-            <label class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all group">
-              <input type="checkbox" value="Hypotheek" class="w-4 h-4 sm:w-5 h-5 rounded border-slate-300 accent-red-600 text-red-600 focus:ring-red-500 onboarding-asset-checkbox">
-              <span class="text-xs sm:text-sm font-semibold dark:text-white group-hover:text-red-600 transition-colors">Hypotheek</span>
+            <label class="flex items-center gap-1.5 sm:gap-3 p-1.5 sm:p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all group">
+              <input type="checkbox" value="Hypotheek" class="w-4 h-4 sm:w-5 h-5 rounded border-zinc-300 accent-red-600 text-red-600 focus:ring-red-500 onboarding-asset-checkbox">
+              <span class="text-[11px] sm:text-sm font-semibold dark:text-white group-hover:text-red-600 transition-colors">Hypotheek</span>
             </label>
           </div>
           
-          <div class="flex flex-col sm:flex-row gap-3">
-            <button id="onboarding-example-btn" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 sm:py-4 rounded-2xl transition-all active:scale-95 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 text-sm sm:text-base">
+          <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
+            <button id="onboarding-example-btn" class="flex-1 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-bold py-2.5 sm:py-4 rounded-xl transition-all active:scale-95 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 text-xs sm:text-base">
               Verder met voorbeeldgegevens
             </button>
-            <button id="onboarding-start-btn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 sm:py-4 rounded-2xl shadow-lg shadow-emerald-200 transition-all active:scale-95 dark:shadow-none text-sm sm:text-base">
+            <button id="onboarding-start-btn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 sm:py-4 rounded-xl transition-all active:scale-95 text-xs sm:text-base">
               Start met mijn selectie
             </button>
           </div>
@@ -932,34 +932,34 @@
     </div>
 
     <!-- Add Asset Modal -->
-    <div id="add-asset-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-        <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-300">
-            <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
+    <div id="add-asset-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4 bg-zinc-900/50 backdrop-blur-sm">
+        <div class="bg-white dark:bg-zinc-900 w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-zinc-100 dark:border-zinc-800 animate-in fade-in zoom-in duration-300">
+            <div class="p-6 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between bg-zinc-50 dark:bg-zinc-800/50">
                 <div class="flex items-center gap-3">
                     <div class="bg-emerald-600 p-2 rounded-xl text-white">
                         <i data-lucide="plus" class="w-5 h-5"></i>
                     </div>
                     <h2 class="text-xl font-bold dark:text-white">Nieuwe Asset Toevoegen</h2>
                 </div>
-                <button id="close-add-asset-modal" class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition-colors text-slate-500 dark:text-slate-400">
+                <button id="close-add-asset-modal" class="p-2 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-xl transition-colors text-zinc-500 dark:text-zinc-400">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
             <div class="p-6 space-y-4">
                 <div class="space-y-2">
-                    <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Naam</label>
+                    <label class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Naam</label>
                     <input 
                         id="new-asset-name" 
                         type="text" 
-                        class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+                        class="w-full bg-zinc-50 border border-zinc-200 rounded-xl py-3 px-4 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all dark:bg-zinc-800 dark:border-zinc-700 dark:text-white"
                         placeholder="Bijv. Bitcoin, Aandelen, Spaargeld..."
                     />
                 </div>
                 <div class="space-y-2">
-                    <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Categorie</label>
+                    <label class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Categorie</label>
                     <select 
                         id="new-asset-category" 
-                        class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+                        class="w-full bg-zinc-50 border border-zinc-200 rounded-xl py-3 px-4 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all dark:bg-zinc-800 dark:border-zinc-700 dark:text-white"
                     >
                         <option value="Groei">Groei (Aandelen, Crypto, etc.)</option>
                         <option value="Defensief">Defensief (Cash, Obligaties, etc.)</option>
@@ -967,20 +967,20 @@
                     </select>
                 </div>
                 <div class="space-y-2">
-                    <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Doelpercentage (%)</label>
+                    <label class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Doelpercentage (%)</label>
                     <input 
                         id="new-asset-target" 
                         type="number" 
                         step="0.1"
                         min="0"
                         max="100"
-                        class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+                        class="w-full bg-zinc-50 border border-zinc-200 rounded-xl py-3 px-4 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all dark:bg-zinc-800 dark:border-zinc-700 dark:text-white"
                         placeholder="0"
                     />
                 </div>
             </div>
-            <div class="p-6 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex gap-3">
-                <button id="cancel-add-asset" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 rounded-xl transition-all active:scale-95 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">
+            <div class="p-6 bg-zinc-50 dark:bg-zinc-800/50 border-t border-zinc-100 dark:border-zinc-800 flex gap-3">
+                <button id="cancel-add-asset" class="flex-1 bg-zinc-200 hover:bg-zinc-300 text-zinc-700 font-bold py-3 rounded-xl transition-all active:scale-95 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700">
                     Annuleren
                 </button>
                 <button id="save-new-asset" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-emerald-200 transition-all active:scale-95 dark:shadow-none">
