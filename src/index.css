@@ -109,21 +109,21 @@
   width: 8px;
   height: 8px;
   border-radius: 9999px;
-  background-color: rgba(255, 255, 255, 0.3);
-  transition: all 0.3s ease;
+  background-color: #d4d4d8; /* zinc-300 */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .intro-pagination-dot.active {
   width: 24px;
-  background-color: white;
+  background-color: #059669; /* emerald-600 */
 }
 
 .dark .intro-pagination-dot {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: #3f3f46; /* zinc-700 */
 }
 
 .dark .intro-pagination-dot.active {
-  background-color: #10b981;
+  background-color: #10b981; /* emerald-500 */
 }
 
 /* Bottom Sheet Styles */
