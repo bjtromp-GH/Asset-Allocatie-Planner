@@ -239,7 +239,7 @@ let prevTotalAssets = 0;
 let prevCategoryValues = { Groei: 0, Defensief: 0, Speculatief: 0 };
 
 const formatCurrency = (value: number) => {
-  if (isPrivacyMode) return '€ ••••';
+  if (isPrivacyMode) return '€ •••••';
   return new Intl.NumberFormat('nl-NL', {
     style: 'currency',
     currency: 'EUR',
@@ -249,10 +249,12 @@ const formatCurrency = (value: number) => {
 };
 
 const formatPercent = (value: number) => {
+  if (isPrivacyMode) return '•••%';
   return `${value.toFixed(1)}%`;
 };
 
 const formatNumber = (value: number) => {
+  if (isPrivacyMode) return '•••••';
   return new Intl.NumberFormat('nl-NL', {
     maximumFractionDigits: 0,
     minimumFractionDigits: 0
@@ -298,6 +300,11 @@ const formatNumericInput = (input: HTMLInputElement, onUpdate: (val: number) => 
 const animateValue = (id: string, start: number, end: number, duration: number, formatter: (v: number) => string) => {
   const obj = document.getElementById(id);
   if (!obj) return;
+  
+  if (isPrivacyMode) {
+    obj.innerHTML = formatter(end);
+    return;
+  }
   
   let startTimestamp: number | null = null;
   const step = (timestamp: number) => {
@@ -1022,8 +1029,8 @@ function updateSummaryDetails() {
   const statusIcon = document.getElementById('summary-status-icon');
   const canvas = document.getElementById('summary-pie-chart') as HTMLCanvasElement;
 
-  if (assetsEl) assetsEl.textContent = formatCurrency(totalAssets);
-  if (debtsEl) debtsEl.textContent = formatCurrency(totalDebts);
+  if (assetsEl) assetsEl.textContent = isPrivacyMode ? '€ •••••' : formatCurrency(totalAssets);
+  if (debtsEl) debtsEl.textContent = isPrivacyMode ? '€ •••••' : formatCurrency(totalDebts);
 
   // Dynamic description and icon
   if (descEl) {
@@ -1046,7 +1053,8 @@ function updateSummaryDetails() {
     if (totalAssets === 0 && totalDebts === 0) {
       descEl.innerHTML = `${statusText}Begin met het toevoegen van je eerste assets om je financiële reis te visualiseren.`;
     } else {
-      descEl.innerHTML = `${statusText}Je grootste asset is <span class="text-emerald-600 font-bold">${topAsset?.name || 'onbekend'}</span> en je bent op weg naar je doel!`;
+      const topAssetName = isPrivacyMode ? '•••••' : (topAsset?.name || 'onbekend');
+      descEl.innerHTML = `${statusText}Je grootste asset is <span class="text-emerald-600 font-bold">${topAssetName}</span> en je bent op weg naar je doel!`;
     }
     
     if (statusIcon) {
@@ -1076,7 +1084,7 @@ function updateSummaryDetails() {
         plugins: {
           legend: { display: false },
           tooltip: { 
-            enabled: true,
+            enabled: !isPrivacyMode,
             callbacks: {
               label: (context: any) => {
                 const value = context.raw as number;
@@ -1116,7 +1124,7 @@ function renderDebts() {
     tr.className = 'hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group';
     tr.innerHTML = `
       <td class="px-3 sm:px-6 py-4">
-        <input type="text" value="${debt.name}" class="debt-name-input bg-transparent border-none p-0 focus:ring-0 font-medium text-slate-900 dark:text-white w-full" data-id="${debt.id}" />
+        <input type="text" value="${isPrivacyMode ? '•••••' : debt.name}" class="debt-name-input bg-transparent border-none p-0 focus:ring-0 font-medium text-slate-900 dark:text-white w-full" data-id="${debt.id}" />
       </td>
       <td class="px-3 sm:px-6 py-4">
         <div class="flex items-center gap-1">
@@ -1238,7 +1246,7 @@ function renderAssets() {
           <div class="flex flex-col gap-0.5">
             <input
               type="text"
-              value="${asset.name}"
+              value="${isPrivacyMode ? '•••••' : asset.name}"
               data-id="${asset.id}"
               data-type="name"
               class="asset-input w-full bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-0 sm:py-1 text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 dark:hover:border-slate-700"
@@ -1411,7 +1419,7 @@ function renderRecommendations() {
           <div class="bg-white/10 backdrop-blur-md rounded-xl p-3 flex items-center justify-between border border-white/10">
             <div class="flex items-center gap-2">
               <div class="w-2 h-2 rounded-full" style="background-color: ${item.color}"></div>
-              <span class="text-sm font-medium">${item.name}</span>
+              <span class="text-sm font-medium">${isPrivacyMode ? '•••••' : item.name}</span>
             </div>
             <span class="font-bold">${formatCurrency(item.amount)}</span>
           </div>
@@ -1446,10 +1454,11 @@ function renderHistory() {
     if (pieChartMode === 'bruto') {
       pieLegend.innerHTML = assets.map(asset => {
         const currentPercent = totalAssets > 0 ? (asset.value / totalAssets) * 100 : 0;
+        const displayName = isPrivacyMode ? '•••••' : asset.name;
         return `
           <div class="flex items-center text-sm sm:text-base group">
             <div class="w-2 h-2 sm:w-3 sm:h-3 rounded-full shrink-0 mr-2 sm:mr-3 transition-transform group-hover:scale-125" style="background-color: ${asset.color}"></div>
-            <span class="text-slate-600 flex-1 truncate dark:text-slate-400" title="${asset.name}">${asset.name}</span>
+            <span class="text-slate-600 flex-1 truncate dark:text-slate-400" title="${displayName}">${displayName}</span>
             <span class="font-mono font-bold text-slate-900 ml-2 dark:text-white text-sm sm:text-base">${formatPercent(currentPercent)}</span>
           </div>
         `;
@@ -1513,7 +1522,7 @@ function updateCharts() {
   let colors: string[] = [];
 
   if (pieChartMode === 'bruto') {
-    labels = assets.map(a => a.name);
+    labels = assets.map(a => isPrivacyMode ? '•••••' : a.name);
     values = assets.map(a => a.value);
     colors = assets.map(a => a.color);
   } else {
@@ -1581,6 +1590,7 @@ function updateCharts() {
           yAlign: 'bottom',
           callbacks: {
             label: (context) => {
+              if (isPrivacyMode) return ` ${context.label}: •••••`;
               const value = context.raw as number;
               const total = context.dataset.data.reduce((a: any, b: any) => a + b, 0) as number;
               const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0';
@@ -1794,8 +1804,9 @@ function updateTreemap() {
     .selectAll("tspan")
     .data((d: any) => {
       const totalValue = root.value || 1;
-      const percentage = (((d.value || 0) / totalValue) * 100).toFixed(1);
-      const name = (d.data as any).name;
+      const p = (((d.value || 0) / totalValue) * 100).toFixed(1);
+      const name = isPrivacyMode ? '•••••' : (d.data as any).name;
+      const percentage = isPrivacyMode ? '•••' : p;
       const value = `${formatCurrency((d.data as any).value)} (${percentage}%)`;
       return [name, value];
     })
