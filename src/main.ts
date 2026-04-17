@@ -1956,11 +1956,16 @@ const closeSheets = () => {
   const historieSheet = document.getElementById('historie-bottom-sheet');
   const vrijheidSheet = document.getElementById('vrijheid-bottom-sheet');
   
-  overlay?.classList.remove('open');
-  beheerSheet?.classList.remove('open');
-  historieSheet?.classList.remove('open');
-  vrijheidSheet?.classList.remove('open');
+  const sheets = [beheerSheet, historieSheet, vrijheidSheet];
+  sheets.forEach(s => {
+    if (s) {
+      s.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+      s.style.transform = '';
+      s.classList.remove('open');
+    }
+  });
   
+  overlay?.classList.remove('open');
   document.body.style.overflow = '';
 };
 
