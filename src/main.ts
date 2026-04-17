@@ -256,6 +256,7 @@ let isPlannerMode = true;
 let isDarkMode = false;
 let isPrivacyMode = false;
 let monthlyExpenses = 2500;
+let userAge = 35;
 let freedomCustomNetWorth = 0;
 let masterPassword = '';
 let isEncrypted = false;
@@ -400,6 +401,7 @@ function saveState() {
     isDarkMode,
     isPrivacyMode,
     monthlyExpenses,
+    userAge,
     freedomCustomNetWorth,
     isPlannerMode,
     pieChartMode
@@ -577,6 +579,9 @@ function applyState(state: any) {
   }
   if (state.monthlyExpenses !== undefined) {
     monthlyExpenses = state.monthlyExpenses;
+  }
+  if (state.userAge !== undefined) {
+    userAge = state.userAge;
   }
   if (state.freedomCustomNetWorth !== undefined) {
     freedomCustomNetWorth = state.freedomCustomNetWorth;
@@ -864,12 +869,18 @@ function updateUI() {
 
   // Freedom Calculator Logic
   const freedomTimeEl = document.getElementById('freedom-time');
+  const freedomRunwayAgeEl = document.getElementById('freedom-runway-age');
   const freedomPassiveEl = document.getElementById('freedom-passive');
   const monthlyExpensesInput = document.getElementById('monthly-expenses-input') as HTMLInputElement;
+  const userAgeInput = document.getElementById('user-age-input') as HTMLInputElement;
   const freedomCustomNetworthInput = document.getElementById('freedom-custom-networth') as HTMLInputElement;
 
   if (monthlyExpensesInput) {
-    monthlyExpenses = parseFloat(monthlyExpensesInput.value) || 0;
+    monthlyExpenses = parseNumber(monthlyExpensesInput.value) || 0;
+  }
+  
+  if (userAgeInput) {
+    userAge = parseInt(userAgeInput.value) || 0;
   }
 
   if (freedomCustomNetworthInput && !freedomCustomNetworthInput.matches(':focus')) {
@@ -885,6 +896,7 @@ function updateUI() {
 
     if (isPrivacyMode) {
       freedomTimeEl.textContent = '•• mnd';
+      if (freedomRunwayAgeEl) freedomRunwayAgeEl.textContent = '•• jr';
       freedomPassiveEl.textContent = '€ ••••';
     } else {
       if (months >= 12) {
@@ -892,6 +904,12 @@ function updateUI() {
       } else {
         freedomTimeEl.textContent = `${Math.max(0, Math.floor(months))} mnd`;
       }
+      
+      if (freedomRunwayAgeEl) {
+        const freedomAge = userAge + (months / 12);
+        freedomRunwayAgeEl.textContent = `${freedomAge.toFixed(1)} jr`;
+      }
+      
       freedomPassiveEl.textContent = formatCurrency(Math.max(0, passiveMonthly));
     }
 
@@ -2457,6 +2475,15 @@ function initEventListeners() {
     }
     formatNumericInput(monthlyExpensesInput, (val) => {
       monthlyExpenses = val;
+      updateUI();
+    });
+  }
+
+  const userAgeInputUpdate = document.getElementById('user-age-input') as HTMLInputElement;
+  if (userAgeInputUpdate) {
+    userAgeInputUpdate.value = userAge.toString();
+    userAgeInputUpdate.addEventListener('input', () => {
+      userAge = parseInt(userAgeInputUpdate.value) || 0;
       updateUI();
     });
   }

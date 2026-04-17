@@ -129,14 +129,14 @@
                           Je vermogen is vandaag stabiel. Je grootste asset is <span class="text-emerald-600 font-bold">Aandelen</span> en je bent op weg naar je doel!
                         </p>
                       </div>
-                      <div class="grid grid-cols-2 gap-4">
-                        <div class="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50">
+                      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="p-5 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50 shadow-sm transition-all hover:shadow-md">
                           <p class="text-[10px] uppercase tracking-widest font-black text-emerald-600 mb-1">Assets</p>
-                          <p id="summary-assets-total" class="text-lg font-black text-zinc-900 dark:text-white">€ 0</p>
+                          <p id="summary-assets-total" class="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white">€ 0</p>
                         </div>
-                        <div class="p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/50">
+                        <div class="p-5 rounded-2xl bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/50 shadow-sm transition-all hover:shadow-md">
                           <p class="text-[10px] uppercase tracking-widest font-black text-red-600 mb-1">Schulden</p>
-                          <p id="summary-debts-total" class="text-lg font-black text-zinc-900 dark:text-white">€ 0</p>
+                          <p id="summary-debts-total" class="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white">€ 0</p>
                         </div>
                       </div>
                     </div>
@@ -458,17 +458,34 @@
                   </div>
                 </div>
 
-                <!-- Monthly Expenses Input -->
-                <div class="bg-zinc-50 dark:bg-zinc-800/50 p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:border-amber-200 dark:hover:border-amber-900 transition-colors">
-                  <div class="flex items-center justify-between mb-2">
-                    <label class="text-[11px] uppercase tracking-widest font-black text-zinc-400 dark:text-zinc-500">MAANDELIJKSE UITGAVEN</label>
-                    <div class="flex items-center gap-1">
-                      <span class="text-amber-500 font-bold text-sm">€</span>
-                      <input id="monthly-expenses-input" type="text" class="bg-transparent border-none p-0 w-16 text-right font-black focus:ring-0 text-base dark:text-white" value="2.500" />
+                <!-- Calculations Input Group -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <!-- Monthly Expenses Input -->
+                  <div class="bg-zinc-50 dark:bg-zinc-800/50 p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:border-amber-200 dark:hover:border-amber-900 transition-colors">
+                    <div class="flex items-center justify-between mb-2">
+                      <label class="text-[11px] uppercase tracking-widest font-black text-zinc-400 dark:text-zinc-500">MAANDELIJKSE UITGAVEN</label>
+                      <div class="flex items-center gap-1">
+                        <span class="text-amber-500 font-bold text-sm">€</span>
+                        <input id="monthly-expenses-input" type="text" class="bg-transparent border-none p-0 w-16 text-right font-black focus:ring-0 text-base dark:text-white" value="2.500" />
+                      </div>
+                    </div>
+                    <div class="w-full bg-zinc-200 dark:bg-zinc-700 h-1.5 rounded-full overflow-hidden">
+                      <div class="bg-gradient-to-r from-amber-400 to-amber-600 h-full w-full opacity-40"></div>
                     </div>
                   </div>
-                  <div class="w-full bg-zinc-200 dark:bg-zinc-700 h-1.5 rounded-full overflow-hidden">
-                    <div class="bg-gradient-to-r from-amber-400 to-amber-600 h-full w-full opacity-40"></div>
+
+                  <!-- Age Input -->
+                  <div class="bg-zinc-50 dark:bg-zinc-800/50 p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:border-purple-200 dark:hover:border-purple-900 transition-colors">
+                    <div class="flex items-center justify-between mb-2">
+                      <label class="text-[11px] uppercase tracking-widest font-black text-zinc-400 dark:text-zinc-500">HUIDIGE LEEFTIJD</label>
+                      <div class="flex items-center gap-1">
+                        <input id="user-age-input" type="number" class="bg-transparent border-none p-0 w-12 text-right font-black focus:ring-0 text-base dark:text-white" value="35" min="0" max="120" />
+                        <span class="text-purple-500 font-bold text-[10px] uppercase">JR</span>
+                      </div>
+                    </div>
+                    <div class="w-full bg-zinc-200 dark:bg-zinc-700 h-1.5 rounded-full overflow-hidden">
+                      <div class="bg-gradient-to-r from-purple-400 to-purple-600 h-full w-full opacity-40"></div>
+                    </div>
                   </div>
                 </div>
 
@@ -493,6 +510,15 @@
                     <p id="freedom-time" class="text-3xl font-black text-zinc-900 dark:text-white tracking-tight relative z-20">0 mnd</p>
                     <p class="text-[11px] text-emerald-500/80 dark:text-emerald-400/60 mt-2 font-medium relative z-20">Zonder extra inkomen</p>
                   </div>
+                  <div class="p-5 rounded-xl bg-gradient-to-br from-purple-50 to-purple-50 dark:from-purple-900/20 dark:to-purple-900/20 border border-purple-100 dark:border-purple-800/50 hover:shadow-md transition-shadow relative overflow-hidden">
+                    <div class="flex justify-between items-start mb-2 relative z-20">
+                      <p class="text-[11px] uppercase tracking-widest font-black text-purple-600 dark:text-purple-400">VRIJ TOT JE</p>
+                      <i data-lucide="calendar" class="w-4 h-4 text-purple-400"></i>
+                    </div>
+                    <p id="freedom-runway-age" class="text-3xl font-black text-zinc-900 dark:text-white tracking-tight relative z-20">-- jr</p>
+                    <p class="text-[11px] text-purple-500/80 dark:text-purple-400/60 mt-2 font-medium relative z-20">Gebaseerd op runway</p>
+                  </div>
+                  
                   <div class="p-5 rounded-xl bg-gradient-to-br from-emerald-50 to-emerald-50 dark:from-emerald-900/20 dark:to-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50 hover:shadow-md transition-shadow relative overflow-hidden">
                     <div class="flex justify-between items-start mb-2 relative z-20">
                       <p class="text-[11px] uppercase tracking-widest font-black text-emerald-600 dark:text-emerald-400">PASSIEF INKOMEN</p>
