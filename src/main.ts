@@ -54,7 +54,8 @@ import {
   CheckCircle,
   Sparkles,
   Frown,
-  ThumbsUp
+  ThumbsUp,
+  AlertTriangle
 } from 'lucide';
 import { hierarchy, treemap, select } from 'd3';
 import CryptoJS from 'crypto-js';
@@ -113,7 +114,8 @@ const usedIcons = {
   CheckCircle,
   Sparkles,
   Frown,
-  ThumbsUp
+  ThumbsUp,
+  AlertTriangle
 };
 
 Chart.register(...registerables);
@@ -216,6 +218,39 @@ let debts: Debt[] = [];
 
 let history: HistoryEntry[] = [];
 let investmentAmount = 1000;
+let confirmCallback: (() => void) | null = null;
+
+function setupConfirmationListeners() {
+  const modal = document.getElementById('confirm-modal');
+  const yesBtn = document.getElementById('confirm-modal-yes');
+  const noBtn = document.getElementById('confirm-modal-no');
+  
+  if (yesBtn && modal) {
+    yesBtn.addEventListener('click', () => {
+      if (confirmCallback) confirmCallback();
+      modal.classList.add('hidden');
+      confirmCallback = null;
+    });
+  }
+  
+  if (noBtn && modal) {
+    noBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+      confirmCallback = null;
+    });
+  }
+}
+
+function askConfirmation(message: string, callback: () => void) {
+  const modal = document.getElementById('confirm-modal');
+  const messageEl = document.getElementById('confirm-modal-message');
+  if (modal && messageEl) {
+    messageEl.textContent = message;
+    confirmCallback = callback;
+    modal.classList.remove('hidden');
+  }
+}
+
 let targetNetWorth = 1000000;
 let isPlannerMode = true;
 let isDarkMode = false;
@@ -625,8 +660,10 @@ function loadFromHistory(index: number) {
 
 function deleteAsset(id: string) {
   if (assets.length <= 1) return;
-  assets = assets.filter(a => a.id !== id);
-  updateUI();
+  askConfirmation('Weet je zeker dat je deze asset wilt verwijderen? Dit kan niet meer ongedaan worden gemaakt.', () => {
+    assets = assets.filter(a => a.id !== id);
+    updateUI();
+  });
 }
 
 function addAsset() {
@@ -1213,8 +1250,10 @@ function renderDebts() {
   tbody.querySelectorAll('.delete-debt-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = (btn as HTMLElement).dataset.id;
-      debts = debts.filter(d => d.id !== id);
-      updateUI();
+      askConfirmation('Weet je zeker dat je deze schuld wilt verwijderen?', () => {
+        debts = debts.filter(d => d.id !== id);
+        updateUI();
+      });
     });
   });
 }
@@ -2077,6 +2116,7 @@ function checkOnboarding() {
 }
 
 function initEventListeners() {
+  setupConfirmationListeners();
   const mobileBeheerBtn = document.getElementById('mobile-beheer-btn');
   const mobileHistorieBtn = document.getElementById('mobile-historie-btn');
   const mobileVrijheidBtn = document.getElementById('mobile-vrijheid-btn');
@@ -2567,11 +2607,11 @@ function initEventListeners() {
   const clearAllDataBtn = document.getElementById('clear-all-data-btn');
   if (clearAllDataBtn) {
     clearAllDataBtn.addEventListener('click', () => {
-      if (confirm('LET OP: Dit verwijdert al je assets, historie en instellingen permanent. Weet je het zeker?')) {
+      askConfirmation('LET OP: Dit verwijdert al je assets, historie en instellingen permanent. Weet je het zeker?', () => {
         localStorage.removeItem(STORAGE_KEY);
         localStorage.removeItem('onboarding_completed');
         location.reload();
-      }
+      });
     });
   }
 
@@ -2697,10 +2737,10 @@ function initEventListeners() {
 
   if (forgotPasswordBtn) {
     forgotPasswordBtn.addEventListener('click', () => {
-      if (confirm('LET OP: Als je je wachtwoord vergeet, kunnen we je gegevens niet herstellen. Wil je alle gegevens wissen en opnieuw beginnen?')) {
+      askConfirmation('LET OP: Als je je wachtwoord vergeet, kunnen we je gegevens niet herstellen. Wil je alle gegevens wissen en opnieuw beginnen?', () => {
         localStorage.removeItem(STORAGE_KEY);
         location.reload();
-      }
+      });
     });
   }
 
