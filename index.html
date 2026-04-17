@@ -1108,14 +1108,14 @@
             />
           </div>
           <h2 class="text-lg sm:text-2xl font-black dark:text-white mb-0 relative z-10 leading-tight">GeldDash - Jouw Geld Dashboard</h2>
-          <div class="h-8 sm:h-10 flex items-center justify-center relative z-10 mt-2">
-            <p id="onboarding-question" class="text-xl sm:text-4xl font-black uppercase tracking-tight opacity-0 translate-y-2 blur-sm transition-all duration-1000 ease-out text-orange-500">Hoeveel ben je waard?</p>
+          <div class="h-10 sm:h-16 flex items-center justify-center relative z-10 mt-2 sm:mt-6">
+            <p id="onboarding-question" class="text-3xl sm:text-5xl font-black uppercase tracking-tight opacity-0 translate-y-2 blur-sm transition-all duration-1000 ease-out text-amber-500 drop-shadow-md">Hoeveel ben je waard?</p>
           </div>
         </div>
         
-        <div class="p-6 sm:p-8">
-          <p class="text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-400 mb-3">Welke assets heb je al?</p>
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4 sm:mb-6">
+        <div class="p-6 sm:p-10 max-h-[70vh] overflow-y-auto">
+          <p class="text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-400 mb-4">Welke assets heb je al?</p>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
             <label class="flex items-center gap-2 p-3 sm:p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all group">
               <input type="checkbox" value="Spaargeld" class="w-4 h-4 sm:w-5 sm:h-5 rounded border-zinc-300 accent-emerald-600 text-emerald-600 focus:ring-emerald-500 onboarding-asset-checkbox" checked>
               <span class="text-sm sm:text-base font-semibold dark:text-white group-hover:text-emerald-600 transition-colors">Spaargeld</span>
@@ -1148,31 +1148,31 @@
               <input type="checkbox" value="Obligaties" class="w-4 h-4 sm:w-5 sm:h-5 rounded border-zinc-300 accent-emerald-600 text-emerald-600 focus:ring-emerald-500 onboarding-asset-checkbox">
               <span class="text-sm sm:text-base font-semibold dark:text-white group-hover:text-emerald-600 transition-colors">Obligaties</span>
             </label>
-          </div>igaties</span>
-            </label>
-            <label class="flex items-center gap-1.5 p-1 sm:p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all group">
-              <input type="checkbox" value="Zilver" class="w-3.5 h-3.5 sm:w-5 sm:h-5 rounded border-zinc-300 accent-emerald-600 text-emerald-600 focus:ring-emerald-500 onboarding-asset-checkbox">
-              <span class="text-[11px] sm:text-base font-semibold dark:text-white group-hover:text-emerald-600 transition-colors">Zilver</span>
+            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all group">
+              <input type="checkbox" value="Zilver" class="w-4 h-4 sm:w-5 sm:h-5 rounded border-zinc-300 accent-emerald-600 text-emerald-600 focus:ring-emerald-500 onboarding-asset-checkbox">
+              <span class="text-sm sm:text-base font-semibold dark:text-white group-hover:text-emerald-600 transition-colors">Zilver</span>
             </label>
           </div>
 
-          <p class="text-[9px] sm:text-sm font-bold uppercase tracking-wider text-zinc-400 mb-1.5">Heb je schulden?</p>
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 mb-3 sm:mb-8">
-            <label class="flex items-center gap-1.5 p-1 sm:p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all group">
-              <input type="checkbox" value="Schulden" class="w-3.5 h-3.5 sm:w-5 sm:h-5 rounded border-zinc-300 accent-red-600 text-red-600 focus:ring-red-500 onboarding-asset-checkbox">
-              <span class="text-[11px] sm:text-base font-semibold dark:text-white group-hover:text-red-600 transition-colors">Schulden</span>
+          <p class="text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-400 mb-4">Heb je schulden?</p>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all group">
+              <input type="checkbox" value="Schulden" class="w-4 h-4 sm:w-5 sm:h-5 rounded border-zinc-300 accent-red-600 text-red-600 focus:ring-red-500 onboarding-asset-checkbox">
+              <span class="text-sm sm:text-base font-semibold dark:text-white group-hover:text-red-600 transition-colors">Schulden</span>
             </label>
-            <label class="flex items-center gap-1.5 p-1 sm:p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all group">
-              <input type="checkbox" value="Hypotheekschuld" class="w-3.5 h-3.5 sm:w-5 sm:h-5 rounded border-zinc-300 accent-red-600 text-red-600 focus:ring-red-500 onboarding-asset-checkbox">
-              <span class="text-[11px] sm:text-base font-semibold dark:text-white group-hover:text-red-600 transition-colors">Hypotheek</span>
+            <label class="flex items-center gap-2 p-3 sm:p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all group">
+              <input type="checkbox" value="Hypotheekschuld" class="w-4 h-4 sm:w-5 sm:h-5 rounded border-zinc-300 accent-red-600 text-red-600 focus:ring-red-500 onboarding-asset-checkbox">
+              <span class="text-sm sm:text-base font-semibold dark:text-white group-hover:text-red-600 transition-colors">Hypotheek</span>
             </label>
           </div>
-          
+        </div>
+
+        <div class="p-6 sm:p-8 bg-zinc-50 dark:bg-zinc-800/50 border-t border-zinc-100 dark:border-zinc-800">
           <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
-            <button id="onboarding-example-btn" class="flex-1 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-bold py-2 sm:py-4 rounded-xl transition-all active:scale-95 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 text-xs sm:text-base">
+            <button id="onboarding-example-btn" class="flex-1 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-bold py-4 rounded-xl transition-all active:scale-95 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 text-xs sm:text-base">
               Verder met voorbeeldgegevens
             </button>
-            <button id="onboarding-start-btn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 sm:py-4 rounded-xl transition-all active:scale-95 text-xs sm:text-base">
+            <button id="onboarding-start-btn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl transition-all active:scale-95 text-xs sm:text-base">
               Start met mijn selectie
             </button>
           </div>
