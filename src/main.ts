@@ -1869,9 +1869,62 @@ function updateTreemap() {
 }
 
 // Bottom Sheet Logic
+const setupSwipeToClose = (sheetId: string) => {
+  const sheet = document.getElementById(sheetId);
+  if (!sheet) return;
+
+  let startY = 0;
+  let currentY = 0;
+  let isDragging = false;
+
+  sheet.addEventListener('touchstart', (e) => {
+    // Only allow swipe if we are at the top of the scrollable content or touching the handle
+    const scrollableContent = sheet.querySelector('.overflow-y-auto');
+    if (scrollableContent && scrollableContent.scrollTop > 0) return;
+    
+    startY = e.touches[0].clientY;
+    isDragging = true;
+    sheet.style.transition = 'none';
+  }, { passive: true });
+
+  sheet.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    
+    currentY = e.touches[0].clientY;
+    const deltaY = currentY - startY;
+    
+    if (deltaY > 0) {
+      sheet.style.transform = `translateY(${deltaY}px)`;
+    }
+  }, { passive: true });
+
+  sheet.addEventListener('touchend', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    
+    const deltaY = currentY - startY;
+    sheet.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+    
+    if (deltaY > 100) {
+      closeSheets();
+      // Reset transform after closing
+      setTimeout(() => {
+        sheet.style.transform = '';
+      }, 300);
+    } else {
+      sheet.style.transform = '';
+    }
+  });
+};
+
 const openSheet = (sheet: HTMLElement | null) => {
   const overlay = document.getElementById('bottom-sheet-overlay');
   if (!sheet || !overlay) return;
+  
+  // Reset any leftover transform from previous swipes
+  sheet.style.transform = '';
+  sheet.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+  
   overlay.classList.add('open');
   sheet.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1882,10 +1935,12 @@ const closeSheets = () => {
   const beheerSheet = document.getElementById('beheer-bottom-sheet');
   const historieSheet = document.getElementById('historie-bottom-sheet');
   const vrijheidSheet = document.getElementById('vrijheid-bottom-sheet');
+  
   overlay?.classList.remove('open');
   beheerSheet?.classList.remove('open');
   historieSheet?.classList.remove('open');
   vrijheidSheet?.classList.remove('open');
+  
   document.body.style.overflow = '';
 };
 
@@ -2965,6 +3020,11 @@ function initEventListeners() {
   closeInspirationBtn?.addEventListener('click', () => {
     inspirationModal?.classList.add('hidden');
   });
+
+  // Setup swipe-to-close for bottom sheets
+  setupSwipeToClose('beheer-bottom-sheet');
+  setupSwipeToClose('historie-bottom-sheet');
+  setupSwipeToClose('vrijheid-bottom-sheet');
 
   createIcons({ icons: usedIcons });
 }
