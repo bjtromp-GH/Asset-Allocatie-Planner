@@ -8,7 +8,7 @@
 
 @layer base {
   * {
-    @apply border-slate-200 dark:border-slate-800;
+    @apply border-zinc-200 dark:border-zinc-800;
   }
   body {
     @apply accent-emerald-600;
@@ -93,7 +93,7 @@
 .bottom-sheet-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.5);
+  background: rgba(9, 9, 11, 0.5);
   backdrop-filter: blur(4px);
   z-index: 90;
   opacity: 0;
@@ -107,8 +107,8 @@
 }
 
 .dark .bottom-sheet {
-  background: #0f172a;
-  border-top: 1px solid #1e293b;
+  background: #09090b;
+  border-top: 1px solid #27272a;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {

@@ -141,7 +141,7 @@ const centerTextPlugin = {
 
     // Label
     ctx.font = options.labelFont || 'bold 10px Inter, sans-serif';
-    ctx.fillStyle = options.labelColor || '#94a3b8';
+    ctx.fillStyle = options.labelColor || '#a1a1aa';
     ctx.fillText(options.label.toUpperCase(), centerX, centerY + 18);
     
     // Badge (optional)
@@ -276,22 +276,29 @@ const formatNumericInput = (input: HTMLInputElement, onUpdate: (val: number) => 
       return;
     }
 
+    // Capture cursor position and digit count before it
     const cursorPosition = target.selectionStart || 0;
-    const digitsBefore = originalValue.substring(0, cursorPosition).replace(/\./g, '');
+    const valueBeforeCursor = originalValue.substring(0, cursorPosition);
+    const digitsBeforeCursor = valueBeforeCursor.replace(/\D/g, '').length;
     
+    // Parse and format
     const val = parseNumber(originalValue);
     const formatted = formatNumber(val);
     target.value = formatted;
 
+    // Reset cursor position based on digit count
     let newCursorPos = 0;
-    let digitCount = 0;
+    let currentDigitCount = 0;
     for (let i = 0; i < formatted.length; i++) {
-      if (formatted[i] !== '.') {
-        digitCount++;
+      if (/\d/.test(formatted[i])) {
+        currentDigitCount++;
       }
       newCursorPos = i + 1;
-      if (digitCount >= digitsBefore.length) break;
+      if (currentDigitCount >= digitsBeforeCursor) break;
     }
+    
+    // If we just typed a non-digit at the end (like a comma that was swallowed or something), 
+    // or if the value is empty, this logic holds.
     target.setSelectionRange(newCursorPos, newCursorPos);
     onUpdate(val);
   });
@@ -422,7 +429,7 @@ function loadExampleData(silent = false) {
   
   if (!silent) {
     const toast = document.createElement('div');
-    toast.className = 'fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-xl shadow-2xl z-[200] animate-in fade-in slide-in-from-bottom-4';
+    toast.className = 'fixed bottom-24 left-1/2 -translate-x-1/2 bg-zinc-900 text-white px-6 py-3 rounded-xl shadow-2xl z-[200] animate-in fade-in slide-in-from-bottom-4';
     toast.innerHTML = '<div class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i><span class="font-bold text-sm">Voorbeeldgegevens geladen!</span></div>';
     document.body.appendChild(toast);
     createIcons({ icons: usedIcons });
@@ -683,7 +690,7 @@ function initAverageDutchChart() {
   if (averageDutchChart) averageDutchChart.destroy();
 
   const isDark = document.documentElement.classList.contains('dark');
-  const textColor = isDark ? '#94a3b8' : '#64748b';
+  const textColor = isDark ? '#a1a1aa' : '#71717a';
 
   averageDutchChart = new Chart(ctx, {
     type: 'doughnut',
@@ -857,14 +864,14 @@ function updateUI() {
       const check = document.getElementById(`milestone-check-${id}`);
       if (icon && check) {
         if (condition) {
-          icon.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-400');
+          icon.classList.remove('bg-zinc-100', 'dark:bg-zinc-800', 'text-zinc-400');
           icon.classList.add('bg-emerald-100', 'dark:bg-emerald-900/40', 'text-emerald-600', 'dark:text-emerald-400');
-          check.classList.remove('text-slate-200', 'dark:text-slate-800');
+          check.classList.remove('text-zinc-200', 'dark:text-zinc-800');
           check.classList.add('text-emerald-500');
         } else {
-          icon.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-400');
+          icon.classList.add('bg-zinc-100', 'dark:bg-zinc-800', 'text-zinc-400');
           icon.classList.remove('bg-emerald-100', 'dark:bg-emerald-900/40', 'text-emerald-600', 'dark:text-emerald-400');
-          check.classList.add('text-slate-200', 'dark:text-slate-800');
+          check.classList.add('text-zinc-200', 'dark:text-zinc-800');
           check.classList.remove('text-emerald-500');
         }
       }
@@ -1002,9 +1009,16 @@ function updateUI() {
 
   if (simulatorSection) simulatorSection.style.display = isPlannerMode ? '' : 'none';
   if (rebalanceSection) rebalanceSection.style.display = isPlannerMode ? '' : 'none';
-  if (targetColumnHeader) targetColumnHeader.style.display = isPlannerMode ? '' : 'none';
-  if (debtTargetColumnHeader) debtTargetColumnHeader.style.display = isPlannerMode ? '' : 'none';
   if (comparisonSection) comparisonSection.style.display = isPlannerMode ? '' : 'none';
+  
+  // Keep the headers visible to avoid column misalignment, but update text
+  if (targetColumnHeader) {
+    targetColumnHeader.textContent = isPlannerMode ? 'Doel (%)' : 'Categorie';
+  }
+  if (debtTargetColumnHeader) {
+    // Hidden because debt doesn't have a category in the same slot
+    debtTargetColumnHeader.style.opacity = isPlannerMode ? '1' : '0';
+  }
   
   renderAssets();
   renderDebts();
@@ -1111,7 +1125,7 @@ function renderDebts() {
   if (debts.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="4" class="px-6 py-8 text-center text-slate-400 italic text-sm">
+        <td colspan="4" class="px-6 py-8 text-center text-zinc-400 italic text-sm">
           Geen schulden toegevoegd
         </td>
       </tr>
@@ -1121,14 +1135,14 @@ function renderDebts() {
 
   debts.forEach(debt => {
     const tr = document.createElement('tr');
-    tr.className = 'hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group';
+    tr.className = 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors group';
     tr.innerHTML = `
       <td class="px-3 sm:px-6 py-4">
-        <input type="text" value="${isPrivacyMode ? '•••••' : debt.name}" class="debt-name-input bg-transparent border-none p-0 focus:ring-0 font-medium text-slate-900 dark:text-white w-full" data-id="${debt.id}" />
+        <input type="text" value="${isPrivacyMode ? '•••••' : debt.name}" class="debt-name-input bg-transparent border-none p-0 focus:ring-0 font-medium text-zinc-900 dark:text-white w-full" data-id="${debt.id}" />
       </td>
       <td class="px-3 sm:px-6 py-4">
         <div class="flex items-center gap-1">
-          <span class="text-slate-400 text-xs">€</span>
+          <span class="text-zinc-400 text-xs">€</span>
           <input type="text" value="${formatNumber(debt.value)}" class="debt-value-input bg-transparent border-none p-0 focus:ring-0 font-mono font-bold text-red-600 dark:text-red-400 w-full" data-id="${debt.id}" />
         </div>
       </td>
@@ -1138,13 +1152,13 @@ function renderDebts() {
             type="number"
             value="${debt.target || 0}"
             data-id="${debt.id}"
-            class="debt-target-input w-10 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-red-500 focus:ring-0 transition-all outline-none py-1 font-mono text-right text-sm dark:text-white dark:hover:border-slate-700"
+            class="debt-target-input w-10 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-red-500 focus:ring-0 transition-all outline-none py-1 font-mono text-right text-sm dark:text-white dark:hover:border-zinc-700"
           />
-          <span class="text-slate-400 font-mono text-xs">%</span>
+          <span class="text-zinc-400 font-mono text-xs">%</span>
         </div>
       </td>
       <td class="px-3 sm:px-6 py-4 text-right">
-        <button class="delete-debt-btn p-2 text-slate-300 hover:text-red-500 transition-colors" data-id="${debt.id}">
+        <button class="delete-debt-btn p-2 text-zinc-300 hover:text-red-500 transition-colors" data-id="${debt.id}">
           <i data-lucide="trash-2" class="w-4 h-4"></i>
         </button>
       </td>
@@ -1154,6 +1168,12 @@ function renderDebts() {
 
   // Add event listeners for inputs
   tbody.querySelectorAll('.debt-name-input').forEach(input => {
+    input.addEventListener('focus', (e) => {
+      const target = e.target as HTMLInputElement;
+      const id = target.dataset.id;
+      const debt = debts.find(d => d.id === id);
+      if (debt) target.value = debt.name;
+    });
     input.addEventListener('change', (e) => {
       const id = (e.target as HTMLInputElement).dataset.id;
       const name = (e.target as HTMLInputElement).value;
@@ -1163,6 +1183,12 @@ function renderDebts() {
   });
 
   tbody.querySelectorAll('.debt-value-input').forEach(input => {
+    input.addEventListener('focus', (e) => {
+      const target = e.target as HTMLInputElement;
+      const id = target.dataset.id;
+      const debt = debts.find(d => d.id === id);
+      if (debt) target.value = debt.value.toString();
+    });
     formatNumericInput(input as HTMLInputElement, (val) => {
       const id = (input as HTMLInputElement).dataset.id;
       debts = debts.map(d => d.id === id ? { ...d, value: val } : d);
@@ -1206,11 +1232,11 @@ function renderCategoryCards() {
     const color = name === 'Groei' ? '#10b981' : name === 'Defensief' ? '#059669' : '#f97316';
     const idPrefix = name.toLowerCase();
     return `
-      <div class="bg-white p-6 rounded-xl border border-slate-200 flex items-center justify-between dark:bg-slate-900 dark:border-slate-800">
+      <div class="bg-white p-6 rounded-xl border border-zinc-200 flex items-center justify-between dark:bg-zinc-900 dark:border-zinc-800">
         <div>
-          <p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1 dark:text-slate-400">${name}</p>
+          <p class="text-xs font-bold uppercase tracking-wider text-zinc-500 mb-1 dark:text-zinc-400">${name}</p>
           <p id="cat-percent-${idPrefix}" class="text-2xl font-bold dark:text-white">${formatPercent(percent)}</p>
-          <p id="cat-value-${idPrefix}" class="text-sm text-slate-400 dark:text-slate-500">${formatCurrency(value)}</p>
+          <p id="cat-value-${idPrefix}" class="text-sm text-zinc-400 dark:text-zinc-500">${formatCurrency(value)}</p>
         </div>
         <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: ${color}15">
           <div class="w-6 h-6 rounded-full" style="background-color: ${color}"></div>
@@ -1241,36 +1267,47 @@ function renderAssets() {
   tableBody.innerHTML = assets.map(asset => {
     const currentPercent = totalAssets > 0 ? (asset.value / totalAssets) * 100 : 0;
     return `
-      <tr class="hover:bg-slate-50/50 transition-colors group dark:hover:bg-slate-800/50">
-        <td class="px-3 sm:px-6 py-4 min-w-[120px] sm:min-w-[150px]">
-          <div class="flex flex-col gap-0.5">
+      <tr class="hover:bg-zinc-50/50 transition-colors group dark:hover:bg-zinc-800/50">
+        <td class="px-3 sm:px-6 py-4 min-w-[120px] sm:min-w-[180px]">
+          <div class="flex flex-col gap-1">
             <input
               type="text"
               value="${isPrivacyMode ? '•••••' : asset.name}"
               data-id="${asset.id}"
               data-type="name"
-              class="asset-input w-full bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-0 sm:py-1 text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 dark:hover:border-slate-700"
+              class="asset-input w-full bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-0 sm:py-0.5 text-sm sm:text-base font-bold text-zinc-800 dark:text-zinc-200 dark:hover:border-zinc-700"
             />
-            ${asset.isRealEstate ? '<span class="text-[9px] font-bold uppercase tracking-widest text-emerald-500 dark:text-emerald-400">Vastgoed</span>' : ''}
+            <div class="flex items-center gap-2">
+              <select
+                data-id="${asset.id}"
+                data-type="category"
+                class="asset-input bg-transparent border-none text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-emerald-600/70 focus:ring-0 cursor-pointer hover:text-emerald-600 dark:text-emerald-400/70 dark:hover:text-emerald-400 p-0"
+              >
+                <option value="Groei" ${asset.category === 'Groei' ? 'selected' : ''}>Groei</option>
+                <option value="Defensief" ${asset.category === 'Defensief' ? 'selected' : ''}>Defensief</option>
+                <option value="Speculatief" ${asset.category === 'Speculatief' ? 'selected' : ''}>Speculatief</option>
+              </select>
+              ${asset.isRealEstate ? '<span class="text-[9px] font-black uppercase tracking-widest bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded dark:bg-emerald-900/40 dark:text-emerald-300">Vastgoed</span>' : ''}
+            </div>
           </div>
         </td>
-        <td class="px-3 sm:px-6 py-4 min-w-[100px] sm:min-w-[180px]">
+        <td class="px-3 sm:px-6 py-4 min-w-[120px] sm:min-w-[200px]">
           <div class="flex flex-col gap-1.5">
             <div class="flex items-center justify-between gap-1 sm:gap-2">
               <div class="flex items-center gap-1">
-                <span class="text-slate-400 font-mono text-sm sm:text-base">€</span>
+                <span class="text-zinc-400 font-mono text-sm sm:text-base">€</span>
                 <input
                   type="text"
                   value="${formatNumber(asset.value)}"
                   data-id="${asset.id}"
                   data-type="value"
-                  class="asset-input asset-value-input w-20 sm:w-24 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-slate-700"
+                  class="asset-input asset-value-input w-24 sm:w-28 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-zinc-700"
                 />
               </div>
               <span class="font-mono text-xs sm:text-sm font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">${formatPercent(currentPercent)}</span>
             </div>
             <!-- Progress Bar -->
-            <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
+            <div class="w-full bg-zinc-100 dark:bg-zinc-800 rounded-full h-1.5 overflow-hidden">
               <div 
                 class="h-full rounded-full transition-all duration-500" 
                 style="width: ${Math.min(100, currentPercent)}%; background-color: ${asset.color}"
@@ -1278,31 +1315,23 @@ function renderAssets() {
             </div>
           </div>
         </td>
-        <td class="px-3 sm:px-6 py-4 text-right min-w-[80px] sm:min-w-[120px]">
-          <div class="flex items-center justify-end gap-2 sm:gap-3">
-            <select
-              data-id="${asset.id}"
-              data-type="category"
-              class="asset-input hidden sm:block bg-transparent border-none text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 focus:ring-0 cursor-pointer hover:text-slate-600 dark:hover:text-slate-200 p-0"
-            >
-              <option value="Groei" ${asset.category === 'Groei' ? 'selected' : ''}>Groei</option>
-              <option value="Defensief" ${asset.category === 'Defensief' ? 'selected' : ''}>Defensief</option>
-              <option value="Speculatief" ${asset.category === 'Speculatief' ? 'selected' : ''}>Speculatief</option>
-            </select>
+        <td class="px-3 sm:px-6 py-4 text-right min-w-[80px] sm:min-w-[100px]">
+          <div class="flex items-center justify-end gap-1">
             <div class="${isPlannerMode ? 'flex' : 'hidden'} items-center gap-1">
               <input
                 type="number"
                 value="${asset.target}"
                 data-id="${asset.id}"
                 data-type="target"
-                class="asset-input w-8 sm:w-10 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-right text-sm dark:text-white dark:hover:border-slate-700"
+                class="asset-input w-8 sm:w-10 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-right text-sm dark:text-white dark:hover:border-zinc-700"
               />
-              <span class="text-slate-400 font-mono text-xs sm:text-sm">%</span>
+              <span class="text-zinc-400 font-mono text-xs sm:text-sm">%</span>
             </div>
+            <span class="${!isPlannerMode ? 'block' : 'hidden'} text-xs font-mono text-zinc-400">${formatPercent(asset.target)}</span>
           </div>
         </td>
         <td class="px-3 sm:px-6 py-4 text-right">
-          <button data-id="${asset.id}" class="delete-asset-btn text-slate-400 hover:text-red-500 transition-colors p-1" title="Verwijderen">
+          <button data-id="${asset.id}" class="delete-asset-btn p-2 text-zinc-300 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20" title="Verwijderen">
             <i data-lucide="trash-2" class="w-4 h-4"></i>
           </button>
         </td>
@@ -1312,10 +1341,26 @@ function renderAssets() {
 
   // Add event listeners for inputs
   tableBody.querySelectorAll('.asset-input').forEach(input => {
+    if ((input as HTMLInputElement).dataset.type === 'value') {
+      formatNumericInput(input as HTMLInputElement, (val) => {
+        const id = (input as HTMLInputElement).dataset.id;
+        assets = assets.map(a => a.id === id ? { ...a, value: val } : a);
+        if ((window as any).assetUpdateTimeout) clearTimeout((window as any).assetUpdateTimeout);
+        (window as any).assetUpdateTimeout = setTimeout(() => updateUI(), 500);
+      });
+    }
+
     input.addEventListener('focus', (e) => {
       const target = e.target as HTMLInputElement;
-      if (target.dataset.type === 'value') {
-        target.value = parseNumber(target.value).toString();
+      const id = target.dataset.id;
+      const type = target.dataset.type;
+      const asset = assets.find(a => a.id === id);
+      if (!asset) return;
+
+      if (type === 'value') {
+        target.value = asset.value.toString();
+      } else if (type === 'name') {
+        target.value = asset.name;
       }
     });
 
@@ -1370,14 +1415,14 @@ function renderRebalancePlan() {
     
     const isOver = deviation > 1;
     const isUnder = deviation < -1;
-    const statusClass = isOver ? "bg-red-50/50 border-red-100 dark:bg-red-900/20 dark:border-red-900/30" : isUnder ? "bg-emerald-50/50 border-emerald-100 dark:bg-emerald-900/20 dark:border-emerald-900/30" : "bg-slate-50/50 border-slate-100 dark:bg-slate-800/50 dark:border-slate-800";
+    const statusClass = isOver ? "bg-red-50/50 border-red-100 dark:bg-red-900/20 dark:border-red-900/30" : isUnder ? "bg-emerald-50/50 border-emerald-100 dark:bg-emerald-900/20 dark:border-emerald-900/30" : "bg-zinc-50/50 border-zinc-100 dark:bg-zinc-800/50 dark:border-zinc-800";
     const icon = isOver ? "arrow-up-right" : isUnder ? "arrow-down-right" : "minus";
-    const iconColor = isOver ? "text-red-500" : isUnder ? "text-emerald-500" : "text-slate-400";
+    const iconColor = isOver ? "text-red-500" : isUnder ? "text-emerald-500" : "text-zinc-400";
 
     return `
       <div class="p-4 rounded-xl border flex flex-col gap-1 ${statusClass}">
         <div class="flex justify-between items-start">
-          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">${asset.name}</span>
+          <span class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">${asset.name}</span>
           <i data-lucide="${icon}" class="w-4 h-4 ${iconColor}"></i>
         </div>
         <div class="flex items-baseline gap-2">
@@ -1386,7 +1431,7 @@ function renderRebalancePlan() {
             (${deviation > 0 ? '+' : ''}${deviation.toFixed(1)}%)
           </span>
         </div>
-        <p class="text-xs text-slate-500 mt-1 dark:text-slate-400">
+        <p class="text-xs text-zinc-500 mt-1 dark:text-zinc-400">
           ${rebalanceAmount > 0 ? `Koop ${formatCurrency(rebalanceAmount)} om doel te bereiken.` : rebalanceAmount < 0 ? `Verkoop ${formatCurrency(Math.abs(rebalanceAmount))} om doel te bereiken.` : "Asset is in balans."}
         </p>
       </div>
@@ -1460,8 +1505,8 @@ function renderHistory() {
         return `
           <div class="flex items-center text-sm sm:text-base group">
             <div class="w-2 h-2 sm:w-3 sm:h-3 rounded-full shrink-0 mr-2 sm:mr-3 transition-transform group-hover:scale-125" style="background-color: ${asset.color}"></div>
-            <span class="text-slate-600 flex-1 truncate dark:text-slate-400" title="${displayName}">${displayName}</span>
-            <span class="font-mono font-bold text-slate-900 ml-2 dark:text-white text-sm sm:text-base">${formatPercent(currentPercent)}</span>
+            <span class="text-zinc-600 flex-1 truncate dark:text-zinc-400" title="${displayName}">${displayName}</span>
+            <span class="font-mono font-bold text-zinc-900 ml-2 dark:text-white text-sm sm:text-base">${formatPercent(currentPercent)}</span>
           </div>
         `;
       }).join('');
@@ -1471,13 +1516,13 @@ function renderHistory() {
       pieLegend.innerHTML = `
         <div class="flex items-center text-sm sm:text-base group">
           <div class="w-2 h-2 sm:w-3 sm:h-3 rounded-full shrink-0 mr-2 sm:mr-3 transition-transform group-hover:scale-125" style="background-color: #10b981"></div>
-          <span class="text-slate-600 flex-1 truncate dark:text-slate-400">Bezittingen</span>
-          <span class="font-mono font-bold text-slate-900 ml-2 dark:text-white text-sm sm:text-base">${formatPercent(assetPercent)}</span>
+          <span class="text-zinc-600 flex-1 truncate dark:text-zinc-400">Bezittingen</span>
+          <span class="font-mono font-bold text-zinc-900 ml-2 dark:text-white text-sm sm:text-base">${formatPercent(assetPercent)}</span>
         </div>
         <div class="flex items-center text-sm sm:text-base group">
           <div class="w-2 h-2 sm:w-3 sm:h-3 rounded-full shrink-0 mr-2 sm:mr-3 transition-transform group-hover:scale-125" style="background-color: #ef4444"></div>
-          <span class="text-slate-600 flex-1 truncate dark:text-slate-400">Schulden</span>
-          <span class="font-mono font-bold text-slate-900 ml-2 dark:text-white text-sm sm:text-base">${formatPercent(debtPercent)}</span>
+          <span class="text-zinc-600 flex-1 truncate dark:text-zinc-400">Schulden</span>
+          <span class="font-mono font-bold text-zinc-900 ml-2 dark:text-white text-sm sm:text-base">${formatPercent(debtPercent)}</span>
         </div>
       `;
     }
@@ -1488,9 +1533,9 @@ function renderHistory() {
     historyTableBody.innerHTML = history.slice().reverse().map((entry, idx) => {
       const realIdx = history.length - 1 - idx;
       return `
-        <tr class="hover:bg-slate-50/50 transition-colors group dark:hover:bg-slate-800/50">
-          <td class="px-6 py-4 text-sm font-medium text-slate-700 whitespace-nowrap dark:text-slate-300">${formatDate(entry.date)}</td>
-          <td class="px-6 py-4 text-sm font-mono dark:text-slate-400">${formatCurrency(entry.totalValue)}</td>
+        <tr class="hover:bg-zinc-50/50 transition-colors group dark:hover:bg-zinc-800/50">
+          <td class="px-6 py-4 text-sm font-medium text-zinc-700 whitespace-nowrap dark:text-zinc-300">${formatDate(entry.date)}</td>
+          <td class="px-6 py-4 text-sm font-mono dark:text-zinc-400">${formatCurrency(entry.totalValue)}</td>
           <td class="px-6 py-4 text-right space-x-2">
             <button data-idx="${realIdx}" class="load-history-btn text-emerald-600 hover:text-emerald-800 p-1 transition-colors dark:text-emerald-400 dark:hover:text-emerald-300" title="Laden">
               <i data-lucide="upload" class="w-4 h-4"></i>
@@ -1536,8 +1581,8 @@ function updateCharts() {
   const currentPercents = assets.map(a => totalAssets > 0 ? (a.value / totalAssets) * 100 : 0);
   const targets = assets.map(a => a.target);
 
-  const textColor = isDarkMode ? '#94a3b8' : '#64748b';
-  const gridColor = isDarkMode ? '#1e293b' : '#f1f5f9';
+  const textColor = isDarkMode ? '#a1a1aa' : '#71717a';
+  const gridColor = isDarkMode ? '#27272a' : '#f4f4f5';
 
   // Robust chart destruction to prevent ghosting
   const destroyChart = (chartVar: Chart | null, canvas: HTMLCanvasElement) => {
@@ -1555,7 +1600,7 @@ function updateCharts() {
         data: values,
         backgroundColor: colors,
         borderWidth: isDarkMode ? 2 : 0,
-        borderColor: isDarkMode ? '#0f172a' : '#ffffff',
+        borderColor: isDarkMode ? '#09090b' : '#ffffff',
         hoverOffset: 10
       }]
     },
@@ -1584,10 +1629,10 @@ function updateCharts() {
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: isDarkMode ? '#1e293b' : '#ffffff',
-          titleColor: isDarkMode ? '#ffffff' : '#0f172a',
-          bodyColor: isDarkMode ? '#cbd5e1' : '#64748b',
-          borderColor: isDarkMode ? '#334155' : '#e2e8f0',
+          backgroundColor: isDarkMode ? '#27272a' : '#ffffff',
+          titleColor: isDarkMode ? '#ffffff' : '#09090b',
+          bodyColor: isDarkMode ? '#d4d4d8' : '#71717a',
+          borderColor: isDarkMode ? '#3f3f46' : '#e4e4e7',
           borderWidth: 1,
           yAlign: 'bottom',
           callbacks: {
@@ -1950,28 +1995,7 @@ function initEventListeners() {
       const target = e.target as HTMLInputElement;
       if (target.classList.contains('asset-input')) {
         const type = target.dataset.type;
-        if (type === 'value') {
-          const originalValue = target.value;
-          if (originalValue === '') return;
-
-          const cursorPosition = target.selectionStart || 0;
-          const digitsBefore = originalValue.substring(0, cursorPosition).replace(/\./g, '');
-          
-          const val = parseNumber(originalValue);
-          const formatted = formatNumber(val);
-          target.value = formatted;
-
-          let newCursorPos = 0;
-          let digitCount = 0;
-          for (let i = 0; i < formatted.length; i++) {
-            if (formatted[i] !== '.') {
-              digitCount++;
-            }
-            newCursorPos = i + 1;
-            if (digitCount >= digitsBefore.length) break;
-          }
-          target.setSelectionRange(newCursorPos, newCursorPos);
-        } else if (type === 'target') {
+        if (type === 'target') {
           const val = parseFloat(target.value);
           const isValid = !isNaN(val) && val >= 0 && val <= 100;
           if (!isValid && target.value !== '') {
@@ -2236,7 +2260,7 @@ function initEventListeners() {
         statusDesc.innerHTML = '<span class="text-amber-600 dark:text-amber-400 font-semibold">Huidige status: Basis obfuscatie.</span><br>Zonder wachtwoord is je data verborgen in de browser, maar niet cryptografisch beveiligd tegen hackers. Stel een wachtwoord in voor volledige AES-256 encryptie.';
       }
       if (securityStatusIcon) {
-        securityStatusIcon.className = 'p-2 rounded-lg bg-slate-200 text-slate-500 dark:bg-slate-800 dark:text-slate-400';
+        securityStatusIcon.className = 'p-2 rounded-lg bg-zinc-200 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400';
         securityStatusIcon.innerHTML = '<i data-lucide="unlock" class="w-5 h-5"></i>';
       }
       if (savePasswordBtn) savePasswordBtn.textContent = 'Wachtwoord Instellen';
