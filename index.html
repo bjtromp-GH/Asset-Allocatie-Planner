@@ -487,6 +487,20 @@
                       <div class="bg-gradient-to-r from-purple-400 to-purple-600 h-full w-full opacity-40"></div>
                     </div>
                   </div>
+
+                  <!-- Retirement Age Input -->
+                  <div class="bg-zinc-50 dark:bg-zinc-800/50 p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:border-blue-200 dark:hover:border-blue-900 transition-colors sm:col-span-2">
+                    <div class="flex items-center justify-between mb-2">
+                      <label class="text-[11px] uppercase tracking-widest font-black text-zinc-400 dark:text-zinc-500">STREEFLEEFTIJD PENSIOEN (AOW)</label>
+                      <div class="flex items-center gap-1">
+                        <input id="retirement-age-input" type="number" class="bg-transparent border-none p-0 w-12 text-right font-black focus:ring-0 text-base dark:text-white" value="67" min="0" max="120" />
+                        <span class="text-blue-500 font-bold text-[10px] uppercase">JR</span>
+                      </div>
+                    </div>
+                    <div class="w-full bg-zinc-200 dark:bg-zinc-700 h-1.5 rounded-full overflow-hidden">
+                      <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-full w-full opacity-40"></div>
+                    </div>
+                  </div>
                 </div>
 
                 <!-- Freedom Metrics -->
@@ -517,6 +531,15 @@
                     </div>
                     <p id="freedom-runway-age" class="text-3xl font-black text-zinc-900 dark:text-white tracking-tight relative z-20">-- jr</p>
                     <p class="text-[11px] text-purple-500/80 dark:text-purple-400/60 mt-2 font-medium relative z-20">Gebaseerd op runway</p>
+                  </div>
+
+                  <div id="retirement-diff-card" class="p-5 rounded-xl bg-gradient-to-br from-blue-50 to-blue-50 dark:from-blue-900/20 dark:to-blue-900/20 border border-blue-100 dark:border-blue-800/50 hover:shadow-md transition-shadow relative overflow-hidden hidden">
+                    <div class="flex justify-between items-start mb-2 relative z-20">
+                      <p class="text-[11px] uppercase tracking-widest font-black text-blue-600 dark:text-blue-400">PENSIOEN VOORSPRONG</p>
+                      <i data-lucide="party-popper" class="w-4 h-4 text-blue-400"></i>
+                    </div>
+                    <p id="freedom-retirement-diff" class="text-3xl font-black text-zinc-900 dark:text-white tracking-tight relative z-20">0 jr</p>
+                    <p class="text-[11px] text-blue-500/80 dark:text-blue-400/60 mt-2 font-medium relative z-20">Eerder stoppen met werken</p>
                   </div>
                   
                   <div class="p-5 rounded-xl bg-gradient-to-br from-emerald-50 to-emerald-50 dark:from-emerald-900/20 dark:to-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50 hover:shadow-md transition-shadow relative overflow-hidden">

@@ -257,6 +257,7 @@ let isDarkMode = false;
 let isPrivacyMode = false;
 let monthlyExpenses = 2500;
 let userAge = 35;
+let retirementAge = 67;
 let freedomCustomNetWorth = 0;
 let masterPassword = '';
 let isEncrypted = false;
@@ -402,6 +403,7 @@ function saveState() {
     isPrivacyMode,
     monthlyExpenses,
     userAge,
+    retirementAge,
     freedomCustomNetWorth,
     isPlannerMode,
     pieChartMode
@@ -582,6 +584,9 @@ function applyState(state: any) {
   }
   if (state.userAge !== undefined) {
     userAge = state.userAge;
+  }
+  if (state.retirementAge !== undefined) {
+    retirementAge = state.retirementAge;
   }
   if (state.freedomCustomNetWorth !== undefined) {
     freedomCustomNetWorth = state.freedomCustomNetWorth;
@@ -870,9 +875,11 @@ function updateUI() {
   // Freedom Calculator Logic
   const freedomTimeEl = document.getElementById('freedom-time');
   const freedomRunwayAgeEl = document.getElementById('freedom-runway-age');
+  const freedomRetirementDiffEl = document.getElementById('freedom-retirement-diff');
   const freedomPassiveEl = document.getElementById('freedom-passive');
   const monthlyExpensesInput = document.getElementById('monthly-expenses-input') as HTMLInputElement;
   const userAgeInput = document.getElementById('user-age-input') as HTMLInputElement;
+  const retirementAgeInput = document.getElementById('retirement-age-input') as HTMLInputElement;
   const freedomCustomNetworthInput = document.getElementById('freedom-custom-networth') as HTMLInputElement;
 
   if (monthlyExpensesInput) {
@@ -881,6 +888,10 @@ function updateUI() {
   
   if (userAgeInput) {
     userAge = parseInt(userAgeInput.value) || 0;
+  }
+
+  if (retirementAgeInput) {
+    retirementAge = parseInt(retirementAgeInput.value) || 0;
   }
 
   if (freedomCustomNetworthInput && !freedomCustomNetworthInput.matches(':focus')) {
@@ -897,6 +908,7 @@ function updateUI() {
     if (isPrivacyMode) {
       freedomTimeEl.textContent = '•• mnd';
       if (freedomRunwayAgeEl) freedomRunwayAgeEl.textContent = '•• jr';
+      if (freedomRetirementDiffEl) freedomRetirementDiffEl.textContent = '•• jr';
       freedomPassiveEl.textContent = '€ ••••';
     } else {
       if (months >= 12) {
@@ -905,9 +917,20 @@ function updateUI() {
         freedomTimeEl.textContent = `${Math.max(0, Math.floor(months))} mnd`;
       }
       
+      const freedomAge = userAge + (months / 12);
       if (freedomRunwayAgeEl) {
-        const freedomAge = userAge + (months / 12);
         freedomRunwayAgeEl.textContent = `${freedomAge.toFixed(1)} jr`;
+      }
+
+      if (freedomRetirementDiffEl) {
+        const diff = retirementAge - freedomAge;
+        if (diff > 0) {
+          freedomRetirementDiffEl.textContent = `${diff.toFixed(1)} jr`;
+          document.getElementById('retirement-diff-card')?.classList.remove('hidden');
+        } else {
+          freedomRetirementDiffEl.textContent = '0 jr';
+          document.getElementById('retirement-diff-card')?.classList.add('hidden');
+        }
       }
       
       freedomPassiveEl.textContent = formatCurrency(Math.max(0, passiveMonthly));
@@ -2484,6 +2507,15 @@ function initEventListeners() {
     userAgeInputUpdate.value = userAge.toString();
     userAgeInputUpdate.addEventListener('input', () => {
       userAge = parseInt(userAgeInputUpdate.value) || 0;
+      updateUI();
+    });
+  }
+
+  const retirementAgeInputUpdate = document.getElementById('retirement-age-input') as HTMLInputElement;
+  if (retirementAgeInputUpdate) {
+    retirementAgeInputUpdate.value = retirementAge.toString();
+    retirementAgeInputUpdate.addEventListener('input', () => {
+      retirementAge = parseInt(retirementAgeInputUpdate.value) || 0;
       updateUI();
     });
   }

@@ -399,6 +399,19 @@
                             </div>
                         </div>
 
+                        <div class="bg-zinc-50 dark:bg-zinc-800/50 p-4 rounded-xl border border-zinc-100 dark:border-zinc-800">
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="text-[10px] uppercase tracking-wider font-bold text-zinc-500 dark:text-zinc-400">Streefleeftijd Pensioen (AOW)</label>
+                                <div class="flex items-center gap-1">
+                                    <input id="retirement-age-input" type="number" class="bg-transparent border-none p-0 w-10 text-right font-bold focus:ring-0 text-sm dark:text-white" value="67" min="0" max="120" />
+                                    <span class="text-zinc-400 text-[10px] font-bold">JR</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-zinc-200 dark:bg-zinc-700 h-1 rounded-full overflow-hidden">
+                                <div class="bg-blue-500 h-full w-full opacity-30"></div>
+                            </div>
+                        </div>
+
                         <!-- Freedom Metrics -->
                         <div class="grid grid-cols-2 gap-4">
                             <div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50">
@@ -410,6 +423,11 @@
                                 <p class="text-[10px] uppercase tracking-wider font-bold text-purple-600 dark:text-purple-400 mb-1">Vrij tot je</p>
                                 <p id="freedom-runway-age" class="text-xl font-bold text-zinc-900 dark:text-white">-- jr</p>
                                 <p class="text-[10px] text-purple-500/70 dark:text-purple-400/50 mt-1">Gebaseerd op runway</p>
+                            </div>
+                            <div id="retirement-diff-card" class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/50 hidden">
+                                <p class="text-[10px] uppercase tracking-wider font-bold text-blue-600 dark:text-blue-400 mb-1">Pensioen Voorsprong</p>
+                                <p id="freedom-retirement-diff" class="text-xl font-bold text-zinc-900 dark:text-white">0 jr</p>
+                                <p class="text-[10px] text-blue-500/70 dark:text-blue-400/50 mt-1">Eerder stoppen</p>
                             </div>
                             <div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50 col-span-2">
                                 <p class="text-[10px] uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1">Passief Inkomen</p>
@@ -1038,6 +1056,7 @@
         let isPrivacyMode = false;
         let monthlyExpenses = 2500;
         let userAge = 35;
+        let retirementAge = 67;
         let freedomCustomNetWorth = 0;
         let pieChartMode = 'bruto';
         let history = [];
@@ -1185,6 +1204,7 @@
                 isPrivacyMode,
                 monthlyExpenses,
                 userAge,
+                retirementAge,
                 freedomCustomNetWorth,
                 pieChartMode
             };
@@ -1298,6 +1318,9 @@
             }
             if (state.userAge !== undefined) {
                 userAge = state.userAge;
+            }
+            if (state.retirementAge !== undefined) {
+                retirementAge = state.retirementAge;
             }
             if (state.freedomCustomNetWorth !== undefined) {
                 freedomCustomNetWorth = state.freedomCustomNetWorth;
@@ -1497,15 +1520,20 @@
             // Freedom Calculator Logic
             const freedomTimeEl = document.getElementById('freedom-time');
             const freedomRunwayAgeEl = document.getElementById('freedom-runway-age');
+            const freedomRetirementDiffEl = document.getElementById('freedom-retirement-diff');
             const freedomPassiveEl = document.getElementById('freedom-passive');
             const monthlyExpensesInput = document.getElementById('monthly-expenses-input');
             const userAgeInput = document.getElementById('user-age-input');
+            const retirementAgeInput = document.getElementById('retirement-age-input');
 
             if (monthlyExpensesInput) {
                 monthlyExpenses = parseFloat(monthlyExpensesInput.value) || 0;
             }
             if (userAgeInput) {
                 userAge = parseInt(userAgeInput.value) || 0;
+            }
+            if (retirementAgeInput) {
+                retirementAge = parseInt(retirementAgeInput.value) || 0;
             }
 
             if (freedomTimeEl && freedomPassiveEl) {
@@ -1515,6 +1543,7 @@
                 if (isPrivacyMode) {
                     freedomTimeEl.textContent = '•• mnd';
                     if (freedomRunwayAgeEl) freedomRunwayAgeEl.textContent = '•• jr';
+                    if (freedomRetirementDiffEl) freedomRetirementDiffEl.textContent = '•• jr';
                     freedomPassiveEl.textContent = '€ ••••';
                 } else {
                     if (months >= 12) {
@@ -1523,9 +1552,21 @@
                         freedomTimeEl.textContent = `${Math.floor(months)} mnd`;
                     }
                     
+                    const freedomAge = userAge + (months / 12);
                     if (freedomRunwayAgeEl) {
-                        const freedomAge = userAge + (months / 12);
                         freedomRunwayAgeEl.textContent = `${freedomAge.toFixed(1)} jr`;
+                    }
+
+                    if (freedomRetirementDiffEl) {
+                        const diff = retirementAge - freedomAge;
+                        const diffCard = document.getElementById('retirement-diff-card');
+                        if (diff > 0) {
+                            freedomRetirementDiffEl.textContent = `${diff.toFixed(1)} jr`;
+                            diffCard?.classList.remove('hidden');
+                        } else {
+                            freedomRetirementDiffEl.textContent = '0 jr';
+                            diffCard?.classList.add('hidden');
+                        }
                     }
                     
                     freedomPassiveEl.textContent = formatCurrency(passiveMonthly);
@@ -2634,6 +2675,15 @@
                 userAgeInput.value = userAge;
                 userAgeInput.addEventListener('input', () => {
                     userAge = parseInt(userAgeInput.value) || 0;
+                    updateUI();
+                });
+            }
+
+            const retirementAgeInput = document.getElementById('retirement-age-input');
+            if (retirementAgeInput) {
+                retirementAgeInput.value = retirementAge;
+                retirementAgeInput.addEventListener('input', () => {
+                    retirementAge = parseInt(retirementAgeInput.value) || 0;
                     updateUI();
                 });
             }
