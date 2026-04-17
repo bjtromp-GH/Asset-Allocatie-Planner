@@ -325,6 +325,14 @@
                   <button id="view-netto-btn" class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all text-white/80 hover:text-white">Netto</button>
                 </div>
               </div>
+
+              <!-- Insight Summary -->
+              <div id="pie-insight" class="mt-1 mb-4 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800/50 hidden">
+                <p class="text-xs font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-2">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                  <span id="pie-insight-text"></span>
+                </p>
+              </div>
               <div class="h-[280px] w-full relative flex items-center justify-center">
                 <canvas id="pie-chart"></canvas>
                 <!-- Empty State Overlay -->
@@ -357,14 +365,6 @@
                   </button>
                 </div>
                 <span id="pie-total-value" class="text-lg font-bold text-zinc-900 dark:text-white">€ 0,00</span>
-              </div>
-
-              <!-- Insight Summary -->
-              <div id="pie-insight" class="mt-4 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800/50 hidden">
-                <p class="text-xs font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-2">
-                  <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-                  <span id="pie-insight-text"></span>
-                </p>
               </div>
               
               <!-- Legend -->
