@@ -2741,6 +2741,37 @@ function initEventListeners() {
     });
   }
 
+  // Intro Carousel Logic
+  const introCarousel = document.getElementById('intro-carousel');
+  const introDots = document.querySelectorAll('.intro-pagination-dot');
+  
+  if (introCarousel && introDots.length > 0) {
+    introCarousel.addEventListener('scroll', () => {
+      const scrollPos = introCarousel.scrollLeft;
+      const width = introCarousel.offsetWidth;
+      const activeIndex = Math.round(scrollPos / width);
+      
+      introDots.forEach((dot, idx) => {
+        if (idx === activeIndex) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    }, { passive: true });
+
+    // Enable clicking dots to navigate
+    introDots.forEach((dot, idx) => {
+      dot.addEventListener('click', () => {
+        const width = introCarousel.offsetWidth;
+        introCarousel.scrollTo({
+          left: idx * width,
+          behavior: 'smooth'
+        });
+      });
+    });
+  }
+
   // Onboarding
   const onboardingModal = document.getElementById('onboarding-modal');
   const onboardingStartBtn = document.getElementById('onboarding-start-btn');

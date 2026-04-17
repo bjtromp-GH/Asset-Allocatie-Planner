@@ -72,6 +72,50 @@
   animation: fadeOut 0.5s ease-in-out forwards;
 }
 
+/* Swipable Intro Carousel */
+.intro-carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.intro-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.intro-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.intro-pagination-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.intro-pagination-dot.active {
+  width: 24px;
+  background-color: white;
+}
+
+.dark .intro-pagination-dot {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark .intro-pagination-dot.active {
+  background-color: #10b981;
+}
+
 /* Bottom Sheet Styles */
 .bottom-sheet {
   position: fixed;
