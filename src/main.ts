@@ -2767,8 +2767,8 @@ function initEventListeners() {
         if (activeIndex === 0) {
           introScreen.classList.remove('bg-emerald-600');
           introScreen.classList.add('bg-white');
-          introFooterText.classList.remove('text-emerald-100');
-          introFooterText.classList.add('text-zinc-400', 'dark:text-zinc-500');
+          introFooterText.classList.remove('text-emerald-100', 'opacity-0', 'pointer-events-none');
+          introFooterText.classList.add('text-zinc-400', 'dark:text-zinc-500', 'opacity-100');
           
           // Button state: Emerald on White
           startIntroBtn.classList.remove('bg-white', 'text-emerald-600', 'hover:bg-zinc-100');
@@ -2776,8 +2776,8 @@ function initEventListeners() {
         } else {
           introScreen.classList.remove('bg-white');
           introScreen.classList.add('bg-emerald-600');
-          introFooterText.classList.remove('text-zinc-400', 'dark:text-zinc-500');
-          introFooterText.classList.add('text-emerald-100');
+          introFooterText.classList.remove('text-zinc-400', 'dark:text-zinc-500', 'opacity-100');
+          introFooterText.classList.add('text-emerald-100', 'opacity-0', 'pointer-events-none');
 
           // Button state: White on Emerald
           startIntroBtn.classList.remove('bg-emerald-600', 'text-white', 'hover:bg-emerald-700');
