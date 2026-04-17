@@ -2746,6 +2746,9 @@ function initEventListeners() {
   const introDots = document.querySelectorAll('.intro-pagination-dot');
   
   if (introCarousel && introDots.length > 0) {
+    const introScreen = document.getElementById('intro-screen');
+    const introFooterText = document.getElementById('intro-footer-text');
+
     introCarousel.addEventListener('scroll', () => {
       const scrollPos = introCarousel.scrollLeft;
       const width = introCarousel.offsetWidth;
@@ -2758,6 +2761,21 @@ function initEventListeners() {
           dot.classList.remove('active');
         }
       });
+
+      // Update background and footer text color based on active slide
+      if (introScreen && introFooterText) {
+        if (activeIndex === 0) {
+          introScreen.classList.remove('bg-emerald-600');
+          introScreen.classList.add('bg-white');
+          introFooterText.classList.remove('text-emerald-100');
+          introFooterText.classList.add('text-zinc-400', 'dark:text-zinc-500');
+        } else {
+          introScreen.classList.remove('bg-white');
+          introScreen.classList.add('bg-emerald-600');
+          introFooterText.classList.remove('text-zinc-400', 'dark:text-zinc-500');
+          introFooterText.classList.add('text-emerald-100');
+        }
+      }
     }, { passive: true });
 
     // Enable clicking dots to navigate
