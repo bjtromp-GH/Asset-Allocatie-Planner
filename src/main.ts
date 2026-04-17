@@ -1497,6 +1497,9 @@ function renderHistory() {
   }
 
   const pieLegend = document.getElementById('pie-legend');
+  const pieInsight = document.getElementById('pie-insight');
+  const pieInsightText = document.getElementById('pie-insight-text');
+
   if (pieLegend) {
     if (pieChartMode === 'bruto') {
       pieLegend.innerHTML = assets.map(asset => {
@@ -1510,6 +1513,19 @@ function renderHistory() {
           </div>
         `;
       }).join('');
+
+      // Handle Insights
+      if (pieInsight && pieInsightText) {
+        if (assets.length > 0 && totalAssets > 0) {
+          const largest = [...assets].sort((a, b) => b.value - a.value)[0];
+          const percent = (largest.value / totalAssets) * 100;
+          const largestName = isPrivacyMode ? 'één van je assets' : largest.name;
+          pieInsightText.textContent = `Met ${formatPercent(percent)} is ${largestName} je grootste asset.`;
+          pieInsight.classList.remove('hidden');
+        } else {
+          pieInsight.classList.add('hidden');
+        }
+      }
     } else {
       const assetPercent = (totalAssets + totalDebts) > 0 ? (totalAssets / (totalAssets + totalDebts)) * 100 : 0;
       const debtPercent = (totalAssets + totalDebts) > 0 ? (totalDebts / (totalAssets + totalDebts)) * 100 : 0;
@@ -1525,6 +1541,7 @@ function renderHistory() {
           <span class="font-mono font-bold text-zinc-900 ml-2 dark:text-white text-sm sm:text-base">${formatPercent(debtPercent)}</span>
         </div>
       `;
+      if (pieInsight) pieInsight.classList.add('hidden');
     }
   }
 

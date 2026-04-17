@@ -317,7 +317,7 @@
             <section id="pie-chart-section" class="bg-white rounded-xl border border-zinc-200 p-6 dark:bg-zinc-900 dark:border-zinc-800">
               <div class="flex items-center justify-between mb-4">
                 <h2 class="font-semibold flex items-center gap-2 dark:text-white">
-                  <i id="header-pie-icon" data-lucide="pie-chart" class="w-4 h-4 text-emerald-600 animate-float cursor-pointer hover:scale-125 transition-transform" title="Klik om voorbeelddata te laden"></i>
+                  <i id="header-pie-icon" data-lucide="pie-chart" class="w-4 h-4 text-emerald-600"></i>
                   Portfolio Verdeling
                 </h2>
                 <div class="flex bg-emerald-600 p-1 rounded-xl shadow-inner">
@@ -357,6 +357,14 @@
                   </button>
                 </div>
                 <span id="pie-total-value" class="text-lg font-bold text-zinc-900 dark:text-white">€ 0,00</span>
+              </div>
+
+              <!-- Insight Summary -->
+              <div id="pie-insight" class="mt-4 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800/50 hidden">
+                <p class="text-xs font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-2">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                  <span id="pie-insight-text"></span>
+                </p>
               </div>
               
               <!-- Legend -->
