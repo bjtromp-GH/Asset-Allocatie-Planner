@@ -1180,7 +1180,7 @@ function renderDebts() {
       <td class="px-3 sm:px-6 py-4">
         <div class="flex items-center gap-1">
           <span class="text-zinc-400 text-sm">€</span>
-          <input type="text" value="${formatNumber(debt.value)}" class="debt-value-input bg-transparent border-none p-0 focus:ring-0 font-mono font-bold text-red-600 dark:text-red-400 w-full text-base" data-id="${debt.id}" />
+          <input type="text" value="${formatNumber(debt.value)}" class="debt-value-input bg-transparent border-none p-0 focus:ring-0 font-mono font-bold text-red-600 dark:text-red-400 w-24 sm:w-32 md:w-36 text-base" data-id="${debt.id}" />
         </div>
       </td>
       <td class="px-3 sm:px-6 py-4 text-right">
@@ -1340,7 +1340,7 @@ function renderAssets() {
                   value="${formatNumber(asset.value)}"
                   data-id="${asset.id}"
                   data-type="value"
-                  class="asset-input asset-value-input w-24 sm:w-28 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-base dark:text-white dark:hover:border-zinc-700"
+                  class="asset-input asset-value-input w-24 sm:w-32 md:w-40 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-base dark:text-white dark:hover:border-zinc-700"
                 />
               </div>
               <span class="font-mono text-sm font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">${formatPercent(currentPercent)}</span>
