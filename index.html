@@ -30,26 +30,26 @@
             
             <div class="flex items-center gap-1 sm:gap-2 relative" id="header-actions-container">
               <!-- Mobile & Desktop Actions -->
-              <button id="faq-btn" class="hidden sm:block p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" title="Veelgestelde vragen">
+              <button id="faq-btn" class="hidden sm:block p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" aria-label="Veelgestelde vragen" title="Veelgestelde vragen">
                 <i data-lucide="help-circle" class="w-5 h-5"></i>
               </button>
-              <button id="theme-toggle" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" title="Wissel thema">
+              <button id="theme-toggle" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" aria-label="Wissel thema" title="Wissel thema">
                 <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
                 <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
               </button>
-              <button id="info-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" title="Uitleg over de app">
+              <button id="info-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" aria-label="Uitleg over de app" title="Uitleg over de app">
                 <i data-lucide="info" class="w-5 h-5"></i>
               </button>
-              <button id="average-dutch-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" title="Gemiddelde Nederlander">
+              <button id="average-dutch-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" aria-label="Gemiddelde Nederlander" title="Gemiddelde Nederlander">
                 <i data-lucide="users" class="w-5 h-5"></i>
               </button>
-              <button id="security-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white relative" title="Beveiliging instellingen">
+              <button id="security-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white relative" aria-label="Beveiliging instellingen" title="Beveiliging instellingen">
                 <i data-lucide="lock" class="w-5 h-5"></i>
                 <span id="security-badge" class="absolute top-2 right-2 w-2 h-2 bg-amber-500 rounded-full hidden">
                   <span class="absolute inset-0 rounded-full bg-amber-500 animate-ping opacity-75"></span>
                 </span>
               </button>
-              <button id="reset-app-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" title="Begin opnieuw (Reset)">
+              <button id="reset-app-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" aria-label="Begin opnieuw (Reset)" title="Begin opnieuw (Reset)">
                 <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
               </button>
               <button id="save-history-btn" class="bg-white text-emerald-600 hover:bg-emerald-50 px-3 sm:px-4 py-2 rounded-lg flex items-center gap-2 transition-all active:scale-95 ml-2">
@@ -390,8 +390,9 @@
                   <input 
                     id="target-net-worth-input" 
                     type="text" 
-                    class="w-full bg-zinc-50 border border-zinc-200 pl-12 pr-4 py-6 rounded-2xl text-4xl font-black text-zinc-900 placeholder:text-zinc-300 focus:bg-white focus:border-emerald-500 focus:ring-8 focus:ring-emerald-500/5 transition-all outline-none dark:bg-zinc-800/50 dark:border-zinc-700 dark:text-white shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] dark:shadow-none"
+                    class="w-full bg-zinc-50 border border-zinc-200 pl-12 pr-4 py-6 rounded-2xl text-4xl font-black text-zinc-900 placeholder:text-zinc-300 focus:bg-white dark:focus:bg-zinc-800 focus:border-emerald-500 focus:ring-8 focus:ring-emerald-500/5 transition-all outline-none dark:bg-zinc-800/50 dark:border-zinc-700 dark:text-white shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] dark:shadow-none"
                     placeholder="0"
+                    aria-label="Doelvermogen"
                   />
                   <!-- Smart Prompt when target is low or zero -->
                   <div id="target-prompt" class="absolute right-5 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none transition-all duration-300">
@@ -1198,19 +1199,19 @@
 
     <!-- Add Asset Modal -->
     <div id="add-asset-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4 bg-zinc-900/50 backdrop-blur-sm">
-      <div class="bg-white dark:bg-zinc-900 w-full max-md rounded-xl border border-zinc-100 dark:border-zinc-800 animate-in fade-in zoom-in duration-300 overflow-hidden">
-        <div class="p-6 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between bg-zinc-50 dark:bg-zinc-800/50">
+      <div class="bg-white dark:bg-zinc-900 w-full max-w-md max-h-[95vh] rounded-xl border border-zinc-100 dark:border-zinc-800 animate-in fade-in zoom-in duration-300 overflow-hidden flex flex-col">
+        <div class="p-6 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between bg-zinc-50 dark:bg-zinc-800/50 shrink-0">
           <div class="flex items-center gap-3">
             <div class="bg-emerald-600 p-2 rounded-xl text-white">
               <i data-lucide="plus" class="w-5 h-5"></i>
             </div>
             <h2 class="text-xl font-bold dark:text-white">Nieuwe Asset Toevoegen</h2>
           </div>
-          <button id="close-add-asset-modal" class="p-2 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-xl transition-colors text-zinc-500 dark:text-zinc-400">
+          <button id="close-add-asset-modal" class="p-2 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-xl transition-colors text-zinc-500 dark:text-zinc-400" aria-label="Sluiten">
             <i data-lucide="x" class="w-5 h-5"></i>
           </button>
         </div>
-        <div class="p-6 space-y-4">
+        <div class="p-6 space-y-4 overflow-y-auto custom-scrollbar">
           <div class="space-y-2">
             <label class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Naam</label>
             <input 

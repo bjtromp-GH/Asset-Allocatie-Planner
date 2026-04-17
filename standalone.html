@@ -89,23 +89,23 @@
                     
                     <div class="flex items-center gap-1 sm:gap-2">
                         <!-- Unified Actions -->
-                        <button id="theme-toggle" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" title="Wissel thema">
+                        <button id="theme-toggle" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" aria-label="Wissel thema" title="Wissel thema">
                             <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
                             <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
                         </button>
-                        <button id="info-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" title="Uitleg over de app">
+                        <button id="info-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" aria-label="Uitleg over de app" title="Uitleg over de app">
                             <i data-lucide="info" class="w-5 h-5"></i>
                         </button>
-                        <button id="security-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white relative" title="Beveiliging instellingen">
+                        <button id="security-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white relative" aria-label="Beveiliging instellingen" title="Beveiliging instellingen">
                             <i data-lucide="lock" class="w-5 h-5"></i>
                             <span id="security-badge" class="absolute top-2 right-2 w-2 h-2 bg-amber-500 rounded-full hidden">
                                 <span class="absolute inset-0 rounded-full bg-amber-500 animate-ping opacity-75"></span>
                             </span>
                         </button>
-                        <button id="reset-app-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" title="Begin opnieuw (Reset)">
+                        <button id="reset-app-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" aria-label="Begin opnieuw (Reset)" title="Begin opnieuw (Reset)">
                             <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
                         </button>
-                        <button id="save-history-btn" class="bg-white text-emerald-600 hover:bg-emerald-50 px-3 sm:px-4 py-2 rounded-lg flex items-center gap-2 transition-all shadow-sm active:scale-95 ml-2">
+                        <button id="save-history-btn" class="bg-white text-emerald-600 hover:bg-emerald-50 px-3 sm:px-4 py-2 rounded-lg flex items-center gap-2 transition-all shadow-sm active:scale-95 ml-2" aria-label="Sla op">
                             <i data-lucide="save" class="w-4 h-4"></i>
                             <span class="hidden sm:inline">Sla op</span>
                         </button>
@@ -220,13 +220,13 @@
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="bg-zinc-50/50 text-zinc-500 text-[10px] sm:text-xs uppercase tracking-wider font-semibold dark:bg-zinc-800/50 dark:text-zinc-400">
-                                    <th class="px-3 sm:px-6 py-3">Asset</th>
-                                    <th class="px-3 sm:px-6 py-3 whitespace-nowrap">
+                                    <th scope="col" class="px-3 sm:px-6 py-3">Asset</th>
+                                    <th scope="col" class="px-3 sm:px-6 py-3 whitespace-nowrap">
                                         <span class="sm:hidden">Waarde</span>
                                         <span class="hidden sm:inline">Huidige Waarde & %</span>
                                     </th>
-                                    <th id="target-column-header" class="px-6 py-3 text-right hidden sm:table-cell">Doel (%)</th>
-                                    <th class="px-3 sm:px-6 py-3 text-right sm:hidden">Acties</th>
+                                    <th scope="col" id="target-column-header" class="px-6 py-3 text-right hidden sm:table-cell">Doel (%)</th>
+                                    <th scope="col" class="px-3 sm:px-6 py-3 text-right sm:hidden">Acties</th>
                                 </tr>
                             </thead>
                             <tbody id="asset-table-body" class="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -301,8 +301,8 @@
                                     <i data-lucide="target" class="w-6 h-6 text-emerald-600 dark:text-emerald-400"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-0.5">Financieel Doel</p>
-                                    <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100">Doelvermogen</h3>
+                                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 mb-0.5">Financieel Doel</p>
+                                    <h3 class="text-sm font-bold text-zinc-800 dark:text-zinc-100">Doelvermogen</h3>
                                 </div>
                             </div>
                         </div>
@@ -314,8 +314,9 @@
                             <input 
                                 id="target-net-worth-input" 
                                 type="text" 
-                                class="w-full bg-zinc-50 border border-zinc-200 pl-12 pr-4 py-6 rounded-2xl text-4xl font-black text-zinc-900 placeholder:text-zinc-300 focus:bg-white focus:border-emerald-500 focus:ring-8 focus:ring-emerald-500/5 transition-all outline-none dark:bg-zinc-800/50 dark:border-zinc-700 dark:text-white shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] dark:shadow-none"
+                                class="w-full bg-zinc-50 border border-zinc-200 pl-12 pr-4 py-6 rounded-2xl text-4xl font-black text-zinc-900 placeholder:text-zinc-300 focus:bg-white dark:focus:bg-zinc-800 focus:border-emerald-500 focus:ring-8 focus:ring-emerald-500/5 transition-all outline-none dark:bg-zinc-800/50 dark:border-zinc-700 dark:text-white shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] dark:shadow-none"
                                 placeholder="0"
+                                aria-label="Doelvermogen"
                             />
                             <!-- Smart Prompt when target is low or zero -->
                             <div id="target-prompt" class="absolute right-5 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none transition-all duration-300">
@@ -933,19 +934,19 @@
 
     <!-- Add Asset Modal -->
     <div id="add-asset-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4 bg-zinc-900/50 backdrop-blur-sm">
-        <div class="bg-white dark:bg-zinc-900 w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-zinc-100 dark:border-zinc-800 animate-in fade-in zoom-in duration-300">
-            <div class="p-6 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between bg-zinc-50 dark:bg-zinc-800/50">
+        <div class="bg-white dark:bg-zinc-900 w-full max-w-md max-h-[95vh] rounded-3xl shadow-2xl overflow-hidden border border-zinc-100 dark:border-zinc-800 animate-in fade-in zoom-in duration-300 flex flex-col">
+            <div class="p-6 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between bg-zinc-50 dark:bg-zinc-800/50 shrink-0">
                 <div class="flex items-center gap-3">
                     <div class="bg-emerald-600 p-2 rounded-xl text-white">
                         <i data-lucide="plus" class="w-5 h-5"></i>
                     </div>
                     <h2 class="text-xl font-bold dark:text-white">Nieuwe Asset Toevoegen</h2>
                 </div>
-                <button id="close-add-asset-modal" class="p-2 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-xl transition-colors text-zinc-500 dark:text-zinc-400">
+                <button id="close-add-asset-modal" class="p-2 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-xl transition-colors text-zinc-500 dark:text-zinc-400" aria-label="Sluiten">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
-            <div class="p-6 space-y-4">
+            <div class="p-6 space-y-4 overflow-y-auto custom-scrollbar">
                 <div class="space-y-2">
                     <label class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Naam</label>
                     <input 
@@ -1497,14 +1498,14 @@
                     const check = document.getElementById(`milestone-check-${id}`);
                     if (icon && check) {
                         if (condition) {
-                            icon.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-400');
+                            icon.classList.remove('bg-zinc-100', 'dark:bg-zinc-800', 'text-zinc-400');
                             icon.classList.add('bg-emerald-100', 'dark:bg-emerald-900/40', 'text-emerald-600', 'dark:text-emerald-400');
-                            check.classList.remove('text-slate-200', 'dark:text-slate-800');
+                            check.classList.remove('text-zinc-200', 'dark:text-zinc-800');
                             check.classList.add('text-emerald-500');
                         } else {
-                            icon.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-400');
+                            icon.classList.add('bg-zinc-100', 'dark:bg-zinc-800', 'text-zinc-400');
                             icon.classList.remove('bg-emerald-100', 'dark:bg-emerald-900/40', 'text-emerald-600', 'dark:text-emerald-400');
-                            check.classList.add('text-slate-200', 'dark:text-slate-800');
+                            check.classList.add('text-zinc-200', 'dark:text-zinc-800');
                             check.classList.remove('text-emerald-500');
                         }
                     }
@@ -1623,11 +1624,11 @@
                     const color = name === 'Groei' ? '#059669' : name === 'Defensief' ? '#10b981' : '#f97316';
                     const idPrefix = name.toLowerCase();
                     return `
-                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between dark:bg-slate-900 dark:border-slate-800">
+                        <div class="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm flex items-center justify-between dark:bg-zinc-900 dark:border-zinc-800">
                             <div>
-                                <p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1 dark:text-slate-400">${name}</p>
+                                <p class="text-xs font-bold uppercase tracking-wider text-zinc-500 mb-1 dark:text-zinc-400">${name}</p>
                                 <p id="cat-percent-${idPrefix}" class="text-2xl font-bold dark:text-white">${formatPercent(percent)}</p>
-                                <p id="cat-value-${idPrefix}" class="text-sm text-slate-400 dark:text-slate-500">${formatCurrency(value)}</p>
+                                <p id="cat-value-${idPrefix}" class="text-sm text-zinc-400 dark:text-zinc-500">${formatCurrency(value)}</p>
                             </div>
                             <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: ${color}15">
                                 <div class="w-6 h-6 rounded-full" style="background-color: ${color}"></div>
@@ -1654,7 +1655,7 @@
                 tableBody.innerHTML = assets.map(asset => {
                     const currentPercent = totalValue > 0 ? (asset.value / totalValue) * 100 : 0;
                     return `
-                        <tr class="hover:bg-slate-50/50 transition-colors group dark:hover:bg-slate-800/50">
+                        <tr class="hover:bg-zinc-50/50 transition-colors group dark:hover:bg-zinc-800/50">
                             <td class="px-3 sm:px-6 py-4 min-w-[120px] sm:min-w-[150px]">
                                 <div class="flex items-center gap-2 sm:gap-3">
                                     <input
@@ -1662,7 +1663,7 @@
                                         value="${asset.name}"
                                         data-id="${asset.id}"
                                         data-type="name"
-                                        class="asset-input w-full bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-0 sm:py-1 text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 dark:hover:border-slate-700"
+                                        class="asset-input w-full bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-0 sm:py-1 text-sm sm:text-base font-medium text-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-700"
                                     />
                                 </div>
                             </td>
@@ -1670,19 +1671,19 @@
                                 <div class="flex flex-col gap-1.5">
                                     <div class="flex items-center justify-between gap-1 sm:gap-2">
                                         <div class="flex items-center gap-1">
-                                            <span class="text-slate-400 font-mono text-sm sm:text-base">€</span>
+                                            <span class="text-zinc-400 font-mono text-sm sm:text-base">€</span>
                                             <input
                                                 type="text"
                                                 value="${formatNumber(asset.value)}"
                                                 data-id="${asset.id}"
                                                 data-type="value"
-                                                class="asset-input asset-value-input w-20 sm:w-24 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-slate-700"
+                                                class="asset-input asset-value-input w-20 sm:w-24 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-zinc-700"
                                             />
                                         </div>
                                         <span class="font-mono text-xs sm:text-sm font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">${formatPercent(currentPercent)}</span>
                                     </div>
                                     <!-- Progress Bar -->
-                                    <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                                    <div class="w-full bg-zinc-100 dark:bg-zinc-800 rounded-full h-1.5 overflow-hidden">
                                         <div 
                                             class="h-full rounded-full transition-all duration-500" 
                                             style="width: ${Math.min(100, currentPercent)}%; background-color: ${asset.color}"
@@ -1695,7 +1696,7 @@
                                     <select
                                         data-id="${asset.id}"
                                         data-type="category"
-                                        class="asset-input hidden sm:block bg-transparent border-none text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 focus:ring-0 cursor-pointer hover:text-slate-600 dark:hover:text-slate-200 p-0"
+                                        class="asset-input hidden sm:block bg-transparent border-none text-[10px] sm:text-xs font-bold uppercase tracking-wider text-zinc-400 focus:ring-0 cursor-pointer hover:text-zinc-600 dark:hover:text-zinc-200 p-0"
                                     >
                                         <option value="Groei" ${asset.category === 'Groei' ? 'selected' : ''}>Groei</option>
                                         <option value="Defensief" ${asset.category === 'Defensief' ? 'selected' : ''}>Defensief</option>
@@ -1707,11 +1708,11 @@
                                             value="${asset.target}"
                                             data-id="${asset.id}"
                                             data-type="target"
-                                            class="asset-input w-8 sm:w-10 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-right text-sm dark:text-white dark:hover:border-slate-700"
+                                            class="asset-input w-8 sm:w-10 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-right text-sm dark:text-white dark:hover:border-zinc-700"
                                         />
-                                        <span class="text-slate-400 font-mono text-xs sm:text-sm">%</span>
+                                        <span class="text-zinc-400 font-mono text-xs sm:text-sm">%</span>
                                     </div>
-                                    <button data-id="${asset.id}" class="delete-asset-btn text-slate-300 hover:text-red-500 transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100 p-1">
+                                    <button data-id="${asset.id}" class="delete-asset-btn text-zinc-300 hover:text-red-500 transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100 p-1">
                                         <i data-lucide="trash-2" class="w-4 h-4"></i>
                                     </button>
                                 </div>
@@ -1724,25 +1725,25 @@
             const debtTableBody = document.getElementById('debt-table-body');
             if (debtTableBody) {
                 debtTableBody.innerHTML = debts.map(debt => `
-                    <tr class="hover:bg-slate-50/50 transition-colors group dark:hover:bg-slate-800/50">
+                    <tr class="hover:bg-zinc-50/50 transition-colors group dark:hover:bg-zinc-800/50">
                         <td class="px-3 sm:px-6 py-4">
                             <input
                                 type="text"
                                 value="${debt.name}"
                                 data-id="${debt.id}"
                                 data-type="name"
-                                class="debt-input w-full bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 dark:hover:border-slate-700"
+                                class="debt-input w-full bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 text-sm sm:text-base font-medium text-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-700"
                             />
                         </td>
                         <td class="px-3 sm:px-6 py-4">
                             <div class="flex items-center gap-1">
-                                <span class="text-slate-400 font-mono text-sm">€</span>
+                                <span class="text-zinc-400 font-mono text-sm">€</span>
                                 <input
                                     type="text"
                                     value="${formatNumber(debt.value)}"
                                     data-id="${debt.id}"
                                     data-type="value"
-                                    class="debt-input debt-value-input w-24 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-slate-700"
+                                    class="debt-input debt-value-input w-24 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-zinc-700"
                                 />
                             </div>
                         </td>
@@ -1754,13 +1755,13 @@
                                 value="${debt.interest}"
                                 data-id="${debt.id}"
                                 data-type="interest"
-                                class="debt-input w-12 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-right text-sm dark:text-white dark:hover:border-slate-700"
+                                class="debt-input w-12 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-right text-sm dark:text-white dark:hover:border-zinc-700"
                             />
-                            <span class="text-slate-400 font-mono text-xs">%</span>
+                            <span class="text-zinc-400 font-mono text-xs">%</span>
                           </div>
                         </td>
                         <td class="px-3 sm:px-6 py-4 text-right">
-                            <button data-id="${debt.id}" class="delete-debt-btn text-slate-300 hover:text-red-500 transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100 p-1">
+                            <button data-id="${debt.id}" class="delete-debt-btn text-zinc-300 hover:text-red-500 transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100 p-1">
                                 <i data-lucide="trash-2" class="w-4 h-4"></i>
                             </button>
                         </td>
@@ -1778,14 +1779,14 @@
                     
                     const isOver = deviation > 1;
                     const isUnder = deviation < -1;
-                    const statusClass = isOver ? "bg-red-50/50 border-red-100 dark:bg-red-900/20 dark:border-red-900/30" : isUnder ? "bg-emerald-50/50 border-emerald-100 dark:bg-emerald-900/20 dark:border-emerald-900/30" : "bg-slate-50/50 border-slate-100 dark:bg-slate-800/50 dark:border-slate-800";
+                    const statusClass = isOver ? "bg-red-50/50 border-red-100 dark:bg-red-900/20 dark:border-red-900/30" : isUnder ? "bg-emerald-50/50 border-emerald-100 dark:bg-emerald-900/20 dark:border-emerald-900/30" : "bg-zinc-50/50 border-zinc-100 dark:bg-zinc-800/50 dark:border-zinc-800";
                     const icon = isOver ? "arrow-up-right" : isUnder ? "arrow-down-right" : "minus";
-                    const iconColor = isOver ? "text-red-500" : isUnder ? "text-emerald-500" : "text-slate-400";
+                    const iconColor = isOver ? "text-red-500" : isUnder ? "text-emerald-500" : "text-zinc-400";
 
                     return `
                         <div class="p-4 rounded-xl border flex flex-col gap-1 ${statusClass}">
                             <div class="flex justify-between items-start">
-                                <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">${asset.name}</span>
+                                <span class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">${asset.name}</span>
                                 <i data-lucide="${icon}" class="w-4 h-4 ${iconColor}"></i>
                             </div>
                             <div class="flex items-baseline gap-2">
@@ -1794,7 +1795,7 @@
                                     (${deviation > 0 ? '+' : ''}${deviation.toFixed(1)}%)
                                 </span>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1 dark:text-slate-400">
+                            <p class="text-xs text-zinc-500 mt-1 dark:text-zinc-400">
                                 ${rebalanceAmount > 0 ? `Koop ${formatCurrency(rebalanceAmount)} om doel te bereiken.` : rebalanceAmount < 0 ? `Verkoop ${formatCurrency(Math.abs(rebalanceAmount))} om doel te bereiken.` : "Asset is in balans."}
                             </p>
                         </div>
@@ -1819,8 +1820,8 @@
                     return `
                         <div class="flex items-center text-sm sm:text-base group">
                             <div class="w-2 h-2 sm:w-3 sm:h-3 rounded-full shrink-0 mr-2 sm:mr-3 transition-transform group-hover:scale-125" style="background-color: ${asset.color}"></div>
-                            <span class="text-slate-600 flex-1 truncate dark:text-slate-400" title="${asset.name}">${asset.name}</span>
-                            <span class="font-mono font-bold text-slate-900 ml-2 dark:text-white text-sm sm:text-base">${formatPercent(currentPercent)}</span>
+                            <span class="text-zinc-600 flex-1 truncate dark:text-zinc-400" title="${asset.name}">${asset.name}</span>
+                            <span class="font-mono font-bold text-zinc-900 ml-2 dark:text-white text-sm sm:text-base">${formatPercent(currentPercent)}</span>
                         </div>
                     `;
                 }).join('');
@@ -1831,9 +1832,9 @@
                 historyTableBody.innerHTML = history.slice().reverse().map((entry, idx) => {
                     const realIdx = history.length - 1 - idx;
                     return `
-                        <tr class="hover:bg-slate-50/50 transition-colors group dark:hover:bg-slate-800/50">
-                            <td class="px-6 py-4 text-sm font-medium text-slate-700 whitespace-nowrap dark:text-slate-300">${formatDate(entry.date)}</td>
-                            <td class="px-6 py-4 text-sm font-mono dark:text-slate-400">${formatCurrency(entry.totalValue)}</td>
+                        <tr class="hover:bg-zinc-50/50 transition-colors group dark:hover:bg-zinc-800/50">
+                            <td class="px-6 py-4 text-sm font-medium text-zinc-700 whitespace-nowrap dark:text-zinc-300">${formatDate(entry.date)}</td>
+                            <td class="px-6 py-4 text-sm font-mono dark:text-zinc-400">${formatCurrency(entry.totalValue)}</td>
                             <td class="px-6 py-4 text-right space-x-2">
                                 <button data-idx="${realIdx}" class="load-history-btn text-emerald-600 hover:text-emerald-800 p-1 transition-colors dark:text-emerald-400 dark:hover:text-emerald-300" title="Laden">
                                     <i data-lucide="upload" class="w-4 h-4"></i>
@@ -2524,7 +2525,7 @@
                         statusDesc.innerHTML = '<span class="text-amber-600 dark:text-amber-400 font-semibold">Huidige status: Basis obfuscatie.</span><br>Zonder wachtwoord is je data verborgen in de browser, maar niet cryptografisch beveiligd tegen hackers. Stel een wachtwoord in voor volledige AES-256 encryptie.';
                     }
                     if (securityStatusIcon) {
-                        securityStatusIcon.className = 'p-2 rounded-lg bg-slate-200 text-slate-500 dark:bg-slate-800 dark:text-slate-400';
+                        securityStatusIcon.className = 'p-2 rounded-lg bg-zinc-200 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400';
                         securityStatusIcon.innerHTML = '<i data-lucide="unlock" class="w-5 h-5"></i>';
                     }
                     if (savePasswordBtn) savePasswordBtn.textContent = 'Wachtwoord Instellen';
