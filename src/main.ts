@@ -1138,12 +1138,12 @@ function renderDebts() {
     tr.className = 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors group';
     tr.innerHTML = `
       <td class="px-3 sm:px-6 py-4">
-        <input type="text" value="${isPrivacyMode ? '•••••' : debt.name}" class="debt-name-input bg-transparent border-none p-0 focus:ring-0 font-medium text-zinc-900 dark:text-white w-full" data-id="${debt.id}" />
+        <input type="text" value="${isPrivacyMode ? '•••••' : debt.name}" class="debt-name-input bg-transparent border-none p-0 focus:ring-0 font-medium text-zinc-900 dark:text-white w-full text-base" data-id="${debt.id}" />
       </td>
       <td class="px-3 sm:px-6 py-4">
         <div class="flex items-center gap-1">
-          <span class="text-zinc-400 text-xs">€</span>
-          <input type="text" value="${formatNumber(debt.value)}" class="debt-value-input bg-transparent border-none p-0 focus:ring-0 font-mono font-bold text-red-600 dark:text-red-400 w-full" data-id="${debt.id}" />
+          <span class="text-zinc-400 text-sm">€</span>
+          <input type="text" value="${formatNumber(debt.value)}" class="debt-value-input bg-transparent border-none p-0 focus:ring-0 font-mono font-bold text-red-600 dark:text-red-400 w-full text-base" data-id="${debt.id}" />
         </div>
       </td>
       <td class="px-3 sm:px-6 py-4 text-right">
@@ -1281,13 +1281,13 @@ function renderAssets() {
               <select
                 data-id="${asset.id}"
                 data-type="category"
-                class="asset-input bg-transparent border-none text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-emerald-600/70 focus:ring-0 cursor-pointer hover:text-emerald-600 dark:text-emerald-400/70 dark:hover:text-emerald-400 p-0"
+                class="asset-input bg-transparent border-none text-xs sm:text-sm font-bold uppercase tracking-wider text-emerald-600/70 focus:ring-0 cursor-pointer hover:text-emerald-600 dark:text-emerald-400/70 dark:hover:text-emerald-400 p-0"
               >
                 <option value="Groei" ${asset.category === 'Groei' ? 'selected' : ''}>Groei</option>
                 <option value="Defensief" ${asset.category === 'Defensief' ? 'selected' : ''}>Defensief</option>
                 <option value="Speculatief" ${asset.category === 'Speculatief' ? 'selected' : ''}>Speculatief</option>
               </select>
-              ${asset.isRealEstate ? '<span class="text-[9px] font-black uppercase tracking-widest bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded dark:bg-emerald-900/40 dark:text-emerald-300">Vastgoed</span>' : ''}
+              ${asset.isRealEstate ? '<span class="text-xs font-black uppercase tracking-widest bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded dark:bg-emerald-900/40 dark:text-emerald-300">Vastgoed</span>' : ''}
             </div>
           </div>
         </td>
@@ -1295,16 +1295,16 @@ function renderAssets() {
           <div class="flex flex-col gap-1.5">
             <div class="flex items-center justify-between gap-1 sm:gap-2">
               <div class="flex items-center gap-1">
-                <span class="text-zinc-400 font-mono text-sm sm:text-base">€</span>
+                <span class="text-zinc-400 font-mono text-base">€</span>
                 <input
                   type="text"
                   value="${formatNumber(asset.value)}"
                   data-id="${asset.id}"
                   data-type="value"
-                  class="asset-input asset-value-input w-24 sm:w-28 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-sm sm:text-base dark:text-white dark:hover:border-zinc-700"
+                  class="asset-input asset-value-input w-24 sm:w-28 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-base dark:text-white dark:hover:border-zinc-700"
                 />
               </div>
-              <span class="font-mono text-xs sm:text-sm font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">${formatPercent(currentPercent)}</span>
+              <span class="font-mono text-sm font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">${formatPercent(currentPercent)}</span>
             </div>
             <!-- Progress Bar -->
             <div class="w-full bg-zinc-100 dark:bg-zinc-800 rounded-full h-1.5 overflow-hidden">
