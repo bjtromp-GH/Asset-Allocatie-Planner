@@ -1278,7 +1278,7 @@ function renderAssets() {
             </div>
           </div>
         </td>
-        <td class="px-3 sm:px-6 py-4 text-right min-w-[80px] sm:min-w-[180px]">
+        <td class="px-3 sm:px-6 py-4 text-right min-w-[80px] sm:min-w-[120px]">
           <div class="flex items-center justify-end gap-2 sm:gap-3">
             <select
               data-id="${asset.id}"
@@ -1299,10 +1299,12 @@ function renderAssets() {
               />
               <span class="text-slate-400 font-mono text-xs sm:text-sm">%</span>
             </div>
-            <button data-id="${asset.id}" class="delete-asset-btn text-slate-400 hover:text-red-500 transition-colors p-1" title="Verwijderen">
-              <i data-lucide="trash-2" class="w-4 h-4"></i>
-            </button>
           </div>
+        </td>
+        <td class="px-3 sm:px-6 py-4 text-right">
+          <button data-id="${asset.id}" class="delete-asset-btn text-slate-400 hover:text-red-500 transition-colors p-1" title="Verwijderen">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
         </td>
       </tr>
     `;
