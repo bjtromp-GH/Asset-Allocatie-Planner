@@ -253,12 +253,46 @@ const formatPercent = (value: number) => {
 };
 
 const formatNumber = (value: number) => {
-  return new Intl.NumberFormat('nl-NL').format(value);
+  return new Intl.NumberFormat('nl-NL', {
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0
+  }).format(value);
 };
 
 const parseNumber = (value: string) => {
-  const cleanValue = value.replace(/[^0-9,.]/g, '').replace(',', '.');
-  return parseFloat(cleanValue) || 0;
+  const cleanValue = value.replace(/\./g, '').replace(',', '.');
+  const val = parseFloat(cleanValue);
+  return isNaN(val) ? 0 : val;
+};
+
+const formatNumericInput = (input: HTMLInputElement, onUpdate: (val: number) => void) => {
+  input.addEventListener('input', (e) => {
+    const target = e.target as HTMLInputElement;
+    const originalValue = target.value;
+    if (originalValue === '') {
+      onUpdate(0);
+      return;
+    }
+
+    const cursorPosition = target.selectionStart || 0;
+    const digitsBefore = originalValue.substring(0, cursorPosition).replace(/\./g, '');
+    
+    const val = parseNumber(originalValue);
+    const formatted = formatNumber(val);
+    target.value = formatted;
+
+    let newCursorPos = 0;
+    let digitCount = 0;
+    for (let i = 0; i < formatted.length; i++) {
+      if (formatted[i] !== '.') {
+        digitCount++;
+      }
+      newCursorPos = i + 1;
+      if (digitCount >= digitsBefore.length) break;
+    }
+    target.setSelectionRange(newCursorPos, newCursorPos);
+    onUpdate(val);
+  });
 };
 
 const animateValue = (id: string, start: number, end: number, duration: number, formatter: (v: number) => string) => {
@@ -1121,19 +1155,11 @@ function renderDebts() {
   });
 
   tbody.querySelectorAll('.debt-value-input').forEach(input => {
-    input.addEventListener('focus', (e) => {
-      const target = e.target as HTMLInputElement;
-      target.value = parseNumber(target.value).toString();
-    });
-    input.addEventListener('blur', (e) => {
-      const target = e.target as HTMLInputElement;
-      const id = target.dataset.id;
-      const value = parseNumber(target.value);
-      debts = debts.map(d => d.id === id ? { ...d, value } : d);
-      updateUI();
-    });
-    input.addEventListener('keypress', (e) => {
-      if ((e as KeyboardEvent).key === 'Enter') (e.target as HTMLInputElement).blur();
+    formatNumericInput(input as HTMLInputElement, (val) => {
+      const id = (input as HTMLInputElement).dataset.id;
+      debts = debts.map(d => d.id === id ? { ...d, value: val } : d);
+      if ((window as any).debtUpdateTimeout) clearTimeout((window as any).debtUpdateTimeout);
+      (window as any).debtUpdateTimeout = setTimeout(() => updateUI(), 500);
     });
   });
 
@@ -1911,15 +1937,31 @@ function initEventListeners() {
       const target = e.target as HTMLInputElement;
       if (target.classList.contains('asset-input')) {
         const type = target.dataset.type;
-        if (type === 'value' || type === 'target') {
-          let rawValue = target.value;
-          if (type === 'value') {
-            rawValue = rawValue.replace(/\./g, '').replace(',', '.');
-          }
-          const val = parseFloat(rawValue);
-          const isValid = !isNaN(val) && val >= 0 && (type !== 'target' || val <= 100);
+        if (type === 'value') {
+          const originalValue = target.value;
+          if (originalValue === '') return;
+
+          const cursorPosition = target.selectionStart || 0;
+          const digitsBefore = originalValue.substring(0, cursorPosition).replace(/\./g, '');
           
-          if (!isValid && rawValue !== '') {
+          const val = parseNumber(originalValue);
+          const formatted = formatNumber(val);
+          target.value = formatted;
+
+          let newCursorPos = 0;
+          let digitCount = 0;
+          for (let i = 0; i < formatted.length; i++) {
+            if (formatted[i] !== '.') {
+              digitCount++;
+            }
+            newCursorPos = i + 1;
+            if (digitCount >= digitsBefore.length) break;
+          }
+          target.setSelectionRange(newCursorPos, newCursorPos);
+        } else if (type === 'target') {
+          const val = parseFloat(target.value);
+          const isValid = !isNaN(val) && val >= 0 && val <= 100;
+          if (!isValid && target.value !== '') {
             target.classList.add('ring-2', 'ring-red-500', 'border-red-500');
           } else {
             target.classList.remove('ring-2', 'ring-red-500', 'border-red-500');
@@ -1933,22 +1975,15 @@ function initEventListeners() {
       if (target.classList.contains('asset-input')) {
         const id = target.dataset.id;
         const type = target.dataset.type;
-        let rawValue = target.value;
+        const rawValue = target.value;
         
+        let val: any = rawValue;
         if (type === 'value') {
-          // Remove dots (thousands) and replace comma with dot (decimal) for parsing
-          rawValue = rawValue.replace(/\./g, '').replace(',', '.');
-        }
-        
-        let val = parseFloat(rawValue);
-        
-        // Validation logic
-        if (type === 'value' || type === 'target') {
-          if (isNaN(val) || val < 0) {
-            val = 0;
-          } else if (type === 'target' && val > 100) {
-            val = 100;
-          }
+          val = parseNumber(rawValue);
+        } else if (type === 'target') {
+          val = parseFloat(rawValue) || 0;
+          if (val < 0) val = 0;
+          if (val > 100) val = 100;
         }
         
         assets = assets.map(a => {
@@ -2066,25 +2101,21 @@ function initEventListeners() {
       updateUI();
     });
 
-    targetNetWorthInput.addEventListener('input', (e) => {
-      const target = e.target as HTMLInputElement;
-      const cleanValue = target.value.replace(/[^0-9,.]/g, '').replace(',', '.');
-      const val = parseFloat(cleanValue);
-      const isValid = !isNaN(val) && val >= 0;
-      
-      if (!isValid && target.value !== '') {
-        target.classList.add('text-red-500');
-      } else {
-        target.classList.remove('text-red-500');
-      }
-
-      targetNetWorth = isValid ? val : 0;
+    formatNumericInput(targetNetWorthInput, (val) => {
+      targetNetWorth = val;
       if (targetNetWorthTimeout) clearTimeout(targetNetWorthTimeout);
       targetNetWorthTimeout = setTimeout(() => updateUI(), 100);
+      
+      const isValid = !isNaN(val) && val >= 0;
+      if (!isValid && targetNetWorthInput.value !== '') {
+        targetNetWorthInput.classList.add('text-red-500');
+      } else {
+        targetNetWorthInput.classList.remove('text-red-500');
+      }
     });
 
     targetNetWorthInput.addEventListener('blur', () => {
-      targetNetWorthInput.value = formatNumber(targetNetWorth);
+      targetNetWorthInput.value = formatNumber(targetNetWorth > 0 ? targetNetWorth : 0);
     });
   }
 
@@ -2247,18 +2278,22 @@ function initEventListeners() {
 
   const monthlyExpensesInput = document.getElementById('monthly-expenses-input') as HTMLInputElement;
   if (monthlyExpensesInput) {
-    monthlyExpensesInput.value = monthlyExpenses.toString();
-    monthlyExpensesInput.addEventListener('input', () => {
-      monthlyExpenses = parseFloat(monthlyExpensesInput.value) || 0;
+    if (!monthlyExpensesInput.matches(':focus')) {
+      monthlyExpensesInput.value = formatNumber(monthlyExpenses);
+    }
+    formatNumericInput(monthlyExpensesInput, (val) => {
+      monthlyExpenses = val;
       updateUI();
     });
   }
 
   const freedomCustomNetworthInput = document.getElementById('freedom-custom-networth') as HTMLInputElement;
   if (freedomCustomNetworthInput) {
-    freedomCustomNetworthInput.addEventListener('input', (e) => {
-      const val = (e.target as HTMLInputElement).value;
-      freedomCustomNetWorth = parseNumber(val);
+    if (!freedomCustomNetworthInput.matches(':focus')) {
+      freedomCustomNetworthInput.value = freedomCustomNetWorth > 0 ? formatNumber(freedomCustomNetWorth) : '';
+    }
+    formatNumericInput(freedomCustomNetworthInput, (val) => {
+      freedomCustomNetWorth = val;
       updateUI();
     });
     freedomCustomNetworthInput.addEventListener('blur', (e) => {
@@ -2778,10 +2813,12 @@ function initEventListeners() {
   });
 
   const investmentInput = document.getElementById('investment-amount-input') as HTMLInputElement;
-  investmentInput?.addEventListener('input', (e) => {
-    investmentAmount = parseFloat((e.target as HTMLInputElement).value) || 0;
-    updateUI();
-  });
+  if (investmentInput) {
+    formatNumericInput(investmentInput, (val) => {
+      investmentAmount = val;
+      updateUI();
+    });
+  }
 
   // Debt Management
   const addDebtBtn = document.getElementById('add-debt-btn');
@@ -2795,11 +2832,17 @@ function initEventListeners() {
   addDebtBtn?.addEventListener('click', () => {
     if (addDebtModal && newDebtName && newDebtValue) {
       newDebtName.value = '';
-      newDebtValue.value = '0';
+      newDebtValue.value = '';
       addDebtModal.classList.remove('hidden');
       newDebtName.focus();
     }
   });
+
+  if (newDebtValue) {
+    formatNumericInput(newDebtValue, (val) => {
+      // Just formatting here, value is read on save
+    });
+  }
 
   const hideDebtModal = () => {
     if (addDebtModal) addDebtModal.classList.add('hidden');
@@ -2811,7 +2854,7 @@ function initEventListeners() {
   saveNewDebtBtn?.addEventListener('click', () => {
     if (!newDebtName || !newDebtValue) return;
     const name = newDebtName.value.trim() || 'Nieuwe Schuld';
-    const value = parseFloat(newDebtValue.value) || 0;
+    const value = parseNumber(newDebtValue.value);
     const target = parseFloat((document.getElementById('new-debt-target') as HTMLInputElement)?.value) || 0;
     const id = Math.random().toString(36).substring(2, 9);
     debts.push({ id, name, value, target });
