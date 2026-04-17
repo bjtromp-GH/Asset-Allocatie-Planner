@@ -427,7 +427,7 @@
                             <div id="retirement-diff-card" class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/50 hidden">
                                 <p class="text-[10px] uppercase tracking-wider font-bold text-blue-600 dark:text-blue-400 mb-1">Pensioen Voorsprong</p>
                                 <p id="freedom-retirement-diff" class="text-xl font-bold text-zinc-900 dark:text-white">0 jr</p>
-                                <p class="text-[10px] text-blue-500/70 dark:text-blue-400/50 mt-1">Eerder stoppen</p>
+                                <p id="retirement-diff-subtext" class="text-[10px] text-blue-500/70 dark:text-blue-400/50 mt-1">Eerder stoppen</p>
                             </div>
                             <div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50 col-span-2">
                                 <p class="text-[10px] uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1">Passief Inkomen</p>
@@ -1558,10 +1558,17 @@
                     }
 
                     if (freedomRetirementDiffEl) {
-                        const diff = retirementAge - freedomAge;
+                        const runwayYears = months / 12;
+                        const voorsprong = Math.min(runwayYears, retirementAge - userAge);
+                        const stopAge = Math.max(userAge, retirementAge - runwayYears);
                         const diffCard = document.getElementById('retirement-diff-card');
-                        if (diff > 0) {
-                            freedomRetirementDiffEl.textContent = `${diff.toFixed(1)} jr`;
+                        
+                        if (voorsprong > 0) {
+                            freedomRetirementDiffEl.textContent = `${voorsprong.toFixed(1)} jr`;
+                            const subtext = document.getElementById('retirement-diff-subtext');
+                            if (subtext) {
+                                subtext.innerHTML = `Eerder stoppen: op je <strong>${stopAge.toFixed(1)}e</strong>`;
+                            }
                             diffCard?.classList.remove('hidden');
                         } else {
                             freedomRetirementDiffEl.textContent = '0 jr';

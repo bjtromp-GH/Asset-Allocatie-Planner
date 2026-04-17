@@ -923,9 +923,16 @@ function updateUI() {
       }
 
       if (freedomRetirementDiffEl) {
-        const diff = retirementAge - freedomAge;
-        if (diff > 0) {
-          freedomRetirementDiffEl.textContent = `${diff.toFixed(1)} jr`;
+        const runwayYears = months / 12;
+        const voorsprong = Math.min(runwayYears, retirementAge - userAge);
+        const stopAge = Math.max(userAge, retirementAge - runwayYears);
+        
+        if (voorsprong > 0) {
+          freedomRetirementDiffEl.textContent = `${voorsprong.toFixed(1)} jr`;
+          const subtext = document.getElementById('retirement-diff-subtext');
+          if (subtext) {
+            subtext.innerHTML = `Eerder stoppen: op je <strong>${stopAge.toFixed(1)}e</strong>`;
+          }
           document.getElementById('retirement-diff-card')?.classList.remove('hidden');
         } else {
           freedomRetirementDiffEl.textContent = '0 jr';
