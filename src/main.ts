@@ -973,7 +973,91 @@ function updateUI() {
   renderRecommendations();
   updateCharts();
   updateTreemap();
+  updateSummaryDetails();
   createIcons({ icons: usedIcons });
+}
+
+function updateSummaryDetails() {
+  const totalAssets = assets.reduce((sum, a) => sum + a.value, 0);
+  const totalDebts = debts.reduce((sum, d) => sum + d.value, 0);
+  const netWorth = totalAssets - totalDebts;
+
+  const assetsEl = document.getElementById('summary-assets-total');
+  const debtsEl = document.getElementById('summary-debts-total');
+  const descEl = document.getElementById('summary-text-description');
+  const statusIcon = document.getElementById('summary-status-icon');
+  const canvas = document.getElementById('summary-pie-chart') as HTMLCanvasElement;
+
+  if (assetsEl) assetsEl.textContent = formatCurrency(totalAssets);
+  if (debtsEl) debtsEl.textContent = formatCurrency(totalDebts);
+
+  // Dynamic description and icon
+  if (descEl) {
+    const topAsset = [...assets].sort((a, b) => b.value - a.value)[0];
+    const debtRatio = totalAssets > 0 ? (totalDebts / totalAssets) * 100 : 0;
+    let statusText = "Je vermogen is vandaag stabiel. ";
+    let iconName = "smile";
+
+    if (totalAssets === 0 && totalDebts === 0) {
+      statusText = "Tijd voor een frisse start! ";
+      iconName = "sparkles";
+    } else if (debtRatio > 30) {
+      statusText = "Let op je schulden, deze vormen een aanzienlijk deel van je portfolio. ";
+      iconName = "frown";
+    } else if (netWorth > 100000) {
+      statusText = "Lekker bezig! Je vermogen groeit gestaag. ";
+      iconName = "thumbs-up";
+    }
+
+    if (totalAssets === 0 && totalDebts === 0) {
+      descEl.innerHTML = `${statusText}Begin met het toevoegen van je eerste assets om je financiële reis te visualiseren.`;
+    } else {
+      descEl.innerHTML = `${statusText}Je grootste asset is <span class="text-emerald-600 font-bold">${topAsset?.name || 'onbekend'}</span> en je bent op weg naar je doel!`;
+    }
+    
+    if (statusIcon) {
+      statusIcon.setAttribute('data-lucide', iconName);
+      createIcons({ icons: usedIcons });
+    }
+  }
+
+  // Summary Pie Chart
+  if (canvas) {
+    if (summaryPieChart) summaryPieChart.destroy();
+    summaryPieChart = new Chart(canvas.getContext('2d')!, {
+      type: 'doughnut',
+      data: {
+        labels: ['Bezittingen', 'Schulden'],
+        datasets: [{
+          data: [totalAssets, totalDebts],
+          backgroundColor: ['#10b981', '#ef4444'],
+          borderWidth: 0,
+          hoverOffset: 10
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 1,
+        plugins: {
+          legend: { display: false },
+          tooltip: { 
+            enabled: true,
+            callbacks: {
+              label: (context: any) => {
+                const value = context.raw as number;
+                return ` ${context.label}: ${formatCurrency(value)}`;
+              }
+            }
+          }
+        },
+        layout: {
+          padding: 20
+        },
+        cutout: '70%'
+      }
+    });
+  }
 }
 
 function renderDebts() {
@@ -2682,81 +2766,6 @@ function initEventListeners() {
       updateSummaryDetails();
     }
   });
-
-  function updateSummaryDetails() {
-    const totalAssets = assets.reduce((sum, a) => sum + a.value, 0);
-    const totalDebts = debts.reduce((sum, d) => sum + d.value, 0);
-    const netWorth = totalAssets - totalDebts;
-
-    const assetsEl = document.getElementById('summary-assets-total');
-    const debtsEl = document.getElementById('summary-debts-total');
-    const descEl = document.getElementById('summary-text-description');
-    const statusIcon = document.getElementById('summary-status-icon');
-    const canvas = document.getElementById('summary-pie-chart') as HTMLCanvasElement;
-
-    if (assetsEl) assetsEl.textContent = formatCurrency(totalAssets);
-    if (debtsEl) debtsEl.textContent = formatCurrency(totalDebts);
-
-    // Dynamic description and icon
-    if (descEl) {
-      const topAsset = [...assets].sort((a, b) => b.value - a.value)[0];
-      const debtRatio = totalAssets > 0 ? (totalDebts / totalAssets) * 100 : 0;
-      let statusText = "Je vermogen is vandaag stabiel. ";
-      let iconName = "smile";
-
-      if (totalAssets === 0 && totalDebts === 0) {
-        statusText = "Tijd voor een frisse start! ";
-        iconName = "sparkles";
-      } else if (debtRatio > 30) {
-        statusText = "Let op je schulden, deze vormen een aanzienlijk deel van je portfolio. ";
-        iconName = "frown";
-      } else if (netWorth > 100000) {
-        statusText = "Lekker bezig! Je vermogen groeit gestaag. ";
-        iconName = "thumbs-up";
-      }
-
-      if (totalAssets === 0 && totalDebts === 0) {
-        descEl.innerHTML = `${statusText}Begin met het toevoegen van je eerste assets om je financiële reis te visualiseren.`;
-      } else {
-        descEl.innerHTML = `${statusText}Je grootste asset is <span class="text-emerald-600 font-bold">${topAsset?.name || 'onbekend'}</span> en je bent op weg naar je doel!`;
-      }
-      
-      if (statusIcon) {
-        statusIcon.setAttribute('data-lucide', iconName);
-        createIcons({ icons: usedIcons });
-      }
-    }
-
-    // Summary Pie Chart
-    if (canvas) {
-      if (summaryPieChart) summaryPieChart.destroy();
-      summaryPieChart = new Chart(canvas.getContext('2d')!, {
-        type: 'doughnut',
-        data: {
-          labels: ['Bezittingen', 'Schulden'],
-          datasets: [{
-            data: [totalAssets, totalDebts],
-            backgroundColor: ['#10b981', '#ef4444'],
-            borderWidth: 0,
-            hoverOffset: 10
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: true,
-          aspectRatio: 1,
-          plugins: {
-            legend: { display: false },
-            tooltip: { enabled: true }
-          },
-          layout: {
-            padding: 20
-          },
-          cutout: '70%'
-        }
-      });
-    }
-  }
 
   viewBrutoBtn?.addEventListener('click', () => {
     pieChartMode = 'bruto';
