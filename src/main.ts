@@ -1876,15 +1876,17 @@ const setupSwipeToClose = (sheetId: string) => {
   let startY = 0;
   let currentY = 0;
   let isDragging = false;
+  let rafPending = false;
 
   sheet.addEventListener('touchstart', (e) => {
-    // Only allow swipe if we are at the top of the scrollable content or touching the handle
     const scrollableContent = sheet.querySelector('.overflow-y-auto');
     if (scrollableContent && scrollableContent.scrollTop > 0) return;
     
     startY = e.touches[0].clientY;
+    currentY = startY;
     isDragging = true;
     sheet.style.transition = 'none';
+    sheet.style.willChange = 'transform';
   }, { passive: true });
 
   sheet.addEventListener('touchmove', (e) => {
@@ -1894,23 +1896,41 @@ const setupSwipeToClose = (sheetId: string) => {
     const deltaY = currentY - startY;
     
     if (deltaY > 0) {
-      sheet.style.transform = `translateY(${deltaY}px)`;
+      if (e.cancelable) e.preventDefault();
+      
+      if (!rafPending) {
+        rafPending = true;
+        requestAnimationFrame(() => {
+          sheet.style.transform = `translateY(${deltaY}px)`;
+          rafPending = false;
+        });
+      }
+    } else {
+      // If user swipes up, reset transform to keep it at top
+      if (!rafPending) {
+        rafPending = true;
+        requestAnimationFrame(() => {
+          sheet.style.transform = '';
+          rafPending = false;
+        });
+      }
     }
-  }, { passive: true });
+  }, { passive: false });
 
   sheet.addEventListener('touchend', () => {
     if (!isDragging) return;
     isDragging = false;
+    rafPending = false;
     
     const deltaY = currentY - startY;
-    sheet.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+    sheet.style.willChange = '';
+    sheet.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
     
-    if (deltaY > 100) {
+    if (deltaY > 120) {
       closeSheets();
-      // Reset transform after closing
       setTimeout(() => {
         sheet.style.transform = '';
-      }, 300);
+      }, 400);
     } else {
       sheet.style.transform = '';
     }
