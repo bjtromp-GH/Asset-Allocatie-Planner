@@ -2788,6 +2788,36 @@ function initEventListeners() {
         });
       });
     });
+
+    // Arrow controls
+    const prevBtn = document.getElementById('intro-prev-btn');
+    const nextBtn = document.getElementById('intro-next-btn');
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        const width = introCarousel.offsetWidth;
+        const currentIdx = Math.round(introCarousel.scrollLeft / width);
+        if (currentIdx > 0) {
+          introCarousel.scrollTo({
+            left: (currentIdx - 1) * width,
+            behavior: 'smooth'
+          });
+        }
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        const width = introCarousel.offsetWidth;
+        const currentIdx = Math.round(introCarousel.scrollLeft / width);
+        if (currentIdx < introDots.length - 1) {
+          introCarousel.scrollTo({
+            left: (currentIdx + 1) * width,
+            behavior: 'smooth'
+          });
+        }
+      });
+    }
   }
 
   // Onboarding

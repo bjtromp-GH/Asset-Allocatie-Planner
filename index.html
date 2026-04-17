@@ -1049,17 +1049,7 @@
       <div id="intro-carousel" class="intro-carousel h-full w-full">
         <!-- Slide 1: Welcome -->
         <div class="intro-slide bg-white dark:bg-zinc-950 p-8 flex flex-col items-center justify-center text-center">
-          <div class="mb-12 animate-in fade-in zoom-in duration-1000">
-            <h2 class="text-5xl sm:text-7xl font-black tracking-tight mb-2">
-              <span class="text-zinc-900 dark:text-white block">Welkom bij</span>
-              <span class="text-emerald-600 block">GeldDash</span>
-            </h2>
-            <p class="text-lg text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed max-w-xs mx-auto">
-              Krijg grip op je vermogen, stel doelen en zie je rijkdom groeien.
-            </p>
-          </div>
-          
-          <div class="relative inline-block mb-32">
+          <div class="relative inline-block mb-8">
             <div class="absolute inset-0 bg-emerald-500/20 rounded-full blur-3xl animate-pulse"></div>
             <img 
               id="intro-mascot"
@@ -1069,6 +1059,20 @@
               title="Klik om voorbeelddata te laden"
               referrerPolicy="no-referrer"
             />
+          </div>
+
+          <div class="mb-8 animate-in fade-in zoom-in duration-1000">
+            <h2 class="text-4xl sm:text-7xl font-black tracking-tight mb-2">
+              <span class="text-zinc-900 dark:text-white block leading-tight">Welkom bij</span>
+              <span class="text-emerald-600 block leading-tight">GeldDash</span>
+            </h2>
+            <p class="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed max-w-xs mx-auto">
+              Krijg grip op je vermogen, stel doelen en zie je rijkdom groeien.
+            </p>
+          </div>
+
+          <div class="mb-32">
+            <img src="https://lh3.googleusercontent.com/d/1UfHIBYafSVfCm0tCtzAfJK2gkOfdFWfL" alt="GeldDash Beeldmerk" class="w-16 h-16 sm:w-20 sm:h-20 mx-auto transition-transform duration-500 hover:scale-110" referrerPolicy="no-referrer" />
           </div>
         </div>
 
@@ -1091,8 +1095,8 @@
               <h3 class="font-black text-zinc-900">Jouw Portfolio Inzicht</h3>
               <p class="text-xs text-zinc-500">Real-time berekeningen van al je bezittingen en schulden.</p>
               <div class="w-full bg-zinc-100 rounded-lg p-3 space-y-2">
-                 <div class="flex justify-between items-center"><div class="w-12 h-2 bg-zinc-300 rounded-full"></div><div class="w-8 h-2 bg-emerald-500 rounded-full"></div></div>
-                 <div class="flex justify-between items-center"><div class="w-16 h-2 bg-zinc-300 rounded-full"></div><div class="w-10 h-2 bg-emerald-500 rounded-full"></div></div>
+                <div class="flex justify-between items-center"><div class="w-12 h-2 bg-zinc-300 rounded-full"></div><div class="w-8 h-2 bg-emerald-500 rounded-full"></div></div>
+                <div class="flex justify-between items-center"><div class="w-16 h-2 bg-zinc-300 rounded-full"></div><div class="w-10 h-2 bg-emerald-500 rounded-full"></div></div>
               </div>
             </div>
           </div>
@@ -1180,31 +1184,42 @@
         </div>
       </div>
       
-      <!-- Fixed Pagination Dots -->
-      <div class="absolute bottom-40 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-        <div class="intro-pagination-dot active" data-slide="0"></div>
-        <div class="intro-pagination-dot" data-slide="1"></div>
-        <div class="intro-pagination-dot" data-slide="2"></div>
-        <div class="intro-pagination-dot" data-slide="3"></div>
-        <div class="intro-pagination-dot" data-slide="4"></div>
-      </div>
-
       <!-- Fixed Control Elements -->
       <div class="absolute bottom-0 inset-x-0 p-8 pb-10 flex flex-col items-center gap-6 z-20">
+        <!-- Reordered Footer -->
+        <div class="flex flex-col items-center gap-3">
+          <div class="flex items-center gap-4 text-zinc-400 dark:text-zinc-500 text-[10px] font-bold tracking-widest uppercase" id="intro-footer-text">
+            <span>VEILIG</span>
+            <span class="opacity-30">•</span>
+            <span>PRIVÉ</span>
+            <span class="opacity-30">•</span>
+            <span>SIMPEL</span>
+          </div>
+
+          <!-- Pagination Dots with Arrows -->
+          <div class="flex items-center gap-4" id="intro-pagination-container">
+            <button id="intro-prev-btn" class="p-2 text-zinc-400 hover:text-emerald-600 dark:text-zinc-500 dark:hover:text-emerald-400 transition-colors active:scale-90" aria-label="Vorige slide">
+              <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            </button>
+            <div class="flex gap-2">
+              <div class="intro-pagination-dot active" data-slide="0"></div>
+              <div class="intro-pagination-dot" data-slide="1"></div>
+              <div class="intro-pagination-dot" data-slide="2"></div>
+              <div class="intro-pagination-dot" data-slide="3"></div>
+              <div class="intro-pagination-dot" data-slide="4"></div>
+            </div>
+            <button id="intro-next-btn" class="p-2 text-zinc-400 hover:text-emerald-600 dark:text-zinc-500 dark:hover:text-emerald-400 transition-colors active:scale-90" aria-label="Volgende slide">
+              <i data-lucide="arrow-right" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
         <button id="start-intro-btn" class="w-full max-w-sm group relative inline-flex items-center justify-center px-10 py-5 font-black text-white transition-all duration-200 bg-emerald-600 dark:bg-emerald-500 rounded-2xl shadow-xl hover:bg-emerald-700 dark:hover:bg-emerald-600 active:scale-95">
           <span class="relative flex items-center gap-2 text-xl">
             Aan de slag
             <i data-lucide="arrow-right" class="w-6 h-6 group-hover:translate-x-1 transition-transform"></i>
           </span>
         </button>
-        
-        <div class="flex items-center gap-4 text-zinc-400 dark:text-zinc-500 text-[10px] font-bold tracking-widest uppercase" id="intro-footer-text">
-          <span>VEILIG</span>
-          <span class="opacity-30">•</span>
-          <span>PRIVÉ</span>
-          <span class="opacity-30">•</span>
-          <span>SIMPEL</span>
-        </div>
       </div>
 
       <!-- Background Elements -->
