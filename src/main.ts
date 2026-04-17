@@ -2763,17 +2763,25 @@ function initEventListeners() {
       });
 
       // Update background and footer text color based on active slide
-      if (introScreen && introFooterText) {
+      if (introScreen && introFooterText && startIntroBtn) {
         if (activeIndex === 0) {
           introScreen.classList.remove('bg-emerald-600');
           introScreen.classList.add('bg-white');
           introFooterText.classList.remove('text-emerald-100');
           introFooterText.classList.add('text-zinc-400', 'dark:text-zinc-500');
+          
+          // Button state: Emerald on White
+          startIntroBtn.classList.remove('bg-white', 'text-emerald-600', 'hover:bg-zinc-100');
+          startIntroBtn.classList.add('bg-emerald-600', 'text-white', 'hover:bg-emerald-700');
         } else {
           introScreen.classList.remove('bg-white');
           introScreen.classList.add('bg-emerald-600');
           introFooterText.classList.remove('text-zinc-400', 'dark:text-zinc-500');
           introFooterText.classList.add('text-emerald-100');
+
+          // Button state: White on Emerald
+          startIntroBtn.classList.remove('bg-emerald-600', 'text-white', 'hover:bg-emerald-700');
+          startIntroBtn.classList.add('bg-white', 'text-emerald-600', 'hover:bg-zinc-100');
         }
       }
     }, { passive: true });
