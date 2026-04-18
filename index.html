@@ -1145,6 +1145,44 @@
           </div>
         </div>
 
+        <!-- Slide: Richness Insight (NEW) -->
+        <div class="intro-slide bg-emerald-600 p-8 flex flex-col items-center justify-start pt-12 sm:pt-20 lg:pt-28 text-center overflow-hidden">
+          <div class="mb-8 relative flex flex-col items-center w-full max-w-lg">
+            <div class="absolute inset-0 bg-white/10 rounded-full blur-[120px] animate-pulse"></div>
+            
+            <!-- Quote Bubble -->
+            <div class="bg-white text-zinc-900 px-6 py-5 rounded-3xl rounded-bl-none shadow-2xl relative mb-12 sm:mb-16 transform -rotate-1 animate-in slide-in-from-left-8 duration-700 z-20">
+              <p class="text-lg sm:text-2xl font-black italic leading-tight text-left">
+                "Rijkdom is wat je niet ziet,<br />de auto's die je niet koopt."
+              </p>
+              <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mt-2 text-right">— Morgan Housel</p>
+              <!-- Bubble Tail -->
+              <div class="absolute -bottom-3 left-0 w-8 h-8 bg-white rotate-45 transform origin-top-left -translate-y-1/2"></div>
+            </div>
+
+            <!-- Tiguan Image -->
+            <div class="relative w-full max-w-[320px] sm:max-w-md animate-in slide-in-from-bottom-8 duration-700 delay-300 z-10">
+              <div class="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-3 shadow-2xl relative">
+                <div class="aspect-[16/10] bg-zinc-100 rounded-[2rem] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 group cursor-pointer">
+                  <img 
+                    src="https://images.unsplash.com/photo-1614032159152-0186591295b9?auto=format&fit=crop&q=80&w=800" 
+                    alt="Volkswagen Tiguan" 
+                    class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div class="absolute inset-0 bg-emerald-600/10 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                </div>
+              </div>
+              
+              <!-- Badge -->
+              <div class="absolute -bottom-6 -right-2 bg-white dark:bg-zinc-800 text-emerald-600 dark:text-emerald-400 font-black px-4 py-2 rounded-2xl shadow-xl z-20 border border-emerald-100 dark:border-emerald-800/50 flex items-center gap-2 transform rotate-1 animate-bounce-slow">
+                <i data-lucide="piggy-bank" class="w-4 h-4 text-amber-500"></i>
+                <span class="text-[10px] sm:text-xs">SLIMMER VERMOGEN</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Slide 2: Asset Insight -->
         <div class="intro-slide bg-emerald-600 p-8 flex flex-col items-center justify-start pt-12 sm:pt-20 lg:pt-28 text-center overflow-hidden">
           <div class="mb-12 relative">
@@ -1341,6 +1379,7 @@
               <div class="intro-pagination-dot" data-slide="2"></div>
               <div class="intro-pagination-dot" data-slide="3"></div>
               <div class="intro-pagination-dot" data-slide="4"></div>
+              <div class="intro-pagination-dot" data-slide="5"></div>
             </div>
             <button id="intro-next-btn" class="p-2 text-zinc-400 hover:text-emerald-600 dark:text-zinc-500 dark:hover:text-emerald-400 transition-colors active:scale-90" aria-label="Volgende slide">
               <i data-lucide="arrow-right" class="w-5 h-5"></i>
