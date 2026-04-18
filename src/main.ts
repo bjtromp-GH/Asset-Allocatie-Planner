@@ -55,10 +55,7 @@ import {
   Sparkles,
   Frown,
   ThumbsUp,
-  AlertTriangle,
-  PlayCircle,
-  AlertCircle,
-  PiggyBank
+  AlertTriangle
 } from 'lucide';
 import { hierarchy, treemap, select } from 'd3';
 import CryptoJS from 'crypto-js';
@@ -118,10 +115,7 @@ const usedIcons = {
   Sparkles,
   Frown,
   ThumbsUp,
-  AlertTriangle,
-  PlayCircle,
-  AlertCircle,
-  PiggyBank
+  AlertTriangle
 };
 
 Chart.register(...registerables);
@@ -3369,37 +3363,6 @@ function initEventListeners() {
   closeInspirationBtn?.addEventListener('click', () => {
     inspirationModal?.classList.add('hidden');
   });
-
-  // How-to Modal
-  const howToBtn = document.getElementById('how-to-btn');
-  const howToModal = document.getElementById('how-to-modal');
-  const closeHowToModal = document.getElementById('close-how-to-modal');
-  const howToModalOk = document.getElementById('how-to-modal-ok');
-  const howToVideoIframe = document.getElementById('how-to-video-iframe') as HTMLIFrameElement;
-
-  const toggleHowTo = (show: boolean) => {
-    if (show) {
-      howToModal?.classList.remove('hidden');
-    } else {
-      howToModal?.classList.add('hidden');
-      // Stop video when closing by resetting src
-      if (howToVideoIframe) {
-        const currentSrc = howToVideoIframe.src;
-        howToVideoIframe.src = '';
-        howToVideoIframe.src = currentSrc;
-      }
-    }
-  };
-
-  howToBtn?.addEventListener('click', () => toggleHowTo(true));
-  closeHowToModal?.addEventListener('click', () => toggleHowTo(false));
-  howToModalOk?.addEventListener('click', () => toggleHowTo(false));
-  
-  if (howToModal) {
-    howToModal.addEventListener('click', (e) => {
-      if (e.target === howToModal) toggleHowTo(false);
-    });
-  }
 
   // Setup swipe-to-close for bottom sheets
   setupSwipeToClose('beheer-bottom-sheet');
