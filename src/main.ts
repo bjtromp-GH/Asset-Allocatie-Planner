@@ -1166,12 +1166,18 @@ function updateSummaryDetails() {
     if (totalAssets === 0 && totalDebts === 0) {
       statusText = "Tijd voor een frisse start! ";
       iconName = "sparkles";
-    } else if (debtRatio > 30) {
-      statusText = "Let op je schulden, deze vormen een aanzienlijk deel van je portfolio. ";
+    } else if (debtRatio > 60) {
+      statusText = "Let op je schulden, deze vormen een groot deel van je portfolio. ";
       iconName = "frown";
+    } else if (debtRatio > 35) {
+      statusText = "Goed bezig, maar houd je schulden in de gaten. ";
+      iconName = "smile";
     } else if (netWorth > 100000) {
       statusText = "Lekker bezig! Je vermogen groeit gestaag. ";
       iconName = "thumbs-up";
+    } else {
+      statusText = "Je bent goed op weg. Blijf zo doorgaan! ";
+      iconName = "smile";
     }
 
     if (totalAssets === 0 && totalDebts === 0) {
