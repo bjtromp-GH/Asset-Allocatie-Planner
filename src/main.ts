@@ -2188,6 +2188,93 @@ function checkOnboarding() {
   }
 }
 
+function setupFeedbackDraggability() {
+  const container = document.getElementById('feedback-container');
+  const fab = document.getElementById('feedback-fab');
+  if (!container || !fab) return;
+
+  let isDragging = false;
+  let startX = 0, startY = 0;
+  let initialLeft = 0, initialTop = 0;
+
+  const onStart = (e: MouseEvent | TouchEvent) => {
+    // Only drag with left mouse button
+    if (e instanceof MouseEvent && e.button !== 0) return;
+    
+    isDragging = false;
+    const clientX = 'touches' in e ? e.touches[0].clientX : (e as MouseEvent).clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : (e as MouseEvent).clientY;
+    startX = clientX;
+    startY = clientY;
+    
+    const rect = container.getBoundingClientRect();
+    initialLeft = rect.left;
+    initialTop = rect.top;
+
+    // Remove fixed positioning constraints to allow arbitrary movements
+    container.style.bottom = 'auto';
+    container.style.right = 'auto';
+    container.style.margin = '0';
+    container.style.left = `${initialLeft}px`;
+    container.style.top = `${initialTop}px`;
+    container.style.transition = 'none';
+
+    const onMove = (moveEvent: MouseEvent | TouchEvent) => {
+      const currentX = 'touches' in moveEvent ? moveEvent.touches[0].clientX : (moveEvent as MouseEvent).clientX;
+      const currentY = 'touches' in moveEvent ? moveEvent.touches[0].clientY : (moveEvent as MouseEvent).clientY;
+      
+      const dx = currentX - startX;
+      const dy = currentY - startY;
+
+      if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+        isDragging = true;
+      }
+
+      let nextLeft = initialLeft + dx;
+      let nextTop = initialTop + dy;
+
+      // Boundaries
+      const winW = window.innerWidth;
+      const winH = window.innerHeight;
+      const elW = rect.width;
+      const elH = rect.height;
+
+      nextLeft = Math.max(0, Math.min(nextLeft, winW - elW));
+      nextTop = Math.max(0, Math.min(nextTop, winH - elH));
+
+      container.style.left = `${nextLeft}px`;
+      container.style.top = `${nextTop}px`;
+      
+      if (moveEvent.cancelable) moveEvent.preventDefault();
+    };
+
+    const onEnd = () => {
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onEnd);
+      document.removeEventListener('touchmove', onMove);
+      document.removeEventListener('touchend', onEnd);
+      
+      container.style.transition = '';
+      
+      if (isDragging) {
+         // Temporarily prevent clicks on FAB if we just finished a drag
+         fab.style.pointerEvents = 'none';
+         setTimeout(() => {
+           fab.style.pointerEvents = 'auto';
+         }, 50);
+      }
+    };
+
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onEnd);
+    document.addEventListener('touchmove', onMove, { passive: false });
+    document.addEventListener('touchend', onEnd);
+  };
+
+  container.addEventListener('mousedown', onStart);
+  container.addEventListener('touchstart', onStart, { passive: false });
+}
+
 function initEventListeners() {
   setupConfirmationListeners();
   const mobileBeheerBtn = document.getElementById('mobile-beheer-btn');
@@ -3091,6 +3178,8 @@ function initEventListeners() {
   const closeFeedbackSuccess = document.getElementById('close-feedback-success');
   const feedbackText = document.getElementById('feedback-text') as HTMLTextAreaElement;
   const feedbackFormTitle = document.getElementById('feedback-form-title');
+
+  setupFeedbackDraggability();
 
   const toggleFeedbackModal = () => {
     if (feedbackModal) {
