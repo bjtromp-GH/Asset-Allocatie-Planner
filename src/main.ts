@@ -2272,10 +2272,6 @@ function initEventListeners() {
   // Pie Chart Empty State Buttons
   const loadExampleBtn = document.getElementById('load-example-btn');
   const pieEmptyIcon = document.getElementById('pie-empty-icon');
-  const introMascot = document.getElementById('intro-mascot');
-  const onboardingMascot = document.getElementById('onboarding-mascot');
-  const explanationMascot = document.getElementById('explanation-mascot');
-  const freedomMascot = document.getElementById('freedom-mascot');
   const headerPieIcon = document.getElementById('header-pie-icon');
   
   if (loadExampleBtn) {
@@ -2286,30 +2282,6 @@ function initEventListeners() {
 
   if (pieEmptyIcon) {
     pieEmptyIcon.addEventListener('click', () => {
-      loadExampleData();
-    });
-  }
-
-  if (introMascot) {
-    introMascot.addEventListener('click', () => {
-      loadExampleData();
-    });
-  }
-
-  if (onboardingMascot) {
-    onboardingMascot.addEventListener('click', () => {
-      loadExampleData();
-    });
-  }
-
-  if (explanationMascot) {
-    explanationMascot.addEventListener('click', () => {
-      loadExampleData();
-    });
-  }
-
-  if (freedomMascot) {
-    freedomMascot.addEventListener('click', () => {
       loadExampleData();
     });
   }
