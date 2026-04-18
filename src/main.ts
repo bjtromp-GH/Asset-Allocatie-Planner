@@ -1229,6 +1229,11 @@ function renderDebts() {
   const tbody = document.getElementById('debt-table-body');
   if (!tbody) return;
 
+  // Don't re-render if an element in this section has focus to avoid losing state/focus
+  if (tbody.contains(document.activeElement)) {
+    return;
+  }
+
   tbody.innerHTML = '';
 
   if (debts.length === 0) {
@@ -1372,6 +1377,11 @@ function renderCategoryCards() {
 function renderAssets() {
   const tableBody = document.getElementById('asset-table-body');
   if (!tableBody) return;
+
+  // Don't re-render if an element in this section has focus to avoid losing state/focus
+  if (tableBody.contains(document.activeElement)) {
+    return;
+  }
 
   const totalAssets = assets.reduce((sum, a) => sum + a.value, 0);
 
