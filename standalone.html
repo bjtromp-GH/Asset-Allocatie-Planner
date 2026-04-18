@@ -357,13 +357,23 @@
                         <!-- Custom Net Worth Input -->
                         <div class="bg-zinc-50 dark:bg-zinc-800/50 p-4 rounded-xl border border-zinc-100 dark:border-zinc-800">
                             <div class="flex items-center justify-between mb-2">
-                                <label class="text-[10px] uppercase tracking-wider font-bold text-zinc-500 dark:text-zinc-400">Vermogen om mee te rekenen</label>
+                                <label class="text-[10px] uppercase tracking-wider font-bold text-zinc-500 dark:text-zinc-400">Vermogen om mee te rekenen (Netto minus vastgoed)</label>
                                 <div class="flex items-center gap-1">
                                     <span class="text-zinc-400 text-xs">€</span>
                                     <input id="freedom-custom-networth" type="text" class="bg-transparent border-none p-0 w-24 text-right font-bold focus:ring-0 text-sm dark:text-white" placeholder="Huidig" />
                                 </div>
                             </div>
-                            <div class="w-full bg-zinc-200 dark:bg-zinc-700 h-1 rounded-full overflow-hidden">
+                            
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <button id="fill-liquid-btn" class="text-[9px] font-bold px-2 py-1 rounded-md bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-500 transition-colors uppercase tracking-wider">
+                                    Liquide: <span id="freedom-liquid-hint">€ 0</span>
+                                </button>
+                                <button id="fill-total-btn" class="text-[9px] font-bold px-2 py-1 rounded-md bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-500 transition-colors uppercase tracking-wider">
+                                    Totaal: <span id="freedom-total-hint">€ 0</span>
+                                </button>
+                            </div>
+
+                            <div class="w-full bg-zinc-200 dark:bg-zinc-700 h-1 rounded-full overflow-hidden mt-3">
                                 <div class="bg-emerald-500 h-full w-full opacity-30"></div>
                             </div>
                         </div>
@@ -1514,6 +1524,15 @@
                 .reduce((sum, debt) => sum + debt.value, 0);
 
             const liquidValue = liquidAssets; 
+
+            const nettoLiquid = liquidValue - freedomDebts;
+            const nettoTotal = totalValue;
+
+            // Update Freedom Hints
+            const liquidHintEl = document.getElementById('freedom-liquid-hint');
+            const totalHintEl = document.getElementById('freedom-total-hint');
+            if (liquidHintEl) liquidHintEl.textContent = formatCurrency(Math.max(0, nettoLiquid));
+            if (totalHintEl) totalHintEl.textContent = formatCurrency(Math.max(0, nettoTotal));
             
             const totalTarget = assets.reduce((sum, asset) => sum + asset.target, 0);
 
@@ -1537,8 +1556,11 @@
             }
 
             if (freedomTimeEl && freedomPassiveEl) {
-                const months = monthlyExpenses > 0 ? (liquidValue - freedomDebts) / monthlyExpenses : 0;
-                const passiveMonthly = (Math.max(0, liquidValue - freedomDebts) * 0.04) / 12;
+                const calcValue = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : (liquidValue - freedomDebts);
+                const yieldValueForPassive = freedomCustomNetWorth > 0 ? freedomCustomNetWorth : (liquidValue - freedomDebts); // In standalone, yieldValue is approximated as liquid-debts
+                
+                const months = monthlyExpenses > 0 ? calcValue / monthlyExpenses : 0;
+                const passiveMonthly = (Math.max(0, yieldValueForPassive) * 0.04) / 12;
 
                 if (isPrivacyMode) {
                     freedomTimeEl.textContent = '•• mnd';
@@ -2691,6 +2713,58 @@
                 retirementAgeInput.value = retirementAge;
                 retirementAgeInput.addEventListener('input', () => {
                     retirementAge = parseInt(retirementAgeInput.value) || 0;
+                    updateUI();
+                });
+            }
+
+            const freedomCustomNetworthInput = document.getElementById('freedom-custom-networth');
+            if (freedomCustomNetworthInput) {
+                if (!freedomCustomNetworthInput.matches(':focus')) {
+                    freedomCustomNetworthInput.value = freedomCustomNetWorth > 0 ? formatNumber(freedomCustomNetWorth) : '';
+                }
+                freedomCustomNetworthInput.addEventListener('input', () => {
+                    freedomCustomNetWorth = parseFloat(freedomCustomNetworthInput.value.replace(/\./g, '').replace(',', '.')) || 0;
+                    updateUI();
+                });
+                freedomCustomNetworthInput.addEventListener('blur', () => {
+                    if (freedomCustomNetWorth > 0) {
+                        freedomCustomNetworthInput.value = formatNumber(freedomCustomNetWorth);
+                    } else {
+                        freedomCustomNetworthInput.value = '';
+                    }
+                });
+            }
+
+            // Handle fill buttons
+            const fillLiquidBtn = document.getElementById('fill-liquid-btn');
+            const fillTotalBtn = document.getElementById('fill-total-btn');
+
+            if (fillLiquidBtn) {
+                fillLiquidBtn.addEventListener('click', () => {
+                    const liquidAssets = assets
+                        .filter(asset => !asset.name.toLowerCase().includes('vastgoed'))
+                        .reduce((sum, asset) => sum + asset.value, 0);
+                    const freedomDebts = debts
+                        .filter(debt => !debt.name.toLowerCase().includes('hypotheek'))
+                        .reduce((sum, debt) => sum + debt.value, 0);
+                    
+                    freedomCustomNetWorth = Math.max(0, liquidAssets - freedomDebts);
+                    if (freedomCustomNetworthInput) {
+                        freedomCustomNetworthInput.value = formatNumber(freedomCustomNetWorth);
+                    }
+                    updateUI();
+                });
+            }
+
+            if (fillTotalBtn) {
+                fillTotalBtn.addEventListener('click', () => {
+                    const totalAssets = assets.reduce((sum, asset) => sum + asset.value, 0);
+                    const totalDebts = debts.reduce((sum, debt) => sum + debt.value, 0);
+                    
+                    freedomCustomNetWorth = Math.max(0, totalAssets - totalDebts);
+                    if (freedomCustomNetworthInput) {
+                        freedomCustomNetworthInput.value = formatNumber(freedomCustomNetWorth);
+                    }
                     updateUI();
                 });
             }

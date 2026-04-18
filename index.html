@@ -447,13 +447,23 @@
                 <!-- Custom Net Worth Input -->
                 <div class="bg-zinc-50 dark:bg-zinc-800/50 p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:border-emerald-200 dark:hover:border-emerald-900 transition-colors">
                   <div class="flex items-center justify-between mb-2">
-                    <label class="text-[11px] uppercase tracking-widest font-black text-zinc-400 dark:text-zinc-500">VERMOGEN OM MEE TE REKENEN</label>
+                    <label class="text-[11px] uppercase tracking-widest font-black text-zinc-400 dark:text-zinc-500">VERMOGEN OM MEE TE REKENEN (Netto minus vastgoed)</label>
                     <div class="flex items-center gap-1">
                       <span class="text-emerald-500 font-bold text-sm">€</span>
                       <input id="freedom-custom-networth" type="text" class="bg-transparent border-none p-0 w-24 text-right font-black focus:ring-0 text-base dark:text-white" placeholder="Huidig" />
                     </div>
                   </div>
-                  <div class="w-full bg-zinc-200 dark:bg-zinc-700 h-1.5 rounded-full overflow-hidden">
+                  
+                  <div class="flex flex-wrap gap-2 mt-2">
+                    <button id="fill-liquid-btn" class="text-[10px] font-bold px-2 py-1 rounded-md bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-500 transition-colors uppercase tracking-wider">
+                      Liquide: <span id="freedom-liquid-hint">€ 0</span>
+                    </button>
+                    <button id="fill-total-btn" class="text-[10px] font-bold px-2 py-1 rounded-md bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-500 transition-colors uppercase tracking-wider">
+                      Totaal: <span id="freedom-total-hint">€ 0</span>
+                    </button>
+                  </div>
+
+                  <div class="w-full bg-zinc-200 dark:bg-zinc-700 h-1.5 rounded-full overflow-hidden mt-3">
                     <div class="bg-gradient-to-r from-emerald-400 to-emerald-600 h-full w-full opacity-40"></div>
                   </div>
                 </div>

@@ -853,6 +853,15 @@ function updateUI() {
     })
     .reduce((sum, asset) => sum + asset.value, 0);
 
+  const nettoLiquid = liquidValue - freedomDebts;
+  const nettoTotal = netWorth;
+
+  // Update Freedom Hints
+  const liquidHintEl = document.getElementById('freedom-liquid-hint');
+  const totalHintEl = document.getElementById('freedom-total-hint');
+  if (liquidHintEl) liquidHintEl.textContent = formatCurrency(Math.max(0, nettoLiquid));
+  if (totalHintEl) totalHintEl.textContent = formatCurrency(Math.max(0, nettoTotal));
+
   const totalTarget = assets.reduce((sum, asset) => sum + asset.target, 0);
 
   // Update Pie Chart Toggle Styles
@@ -2544,6 +2553,36 @@ function initEventListeners() {
         input.value = '';
       }
     });
+
+    // Handle fill buttons
+    const fillLiquidBtn = document.getElementById('fill-liquid-btn');
+    const fillTotalBtn = document.getElementById('fill-total-btn');
+
+    if (fillLiquidBtn) {
+      fillLiquidBtn.addEventListener('click', () => {
+        const liquidValue = assets
+          .filter(asset => !asset.isRealEstate)
+          .reduce((sum, asset) => sum + asset.value, 0);
+        const freedomDebts = debts
+          .filter(debt => !debt.name.toLowerCase().includes('hypotheek'))
+          .reduce((sum, debt) => sum + debt.value, 0);
+        
+        freedomCustomNetWorth = Math.max(0, liquidValue - freedomDebts);
+        freedomCustomNetworthInput.value = formatNumber(freedomCustomNetWorth);
+        updateUI();
+      });
+    }
+
+    if (fillTotalBtn) {
+      fillTotalBtn.addEventListener('click', () => {
+        const totalAssets = assets.reduce((sum, asset) => sum + asset.value, 0);
+        const totalDebts = debts.reduce((sum, debt) => sum + debt.value, 0);
+        
+        freedomCustomNetWorth = Math.max(0, totalAssets - totalDebts);
+        freedomCustomNetworthInput.value = formatNumber(freedomCustomNetWorth);
+        updateUI();
+      });
+    }
   }
 
   // Add Asset Modal UI
