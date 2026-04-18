@@ -862,6 +862,11 @@ function updateUI() {
   if (liquidHintEl) liquidHintEl.textContent = formatCurrency(Math.max(0, nettoLiquid));
   if (totalHintEl) totalHintEl.textContent = formatCurrency(Math.max(0, nettoTotal));
 
+  const nettoLiquidEl = document.getElementById('net-liquid-total');
+  if (nettoLiquidEl) {
+    nettoLiquidEl.textContent = isPrivacyMode ? '€ •••••' : formatCurrency(Math.max(0, nettoLiquid));
+  }
+
   const totalTarget = assets.reduce((sum, asset) => sum + asset.target, 0);
 
   // Update Pie Chart Toggle Styles
@@ -1133,12 +1138,23 @@ function updateSummaryDetails() {
 
   const assetsEl = document.getElementById('summary-assets-total');
   const debtsEl = document.getElementById('summary-debts-total');
+  const liquidEl = document.getElementById('summary-netto-liquid');
   const descEl = document.getElementById('summary-text-description');
   const statusIcon = document.getElementById('summary-status-icon');
   const canvas = document.getElementById('summary-pie-chart') as HTMLCanvasElement;
 
   if (assetsEl) assetsEl.textContent = isPrivacyMode ? '€ •••••' : formatCurrency(totalAssets);
   if (debtsEl) debtsEl.textContent = isPrivacyMode ? '€ •••••' : formatCurrency(totalDebts);
+  
+  if (liquidEl) {
+    const freedomDebts = debts
+      .filter(debt => !debt.name.toLowerCase().includes('hypotheek'))
+      .reduce((sum, debt) => sum + debt.value, 0);
+    const liquidValue = assets
+      .filter(asset => !asset.isRealEstate)
+      .reduce((sum, asset) => sum + asset.value, 0);
+    liquidEl.textContent = isPrivacyMode ? '€ •••••' : formatCurrency(Math.max(0, liquidValue - freedomDebts));
+  }
 
   // Dynamic description and icon
   if (descEl) {
