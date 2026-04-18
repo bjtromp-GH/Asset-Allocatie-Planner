@@ -324,19 +324,22 @@ const formatNumericInput = (input: HTMLInputElement, onUpdate: (val: number) => 
     target.value = formatted;
 
     // Reset cursor position based on digit count
-    let newCursorPos = 0;
+    let newCursorPos = formatted.length;
     let currentDigitCount = 0;
     for (let i = 0; i < formatted.length; i++) {
       if (/\d/.test(formatted[i])) {
         currentDigitCount++;
       }
-      newCursorPos = i + 1;
-      if (currentDigitCount >= digitsBeforeCursor) break;
+      if (currentDigitCount >= digitsBeforeCursor) {
+        newCursorPos = i + 1;
+        break;
+      }
     }
     
-    // If we just typed a non-digit at the end (like a comma that was swallowed or something), 
-    // or if the value is empty, this logic holds.
-    target.setSelectionRange(newCursorPos, newCursorPos);
+    // Improved cursor stability: Ensure cursor doesn't jump to start
+    requestAnimationFrame(() => {
+      target.setSelectionRange(newCursorPos, newCursorPos);
+    });
     onUpdate(val);
   });
 };
@@ -1249,30 +1252,34 @@ function renderDebts() {
 
   debts.forEach(debt => {
     const tr = document.createElement('tr');
-    tr.className = 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors group';
+    tr.className = 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors group border-b border-zinc-50 dark:border-zinc-800/50 last:border-none';
     tr.innerHTML = `
-      <td class="px-3 sm:px-6 py-4">
-        <input type="text" value="${isPrivacyMode ? '•••••' : debt.name}" class="debt-name-input bg-transparent border-none p-0 focus:ring-0 font-medium text-zinc-900 dark:text-white w-full text-base" data-id="${debt.id}" />
+      <td class="px-3 sm:px-6 py-5">
+        <input type="text" value="${isPrivacyMode ? '•••••' : debt.name}" 
+          class="debt-name-input bg-transparent border-none p-0 focus:ring-0 font-black text-zinc-900 dark:text-white w-full text-base tracking-tight" 
+          data-id="${debt.id}" />
       </td>
-      <td class="px-3 sm:px-6 py-4">
-        <div class="flex items-center gap-1">
-          <span class="text-zinc-400 text-sm">€</span>
-          <input type="text" value="${formatNumber(debt.value)}" class="debt-value-input bg-transparent border-none p-0 focus:ring-0 font-mono font-bold text-red-600 dark:text-red-400 w-24 sm:w-32 md:w-36 text-base" data-id="${debt.id}" />
+      <td class="px-3 sm:px-6 py-5">
+        <div class="flex items-center gap-1.5">
+          <span class="text-red-500/50 font-black text-sm">€</span>
+          <input type="text" value="${formatNumber(debt.value)}" 
+            class="debt-value-input bg-transparent border-none p-0 focus:ring-0 font-black text-red-600 dark:text-red-400 w-32 sm:w-40 md:w-48 text-lg tabular-nums" 
+            data-id="${debt.id}" />
         </div>
       </td>
-      <td class="px-3 sm:px-6 py-4 text-right">
-        <div class="${isPlannerMode ? 'flex' : 'hidden'} items-center justify-end gap-1">
+      <td class="px-3 sm:px-6 py-5 text-right">
+        <div class="${isPlannerMode ? 'flex' : 'hidden'} items-center justify-end gap-1.5 bg-zinc-100 dark:bg-zinc-800/50 px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 w-fit ml-auto">
           <input
             type="number"
             value="${debt.target || 0}"
             data-id="${debt.id}"
-            class="debt-target-input w-10 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-red-500 focus:ring-0 transition-all outline-none py-1 font-mono text-right text-sm dark:text-white dark:hover:border-zinc-700"
+            class="debt-target-input w-12 bg-transparent border-none focus:ring-0 transition-all outline-none p-0 font-black text-right text-xs dark:text-white"
           />
-          <span class="text-zinc-400 font-mono text-xs">%</span>
+          <span class="text-zinc-400 font-black text-[10px] uppercase">%</span>
         </div>
       </td>
-      <td class="px-3 sm:px-6 py-4 text-right">
-        <button class="delete-debt-btn p-2 text-zinc-300 hover:text-red-500 transition-colors" data-id="${debt.id}">
+      <td class="px-3 sm:px-6 py-5 text-right">
+        <button class="delete-debt-btn p-2.5 text-zinc-300 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-all active:scale-90" data-id="${debt.id}">
           <i data-lucide="trash-2" class="w-4 h-4"></i>
         </button>
       </td>
@@ -1348,14 +1355,15 @@ function renderCategoryCards() {
     const color = name === 'Groei' ? '#10b981' : name === 'Defensief' ? '#059669' : '#f97316';
     const idPrefix = name.toLowerCase();
     return `
-      <div class="bg-white p-6 rounded-xl border border-zinc-200 flex items-center justify-between dark:bg-zinc-900 dark:border-zinc-800">
-        <div>
-          <p class="text-xs font-bold uppercase tracking-wider text-zinc-500 mb-1 dark:text-zinc-400">${name}</p>
-          <p id="cat-percent-${idPrefix}" class="text-2xl font-bold dark:text-white">${formatPercent(percent)}</p>
-          <p id="cat-value-${idPrefix}" class="text-sm text-zinc-400 dark:text-zinc-500">${formatCurrency(value)}</p>
+      <div class="bg-white p-7 rounded-3xl border border-zinc-200 flex items-center justify-between dark:bg-zinc-900 dark:border-zinc-800 card-shadow transition-all hover:shadow-xl hover:-translate-y-1 group relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-zinc-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div class="relative z-10">
+          <p class="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 mb-2 dark:text-zinc-500">${name}</p>
+          <p id="cat-percent-${idPrefix}" class="text-3xl font-black dark:text-white tracking-tighter">${formatPercent(percent)}</p>
+          <p id="cat-value-${idPrefix}" class="text-sm font-bold text-zinc-400 dark:text-zinc-500 mt-1">${formatCurrency(value)}</p>
         </div>
-        <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: ${color}15">
-          <div class="w-6 h-6 rounded-full" style="background-color: ${color}"></div>
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center relative z-10 shadow-lg" style="background-color: ${color}15; border: 1px solid ${color}20">
+          <div class="w-4 h-4 rounded-full animate-pulse-ring-slow" style="background-color: ${color}"></div>
         </div>
       </div>
     `;
@@ -1388,70 +1396,70 @@ function renderAssets() {
   tableBody.innerHTML = assets.map(asset => {
     const currentPercent = totalAssets > 0 ? (asset.value / totalAssets) * 100 : 0;
     return `
-      <tr class="hover:bg-zinc-50/50 transition-colors group dark:hover:bg-zinc-800/50">
-        <td class="px-3 sm:px-6 py-4 min-w-[120px] sm:min-w-[180px]">
-          <div class="flex flex-col gap-1">
+      <tr class="hover:bg-zinc-50/50 transition-colors group dark:hover:bg-zinc-800/50 border-b border-zinc-50 dark:border-zinc-800/50 last:border-none">
+        <td class="px-3 sm:px-6 py-5 min-w-[120px] sm:min-w-[180px]">
+          <div class="flex flex-col gap-1.5">
             <input
               type="text"
               value="${isPrivacyMode ? '•••••' : asset.name}"
               data-id="${asset.id}"
               data-type="name"
-              class="asset-input w-full bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-0 sm:py-0.5 text-sm sm:text-base font-bold text-zinc-800 dark:text-zinc-200 dark:hover:border-zinc-700"
+              class="asset-input w-full bg-transparent border-none focus:ring-0 transition-all outline-none p-0 text-sm sm:text-base font-black text-zinc-900 dark:text-zinc-100 tracking-tight"
             />
             <div class="flex items-center gap-2">
               <select
                 data-id="${asset.id}"
                 data-type="category"
-                class="asset-input bg-transparent border-none text-xs sm:text-sm font-bold uppercase tracking-wider text-emerald-600/70 focus:ring-0 cursor-pointer hover:text-emerald-600 dark:text-emerald-400/70 dark:hover:text-emerald-400 p-0"
+                class="asset-input bg-zinc-100 dark:bg-zinc-800/50 border border-transparent rounded-lg text-[9px] font-black uppercase tracking-[0.15em] text-emerald-600 focus:ring-0 cursor-pointer hover:bg-zinc-200 dark:text-emerald-400 dark:hover:bg-zinc-800 px-2 py-0.5 transition-all"
               >
                 <option value="Groei" ${asset.category === 'Groei' ? 'selected' : ''}>Groei</option>
                 <option value="Defensief" ${asset.category === 'Defensief' ? 'selected' : ''}>Defensief</option>
                 <option value="Speculatief" ${asset.category === 'Speculatief' ? 'selected' : ''}>Speculatief</option>
               </select>
-              ${asset.isRealEstate ? '<span class="text-xs font-black uppercase tracking-widest bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded dark:bg-emerald-900/40 dark:text-emerald-300">Vastgoed</span>' : ''}
+              ${asset.isRealEstate ? '<span class="text-[9px] font-black uppercase tracking-widest bg-emerald-500/10 text-emerald-600 px-2 py-0.5 rounded-lg border border-emerald-500/20">Vastgoed</span>' : ''}
             </div>
           </div>
         </td>
-        <td class="px-3 sm:px-6 py-4 min-w-[120px] sm:min-w-[200px]">
-          <div class="flex flex-col gap-1.5">
+        <td class="px-3 sm:px-6 py-5 min-w-[120px] sm:min-w-[200px]">
+          <div class="flex flex-col gap-2.5">
             <div class="flex items-center justify-between gap-1 sm:gap-2">
-              <div class="flex items-center gap-1">
-                <span class="text-zinc-400 font-mono text-base">€</span>
+              <div class="flex items-center gap-1.5">
+                <span class="text-zinc-400/50 font-black text-sm">€</span>
                 <input
                   type="text"
                   value="${formatNumber(asset.value)}"
                   data-id="${asset.id}"
                   data-type="value"
-                  class="asset-input asset-value-input w-24 sm:w-32 md:w-40 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-base dark:text-white dark:hover:border-zinc-700"
+                  class="asset-input asset-value-input w-28 sm:w-36 md:w-44 bg-transparent border-none focus:ring-0 transition-all outline-none p-0 font-black text-lg tabular-nums text-zinc-900 dark:text-white"
                 />
               </div>
-              <span class="font-mono text-sm font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">${formatPercent(currentPercent)}</span>
+              <span class="font-black text-sm text-emerald-600 dark:text-emerald-400 tabular-nums tracking-tighter">${formatPercent(currentPercent)}</span>
             </div>
             <!-- Progress Bar -->
-            <div class="w-full bg-zinc-100 dark:bg-zinc-800 rounded-full h-1.5 overflow-hidden">
+            <div class="w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-full h-1.5 overflow-hidden shadow-inner">
               <div 
-                class="h-full rounded-full transition-all duration-500" 
-                style="width: ${Math.min(100, currentPercent)}%; background-color: ${asset.color}"
+                class="h-full rounded-full transition-all duration-700 saas-gradient" 
+                style="width: ${Math.min(100, currentPercent)}%;"
               ></div>
             </div>
           </div>
         </td>
-        <td class="px-3 sm:px-6 py-4 text-right min-w-[80px] sm:min-w-[100px]">
-          <div class="flex items-center justify-end gap-1">
-            <div class="${isPlannerMode ? 'flex' : 'hidden'} items-center gap-1">
+        <td class="px-3 sm:px-6 py-5 text-right min-w-[80px] sm:min-w-[100px]">
+          <div class="flex items-center justify-end gap-2">
+            <div class="${isPlannerMode ? 'flex' : 'hidden'} items-center gap-1.5 bg-zinc-100 dark:bg-zinc-800/50 px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700">
               <input
                 type="number"
                 value="${asset.target}"
                 data-id="${asset.id}"
                 data-type="target"
-                class="asset-input w-8 sm:w-10 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-right text-sm dark:text-white dark:hover:border-zinc-700"
+                class="asset-input w-8 sm:w-12 bg-transparent border-none focus:ring-0 transition-all outline-none p-0 font-black text-right text-xs dark:text-white"
               />
-              <span class="text-zinc-400 font-mono text-xs sm:text-sm">%</span>
+              <span class="text-zinc-400 font-black text-[10px] uppercase">%</span>
             </div>
-            <span class="${!isPlannerMode ? 'block' : 'hidden'} text-xs font-mono text-zinc-400">${formatPercent(asset.target)}</span>
+            <span class="${!isPlannerMode ? 'block' : 'hidden'} text-xs font-black text-zinc-400 tabular-nums">${formatPercent(asset.target)}</span>
           </div>
         </td>
-        <td class="px-3 sm:px-6 py-4 text-right">
+        <td class="px-3 sm:px-6 py-5 text-right">
           <button data-id="${asset.id}" class="delete-asset-btn p-2 text-zinc-300 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20" title="Verwijderen">
             <i data-lucide="trash-2" class="w-4 h-4"></i>
           </button>
