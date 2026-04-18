@@ -723,13 +723,6 @@ function saveNewAsset() {
   updateUI();
 }
 
-function resetToDefaults() {
-  if (confirm('Weet je zeker dat je alle assets wilt herstellen naar de standaardwaarden? Je huidige invoer gaat verloren.')) {
-    assets = JSON.parse(JSON.stringify(DEFAULT_ASSETS));
-    updateUI();
-  }
-}
-
 function initAverageDutchChart() {
   const ctx = document.getElementById('average-dutch-chart') as HTMLCanvasElement;
   if (!ctx) return;
@@ -2352,13 +2345,6 @@ function initEventListeners() {
   if (addAssetBtn) {
     addAssetBtn.addEventListener('click', () => {
       addAsset();
-    });
-  }
-
-  const resetColorsBtn = document.getElementById('reset-colors-btn');
-  if (resetColorsBtn) {
-    resetColorsBtn.addEventListener('click', () => {
-      resetToDefaults();
     });
   }
 
