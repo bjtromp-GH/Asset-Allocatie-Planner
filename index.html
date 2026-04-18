@@ -12,144 +12,141 @@
     <link rel="mask-icon" href="https://lh3.googleusercontent.com/d/1UfHIBYafSVfCm0tCtzAfJK2gkOfdFWfL" color="#059669">
     <link rel="manifest" href="/manifest.json">
     <title>GeldDash</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/src/index.css">
   </head>
-  <body class="min-h-screen bg-zinc-50 text-zinc-900 font-sans selection:bg-emerald-100 transition-colors duration-300 dark:bg-zinc-950 dark:text-zinc-100">
-    <div id="app">
-      <!-- Header -->
-      <header class="sticky top-0 z-50 bg-emerald-600 shadow-md">
-        <!-- Top Bar: Emerald -->
-        <div class="bg-emerald-600">
-          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <button id="inspiration-trigger" class="hover:scale-110 transition-transform active:scale-95" title="Inspiratie">
-                <img src="https://lh3.googleusercontent.com/d/1UfHIBYafSVfCm0tCtzAfJK2gkOfdFWfL" alt="GeldDash Logo" class="w-8 h-8" referrerPolicy="no-referrer" />
-              </button>
-              <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white">GeldDash</h1>
-            </div>
-            
-            <div class="flex items-center gap-1 sm:gap-2 relative" id="header-actions-container">
-              <!-- Mobile & Desktop Actions -->
-              <button id="faq-btn" class="hidden sm:block p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" aria-label="Veelgestelde vragen" title="Veelgestelde vragen">
-                <i data-lucide="help-circle" class="w-5 h-5"></i>
-              </button>
-              <button id="theme-toggle" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" aria-label="Wissel thema" title="Wissel thema">
-                <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
-                <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
-              </button>
-              <button id="info-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" aria-label="Uitleg over de app" title="Uitleg over de app">
-                <i data-lucide="info" class="w-5 h-5"></i>
-              </button>
-              <button id="average-dutch-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" aria-label="Gemiddelde Nederlander" title="Gemiddelde Nederlander">
-                <i data-lucide="users" class="w-5 h-5"></i>
-              </button>
-              <button id="security-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white relative" aria-label="Beveiliging instellingen" title="Beveiliging instellingen">
-                <i data-lucide="lock" class="w-5 h-5"></i>
-                <span id="security-badge" class="absolute top-2 right-2 w-2 h-2 bg-amber-500 rounded-full hidden">
-                  <span class="absolute inset-0 rounded-full bg-amber-500 animate-ping opacity-75"></span>
-                </span>
-              </button>
-              <button id="reset-app-btn" class="p-2 rounded-lg hover:bg-emerald-700 transition-colors text-white" aria-label="Begin opnieuw (Reset)" title="Begin opnieuw (Reset)">
-                <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
-              </button>
-              <button id="save-history-btn" class="bg-white text-emerald-600 hover:bg-emerald-50 px-3 sm:px-4 py-2 rounded-lg flex items-center gap-2 transition-all active:scale-95 ml-2">
-                <i data-lucide="save" class="w-4 h-4"></i>
-                <span class="hidden sm:inline">Sla op</span>
-              </button>
+  <body class="min-h-screen bg-[var(--app-bg)] text-[var(--text-primary)] font-sans selection:bg-emerald-100 transition-colors duration-500 overflow-x-hidden">
+    <div id="app" class="flex min-h-screen">
+      <!-- Desktop Sidebar Rail -->
+      <aside class="hidden lg:flex flex-col w-64 glass-surface border-r border-[var(--border-color)] sticky top-0 h-screen z-50">
+        <div class="p-6 flex items-center gap-3">
+          <img src="https://lh3.googleusercontent.com/d/1UfHIBYafSVfCm0tCtzAfJK2gkOfdFWfL" alt="Logo" class="w-8 h-8" referrerPolicy="no-referrer" />
+          <h1 class="text-xl font-black tracking-tight text-emerald-600 dark:text-emerald-500">GeldDash</h1>
+        </div>
+        
+        <nav class="flex-1 px-4 space-y-2 mt-4">
+          <a href="#overview" class="nav-rail-item active">
+            <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+            Overzicht
+          </a>
+          <a href="#assets-section" class="nav-rail-item">
+            <i data-lucide="wallet" class="w-5 h-5"></i>
+            Beheer
+          </a>
+          <a href="#freedom-calculator-section" class="nav-rail-item">
+            <i data-lucide="smile" class="w-5 h-5"></i>
+            Vrijheid
+          </a>
+          <a href="#history-section" class="nav-rail-item">
+            <i data-lucide="history" class="w-5 h-5"></i>
+            Historie
+          </a>
+        </nav>
 
-              <!-- Feature Hint Tooltip -->
-              <div id="feature-hint" class="absolute top-full mt-4 right-4 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 z-[100] hidden animate-in fade-in slide-in-from-top-4 duration-500 pointer-events-none">
-                <div class="bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white px-6 py-3 rounded-xl shadow-2xl border border-zinc-100 dark:border-zinc-700 font-bold text-lg whitespace-nowrap relative pointer-events-auto cursor-pointer group hover:scale-105 transition-transform active:scale-95">
-                  <div class="flex items-center gap-2">
-                    <span>Ontdek deze opties</span>
-                    <div class="w-2 h-2 bg-emerald-600 rounded-full animate-pulse"></div>
-                  </div>
-                  <!-- Arrow -->
-                  <div class="absolute -top-2 right-12 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 w-4 h-4 bg-white dark:bg-zinc-800 border-t border-l border-zinc-100 dark:border-zinc-700 rotate-45"></div>
-                </div>
-              </div>
-            </div>
+        <div class="p-4 mt-auto">
+          <div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50">
+            <p class="text-[10px] font-black uppercase tracking-widest text-emerald-600 mb-1">Status</p>
+            <p class="text-xs font-semibold text-emerald-800 dark:text-emerald-300">Netto Vermogen</p>
+            <p id="rail-total-value" class="text-lg font-black dark:text-white mt-1">€ 0,00</p>
           </div>
         </div>
+      </aside>
 
-        <!-- Bottom Bar: White -->
-        <div class="bg-white border-b border-emerald-600/10 dark:bg-zinc-900 dark:border-emerald-900/30 relative z-40">
-          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
-            <div class="flex flex-col items-start">
-              <span class="text-[12px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500 font-bold">Datum</span>
-              <label for="current-date" class="flex items-center gap-1 cursor-pointer">
-                <input id="current-date" type="date" class="text-sm sm:text-base font-bold text-zinc-900 bg-transparent border-none focus:ring-0 p-0 text-left cursor-pointer dark:text-white dark:[color-scheme:dark]" />
-                <i data-lucide="calendar" class="w-4 h-4 text-zinc-400 dark:text-zinc-500"></i>
-              </label>
+      <div class="flex-1 flex flex-col min-w-0">
+        <!-- Unified Header -->
+        <header class="sticky top-0 z-40 glass-surface border-b border-[var(--border-color)]">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <!-- Mobile Menu Toggle (can be added later if needed) -->
+              <div class="lg:hidden flex items-center gap-2">
+                <img src="https://lh3.googleusercontent.com/d/1UfHIBYafSVfCm0tCtzAfJK2gkOfdFWfL" alt="Logo" class="w-8 h-8" referrerPolicy="no-referrer" />
+                <span class="font-bold text-lg dark:text-white">GeldDash</span>
+              </div>
+              
+              <div class="hidden sm:flex items-center gap-2 text-zinc-400 dark:text-zinc-500">
+                <span class="text-xs font-bold uppercase tracking-widest">Dashboard</span>
+                <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                <span id="current-breadcrumb" class="text-xs font-bold uppercase tracking-widest text-zinc-900 dark:text-white">Overzicht</span>
+              </div>
             </div>
 
-            <div class="flex flex-col items-end">
-              <div class="flex items-center gap-2">
-                <span class="text-[12px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500 font-bold">TOTAAL NETTO VERMOGEN</span>
-                <button class="privacy-toggle-btn p-1 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 transition-colors" title="Privacy modus">
-                  <i data-lucide="eye" class="w-4 h-4"></i>
+            <div class="flex items-center gap-2 sm:gap-4">
+              <!-- Actions Group -->
+              <div class="flex items-center gap-1 bg-zinc-100 dark:bg-zinc-800 p-1 rounded-xl">
+                <button id="theme-toggle" class="p-2 rounded-lg hover:bg-white dark:hover:bg-zinc-700 transition-all text-zinc-500 dark:text-zinc-400">
+                  <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+                  <i data-lucide="moon" class="w-4 h-4 block dark:hidden"></i>
+                </button>
+                <button id="security-btn" class="p-2 rounded-lg hover:bg-white dark:hover:bg-zinc-700 transition-all text-zinc-500 dark:text-zinc-400 relative">
+                  <i data-lucide="lock" class="w-4 h-4"></i>
+                  <span id="security-badge" class="absolute top-2 right-2 w-1.5 h-1.5 bg-amber-500 rounded-full hidden"></span>
                 </button>
               </div>
-              <div class="flex items-center gap-3">
-                <span id="total-value" class="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white">€ 0,00</span>
-                <button id="toggle-summary-panel" class="p-1.5 rounded-full bg-orange-100 hover:bg-orange-200 text-orange-600 transition-all dark:bg-orange-900/30 dark:hover:bg-orange-900/50 active:scale-90" title="Toon samenvatting">
-                  <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300" id="summary-toggle-icon"></i>
-                </button>
+
+              <div class="h-6 w-px bg-zinc-200 dark:bg-zinc-800 hidden sm:block"></div>
+
+              <button id="save-history-btn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-bold transition-all active:scale-95 shadow-lg shadow-emerald-500/20">
+                <i data-lucide="save" class="w-4 h-4 sm:hidden"></i>
+                <span class="hidden sm:inline">Opslaan</span>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Secondary Stats Bar -->
+          <div class="border-t border-[var(--border-color)] bg-white/50 dark:bg-zinc-900/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-12 flex items-center justify-between">
+              <div class="flex items-center gap-6 overflow-x-auto no-scrollbar">
+                <div class="flex flex-col">
+                  <span class="text-[9px] uppercase font-black tracking-widest text-zinc-400">Vermogen</span>
+                  <span id="total-value" class="text-xs font-bold dark:text-white">€ 0,00</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-[9px] uppercase font-black tracking-widest text-zinc-400">Datum</span>
+                  <input id="current-date" type="date" class="text-xs font-bold bg-transparent border-none p-0 focus:ring-0 cursor-pointer dark:text-white dark:[color-scheme:dark]" />
+                </div>
               </div>
+              
+              <button id="toggle-summary-panel" class="flex items-center gap-2 text-xs font-bold text-zinc-500 hover:text-emerald-600 transition-colors uppercase tracking-widest">
+                <span>Samenvatting</span>
+                <i data-lucide="chevron-down" class="w-3 h-3 transition-transform duration-300" id="summary-toggle-icon"></i>
+              </button>
             </div>
           </div>
 
           <!-- Sliding Summary Panel -->
-          <div id="summary-panel" class="absolute top-full left-0 w-full bg-white border-b border-emerald-600/10 dark:bg-zinc-900 dark:border-emerald-900/30 transform -translate-y-full opacity-0 pointer-events-none transition-all duration-500 ease-in-out z-30 max-h-[85vh] overflow-y-auto">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-24">
-              <div class="flex flex-col items-center gap-8">
-                <!-- Mascot & Button -->
-                <div class="flex flex-col items-center text-center space-y-4 w-full">
-                  <div class="w-32 h-32 relative group">
-                    <div class="absolute inset-0 bg-emerald-400/20 rounded-full blur-2xl group-hover:bg-emerald-400/40 transition-colors duration-500"></div>
-                    <img src="https://lh3.googleusercontent.com/d/1TKwElEgt2D2MiMhUrM1rnZ_bueGCTc_K" alt="Mascotte" class="w-full h-full object-contain relative z-10 animate-bounce-slow">
-                  </div>
-                  <div class="space-y-2">
-                    <h3 class="text-xl font-black text-zinc-900 dark:text-white">Hoi! Klaar voor een overzicht?</h3>
-                    <p class="text-sm text-zinc-500 dark:text-zinc-400">Bekijk in één oogopslag hoe je er vandaag voor staat.</p>
-                  </div>
-                  <button id="show-summary-details" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-8 py-3 rounded-xl transition-all active:scale-95 flex items-center gap-2">
-                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-                    Samenvatting
-                  </button>
-                </div>
-
-                <!-- Summary Details (Hidden initially, shown on click) -->
-                <div id="summary-details-content" class="hidden flex-1 w-full animate-fade-in">
-                  <div class="grid grid-cols-1 gap-8 items-center">
-                    <div class="space-y-6">
-                      <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-800">
-                        <p class="text-[10px] uppercase tracking-widest font-black text-zinc-400 mb-1">Status Quo</p>
-                        <p id="summary-text-description" class="text-base text-zinc-700 dark:text-zinc-300 leading-relaxed font-medium">
-                          Je vermogen is vandaag stabiel. Je grootste asset is <span class="text-emerald-600 font-bold">Aandelen</span> en je bent op weg naar je doel!
-                        </p>
+          <div id="summary-panel" class="absolute top-full left-0 w-full bg-white border-b border-[var(--border-color)] dark:bg-zinc-900 transform -translate-y-full opacity-0 pointer-events-none transition-all duration-500 ease-in-out z-30 max-h-[85vh] overflow-y-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+              <div id="summary-details-content" class="hidden animate-fade-in">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                  <div class="space-y-8">
+                    <div class="p-6 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-800">
+                      <p class="text-[10px] uppercase tracking-widest font-black text-zinc-400 mb-2">Portfolio Inzicht</p>
+                      <p id="summary-text-description" class="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed font-medium">
+                        Je vermogen is stabiel. <span class="text-emerald-600 font-bold">Laden...</span>
+                      </p>
+                    </div>
+                    <div class="grid grid-cols-1 gap-4">
+                      <div class="saas-card p-6 border-l-4 border-emerald-500">
+                        <p class="text-[10px] uppercase tracking-widest font-black text-emerald-600 mb-1">Totaal Assets</p>
+                        <p id="summary-assets-total" class="text-2xl font-black text-zinc-900 dark:text-white">€ 0</p>
                       </div>
-                      <div class="grid grid-cols-1 gap-4">
-                        <div class="p-5 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50 shadow-sm transition-all hover:shadow-md min-w-0 overflow-hidden">
-                          <p class="text-[10px] uppercase tracking-widest font-black text-emerald-600 mb-1">Assets</p>
-                          <p id="summary-assets-total" class="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white">€ 0</p>
-                        </div>
-                        <div class="p-5 rounded-2xl bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/50 shadow-sm transition-all hover:shadow-md min-w-0 overflow-hidden">
-                          <p class="text-[10px] uppercase tracking-widest font-black text-red-600 mb-1">Schulden</p>
-                          <p id="summary-debts-total" class="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white">€ 0</p>
-                        </div>
-                        <div class="p-5 rounded-2xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/50 shadow-sm transition-all hover:shadow-md ring-1 ring-blue-500/20 min-w-0 overflow-hidden">
-                          <p class="text-[10px] uppercase tracking-widest font-black text-blue-600 mb-1">Netto Liquide</p>
-                          <p id="summary-netto-liquid" class="text-xl sm:text-2xl font-black text-blue-700 dark:text-blue-400">€ 0</p>
-                        </div>
+                      <div class="saas-card p-6 border-l-4 border-red-500">
+                        <p class="text-[10px] uppercase tracking-widest font-black text-red-600 mb-1">Totaal Schulden</p>
+                        <p id="summary-debts-total" class="text-2xl font-black text-zinc-900 dark:text-white">€ 0</p>
+                      </div>
+                      <div class="saas-card p-6 border-l-4 border-blue-500">
+                        <p class="text-[10px] uppercase tracking-widest font-black text-blue-600 mb-1">Netto Liquide</p>
+                        <p id="summary-netto-liquid" class="text-2xl font-black text-blue-600 dark:text-blue-400">€ 0</p>
                       </div>
                     </div>
-                    <div class="h-[280px] relative flex items-center justify-center">
-                      <canvas id="summary-pie-chart"></canvas>
-                      <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <div class="w-12 h-12 bg-white dark:bg-zinc-900 rounded-full flex items-center justify-center border border-zinc-100 dark:border-zinc-800">
-                          <i id="summary-status-icon" data-lucide="smile" class="w-6 h-6 text-emerald-600"></i>
-                        </div>
+                  </div>
+                  <div class="h-[320px] relative flex items-center justify-center">
+                    <canvas id="summary-pie-chart"></canvas>
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <div class="w-14 h-14 bg-white dark:bg-zinc-900 rounded-full shadow-lg flex items-center justify-center border border-zinc-100 dark:border-zinc-800">
+                        <i id="summary-status-icon" data-lucide="smile" class="w-7 h-7 text-emerald-600"></i>
                       </div>
                     </div>
                   </div>
@@ -157,10 +154,9 @@
               </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 pb-32">
+        <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 pb-32">
         <!-- Greeting Message Bubble -->
         <div class="mb-4 flex justify-center lg:justify-end">
           <div id="greeting-bubble" class="relative bg-white dark:bg-zinc-800 px-4 py-2 rounded-2xl rounded-tr-none shadow-sm border border-zinc-100 dark:border-zinc-800 animate-in slide-in-from-top-2 duration-700">
@@ -195,15 +191,15 @@
           
           <!-- Left Column: Primary Data & Tables (8/12) -->
           <div class="w-full lg:w-2/3 flex flex-col gap-4 sm:gap-6">
-            <section id="assets-section" class="bg-white rounded-xl border border-zinc-200 overflow-hidden dark:bg-zinc-900 dark:border-zinc-800">
-              <div class="px-6 py-4 border-b border-zinc-100 flex items-center justify-between dark:border-zinc-800">
-                <h2 class="font-semibold flex items-center gap-2 dark:text-white">
+            <section id="assets-section" class="saas-card overflow-hidden">
+              <div class="px-6 py-4 border-b border-[var(--border-color)] flex items-center justify-between">
+                <h2 class="font-bold flex items-center gap-2 dark:text-white">
                   <i data-lucide="wallet" class="w-4 h-4 text-emerald-600"></i>
                   Asset Beheer
                 </h2>
                 <div class="flex items-center gap-2">
-                  <span id="target-warning" class="hidden text-xs font-medium px-2 py-1 rounded-full"></span>
-                  <button id="add-asset-btn" class="bg-emerald-600 hover:bg-emerald-700 text-white p-1.5 rounded-lg transition-all active:scale-95" title="Asset toevoegen">
+                  <span id="target-warning" class="hidden text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-full"></span>
+                  <button id="add-asset-btn" class="bg-emerald-600 hover:bg-emerald-700 text-white p-2 rounded-xl transition-all active:scale-95 shadow-sm" title="Asset toevoegen">
                     <i data-lucide="plus" class="w-4 h-4"></i>
                   </button>
                 </div>
@@ -211,14 +207,11 @@
               <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                   <thead>
-                    <tr class="bg-zinc-50/50 text-zinc-500 text-xs sm:text-xs uppercase tracking-wider font-semibold dark:bg-zinc-800/50 dark:text-zinc-400">
-                      <th class="px-3 sm:px-6 py-3">Asset</th>
-                      <th class="px-3 sm:px-6 py-3 whitespace-nowrap min-w-[140px] sm:min-w-[200px]">
-                        <span class="sm:hidden">Waarde</span>
-                        <span class="hidden sm:inline">Huidige Waarde & %</span>
-                      </th>
-                      <th id="target-column-header" class="px-3 sm:px-6 py-3 text-right">Doel (%)</th>
-                      <th class="px-3 sm:px-6 py-3 text-right">Acties</th>
+                    <tr class="bg-zinc-50/50 text-zinc-400 text-[10px] uppercase tracking-widest font-black dark:bg-zinc-800/30">
+                      <th class="px-6 py-4">Asset</th>
+                      <th class="px-6 py-4">Status & Waarde</th>
+                      <th id="target-column-header" class="px-6 py-4 text-right">Target</th>
+                      <th class="px-6 py-4 text-right">Acties</th>
                     </tr>
                   </thead>
                   <tbody id="asset-table-body" class="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -228,25 +221,24 @@
               </div>
             </section>
 
-            <!-- Debt Management Table -->
-            <section id="debts-section" class="bg-white rounded-xl border border-zinc-200 overflow-hidden dark:bg-zinc-900 dark:border-zinc-800">
-              <div class="px-6 py-4 border-b border-zinc-100 flex items-center justify-between dark:border-zinc-800">
-                <h2 class="font-semibold flex items-center gap-2 dark:text-white">
+            <section id="debts-section" class="saas-card overflow-hidden">
+              <div class="px-6 py-4 border-b border-[var(--border-color)] flex items-center justify-between">
+                <h2 class="font-bold flex items-center gap-2 dark:text-white">
                   <i data-lucide="minus-circle" class="w-4 h-4 text-red-500"></i>
                   Schulden
                 </h2>
-                <button id="add-debt-btn" class="bg-red-500 hover:bg-red-600 text-white p-1.5 rounded-lg transition-all active:scale-95" title="Schuld toevoegen">
+                <button id="add-debt-btn" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-xl transition-all active:scale-95 shadow-sm" title="Schuld toevoegen">
                   <i data-lucide="plus" class="w-4 h-4"></i>
                 </button>
               </div>
               <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                   <thead>
-                    <tr class="bg-zinc-50/50 text-zinc-500 text-xs sm:text-xs uppercase tracking-wider font-semibold dark:bg-zinc-800/50 dark:text-zinc-400">
-                      <th class="px-3 sm:px-6 py-3">Schuld</th>
-                      <th class="px-3 sm:px-6 py-3 min-w-[140px] sm:min-w-[200px]">Bedrag</th>
-                      <th id="debt-target-column-header" class="px-3 sm:px-6 py-3 text-right">Doel (%)</th>
-                      <th class="px-3 sm:px-6 py-3 text-right">Acties</th>
+                    <tr class="bg-zinc-50/50 text-zinc-400 text-[10px] uppercase tracking-widest font-black dark:bg-zinc-800/30">
+                      <th class="px-6 py-4">Schuld</th>
+                      <th class="px-6 py-4">Bedrag</th>
+                      <th id="debt-target-column-header" class="px-6 py-4 text-right">Target</th>
+                      <th class="px-6 py-4 text-right">Acties</th>
                     </tr>
                   </thead>
                   <tbody id="debt-table-body" class="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -256,13 +248,12 @@
               </div>
             </section>
 
-            <!-- Bar Charts Section -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <!-- Bar Chart: Current vs Target -->
-              <section id="comparison-section" class="hidden md:block bg-white rounded-xl border border-zinc-200 p-6 dark:bg-zinc-900 dark:border-zinc-800">
-                <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
+              <section id="comparison-section" class="hidden md:block saas-card p-6">
+                <h2 class="font-bold flex items-center gap-2 mb-6 dark:text-white">
                   <i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-600"></i>
-                  Huidig vs Doel
+                  Allocatie Analyse
                 </h2>
                 <div class="h-[250px] w-full">
                   <canvas id="bar-chart-comparison"></canvas>
@@ -270,10 +261,10 @@
               </section>
 
               <!-- Bar Chart: Current Allocation -->
-              <section class="bg-white rounded-xl border border-zinc-200 p-6 dark:bg-zinc-900 dark:border-zinc-800">
-                <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
-                  <i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-600"></i>
-                  Huidige Allocatie (Staaf)
+              <section class="saas-card p-6">
+                <h2 class="font-bold flex items-center gap-2 mb-6 dark:text-white">
+                  <i data-lucide="pie-chart" class="w-4 h-4 text-emerald-600"></i>
+                  Actuele Spreiding
                 </h2>
                 <div class="h-[250px] w-full">
                   <canvas id="bar-chart-current"></canvas>
@@ -315,21 +306,21 @@
           <!-- Right Column: Visualization & Tools (4/12) -->
           <div class="w-full lg:w-1/3 flex flex-col gap-6 order-first lg:order-none">
             <!-- Portfolio Verdeling (Pie Chart) -->
-            <section id="pie-chart-section" class="bg-white rounded-xl border border-zinc-200 p-6 dark:bg-zinc-900 dark:border-zinc-800">
-              <div class="flex items-center justify-between mb-4">
-                <h2 class="font-semibold flex items-center gap-2 dark:text-white">
-                  <i id="header-pie-icon" data-lucide="pie-chart" class="w-4 h-4 text-emerald-600"></i>
-                  Portfolio Verdeling
+            <section id="pie-chart-section" class="saas-card p-6">
+              <div class="flex items-center justify-between mb-6">
+                <h2 class="font-bold flex items-center gap-2 dark:text-white">
+                  <i id="header-pie-icon" data-lucide="layout-grid" class="w-4 h-4 text-emerald-600"></i>
+                  Portfolio Mix
                 </h2>
-                <div class="flex bg-emerald-600 p-1 rounded-xl shadow-inner">
-                  <button id="view-bruto-btn" class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all bg-white text-emerald-600 shadow-sm">Bruto</button>
-                  <button id="view-netto-btn" class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all text-white/80 hover:text-white">Netto</button>
+                <div class="flex bg-zinc-100 dark:bg-zinc-800 p-1 rounded-xl">
+                  <button id="view-bruto-btn" class="px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all bg-white text-emerald-600 shadow-sm dark:bg-zinc-700 dark:text-emerald-400">Bruto</button>
+                  <button id="view-netto-btn" class="px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100">Netto</button>
                 </div>
               </div>
 
               <!-- Insight Summary -->
-              <div id="pie-insight" class="mt-1 mb-4 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800/50 hidden">
-                <p class="text-xs font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-2">
+              <div id="pie-insight" class="mb-6 p-4 bg-emerald-50 dark:bg-emerald-950/30 rounded-2xl border border-emerald-100 dark:border-emerald-900/50 hidden animate-slide-up">
+                <p class="text-xs font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-2">
                   <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
                   <span id="pie-insight-text"></span>
                 </p>
@@ -375,7 +366,7 @@
             </section>
 
             <!-- Target Net Worth Card -->
-            <div class="bg-white p-6 rounded-2xl border border-zinc-200 dark:bg-zinc-900 dark:border-zinc-800 group relative overflow-hidden transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+            <div class="saas-card p-6 group relative overflow-hidden">
               <!-- Animated Background Glow -->
               <div class="absolute -top-24 -right-24 w-64 h-64 bg-emerald-500/5 rounded-full blur-[80px] group-hover:bg-emerald-500/10 transition-all duration-700"></div>
               
@@ -383,10 +374,10 @@
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center dark:bg-emerald-900/30 border border-emerald-100 dark:border-emerald-800/50 group-hover:scale-110 transition-transform">
-                      <i data-lucide="target" class="w-6 h-6 text-emerald-600 dark:text-emerald-400"></i>
+                      <i data-lucide="target" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
                     </div>
                     <div>
-                      <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 mb-0.5">Financieel Doel</p>
+                      <p class="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-0.5">Financieel Doel</p>
                       <h3 class="text-sm font-bold text-zinc-800 dark:text-zinc-100">Doelvermogen</h3>
                     </div>
                   </div>
@@ -394,18 +385,18 @@
 
                 <div class="relative">
                   <div class="flex items-baseline gap-2 absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none z-20">
-                    <span class="text-emerald-400 font-mono text-2xl font-bold">€</span>
+                    <span class="text-emerald-400 font-black text-2xl">€</span>
                   </div>
                   <input 
                     id="target-net-worth-input" 
                     type="text" 
-                    class="w-full bg-zinc-50 border border-zinc-200 pl-12 pr-4 py-6 rounded-2xl text-4xl font-black text-zinc-900 placeholder:text-zinc-300 focus:bg-white dark:focus:bg-zinc-800 focus:border-emerald-500 focus:ring-8 focus:ring-emerald-500/5 transition-all outline-none dark:bg-zinc-800/50 dark:border-zinc-700 dark:text-white shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] dark:shadow-none"
+                    class="w-full bg-zinc-50 border border-zinc-200 pl-12 pr-4 py-6 rounded-2xl text-4xl font-black text-zinc-900 placeholder:text-zinc-300 focus:bg-white dark:focus:bg-zinc-800 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all outline-none dark:bg-zinc-800/50 dark:border-zinc-700 dark:text-white"
                     placeholder="0"
                     aria-label="Doelvermogen"
                   />
                   <!-- Smart Prompt when target is low or zero -->
                   <div id="target-prompt" class="absolute right-5 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none transition-all duration-300">
-                    <span class="text-[10px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 px-3 py-1.5 rounded-full dark:bg-emerald-900/50 border border-emerald-100 dark:border-emerald-800/30 shadow-sm">Stel doel in</span>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-emerald-600 dark:text-emerald-400 bg-emerald-50 px-3 py-1.5 rounded-full dark:bg-emerald-950/50 border border-emerald-100 dark:border-emerald-800/30">Stel doel in</span>
                     <i data-lucide="sparkles" class="w-4 h-4 text-emerald-500 animate-pulse"></i>
                   </div>
                 </div>
@@ -431,26 +422,26 @@
             </div>
 
             <!-- Freedom Calculator Section -->
-            <section id="freedom-calculator-section" class="bg-white rounded-xl border border-zinc-200 p-6 dark:bg-zinc-900 dark:border-zinc-800 relative overflow-hidden group">
+            <section id="freedom-calculator-section" class="saas-card p-6 relative overflow-hidden group">
               <!-- Wow factor background effect -->
-              <div class="absolute -right-12 -top-12 w-48 h-48 bg-amber-100/30 dark:bg-amber-900/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
+              <div class="absolute -right-12 -top-12 w-48 h-48 bg-amber-500/5 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
               
-              <div class="flex items-start justify-between mb-4 relative z-10">
+              <div class="flex items-start justify-between mb-6 relative z-10">
                 <div>
                   <h2 class="font-bold text-lg flex items-center gap-2 dark:text-white">
-                    Wat kun je met je netto vermogen?
+                    Vrijheidscalculator
                   </h2>
-                  <p class="text-[11px] text-zinc-400 dark:text-zinc-500 italic mt-1">Tijd is gebaseerd op liquide assets (excl. vastgoed). Passief inkomen op renderende assets.</p>
+                  <p class="text-xs text-zinc-500 mt-1">Plan je weg naar financiële onafhankelijkheid.</p>
                 </div>
               </div>
               
               <div class="space-y-6 relative z-10">
                 <!-- Custom Net Worth Input -->
-                <div class="bg-zinc-50 dark:bg-zinc-800/50 p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:border-emerald-200 dark:hover:border-emerald-900 transition-colors">
-                  <div class="flex items-center justify-between mb-2">
-                    <label class="text-[11px] uppercase tracking-widest font-black text-zinc-400 dark:text-zinc-500">VERMOGEN OM MEE TE REKENEN (Netto minus vastgoed)</label>
+                <div class="p-5 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-800">
+                  <div class="flex items-center justify-between mb-4">
+                    <label class="text-[10px] uppercase tracking-widest font-black text-zinc-400">Vermogen voor calculatie</label>
                     <div class="flex items-center gap-1">
-                      <span class="text-emerald-500 font-bold text-sm">€</span>
+                      <span class="text-emerald-500 font-bold">€</span>
                       <input id="freedom-custom-networth" type="text" class="bg-transparent border-none p-0 w-24 text-right font-black focus:ring-0 text-base dark:text-white" placeholder="Huidig" />
                     </div>
                   </div>
@@ -635,32 +626,34 @@
           </section>
 
           <!-- Treemap: Asset Distribution (Full Width) -->
-            <section class="bg-white rounded-xl border border-zinc-200 p-6 dark:bg-zinc-900 dark:border-zinc-800">
-            <h2 class="font-semibold flex items-center gap-2 mb-6 dark:text-white">
+          <section class="saas-card p-6">
+            <h2 class="font-bold flex items-center gap-2 mb-6 dark:text-white">
               <i data-lucide="layout-grid" class="w-4 h-4 text-emerald-600"></i>
-              Asset Verdeling (Treemap)
+              Portefeuille Architectuur
             </h2>
-            <div id="treemap-container" class="h-[400px] w-full">
+            <div id="treemap-container" class="h-[400px] w-full bg-zinc-50/50 dark:bg-zinc-800/20 rounded-2xl overflow-hidden border border-zinc-100 dark:border-zinc-800/50">
               <!-- D3 Treemap will be rendered here -->
             </div>
           </section>
 
           <!-- History Section -->
-          <div id="history-section" class="mt-10 space-y-8 pb-24 lg:pb-0">
-            <div class="flex items-center justify-between">
-              <h2 class="text-2xl font-bold flex items-center gap-3 dark:text-white">
-                <i data-lucide="history" class="w-6 h-6 text-emerald-600"></i>
-                Vermogensverloop (Historie)
-              </h2>
-              <p class="text-sm text-zinc-500 dark:text-zinc-400">Sla je vermogen regelmatig op om de grafiek te zien.</p>
+          <div id="history-section" class="mt-12 space-y-8 pb-24 lg:pb-0">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h2 class="text-2xl font-black flex items-center gap-3 dark:text-white">
+                  <i data-lucide="history" class="w-6 h-6 text-emerald-600"></i>
+                  Vermogensgroei
+                </h2>
+                <p class="text-xs text-zinc-500 mt-1">Houd je voortgang in de gaten over de tijd.</p>
+              </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
               <!-- History Chart -->
-              <div class="lg:col-span-8 bg-white rounded-xl border border-zinc-200 p-6 dark:bg-zinc-900 dark:border-zinc-800">
-                <h3 class="font-semibold mb-6 flex items-center gap-2 dark:text-white">
+              <div class="lg:col-span-8 saas-card p-6">
+                <h3 class="font-bold mb-6 flex items-center gap-2 dark:text-white">
                   <i data-lucide="line-chart" class="w-4 h-4 text-emerald-600"></i>
-                  Totaal Vermogen Trend
+                  Trends & Prognoses
                 </h3>
                 <div class="h-[300px] w-full">
                   <canvas id="history-chart"></canvas>
@@ -668,20 +661,20 @@
               </div>
 
               <!-- History Table -->
-              <div class="lg:col-span-4 bg-white rounded-xl border border-zinc-200 overflow-hidden dark:bg-zinc-900 dark:border-zinc-800">
-                <div class="px-6 py-4 border-b border-zinc-100 dark:border-zinc-800">
-                  <h3 class="font-semibold flex items-center gap-2 dark:text-white">
+              <div class="lg:col-span-4 saas-card overflow-hidden">
+                <div class="px-6 py-4 border-b border-[var(--border-color)]">
+                  <h3 class="font-bold flex items-center gap-2 dark:text-white">
                     <i data-lucide="list" class="w-4 h-4 text-emerald-600"></i>
-                    Logboek
+                    Mutatie Logboek
                   </h3>
                 </div>
                 <div class="max-h-[350px] overflow-y-auto">
                   <table class="w-full text-left border-collapse">
                     <thead>
-                      <tr class="bg-zinc-50/50 text-zinc-500 text-xs uppercase tracking-wider font-semibold dark:bg-zinc-800/50 dark:text-zinc-400">
-                        <th class="px-6 py-3">Datum</th>
-                        <th class="px-6 py-3">Waarde</th>
-                        <th class="px-6 py-3 text-right">Acties</th>
+                      <tr class="bg-zinc-50/50 text-zinc-400 text-[10px] uppercase tracking-widest font-black dark:bg-zinc-800/30">
+                        <th class="px-6 py-4">Datum</th>
+                        <th class="px-6 py-4">Status</th>
+                        <th class="px-6 py-4 text-right">Actie</th>
                       </tr>
                     </thead>
                     <tbody id="history-table-body" class="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -729,6 +722,7 @@
           <span class="text-[11px] font-bold uppercase tracking-widest">Historie</span>
         </button>
       </nav>
+    </div>
 
     </div>
 
