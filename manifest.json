@@ -1,13 +1,11 @@
 {
-  "name": "GeldDash - Jouw Geld Dashboard",
+  "name": "GeldDash",
   "short_name": "GeldDash",
-  "description": "Beheer je asset-allocatie en vermogensgroei met precisie en krijg inzicht in je financiële vrijheid.",
+  "description": "Beheer je asset-allocatie en vermogensgroei met precisie.",
   "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#059669",
+  "background_color": "#ffffff",
   "theme_color": "#059669",
-  "categories": ["finance", "lifestyle"],
   "icons": [
     {
       "src": "/GeldDash_Beeldmerk.svg",
@@ -20,18 +18,6 @@
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "maskable"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Nieuwe Asset",
-      "url": "/?add=asset",
-      "description": "Voeg direct een nieuwe asset toe"
-    },
-    {
-      "name": "Vrijheid Calculator",
-      "url": "/?view=vrijheid",
-      "description": "Bereken je financiële vrijheid"
     }
   ]
 }
