@@ -1188,51 +1188,40 @@ function updateSummaryDetails() {
 
   // Summary Pie Chart
   if (canvas) {
-    if (summaryPieChart) {
-      summaryPieChart.data.datasets[0].data = [totalAssets, totalDebts];
-      summaryPieChart.options.plugins!.tooltip!.enabled = !isPrivacyMode;
-      summaryPieChart.update();
-    } else {
-      summaryPieChart = new Chart(canvas.getContext('2d')!, {
-        type: 'doughnut',
-        data: {
-          labels: ['Bezittingen', 'Schulden'],
-          datasets: [{
-            data: [totalAssets, totalDebts],
-            backgroundColor: ['#10b981', '#ef4444'],
-            borderWidth: 0,
-            hoverOffset: 10
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: true,
-          aspectRatio: 1,
-          animation: {
-            animateRotate: true,
-            animateScale: true,
-            duration: 1000,
-            easing: 'easeOutQuart'
-          },
-          plugins: {
-            legend: { display: false },
-            tooltip: { 
-              enabled: !isPrivacyMode,
-              callbacks: {
-                label: (context: any) => {
-                  const value = context.raw as number;
-                  return ` ${context.label}: ${formatCurrency(value)}`;
-                }
+    if (summaryPieChart) summaryPieChart.destroy();
+    summaryPieChart = new Chart(canvas.getContext('2d')!, {
+      type: 'doughnut',
+      data: {
+        labels: ['Bezittingen', 'Schulden'],
+        datasets: [{
+          data: [totalAssets, totalDebts],
+          backgroundColor: ['#10b981', '#ef4444'],
+          borderWidth: 0,
+          hoverOffset: 10
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 1,
+        plugins: {
+          legend: { display: false },
+          tooltip: { 
+            enabled: !isPrivacyMode,
+            callbacks: {
+              label: (context: any) => {
+                const value = context.raw as number;
+                return ` ${context.label}: ${formatCurrency(value)}`;
               }
             }
-          },
-          layout: {
-            padding: 20
-          },
-          cutout: '70%'
-        }
-      });
-    }
+          }
+        },
+        layout: {
+          padding: 20
+        },
+        cutout: '70%'
+      }
+    });
   }
 }
 
@@ -1733,181 +1722,147 @@ function updateCharts() {
   const textColor = isDarkMode ? '#a1a1aa' : '#71717a';
   const gridColor = isDarkMode ? '#27272a' : '#f4f4f5';
 
-  // Robust chart update to ensure animations
-  const canvasCtx = pieCanvas.getContext('2d')!;
-  if (pieChart) {
-    pieChart.data.labels = labels;
-    pieChart.data.datasets[0].data = values;
-    pieChart.data.datasets[0].backgroundColor = colors;
-    pieChart.data.datasets[0].borderWidth = isDarkMode ? 2 : 0;
-    pieChart.data.datasets[0].borderColor = isDarkMode ? '#09090b' : '#ffffff';
-    (pieChart.options.plugins as any).centerText.label = pieChartMode === 'bruto' ? 'Bruto' : 'Netto';
-    (pieChart.options.plugins as any).centerText.value = (window as any).chartTotalValue || '€ 0';
-    pieChart.update();
-  } else {
-    pieChart = new Chart(canvasCtx, {
-      type: 'doughnut',
-      data: {
-        labels,
-        datasets: [{
-          data: values,
-          backgroundColor: colors,
-          borderWidth: isDarkMode ? 2 : 0,
-          borderColor: isDarkMode ? '#09090b' : '#ffffff',
-          hoverOffset: 10
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        layout: {
-          padding: 20
-        },
-        animation: {
-          animateRotate: true,
-          animateScale: true,
-          duration: 1000,
-          easing: 'easeOutQuart'
-        },
-        onClick: (event, elements) => {
-          if (elements.length > 0) {
-            const index = elements[0].index;
-            if (pieChartMode === 'bruto') {
-              const assetId = assets[index].id;
-              highlightAssetRow(assetId);
-            } else {
-              // Netto mode: 0 = Bezittingen, 1 = Schulden
-              if (index === 0) {
-                document.getElementById('assets-section')?.scrollIntoView({ behavior: 'smooth' });
-              } else if (index === 1) {
-                document.getElementById('debts-section')?.scrollIntoView({ behavior: 'smooth' });
-              }
-            }
-          }
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: isDarkMode ? '#27272a' : '#ffffff',
-            titleColor: isDarkMode ? '#ffffff' : '#09090b',
-            bodyColor: isDarkMode ? '#d4d4d8' : '#71717a',
-            borderColor: isDarkMode ? '#3f3f46' : '#e4e4e7',
-            borderWidth: 1,
-            yAlign: 'bottom',
-            callbacks: {
-              label: (context) => {
-                if (isPrivacyMode) return ` ${context.label}: •••••`;
-                const value = context.raw as number;
-                const total = context.dataset.data.reduce((a: any, b: any) => a + b, 0) as number;
-                const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0';
-                return ` ${context.label}: ${formatCurrency(value)} (${percentage}%)`;
-              }
-            }
-          },
-          centerText: {
-            display: (window as any).chartCenterTextDisplay !== false,
-            value: (window as any).chartTotalValue || '€ 0',
-            label: pieChartMode === 'bruto' ? 'Bruto' : 'Netto',
-            badge: {
-              text: (window as any).chartStatus?.text,
-              color: (window as any).chartStatus?.color,
-              bg: (window as any).chartStatus?.bg
-            }
-          }
-        },
-        cutout: '75%'
-      } as any
-    });
-  }
-
-  if (barChartCurrent) {
-    barChartCurrent.data.labels = labels;
-    barChartCurrent.data.datasets[0].data = currentPercents;
-    barChartCurrent.data.datasets[0].backgroundColor = colors;
-    barChartCurrent.options.scales!.y!.ticks!.color = textColor;
-    barChartCurrent.update();
-  } else {
-    // Destroy existing chart on canvas if any
-    const existing = Chart.getChart(barCurrentCanvas);
+  // Robust chart destruction to prevent ghosting
+  const destroyChart = (chartVar: Chart | null, canvas: HTMLCanvasElement) => {
+    if (chartVar) chartVar.destroy();
+    const existing = Chart.getChart(canvas);
     if (existing) existing.destroy();
-    barChartCurrent = new Chart(barCurrentCanvas.getContext('2d')!, {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [{
-          data: currentPercents,
-          backgroundColor: colors,
-          borderRadius: 4,
-          barThickness: 20
-        }]
+  };
+
+  destroyChart(pieChart, pieCanvas);
+  pieChart = new Chart(pieCanvas.getContext('2d')!, {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        backgroundColor: colors,
+        borderWidth: isDarkMode ? 2 : 0,
+        borderColor: isDarkMode ? '#09090b' : '#ffffff',
+        hoverOffset: 10
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: {
+        padding: 20
       },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { display: false },
-          y: { 
-            grid: { display: false }, 
-            border: { display: false },
-            ticks: { color: textColor }
+      onClick: (event, elements) => {
+        if (elements.length > 0) {
+          const index = elements[0].index;
+          if (pieChartMode === 'bruto') {
+            const assetId = assets[index].id;
+            highlightAssetRow(assetId);
+          } else {
+            // Netto mode: 0 = Bezittingen, 1 = Schulden
+            if (index === 0) {
+              document.getElementById('assets-section')?.scrollIntoView({ behavior: 'smooth' });
+            } else if (index === 1) {
+              document.getElementById('debts-section')?.scrollIntoView({ behavior: 'smooth' });
+            }
           }
         }
-      }
-    });
-  }
-
-  if (barChartComparison) {
-    barChartComparison.data.labels = labels;
-    barChartComparison.data.datasets[0].data = currentPercents;
-    barChartComparison.data.datasets[1].data = targets;
-    barChartComparison.data.datasets[1].backgroundColor = isDarkMode ? '#1e293b' : '#e2e8f0';
-    (barChartComparison.options.plugins!.legend!.labels as any).color = textColor;
-    barChartComparison.options.scales!.x!.grid!.color = gridColor;
-    barChartComparison.options.scales!.x!.ticks!.color = textColor;
-    barChartComparison.options.scales!.y!.ticks!.color = textColor;
-    barChartComparison.update();
-  } else {
-    // Destroy existing chart on canvas if any
-    const existing = Chart.getChart(barComparisonCanvas);
-    if (existing) existing.destroy();
-    barChartComparison = new Chart(barComparisonCanvas.getContext('2d')!, {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [
-          {
-            label: 'Huidig',
-            data: currentPercents,
-            backgroundColor: '#10b981',
-            borderRadius: 4,
-            barThickness: 12
-          },
-          {
-            label: 'Doel',
-            data: targets,
-            backgroundColor: isDarkMode ? '#1e293b' : '#e2e8f0',
-            borderRadius: 4,
-            barThickness: 12
-          }
-        ]
       },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { 
-            position: 'bottom', 
-            labels: { 
-              usePointStyle: true, 
-              boxWidth: 6,
-              color: textColor
-            } 
-          },
-          tooltip: {
-            backgroundColor: isDarkMode ? '#1e293b' : '#ffffff',
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: isDarkMode ? '#27272a' : '#ffffff',
+          titleColor: isDarkMode ? '#ffffff' : '#09090b',
+          bodyColor: isDarkMode ? '#d4d4d8' : '#71717a',
+          borderColor: isDarkMode ? '#3f3f46' : '#e4e4e7',
+          borderWidth: 1,
+          yAlign: 'bottom',
+          callbacks: {
+            label: (context) => {
+              if (isPrivacyMode) return ` ${context.label}: •••••`;
+              const value = context.raw as number;
+              const total = context.dataset.data.reduce((a: any, b: any) => a + b, 0) as number;
+              const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0';
+              return ` ${context.label}: ${formatCurrency(value)} (${percentage}%)`;
+            }
+          }
+        },
+        centerText: {
+          display: (window as any).chartCenterTextDisplay !== false,
+          value: (window as any).chartTotalValue || '€ 0',
+          label: pieChartMode === 'bruto' ? 'Bruto' : 'Netto',
+          badge: {
+            text: (window as any).chartStatus?.text,
+            color: (window as any).chartStatus?.color,
+            bg: (window as any).chartStatus?.bg
+          }
+        }
+      },
+      cutout: '75%'
+    } as any
+  });
+
+  destroyChart(barChartCurrent, barCurrentCanvas);
+  barChartCurrent = new Chart(barCurrentCanvas.getContext('2d')!, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        data: currentPercents,
+        backgroundColor: colors,
+        borderRadius: 4,
+        barThickness: 20
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: false },
+        y: { 
+          grid: { display: false }, 
+          border: { display: false },
+          ticks: { color: textColor }
+        }
+      }
+    }
+  });
+
+  destroyChart(barChartComparison, barComparisonCanvas);
+  barChartComparison = new Chart(barComparisonCanvas.getContext('2d')!, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Huidig',
+          data: currentPercents,
+          backgroundColor: '#10b981',
+          borderRadius: 4,
+          barThickness: 12
+        },
+        {
+          label: 'Doel',
+          data: targets,
+          backgroundColor: isDarkMode ? '#1e293b' : '#e2e8f0',
+          borderRadius: 4,
+          barThickness: 12
+        }
+      ]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { 
+          position: 'bottom', 
+          labels: { 
+            usePointStyle: true, 
+            boxWidth: 6,
+            color: textColor
+          } 
+        },
+        tooltip: {
+          backgroundColor: isDarkMode ? '#1e293b' : '#ffffff',
           titleColor: isDarkMode ? '#ffffff' : '#0f172a',
           bodyColor: isDarkMode ? '#cbd5e1' : '#64748b',
           borderColor: isDarkMode ? '#334155' : '#e2e8f0',
@@ -1924,67 +1879,55 @@ function updateCharts() {
       }
     }
   });
-}
 
-  if (historyChart) {
-    historyChart.data.labels = history.map(h => formatDate(h.date));
-    historyChart.data.datasets[0].data = history.map(h => h.totalValue);
-    historyChart.data.datasets[0].backgroundColor = isDarkMode ? 'rgba(16, 185, 129, 0.05)' : 'rgba(16, 185, 129, 0.1)';
-    historyChart.options.scales!.x!.ticks!.color = textColor;
-    historyChart.options.scales!.y!.ticks!.color = textColor;
-    historyChart.update();
-  } else {
-    // Destroy existing chart on canvas if any
-    const existing = Chart.getChart(historyCanvas);
-    if (existing) existing.destroy();
-    historyChart = new Chart(historyCanvas.getContext('2d')!, {
-      type: 'line',
-      data: {
-        labels: history.map(h => formatDate(h.date)),
-        datasets: [{
-          label: 'Totaal Vermogen',
-          data: history.map(h => h.totalValue),
-          borderColor: '#10b981',
-          backgroundColor: isDarkMode ? 'rgba(16, 185, 129, 0.05)' : 'rgba(16, 185, 129, 0.1)',
-          fill: true,
-          tension: 0.4,
-          pointRadius: 4,
-          pointBackgroundColor: '#10b981'
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: isDarkMode ? '#1e293b' : '#ffffff',
-            titleColor: isDarkMode ? '#ffffff' : '#0f172a',
-            bodyColor: isDarkMode ? '#cbd5e1' : '#64748b',
-            borderColor: isDarkMode ? '#334155' : '#e2e8f0',
-            borderWidth: 1,
-            callbacks: {
-              label: (context) => formatCurrency(context.raw as number)
-            }
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: false,
-            grid: { color: gridColor },
-            ticks: {
-              color: textColor,
-              callback: (value) => formatCurrency(value as number)
-            }
-          },
-          x: {
-            grid: { display: false },
-            ticks: { color: textColor }
+  destroyChart(historyChart, historyCanvas);
+  historyChart = new Chart(historyCanvas.getContext('2d')!, {
+    type: 'line',
+    data: {
+      labels: history.map(h => formatDate(h.date)),
+      datasets: [{
+        label: 'Totaal Vermogen',
+        data: history.map(h => h.totalValue),
+        borderColor: '#10b981',
+        backgroundColor: isDarkMode ? 'rgba(16, 185, 129, 0.05)' : 'rgba(16, 185, 129, 0.1)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 4,
+        pointBackgroundColor: '#10b981'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: isDarkMode ? '#1e293b' : '#ffffff',
+          titleColor: isDarkMode ? '#ffffff' : '#0f172a',
+          bodyColor: isDarkMode ? '#cbd5e1' : '#64748b',
+          borderColor: isDarkMode ? '#334155' : '#e2e8f0',
+          borderWidth: 1,
+          callbacks: {
+            label: (context) => formatCurrency(context.raw as number)
           }
         }
+      },
+      scales: {
+        y: {
+          beginAtZero: false,
+          grid: { color: gridColor },
+          ticks: {
+            color: textColor,
+            callback: (value) => formatCurrency(value as number)
+          }
+        },
+        x: {
+          grid: { display: false },
+          ticks: { color: textColor }
+        }
       }
-    });
-  }
+    }
+  });
 
   updateTreemap();
 }
