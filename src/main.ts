@@ -324,19 +324,22 @@ const formatNumericInput = (input: HTMLInputElement, onUpdate: (val: number) => 
     target.value = formatted;
 
     // Reset cursor position based on digit count
-    let newCursorPos = 0;
+    let newCursorPos = formatted.length;
     let currentDigitCount = 0;
     for (let i = 0; i < formatted.length; i++) {
       if (/\d/.test(formatted[i])) {
         currentDigitCount++;
       }
-      newCursorPos = i + 1;
-      if (currentDigitCount >= digitsBeforeCursor) break;
+      if (currentDigitCount >= digitsBeforeCursor) {
+        newCursorPos = i + 1;
+        break;
+      }
     }
     
-    // If we just typed a non-digit at the end (like a comma that was swallowed or something), 
-    // or if the value is empty, this logic holds.
-    target.setSelectionRange(newCursorPos, newCursorPos);
+    // Improved cursor stability: Ensure cursor doesn't jump to start
+    requestAnimationFrame(() => {
+      target.setSelectionRange(newCursorPos, newCursorPos);
+    });
     onUpdate(val);
   });
 };
@@ -1188,51 +1191,40 @@ function updateSummaryDetails() {
 
   // Summary Pie Chart
   if (canvas) {
-    if (summaryPieChart) {
-      summaryPieChart.data.datasets[0].data = [totalAssets, totalDebts];
-      summaryPieChart.options.plugins!.tooltip!.enabled = !isPrivacyMode;
-      summaryPieChart.update();
-    } else {
-      summaryPieChart = new Chart(canvas.getContext('2d')!, {
-        type: 'doughnut',
-        data: {
-          labels: ['Bezittingen', 'Schulden'],
-          datasets: [{
-            data: [totalAssets, totalDebts],
-            backgroundColor: ['#10b981', '#ef4444'],
-            borderWidth: 0,
-            hoverOffset: 10
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: true,
-          aspectRatio: 1,
-          animation: {
-            animateRotate: true,
-            animateScale: true,
-            duration: 1000,
-            easing: 'easeOutQuart'
-          },
-          plugins: {
-            legend: { display: false },
-            tooltip: { 
-              enabled: !isPrivacyMode,
-              callbacks: {
-                label: (context: any) => {
-                  const value = context.raw as number;
-                  return ` ${context.label}: ${formatCurrency(value)}`;
-                }
+    if (summaryPieChart) summaryPieChart.destroy();
+    summaryPieChart = new Chart(canvas.getContext('2d')!, {
+      type: 'doughnut',
+      data: {
+        labels: ['Bezittingen', 'Schulden'],
+        datasets: [{
+          data: [totalAssets, totalDebts],
+          backgroundColor: ['#10b981', '#ef4444'],
+          borderWidth: 0,
+          hoverOffset: 10
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 1,
+        plugins: {
+          legend: { display: false },
+          tooltip: { 
+            enabled: !isPrivacyMode,
+            callbacks: {
+              label: (context: any) => {
+                const value = context.raw as number;
+                return ` ${context.label}: ${formatCurrency(value)}`;
               }
             }
-          },
-          layout: {
-            padding: 20
-          },
-          cutout: '70%'
-        }
-      });
-    }
+          }
+        },
+        layout: {
+          padding: 20
+        },
+        cutout: '70%'
+      }
+    });
   }
 }
 
@@ -1260,30 +1252,34 @@ function renderDebts() {
 
   debts.forEach(debt => {
     const tr = document.createElement('tr');
-    tr.className = 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors group';
+    tr.className = 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors group border-b border-zinc-50 dark:border-zinc-800/50 last:border-none';
     tr.innerHTML = `
-      <td class="px-3 sm:px-6 py-4">
-        <input type="text" value="${isPrivacyMode ? '•••••' : debt.name}" class="debt-name-input bg-transparent border-none p-0 focus:ring-0 font-medium text-zinc-900 dark:text-white w-full text-base" data-id="${debt.id}" />
+      <td class="px-3 sm:px-6 py-5">
+        <input type="text" value="${isPrivacyMode ? '•••••' : debt.name}" 
+          class="debt-name-input bg-transparent border-none p-0 focus:ring-0 font-black text-zinc-900 dark:text-white w-full text-base tracking-tight" 
+          data-id="${debt.id}" />
       </td>
-      <td class="px-3 sm:px-6 py-4">
-        <div class="flex items-center gap-1">
-          <span class="text-zinc-400 text-sm">€</span>
-          <input type="text" value="${formatNumber(debt.value)}" class="debt-value-input bg-transparent border-none p-0 focus:ring-0 font-mono font-bold text-red-600 dark:text-red-400 w-24 sm:w-32 md:w-36 text-base" data-id="${debt.id}" />
+      <td class="px-3 sm:px-6 py-5">
+        <div class="flex items-center gap-1.5">
+          <span class="text-red-500/50 font-black text-sm">€</span>
+          <input type="text" value="${formatNumber(debt.value)}" 
+            class="debt-value-input bg-transparent border-none p-0 focus:ring-0 font-black text-red-600 dark:text-red-400 w-32 sm:w-40 md:w-48 text-lg tabular-nums" 
+            data-id="${debt.id}" />
         </div>
       </td>
-      <td class="px-3 sm:px-6 py-4 text-right">
-        <div class="${isPlannerMode ? 'flex' : 'hidden'} items-center justify-end gap-1">
+      <td class="px-3 sm:px-6 py-5 text-right">
+        <div class="${isPlannerMode ? 'flex' : 'hidden'} items-center justify-end gap-1.5 bg-zinc-100 dark:bg-zinc-800/50 px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 w-fit ml-auto">
           <input
             type="number"
             value="${debt.target || 0}"
             data-id="${debt.id}"
-            class="debt-target-input w-10 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-red-500 focus:ring-0 transition-all outline-none py-1 font-mono text-right text-sm dark:text-white dark:hover:border-zinc-700"
+            class="debt-target-input w-12 bg-transparent border-none focus:ring-0 transition-all outline-none p-0 font-black text-right text-xs dark:text-white"
           />
-          <span class="text-zinc-400 font-mono text-xs">%</span>
+          <span class="text-zinc-400 font-black text-[10px] uppercase">%</span>
         </div>
       </td>
-      <td class="px-3 sm:px-6 py-4 text-right">
-        <button class="delete-debt-btn p-2 text-zinc-300 hover:text-red-500 transition-colors" data-id="${debt.id}">
+      <td class="px-3 sm:px-6 py-5 text-right">
+        <button class="delete-debt-btn p-2.5 text-zinc-300 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-all active:scale-90" data-id="${debt.id}">
           <i data-lucide="trash-2" class="w-4 h-4"></i>
         </button>
       </td>
@@ -1359,14 +1355,15 @@ function renderCategoryCards() {
     const color = name === 'Groei' ? '#10b981' : name === 'Defensief' ? '#059669' : '#f97316';
     const idPrefix = name.toLowerCase();
     return `
-      <div class="bg-white p-6 rounded-xl border border-zinc-200 flex items-center justify-between dark:bg-zinc-900 dark:border-zinc-800">
-        <div>
-          <p class="text-xs font-bold uppercase tracking-wider text-zinc-500 mb-1 dark:text-zinc-400">${name}</p>
-          <p id="cat-percent-${idPrefix}" class="text-2xl font-bold dark:text-white">${formatPercent(percent)}</p>
-          <p id="cat-value-${idPrefix}" class="text-sm text-zinc-400 dark:text-zinc-500">${formatCurrency(value)}</p>
+      <div class="bg-white p-7 rounded-3xl border border-zinc-200 flex items-center justify-between dark:bg-zinc-900 dark:border-zinc-800 card-shadow transition-all hover:shadow-xl hover:-translate-y-1 group relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-zinc-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div class="relative z-10">
+          <p class="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 mb-2 dark:text-zinc-500">${name}</p>
+          <p id="cat-percent-${idPrefix}" class="text-3xl font-black dark:text-white tracking-tighter">${formatPercent(percent)}</p>
+          <p id="cat-value-${idPrefix}" class="text-sm font-bold text-zinc-400 dark:text-zinc-500 mt-1">${formatCurrency(value)}</p>
         </div>
-        <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: ${color}15">
-          <div class="w-6 h-6 rounded-full" style="background-color: ${color}"></div>
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center relative z-10 shadow-lg" style="background-color: ${color}15; border: 1px solid ${color}20">
+          <div class="w-4 h-4 rounded-full animate-pulse-ring-slow" style="background-color: ${color}"></div>
         </div>
       </div>
     `;
@@ -1399,70 +1396,70 @@ function renderAssets() {
   tableBody.innerHTML = assets.map(asset => {
     const currentPercent = totalAssets > 0 ? (asset.value / totalAssets) * 100 : 0;
     return `
-      <tr class="hover:bg-zinc-50/50 transition-colors group dark:hover:bg-zinc-800/50">
-        <td class="px-3 sm:px-6 py-4 min-w-[120px] sm:min-w-[180px]">
-          <div class="flex flex-col gap-1">
+      <tr class="hover:bg-zinc-50/50 transition-colors group dark:hover:bg-zinc-800/50 border-b border-zinc-50 dark:border-zinc-800/50 last:border-none">
+        <td class="px-3 sm:px-6 py-5 min-w-[120px] sm:min-w-[180px]">
+          <div class="flex flex-col gap-1.5">
             <input
               type="text"
               value="${isPrivacyMode ? '•••••' : asset.name}"
               data-id="${asset.id}"
               data-type="name"
-              class="asset-input w-full bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-0 sm:py-0.5 text-sm sm:text-base font-bold text-zinc-800 dark:text-zinc-200 dark:hover:border-zinc-700"
+              class="asset-input w-full bg-transparent border-none focus:ring-0 transition-all outline-none p-0 text-sm sm:text-base font-black text-zinc-900 dark:text-zinc-100 tracking-tight"
             />
             <div class="flex items-center gap-2">
               <select
                 data-id="${asset.id}"
                 data-type="category"
-                class="asset-input bg-transparent border-none text-xs sm:text-sm font-bold uppercase tracking-wider text-emerald-600/70 focus:ring-0 cursor-pointer hover:text-emerald-600 dark:text-emerald-400/70 dark:hover:text-emerald-400 p-0"
+                class="asset-input bg-zinc-100 dark:bg-zinc-800/50 border border-transparent rounded-lg text-[9px] font-black uppercase tracking-[0.15em] text-emerald-600 focus:ring-0 cursor-pointer hover:bg-zinc-200 dark:text-emerald-400 dark:hover:bg-zinc-800 px-2 py-0.5 transition-all"
               >
                 <option value="Groei" ${asset.category === 'Groei' ? 'selected' : ''}>Groei</option>
                 <option value="Defensief" ${asset.category === 'Defensief' ? 'selected' : ''}>Defensief</option>
                 <option value="Speculatief" ${asset.category === 'Speculatief' ? 'selected' : ''}>Speculatief</option>
               </select>
-              ${asset.isRealEstate ? '<span class="text-xs font-black uppercase tracking-widest bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded dark:bg-emerald-900/40 dark:text-emerald-300">Vastgoed</span>' : ''}
+              ${asset.isRealEstate ? '<span class="text-[9px] font-black uppercase tracking-widest bg-emerald-500/10 text-emerald-600 px-2 py-0.5 rounded-lg border border-emerald-500/20">Vastgoed</span>' : ''}
             </div>
           </div>
         </td>
-        <td class="px-3 sm:px-6 py-4 min-w-[120px] sm:min-w-[200px]">
-          <div class="flex flex-col gap-1.5">
+        <td class="px-3 sm:px-6 py-5 min-w-[120px] sm:min-w-[200px]">
+          <div class="flex flex-col gap-2.5">
             <div class="flex items-center justify-between gap-1 sm:gap-2">
-              <div class="flex items-center gap-1">
-                <span class="text-zinc-400 font-mono text-base">€</span>
+              <div class="flex items-center gap-1.5">
+                <span class="text-zinc-400/50 font-black text-sm">€</span>
                 <input
                   type="text"
                   value="${formatNumber(asset.value)}"
                   data-id="${asset.id}"
                   data-type="value"
-                  class="asset-input asset-value-input w-24 sm:w-32 md:w-40 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-base dark:text-white dark:hover:border-zinc-700"
+                  class="asset-input asset-value-input w-28 sm:w-36 md:w-44 bg-transparent border-none focus:ring-0 transition-all outline-none p-0 font-black text-lg tabular-nums text-zinc-900 dark:text-white"
                 />
               </div>
-              <span class="font-mono text-sm font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">${formatPercent(currentPercent)}</span>
+              <span class="font-black text-sm text-emerald-600 dark:text-emerald-400 tabular-nums tracking-tighter">${formatPercent(currentPercent)}</span>
             </div>
             <!-- Progress Bar -->
-            <div class="w-full bg-zinc-100 dark:bg-zinc-800 rounded-full h-1.5 overflow-hidden">
+            <div class="w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-full h-1.5 overflow-hidden shadow-inner">
               <div 
-                class="h-full rounded-full transition-all duration-500" 
-                style="width: ${Math.min(100, currentPercent)}%; background-color: ${asset.color}"
+                class="h-full rounded-full transition-all duration-700 saas-gradient" 
+                style="width: ${Math.min(100, currentPercent)}%;"
               ></div>
             </div>
           </div>
         </td>
-        <td class="px-3 sm:px-6 py-4 text-right min-w-[80px] sm:min-w-[100px]">
-          <div class="flex items-center justify-end gap-1">
-            <div class="${isPlannerMode ? 'flex' : 'hidden'} items-center gap-1">
+        <td class="px-3 sm:px-6 py-5 text-right min-w-[80px] sm:min-w-[100px]">
+          <div class="flex items-center justify-end gap-2">
+            <div class="${isPlannerMode ? 'flex' : 'hidden'} items-center gap-1.5 bg-zinc-100 dark:bg-zinc-800/50 px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700">
               <input
                 type="number"
                 value="${asset.target}"
                 data-id="${asset.id}"
                 data-type="target"
-                class="asset-input w-8 sm:w-10 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-emerald-500 focus:ring-0 transition-all outline-none py-1 font-mono text-right text-sm dark:text-white dark:hover:border-zinc-700"
+                class="asset-input w-8 sm:w-12 bg-transparent border-none focus:ring-0 transition-all outline-none p-0 font-black text-right text-xs dark:text-white"
               />
-              <span class="text-zinc-400 font-mono text-xs sm:text-sm">%</span>
+              <span class="text-zinc-400 font-black text-[10px] uppercase">%</span>
             </div>
-            <span class="${!isPlannerMode ? 'block' : 'hidden'} text-xs font-mono text-zinc-400">${formatPercent(asset.target)}</span>
+            <span class="${!isPlannerMode ? 'block' : 'hidden'} text-xs font-black text-zinc-400 tabular-nums">${formatPercent(asset.target)}</span>
           </div>
         </td>
-        <td class="px-3 sm:px-6 py-4 text-right">
+        <td class="px-3 sm:px-6 py-5 text-right">
           <button data-id="${asset.id}" class="delete-asset-btn p-2 text-zinc-300 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20" title="Verwijderen">
             <i data-lucide="trash-2" class="w-4 h-4"></i>
           </button>
@@ -1733,181 +1730,147 @@ function updateCharts() {
   const textColor = isDarkMode ? '#a1a1aa' : '#71717a';
   const gridColor = isDarkMode ? '#27272a' : '#f4f4f5';
 
-  // Robust chart update to ensure animations
-  const canvasCtx = pieCanvas.getContext('2d')!;
-  if (pieChart) {
-    pieChart.data.labels = labels;
-    pieChart.data.datasets[0].data = values;
-    pieChart.data.datasets[0].backgroundColor = colors;
-    pieChart.data.datasets[0].borderWidth = isDarkMode ? 2 : 0;
-    pieChart.data.datasets[0].borderColor = isDarkMode ? '#09090b' : '#ffffff';
-    (pieChart.options.plugins as any).centerText.label = pieChartMode === 'bruto' ? 'Bruto' : 'Netto';
-    (pieChart.options.plugins as any).centerText.value = (window as any).chartTotalValue || '€ 0';
-    pieChart.update();
-  } else {
-    pieChart = new Chart(canvasCtx, {
-      type: 'doughnut',
-      data: {
-        labels,
-        datasets: [{
-          data: values,
-          backgroundColor: colors,
-          borderWidth: isDarkMode ? 2 : 0,
-          borderColor: isDarkMode ? '#09090b' : '#ffffff',
-          hoverOffset: 10
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        layout: {
-          padding: 20
-        },
-        animation: {
-          animateRotate: true,
-          animateScale: true,
-          duration: 1000,
-          easing: 'easeOutQuart'
-        },
-        onClick: (event, elements) => {
-          if (elements.length > 0) {
-            const index = elements[0].index;
-            if (pieChartMode === 'bruto') {
-              const assetId = assets[index].id;
-              highlightAssetRow(assetId);
-            } else {
-              // Netto mode: 0 = Bezittingen, 1 = Schulden
-              if (index === 0) {
-                document.getElementById('assets-section')?.scrollIntoView({ behavior: 'smooth' });
-              } else if (index === 1) {
-                document.getElementById('debts-section')?.scrollIntoView({ behavior: 'smooth' });
-              }
-            }
-          }
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: isDarkMode ? '#27272a' : '#ffffff',
-            titleColor: isDarkMode ? '#ffffff' : '#09090b',
-            bodyColor: isDarkMode ? '#d4d4d8' : '#71717a',
-            borderColor: isDarkMode ? '#3f3f46' : '#e4e4e7',
-            borderWidth: 1,
-            yAlign: 'bottom',
-            callbacks: {
-              label: (context) => {
-                if (isPrivacyMode) return ` ${context.label}: •••••`;
-                const value = context.raw as number;
-                const total = context.dataset.data.reduce((a: any, b: any) => a + b, 0) as number;
-                const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0';
-                return ` ${context.label}: ${formatCurrency(value)} (${percentage}%)`;
-              }
-            }
-          },
-          centerText: {
-            display: (window as any).chartCenterTextDisplay !== false,
-            value: (window as any).chartTotalValue || '€ 0',
-            label: pieChartMode === 'bruto' ? 'Bruto' : 'Netto',
-            badge: {
-              text: (window as any).chartStatus?.text,
-              color: (window as any).chartStatus?.color,
-              bg: (window as any).chartStatus?.bg
-            }
-          }
-        },
-        cutout: '75%'
-      } as any
-    });
-  }
-
-  if (barChartCurrent) {
-    barChartCurrent.data.labels = labels;
-    barChartCurrent.data.datasets[0].data = currentPercents;
-    barChartCurrent.data.datasets[0].backgroundColor = colors;
-    barChartCurrent.options.scales!.y!.ticks!.color = textColor;
-    barChartCurrent.update();
-  } else {
-    // Destroy existing chart on canvas if any
-    const existing = Chart.getChart(barCurrentCanvas);
+  // Robust chart destruction to prevent ghosting
+  const destroyChart = (chartVar: Chart | null, canvas: HTMLCanvasElement) => {
+    if (chartVar) chartVar.destroy();
+    const existing = Chart.getChart(canvas);
     if (existing) existing.destroy();
-    barChartCurrent = new Chart(barCurrentCanvas.getContext('2d')!, {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [{
-          data: currentPercents,
-          backgroundColor: colors,
-          borderRadius: 4,
-          barThickness: 20
-        }]
+  };
+
+  destroyChart(pieChart, pieCanvas);
+  pieChart = new Chart(pieCanvas.getContext('2d')!, {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        backgroundColor: colors,
+        borderWidth: isDarkMode ? 2 : 0,
+        borderColor: isDarkMode ? '#09090b' : '#ffffff',
+        hoverOffset: 10
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: {
+        padding: 20
       },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { display: false },
-          y: { 
-            grid: { display: false }, 
-            border: { display: false },
-            ticks: { color: textColor }
+      onClick: (event, elements) => {
+        if (elements.length > 0) {
+          const index = elements[0].index;
+          if (pieChartMode === 'bruto') {
+            const assetId = assets[index].id;
+            highlightAssetRow(assetId);
+          } else {
+            // Netto mode: 0 = Bezittingen, 1 = Schulden
+            if (index === 0) {
+              document.getElementById('assets-section')?.scrollIntoView({ behavior: 'smooth' });
+            } else if (index === 1) {
+              document.getElementById('debts-section')?.scrollIntoView({ behavior: 'smooth' });
+            }
           }
         }
-      }
-    });
-  }
-
-  if (barChartComparison) {
-    barChartComparison.data.labels = labels;
-    barChartComparison.data.datasets[0].data = currentPercents;
-    barChartComparison.data.datasets[1].data = targets;
-    barChartComparison.data.datasets[1].backgroundColor = isDarkMode ? '#1e293b' : '#e2e8f0';
-    (barChartComparison.options.plugins!.legend!.labels as any).color = textColor;
-    barChartComparison.options.scales!.x!.grid!.color = gridColor;
-    barChartComparison.options.scales!.x!.ticks!.color = textColor;
-    barChartComparison.options.scales!.y!.ticks!.color = textColor;
-    barChartComparison.update();
-  } else {
-    // Destroy existing chart on canvas if any
-    const existing = Chart.getChart(barComparisonCanvas);
-    if (existing) existing.destroy();
-    barChartComparison = new Chart(barComparisonCanvas.getContext('2d')!, {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [
-          {
-            label: 'Huidig',
-            data: currentPercents,
-            backgroundColor: '#10b981',
-            borderRadius: 4,
-            barThickness: 12
-          },
-          {
-            label: 'Doel',
-            data: targets,
-            backgroundColor: isDarkMode ? '#1e293b' : '#e2e8f0',
-            borderRadius: 4,
-            barThickness: 12
-          }
-        ]
       },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { 
-            position: 'bottom', 
-            labels: { 
-              usePointStyle: true, 
-              boxWidth: 6,
-              color: textColor
-            } 
-          },
-          tooltip: {
-            backgroundColor: isDarkMode ? '#1e293b' : '#ffffff',
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: isDarkMode ? '#27272a' : '#ffffff',
+          titleColor: isDarkMode ? '#ffffff' : '#09090b',
+          bodyColor: isDarkMode ? '#d4d4d8' : '#71717a',
+          borderColor: isDarkMode ? '#3f3f46' : '#e4e4e7',
+          borderWidth: 1,
+          yAlign: 'bottom',
+          callbacks: {
+            label: (context) => {
+              if (isPrivacyMode) return ` ${context.label}: •••••`;
+              const value = context.raw as number;
+              const total = context.dataset.data.reduce((a: any, b: any) => a + b, 0) as number;
+              const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0';
+              return ` ${context.label}: ${formatCurrency(value)} (${percentage}%)`;
+            }
+          }
+        },
+        centerText: {
+          display: (window as any).chartCenterTextDisplay !== false,
+          value: (window as any).chartTotalValue || '€ 0',
+          label: pieChartMode === 'bruto' ? 'Bruto' : 'Netto',
+          badge: {
+            text: (window as any).chartStatus?.text,
+            color: (window as any).chartStatus?.color,
+            bg: (window as any).chartStatus?.bg
+          }
+        }
+      },
+      cutout: '75%'
+    } as any
+  });
+
+  destroyChart(barChartCurrent, barCurrentCanvas);
+  barChartCurrent = new Chart(barCurrentCanvas.getContext('2d')!, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        data: currentPercents,
+        backgroundColor: colors,
+        borderRadius: 4,
+        barThickness: 20
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: false },
+        y: { 
+          grid: { display: false }, 
+          border: { display: false },
+          ticks: { color: textColor }
+        }
+      }
+    }
+  });
+
+  destroyChart(barChartComparison, barComparisonCanvas);
+  barChartComparison = new Chart(barComparisonCanvas.getContext('2d')!, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Huidig',
+          data: currentPercents,
+          backgroundColor: '#10b981',
+          borderRadius: 4,
+          barThickness: 12
+        },
+        {
+          label: 'Doel',
+          data: targets,
+          backgroundColor: isDarkMode ? '#1e293b' : '#e2e8f0',
+          borderRadius: 4,
+          barThickness: 12
+        }
+      ]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { 
+          position: 'bottom', 
+          labels: { 
+            usePointStyle: true, 
+            boxWidth: 6,
+            color: textColor
+          } 
+        },
+        tooltip: {
+          backgroundColor: isDarkMode ? '#1e293b' : '#ffffff',
           titleColor: isDarkMode ? '#ffffff' : '#0f172a',
           bodyColor: isDarkMode ? '#cbd5e1' : '#64748b',
           borderColor: isDarkMode ? '#334155' : '#e2e8f0',
@@ -1924,67 +1887,55 @@ function updateCharts() {
       }
     }
   });
-}
 
-  if (historyChart) {
-    historyChart.data.labels = history.map(h => formatDate(h.date));
-    historyChart.data.datasets[0].data = history.map(h => h.totalValue);
-    historyChart.data.datasets[0].backgroundColor = isDarkMode ? 'rgba(16, 185, 129, 0.05)' : 'rgba(16, 185, 129, 0.1)';
-    historyChart.options.scales!.x!.ticks!.color = textColor;
-    historyChart.options.scales!.y!.ticks!.color = textColor;
-    historyChart.update();
-  } else {
-    // Destroy existing chart on canvas if any
-    const existing = Chart.getChart(historyCanvas);
-    if (existing) existing.destroy();
-    historyChart = new Chart(historyCanvas.getContext('2d')!, {
-      type: 'line',
-      data: {
-        labels: history.map(h => formatDate(h.date)),
-        datasets: [{
-          label: 'Totaal Vermogen',
-          data: history.map(h => h.totalValue),
-          borderColor: '#10b981',
-          backgroundColor: isDarkMode ? 'rgba(16, 185, 129, 0.05)' : 'rgba(16, 185, 129, 0.1)',
-          fill: true,
-          tension: 0.4,
-          pointRadius: 4,
-          pointBackgroundColor: '#10b981'
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: isDarkMode ? '#1e293b' : '#ffffff',
-            titleColor: isDarkMode ? '#ffffff' : '#0f172a',
-            bodyColor: isDarkMode ? '#cbd5e1' : '#64748b',
-            borderColor: isDarkMode ? '#334155' : '#e2e8f0',
-            borderWidth: 1,
-            callbacks: {
-              label: (context) => formatCurrency(context.raw as number)
-            }
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: false,
-            grid: { color: gridColor },
-            ticks: {
-              color: textColor,
-              callback: (value) => formatCurrency(value as number)
-            }
-          },
-          x: {
-            grid: { display: false },
-            ticks: { color: textColor }
+  destroyChart(historyChart, historyCanvas);
+  historyChart = new Chart(historyCanvas.getContext('2d')!, {
+    type: 'line',
+    data: {
+      labels: history.map(h => formatDate(h.date)),
+      datasets: [{
+        label: 'Totaal Vermogen',
+        data: history.map(h => h.totalValue),
+        borderColor: '#10b981',
+        backgroundColor: isDarkMode ? 'rgba(16, 185, 129, 0.05)' : 'rgba(16, 185, 129, 0.1)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 4,
+        pointBackgroundColor: '#10b981'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: isDarkMode ? '#1e293b' : '#ffffff',
+          titleColor: isDarkMode ? '#ffffff' : '#0f172a',
+          bodyColor: isDarkMode ? '#cbd5e1' : '#64748b',
+          borderColor: isDarkMode ? '#334155' : '#e2e8f0',
+          borderWidth: 1,
+          callbacks: {
+            label: (context) => formatCurrency(context.raw as number)
           }
         }
+      },
+      scales: {
+        y: {
+          beginAtZero: false,
+          grid: { color: gridColor },
+          ticks: {
+            color: textColor,
+            callback: (value) => formatCurrency(value as number)
+          }
+        },
+        x: {
+          grid: { display: false },
+          ticks: { color: textColor }
+        }
       }
-    });
-  }
+    }
+  });
 
   updateTreemap();
 }
