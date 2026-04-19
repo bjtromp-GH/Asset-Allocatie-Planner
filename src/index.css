@@ -25,6 +25,13 @@
   }
   body {
     @apply accent-emerald-600 antialiased selection:bg-emerald-100 selection:text-emerald-900 tracking-tight;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+    touch-action: manipulation;
+  }
+  input, select, textarea, [contenteditable="true"] {
+    user-select: text;
   }
   input:focus, select:focus, textarea:focus, button:focus-visible {
     @apply outline-none ring-4 ring-emerald-500/10 border-emerald-500/40 transition-all duration-300;
