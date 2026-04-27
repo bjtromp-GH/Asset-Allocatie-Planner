@@ -688,6 +688,11 @@ function addAsset() {
     newAssetTarget.value = '0';
     addAssetModal.classList.remove('hidden');
     newAssetName.focus();
+    // Option 3: Global solution - scroll the modal content to the top
+    const scrollableContent = addAssetModal.querySelector('.overflow-y-auto');
+    if (scrollableContent) {
+      scrollableContent.scrollTop = 0;
+    }
   }
 }
 
@@ -2086,6 +2091,12 @@ const openSheet = (sheet: HTMLElement | null) => {
   overlay.classList.add('open');
   sheet.classList.add('open');
   document.body.style.overflow = 'hidden';
+
+  // Option 3: Global solution - scroll the sheet content to the top
+  const scrollableContent = sheet.querySelector('.overflow-y-auto');
+  if (scrollableContent) {
+    scrollableContent.scrollTop = 0;
+  }
 };
 
 const closeSheets = () => {
@@ -2560,6 +2571,11 @@ function initEventListeners() {
 
   const openInfo = () => {
     infoModal?.classList.remove('hidden');
+    // Option 3: Global solution - scroll the modal content to the top
+    const scrollableContent = infoModal?.querySelector('.overflow-y-auto');
+    if (scrollableContent) {
+      scrollableContent.scrollTop = 0;
+    }
   };
 
   if (infoBtn) infoBtn.addEventListener('click', openInfo);
@@ -2705,6 +2721,11 @@ function initEventListeners() {
     securityBtn.addEventListener('click', () => {
       securityModal.classList.remove('hidden');
       updateSecurityUI();
+      // Option 3: Global solution - scroll the modal content to the top
+      const scrollableContent = securityModal.querySelector('.overflow-y-auto');
+      if (scrollableContent) {
+        scrollableContent.scrollTop = 0;
+      }
     });
   }
 
@@ -3237,6 +3258,11 @@ function initEventListeners() {
       summaryPanel?.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
       summaryPanel?.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
       summaryToggleIcon?.classList.add('rotate-180');
+      
+      // Reset scroll position when opening the summary panel
+      if (summaryPanel) {
+        summaryPanel.scrollTop = 0;
+      }
     }
   });
 
@@ -3280,6 +3306,11 @@ function initEventListeners() {
       newDebtValue.value = '';
       addDebtModal.classList.remove('hidden');
       newDebtName.focus();
+      // Option 3: Global solution - scroll the modal content to the top
+      const scrollableContent = addDebtModal.querySelector('.overflow-y-auto');
+      if (scrollableContent) {
+        scrollableContent.scrollTop = 0;
+      }
     }
   });
 
@@ -3354,6 +3385,13 @@ function initEventListeners() {
 
   const toggleFaqModal = () => {
     faqModal?.classList.toggle('hidden');
+    // Option 3: Global solution - scroll the modal content to the top
+    if (!faqModal?.classList.contains('hidden')) {
+      const scrollableContent = faqModal?.querySelector('.overflow-y-auto');
+      if (scrollableContent) {
+        scrollableContent.scrollTop = 0;
+      }
+    }
   };
 
   faqBtn?.addEventListener('click', toggleFaqModal);
